@@ -1,468 +1,338 @@
 #!/usr/bin/env python3
 """
-update_rankings.py
-──────────────────
-Fetches today's World Football Elo ratings and FIFA ranking points
-for all 48 World Cup 2026 teams, then patches index.html in-place.
-
-Data sources:
-  Elo  : footballratings.org  (mirrors eloratings.net, JSON-friendly)
-  FIFA : football-data.org API v4  (free tier, requires FOOTBALL_DATA_TOKEN env var)
+update_rankings.py  —  WC 2026 daily data updater
+──────────────────────────────────────────────────
+Updates in index.html:
+  • elo:       from eloratings.net  (scraped via multiple fallbacks)
+  • fifaPts:   from football-data.org API v4  (needs FOOTBALL_DATA_TOKEN)
+  • marketPct: from Polymarket gamma API  (public, no key)
 
 Run locally : python update_rankings.py
-Run via CI  : triggered by .github/workflows/update-rankings.yml
+GitHub CI   : .github/workflows/update-rankings.yml  (runs daily at 06:00 UTC)
 """
 
 import os, re, sys, json, time, datetime, requests
-from bs4 import BeautifulSoup
 
 HTML_FILE = "index.html"
 
-# ── Name mapping: our TEAM_DATA keys → names used in each external source ──────
-# footballratings.org uses FIFA official names; we map them to our internal names.
+# ── Team name maps ────────────────────────────────────────────────────────────
+# Keys = our TEAM_DATA names.  Values = what each external source calls them.
 ELO_NAME_MAP = {
-    "Spain":               "Spain",
-    "Argentina":           "Argentina",
-    "France":              "France",
-    "England":             "England",
-    "Colombia":            "Colombia",
-    "Brazil":              "Brazil",
-    "Portugal":            "Portugal",
-    "Netherlands":         "Netherlands",
-    "Ecuador":             "Ecuador",
-    "Croatia":             "Croatia",
-    "Norway":              "Norway",
-    "Germany":             "Germany",
-    "Switzerland":         "Switzerland",
-    "Uruguay":             "Uruguay",
-    "Turkey":              "Türkiye",
-    "Japan":               "Japan",
-    "Senegal":             "Senegal",
-    "Mexico":              "Mexico",
-    "Belgium":             "Belgium",
-    "Paraguay":            "Paraguay",
-    "Austria":             "Austria",
-    "Morocco":             "Morocco",
-    "Canada":              "Canada",
-    "South Korea":         "Korea Republic",
-    "Australia":           "Australia",
-    "Iran":                "IR Iran",
-    "USA":                 "United States",
-    "Panama":              "Panama",
-    "Czechia":             "Czech Republic",
-    "Algeria":             "Algeria",
-    "Uzbekistan":          "Uzbekistan",
-    "Jordan":              "Jordan",
-    "Sweden":              "Sweden",
-    "Egypt":               "Egypt",
-    "Ivory Coast":         "Côte d'Ivoire",
-    "Scotland":            "Scotland",
-    "Saudi Arabia":        "Saudi Arabia",
-    "Tunisia":             "Tunisia",
-    "Ghana":               "Ghana",
-    "Iraq":                "Iraq",
-    "Bosnia":              "Bosnia and Herzegovina",
-    "DR Congo":            "Congo DR",
-    "Haiti":               "Haiti",
-    "Qatar":               "Qatar",
-    "South Africa":        "South Africa",
-    "Cape Verde":          "Cabo Verde",
-    "Curacao":             "Curaçao",
-    "New Zealand":         "New Zealand",
+    "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
+    "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
+    "Netherlands":"Netherlands","Ecuador":"Ecuador","Croatia":"Croatia",
+    "Norway":"Norway","Germany":"Germany","Switzerland":"Switzerland",
+    "Uruguay":"Uruguay","Turkey":"Türkiye","Japan":"Japan","Senegal":"Senegal",
+    "Mexico":"Mexico","Belgium":"Belgium","Paraguay":"Paraguay","Austria":"Austria",
+    "Morocco":"Morocco","Canada":"Canada","South Korea":"Korea Republic",
+    "Australia":"Australia","Iran":"IR Iran","USA":"United States",
+    "Panama":"Panama","Czechia":"Czech Republic","Algeria":"Algeria",
+    "Uzbekistan":"Uzbekistan","Jordan":"Jordan","Sweden":"Sweden","Egypt":"Egypt",
+    "Ivory Coast":"Côte d'Ivoire","Scotland":"Scotland","Saudi Arabia":"Saudi Arabia",
+    "Tunisia":"Tunisia","Ghana":"Ghana","Iraq":"Iraq",
+    "Bosnia":"Bosnia-Herzegovina","DR Congo":"DR Congo","Haiti":"Haiti",
+    "Qatar":"Qatar","South Africa":"South Africa","Cape Verde":"Cape Verde",
+    "Curacao":"Curaçao","New Zealand":"New Zealand",
 }
 
-# football-data.org team IDs for the WC competition (competition code WC)
-# We map our internal names to their API team names for FIFA points lookup
-FIFA_NAME_MAP = {
-    "Spain":          "Spain",
-    "Argentina":      "Argentina",
-    "France":         "France",
-    "England":        "England",
-    "Colombia":       "Colombia",
-    "Brazil":         "Brazil",
-    "Portugal":       "Portugal",
-    "Netherlands":    "Netherlands",
-    "Ecuador":        "Ecuador",
-    "Croatia":        "Croatia",
-    "Norway":         "Norway",
-    "Germany":        "Germany",
-    "Switzerland":    "Switzerland",
-    "Uruguay":        "Uruguay",
-    "Turkey":         "Türkiye",
-    "Japan":          "Japan",
-    "Senegal":        "Senegal",
-    "Mexico":         "Mexico",
-    "Belgium":        "Belgium",
-    "Paraguay":       "Paraguay",
-    "Austria":        "Austria",
-    "Morocco":        "Morocco",
-    "Canada":         "Canada",
-    "South Korea":    "Korea Republic",
-    "Australia":      "Australia",
-    "Iran":           "IR Iran",
-    "USA":            "USA",
-    "Panama":         "Panama",
-    "Czechia":        "Czechia",
-    "Algeria":        "Algeria",
-    "Uzbekistan":     "Uzbekistan",
-    "Jordan":         "Jordan",
-    "Sweden":         "Sweden",
-    "Egypt":          "Egypt",
-    "Ivory Coast":    "Côte d'Ivoire",
-    "Scotland":       "Scotland",
-    "Saudi Arabia":   "Saudi Arabia",
-    "Tunisia":        "Tunisia",
-    "Ghana":          "Ghana",
-    "Iraq":           "Iraq",
-    "Bosnia":         "Bosnia and Herzegovina",
-    "DR Congo":       "DR Congo",
-    "Haiti":          "Haiti",
-    "Qatar":          "Qatar",
-    "South Africa":   "South Africa",
-    "Cape Verde":     "Cape Verde",
-    "Curacao":        "Curaçao",
-    "New Zealand":    "New Zealand",
+POLY_NAME_MAP = {
+    "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
+    "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
+    "Netherlands":"Netherlands","Germany":"Germany","Uruguay":"Uruguay",
+    "Morocco":"Morocco","Mexico":"Mexico","United States":"USA","USA":"USA",
+    "Belgium":"Belgium","Japan":"Japan","Ecuador":"Ecuador","Senegal":"Senegal",
+    "Norway":"Norway","Croatia":"Croatia","Switzerland":"Switzerland",
+    "Canada":"Canada","Korea Republic":"South Korea","South Korea":"South Korea",
+    "Australia":"Australia","Iran":"Iran","Türkiye":"Turkey","Turkey":"Turkey",
+    "Austria":"Austria","Sweden":"Sweden","Egypt":"Egypt","Algeria":"Algeria",
+    "Paraguay":"Paraguay","Côte d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
+    "Ghana":"Ghana","Panama":"Panama","Saudi Arabia":"Saudi Arabia",
+    "Scotland":"Scotland","Tunisia":"Tunisia","Uzbekistan":"Uzbekistan",
+    "Iraq":"Iraq","Jordan":"Jordan",
+    "Bosnia and Herzegovina":"Bosnia","Bosnia-Herzegovina":"Bosnia",
+    "Congo DR":"DR Congo","DR Congo":"DR Congo",
+    "Cape Verde":"Cape Verde","Cabo Verde":"Cape Verde",
+    "Haiti":"Haiti","Qatar":"Qatar","South Africa":"South Africa",
+    "New Zealand":"New Zealand","Curaçao":"Curacao","Curacao":"Curacao",
+}
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/html, */*",
 }
 
 
-# ── Step 1: Fetch Elo ratings from footballratings.org ───────────────────────
+# ── 1. Elo — try three sources in order ───────────────────────────────────────
 def fetch_elo_ratings():
-    """
-    Scrapes footballratings.org which publishes eloratings.net data in HTML.
-    Returns dict: {official_team_name: elo_int}
-    """
-    print("Fetching Elo ratings from footballratings.org ...")
-    url = "https://www.footballratings.org/"
+    print("Fetching Elo ratings ...")
+
+    # Source A: trueline.online (same data as eloratings.net, cleaner markup)
+    result = _elo_from_trueline()
+    if result:
+        return result
+
+    # Source B: eloratings.net direct (often JS-heavy but sometimes works)
+    result = _elo_from_eloratings()
+    if result:
+        return result
+
+    # Source C: footballratings.org JSON API
+    result = _elo_from_footballratings_api()
+    if result:
+        return result
+
+    print("  WARNING: all Elo sources failed — Elo will not be updated this run")
+    return {}
+
+
+def _elo_from_trueline():
     try:
-        r = requests.get(url, timeout=15,
-                         headers={"User-Agent": "WC2026-updater/1.0"})
-        r.raise_for_status()
+        r = requests.get("https://trueline.online/elo", headers=HEADERS, timeout=20)
+        if not r.ok:
+            return {}
+        text = r.text
+        data = {}
+        # Table rows:  | #  | Nation | ELO | Change |
+        for m in re.finditer(
+            r'\|\s*\d+\s*\|\s*([A-Za-zÀ-ÿ \'.\-]+?)\s*\|\s*(\d{4})\s*\|', text
+        ):
+            name, elo = m.group(1).strip(), int(m.group(2))
+            if 1400 <= elo <= 2400:
+                data[name] = elo
+        # Also try JSON embedded in page
+        for jm in re.findall(r'\{[^{}]*"rating"\s*:\s*(\d+)[^{}]*"name"\s*:\s*"([^"]+)"[^{}]*\}', text):
+            elo, name = int(jm[0]), jm[1]
+            if 1400 <= elo <= 2400:
+                data[name] = elo
+        if data:
+            print(f"  Got {len(data)} entries from trueline.online")
+        return data
     except Exception as e:
-        print(f"  WARNING: Elo fetch failed — {e}")
+        print(f"  trueline.online failed: {e}")
         return {}
 
-    soup = BeautifulSoup(r.text, "lxml")
-    elo_data = {}
 
-    # The site renders teams in table rows with team name and rating
-    # Pattern: look for rows containing rating numbers 1400–2300
-    for row in soup.find_all("tr"):
-        cells = row.find_all("td")
-        if len(cells) >= 3:
-            name_cell = cells[0].get_text(strip=True)
-            rating_cell = cells[1].get_text(strip=True)
+def _elo_from_eloratings():
+    try:
+        r = requests.get("https://www.eloratings.net/World_Cup_2026",
+                         headers=HEADERS, timeout=20)
+        if not r.ok:
+            return {}
+        text = r.text
+        data = {}
+        # Try JSON in script tags
+        for jblock in re.findall(r'<script[^>]*>(.*?)</script>', text, re.DOTALL):
             try:
-                rating = int(rating_cell.replace(",", ""))
-                if 1400 <= rating <= 2400 and name_cell:
-                    elo_data[name_cell] = rating
-            except ValueError:
+                teams = json.loads(jblock.strip())
+                if isinstance(teams, list):
+                    for t in teams:
+                        if "name" in t and "rating" in t:
+                            data[t["name"]] = int(t["rating"])
+            except:
                 pass
+        # Try TSV rows
+        if not data:
+            for line in text.split('\n'):
+                parts = line.strip().split('\t')
+                if len(parts) >= 2:
+                    try:
+                        elo = int(parts[1].replace(',',''))
+                        if 1400 <= elo <= 2400:
+                            data[parts[0].strip()] = elo
+                    except:
+                        pass
+        if data:
+            print(f"  Got {len(data)} entries from eloratings.net")
+        return data
+    except Exception as e:
+        print(f"  eloratings.net failed: {e}")
+        return {}
 
-    # Fallback: try JSON endpoint if available
-    if not elo_data:
-        try:
-            jr = requests.get("https://www.footballratings.org/api/ratings",
-                              timeout=10, headers={"User-Agent": "WC2026-updater/1.0"})
-            if jr.status_code == 200:
-                data = jr.json()
-                for team in data:
-                    if "name" in team and "rating" in team:
-                        elo_data[team["name"]] = int(team["rating"])
-        except Exception:
-            pass
 
-    print(f"  Got {len(elo_data)} Elo entries")
-    return elo_data
+def _elo_from_footballratings_api():
+    try:
+        r = requests.get("https://www.footballratings.org/api/ratings",
+                         headers=HEADERS, timeout=15)
+        if not r.ok:
+            return {}
+        teams = r.json()
+        data = {}
+        for t in teams:
+            name, elo = t.get("name",""), t.get("rating",0)
+            try:
+                elo = int(elo)
+                if 1400 <= elo <= 2400 and name:
+                    data[name] = elo
+            except:
+                pass
+        if data:
+            print(f"  Got {len(data)} entries from footballratings.org API")
+        return data
+    except Exception as e:
+        print(f"  footballratings.org API failed: {e}")
+        return {}
 
 
-# ── Step 2: Fetch FIFA ranking points via football-data.org ─────────────────
+# ── 2. FIFA points — football-data.org ───────────────────────────────────────
 def fetch_fifa_rankings():
-    """
-    Uses the football-data.org API to get current FIFA ranking points
-    for World Cup 2026 teams.
-    Returns dict: {api_team_name: fifa_points_float}
-    Requires FOOTBALL_DATA_TOKEN env var.
-    """
     token = os.environ.get("FOOTBALL_DATA_TOKEN", "")
     if not token or token == "YOUR_API_TOKEN_HERE":
-        print("  INFO: FOOTBALL_DATA_TOKEN not set — skipping FIFA points update")
+        print("FIFA: FOOTBALL_DATA_TOKEN not set — skipping")
         return {}
 
     print("Fetching FIFA ranking points from football-data.org ...")
-    url = "https://api.football-data.org/v4/competitions/WC/teams"
+    h = {**HEADERS, "X-Auth-Token": token}
     try:
-        r = requests.get(url, timeout=15,
-                         headers={"X-Auth-Token": token})
+        r = requests.get("https://api.football-data.org/v4/competitions/WC/teams",
+                         headers=h, timeout=15)
         if r.status_code == 403:
-            print("  WARNING: API token invalid or expired")
+            print(f"  HTTP 403 — token may lack permission for this endpoint")
             return {}
         r.raise_for_status()
-        data = r.json()
+        data = {}
+        for team in r.json().get("teams", []):
+            name = team.get("name") or team.get("shortName","")
+            pts  = (team.get("fifaRankingPoints") or
+                    (team.get("ranking") or {}).get("points"))
+            if name and pts:
+                try: data[name] = float(pts)
+                except: pass
+        print(f"  Got {len(data)} FIFA entries")
+        return data
     except Exception as e:
-        print(f"  WARNING: FIFA fetch failed — {e}")
+        print(f"  football-data.org failed: {e}")
         return {}
 
-    fifa_data = {}
-    for team in data.get("teams", []):
-        name = team.get("name") or team.get("shortName", "")
-        pts  = team.get("fifaRankingPoints") or team.get("ranking", {}).get("points")
-        if name and pts:
-            try:
-                fifa_data[name] = float(pts)
-            except (ValueError, TypeError):
-                pass
 
-    print(f"  Got {len(fifa_data)} FIFA ranking entries")
-    return fifa_data
-
-
-
-# ── Step 3: Fetch Polymarket win probabilities ───────────────────────────────
-POLYMARKET_SLUG = "which-country-will-win-the-2026-fifa-world-cup"
-
-# Map Polymarket outcome labels → our TEAM_DATA keys
-POLY_NAME_MAP = {
-    "Spain":            "Spain",
-    "Argentina":        "Argentina",
-    "France":           "France",
-    "England":          "England",
-    "Colombia":         "Colombia",
-    "Brazil":           "Brazil",
-    "Portugal":         "Portugal",
-    "Netherlands":      "Netherlands",
-    "Germany":          "Germany",
-    "Uruguay":          "Uruguay",
-    "Morocco":          "Morocco",
-    "Mexico":           "Mexico",
-    "United States":    "USA",
-    "USA":              "USA",
-    "Belgium":          "Belgium",
-    "Japan":            "Japan",
-    "Ecuador":          "Ecuador",
-    "Senegal":          "Senegal",
-    "Norway":           "Norway",
-    "Croatia":          "Croatia",
-    "Switzerland":      "Switzerland",
-    "Canada":           "Canada",
-    "Korea Republic":   "South Korea",
-    "South Korea":      "South Korea",
-    "Australia":        "Australia",
-    "Iran":             "Iran",
-    "Turkey":           "Turkey",
-    "Austria":          "Austria",
-    "Sweden":           "Sweden",
-    "Egypt":            "Egypt",
-    "Algeria":          "Algeria",
-    "Paraguay":         "Paraguay",
-    "Ivory Coast":      "Ivory Coast",
-    "Ghana":            "Ghana",
-    "Panama":           "Panama",
-    "Saudi Arabia":     "Saudi Arabia",
-    "Scotland":         "Scotland",
-    "Tunisia":          "Tunisia",
-    "Uzbekistan":       "Uzbekistan",
-    "Iraq":             "Iraq",
-    "Jordan":           "Jordan",
-    "Bosnia":           "Bosnia",
-    "Bosnia and Herzegovina": "Bosnia",
-    "DR Congo":         "DR Congo",
-    "Congo DR":         "DR Congo",
-    "Cape Verde":       "Cape Verde",
-    "Haiti":            "Haiti",
-    "Qatar":            "Qatar",
-    "South Africa":     "South Africa",
-    "New Zealand":      "New Zealand",
-    "Curacao":          "Curacao",
-    "Curaçao":          "Curacao",
-}
-
+# ── 3. Polymarket ─────────────────────────────────────────────────────────────
 def fetch_polymarket():
-    """
-    Fetches live tournament win probabilities from Polymarket's public API.
-    Returns dict: {our_team_name: probability_pct_float}
-    No API key needed — Polymarket data is public.
-    """
     print("Fetching Polymarket probabilities ...")
-    url = f"https://gamma-api.polymarket.com/markets?slug={POLYMARKET_SLUG}&limit=1"
+    url = "https://gamma-api.polymarket.com/events?slug=world-cup-winner&limit=1"
     try:
-        r = requests.get(url, timeout=15,
-                         headers={"User-Agent": "WC2026-updater/1.0"})
+        r = requests.get(url, headers=HEADERS, timeout=20)
         r.raise_for_status()
-        markets = r.json()
-        if not markets:
-            raise ValueError("Empty response")
-        market = markets[0]
-        market_id = market.get("id") or market.get("conditionId")
+        events = r.json()
+        if not events:
+            raise ValueError("empty")
     except Exception as e:
-        print(f"  WARNING: Polymarket market lookup failed — {e}")
+        print(f"  Polymarket gamma API failed: {e}")
         return {}
 
-    # Fetch order book to get current prices (= implied probabilities)
-    try:
-        r2 = requests.get(
-            f"https://clob.polymarket.com/markets/{market_id}",
-            timeout=15,
-            headers={"User-Agent": "WC2026-updater/1.0"}
-        )
-        r2.raise_for_status()
-        data = r2.json()
-        tokens = data.get("tokens") or data.get("outcomes") or []
-    except Exception:
-        # Fallback: use outcomes from gamma API directly
-        tokens = market.get("outcomes") or []
-        outcomes_prices = market.get("outcomePrices") or []
-        if isinstance(outcomes_prices, str):
+    markets = events[0].get("markets") or []
+    result  = {}
+    for mkt in markets:
+        team_label = (mkt.get("groupItemTitle") or
+                      re.sub(r" to win.*", "", mkt.get("question",""), flags=re.I).strip())
+        prices = mkt.get("outcomePrices","[]")
+        if isinstance(prices, str):
+            try: prices = json.loads(prices)
+            except: prices = []
+        if prices:
             try:
-                outcomes_prices = __import__("json").loads(outcomes_prices)
-            except:
-                outcomes_prices = []
-        if tokens and outcomes_prices:
-            result = {}
-            for i, name in enumerate(tokens):
-                our = POLY_NAME_MAP.get(name)
-                if our and i < len(outcomes_prices):
-                    try:
-                        result[our] = round(float(outcomes_prices[i]) * 100, 2)
-                    except:
-                        pass
-            print(f"  Got {len(result)} Polymarket entries (gamma fallback)")
-            return result
-        return {}
-
-    result = {}
-    for t in tokens:
-        name  = t.get("outcome") or t.get("name") or t.get("token_id","")
-        price = t.get("price") or t.get("midpoint") or t.get("lastPrice") or 0
-        our   = POLY_NAME_MAP.get(name) or POLY_NAME_MAP.get(name.title())
-        if our:
-            try:
-                pct = round(float(price) * 100, 2)
-                result[our] = pct
+                yes_pct = round(float(prices[0]) * 100, 2)
+                our = POLY_NAME_MAP.get(team_label)
+                if our:
+                    result[our] = yes_pct
             except:
                 pass
 
     print(f"  Got {len(result)} Polymarket entries")
     return result
 
-# ── Step 4: Patch index.html ─────────────────────────────────────────────────
+
+# ── 4. Patch index.html ───────────────────────────────────────────────────────
 def patch_html(elo_data, fifa_data, poly_data):
-    """
-    Reads index.html, updates elo: and fifaPts: values for each team,
-    updates the last-updated comment, and writes the file back.
-    """
     with open(HTML_FILE, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # Find TEAM_DATA block
     td_start = html.find("var TEAM_DATA = {")
     td_end   = html.find("\n};\n", td_start) + 4
     if td_start < 0:
-        print("ERROR: TEAM_DATA not found in HTML")
-        sys.exit(1)
+        print("ERROR: TEAM_DATA block not found"); sys.exit(1)
 
-    td_block = html[td_start:td_end]
-    td_new   = td_block
+    td = html[td_start:td_end]
+    elo_upd, fifa_upd, poly_upd, skipped = [], [], [], []
 
-    elo_updated   = []
-    fifa_updated  = []
-    poly_updated  = []
-    skipped       = []
+    for name in ELO_NAME_MAP:
+        ti = td.find(f"'{name}':")
+        if ti < 0:
+            continue
 
-    # Reverse map: official source name → our TEAM_DATA key
-    elo_reverse  = {v: k for k, v in ELO_NAME_MAP.items()}
-    fifa_reverse = {v: k for k, v in FIFA_NAME_MAP.items()}
-
-    for our_name in ELO_NAME_MAP:
-        # ── Update Elo ──
-        official_elo_name = ELO_NAME_MAP[our_name]
-        new_elo = elo_data.get(official_elo_name)
+        # Elo
+        src_name = ELO_NAME_MAP[name]
+        new_elo  = elo_data.get(src_name) or elo_data.get(name)
         if new_elo:
-            team_idx = td_new.find(f"'{our_name}':")
-            if team_idx >= 0:
-                elo_idx = td_new.find("elo:", team_idx)
-                if elo_idx >= 0 and elo_idx < team_idx + 300:
-                    comma = td_new.find(",", elo_idx + 4)
-                    old_elo = int(td_new[elo_idx+4:comma].strip())
-                    if old_elo != new_elo:
-                        td_new = td_new[:elo_idx+4] + str(new_elo) + td_new[comma:]
-                        elo_updated.append(f"{our_name}: {old_elo}→{new_elo}")
+            ei = td.find("elo:", ti)
+            if 0 < ei < ti + 300:
+                c = td.find(",", ei+4)
+                old = int(td[ei+4:c].strip())
+                if old != new_elo:
+                    td = td[:ei+4] + str(new_elo) + td[c:]
+                    elo_upd.append(f"{name}: {old}→{new_elo}")
         else:
-            skipped.append(f"Elo/{our_name}")
+            skipped.append(name)
 
-        # ── Update Polymarket % ──
-        new_poly = poly_data.get(our_name)
+        # FIFA
+        new_fifa = fifa_data.get(ELO_NAME_MAP.get(name, name)) or fifa_data.get(name)
+        if new_fifa:
+            fi = td.find("fifaPts:", ti)
+            if 0 < fi < ti + 300:
+                c = td.find(",", fi+8)
+                old = int(td[fi+8:c].strip())
+                nf  = int(round(new_fifa))
+                if abs(old - nf) > 1:
+                    td = td[:fi+8] + str(nf) + td[c:]
+                    fifa_upd.append(f"{name}: {old}→{nf}")
+
+        # Polymarket
+        new_poly = poly_data.get(name)
         if new_poly is not None:
-            team_idx = td_new.find(f"\'{our_name}\':")
-            if team_idx >= 0:
-                mp_idx = td_new.find("marketPct:", team_idx)
-                if mp_idx >= 0 and mp_idx < team_idx + 400:
-                    comma = td_new.find("}", mp_idx + 10)
-                    old_val_str = td_new[mp_idx+10:comma].strip().rstrip(",")
-                    try:
-                        old_poly = float(old_val_str)
-                        if abs(old_poly - new_poly) >= 0.1:
-                            td_new = td_new[:mp_idx+10] + f"{new_poly}" + td_new[mp_idx+10+len(old_val_str):]
-                            poly_updated.append(f"{our_name}: {old_poly}→{new_poly}")
-                    except:
-                        pass
+            pi = td.find("marketPct:", ti)
+            if 0 < pi < ti + 400:
+                vs = pi + 10
+                ve = td.find("}", vs)
+                old_str = td[vs:ve].strip().rstrip(",")
+                try:
+                    old_p = float(old_str)
+                    if abs(old_p - new_poly) >= 0.1:
+                        td = td[:vs] + str(new_poly) + td[vs+len(old_str):]
+                        poly_upd.append(f"{name}: {old_p}→{new_poly}")
+                except:
+                    pass
 
-        # ── Update FIFA points ──
-        official_fifa_name = FIFA_NAME_MAP.get(our_name)
-        if official_fifa_name:
-            new_fifa = fifa_data.get(official_fifa_name)
-            if new_fifa:
-                team_idx = td_new.find(f"'{our_name}':")
-                if team_idx >= 0:
-                    fp_idx = td_new.find("fifaPts:", team_idx)
-                    if fp_idx >= 0 and fp_idx < team_idx + 300:
-                        comma = td_new.find(",", fp_idx + 8)
-                        old_fifa = int(td_new[fp_idx+8:comma].strip())
-                        new_fifa_int = int(round(new_fifa))
-                        if abs(old_fifa - new_fifa_int) > 1:
-                            td_new = td_new[:fp_idx+8] + str(new_fifa_int) + td_new[comma:]
-                            fifa_updated.append(f"{our_name}: {old_fifa}→{new_fifa_int}")
+    html = html[:td_start] + td + html[td_end:]
 
-    # Rebuild HTML with updated TEAM_DATA
-    html = html[:td_start] + td_new + html[td_end:]
-
-    # Update the "last updated" comment/note if present
-    today = datetime.date.today().strftime("%B %d, %Y")
-    html = re.sub(
-        r"(Elo ratings? updated?[^<\"']*)(June \d+, 2026|Updated \w+ \d+, \d{4})",
-        r"\g<1>" + today,
-        html
-    )
-    # Also update the src-note text
-    html = re.sub(
-        r"(eloratings\.net)[^<>·]*?(·|&middot;)",
-        r"\1, " + today + r" \2",
-        html, count=1
-    )
+    # Safety check
+    js_start = html.rfind('<script>') + len('<script>')
+    js       = html[js_start:html.rfind('</script>')]
+    if js.count('{') != js.count('}'):
+        print(f"SAFETY ABORT: brace mismatch {js.count('{')} / {js.count('}')}")
+        sys.exit(1)
 
     with open(HTML_FILE, "w", encoding="utf-8") as f:
         f.write(html)
 
-    if poly_updated:
-        print(f"Polymarket updated ({len(poly_updated)} teams): {', '.join(poly_updated[:5])}" + ("..." if len(poly_updated) > 5 else ""))
-    print(f"\nElo updated ({len(elo_updated)} teams): {', '.join(elo_updated[:5])}" +
-          ("..." if len(elo_updated) > 5 else ""))
-    print(f"FIFA updated ({len(fifa_updated)} teams): {', '.join(fifa_updated[:5])}" +
-          ("..." if len(fifa_updated) > 5 else ""))
+    today = datetime.date.today().isoformat()
+    print(f"\nElo     updated: {len(elo_upd):2d} teams  — {', '.join(elo_upd[:4])}{'...' if len(elo_upd)>4 else ''}")
+    print(f"FIFA    updated: {len(fifa_upd):2d} teams  — {', '.join(fifa_upd[:4])}{'...' if len(fifa_upd)>4 else ''}")
+    print(f"Poly    updated: {len(poly_upd):2d} teams  — {', '.join(poly_upd[:4])}{'...' if len(poly_upd)>4 else ''}")
     if skipped:
-        print(f"Skipped (source name not found): {', '.join(skipped[:5])}")
-    print(f"\nindex.html updated — {today}")
+        print(f"Skipped (no Elo source): {', '.join(skipped[:6])}{'...' if len(skipped)>6 else ''}")
+    print(f"\nindex.html written — {today}")
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print(f"=== WC 2026 Rankings Updater — {datetime.date.today()} ===\n")
 
-    elo_data  = fetch_elo_ratings()
-    fifa_data = fetch_fifa_rankings()
+    elo_data  = fetch_elo_ratings();  time.sleep(1)
+    fifa_data = fetch_fifa_rankings(); time.sleep(1)
     poly_data = fetch_polymarket()
 
     if not elo_data and not fifa_data and not poly_data:
-        print("No data fetched — exiting without changes")
+        print("\nNo data fetched from any source — exiting without changes")
+        print("Check network access and API token in GitHub Secrets")
         sys.exit(0)
 
     patch_html(elo_data, fifa_data, poly_data)
