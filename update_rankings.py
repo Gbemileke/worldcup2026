@@ -216,8 +216,136 @@ def fetch_fifa_rankings():
     return fifa_data
 
 
-# ── Step 3: Patch index.html ─────────────────────────────────────────────────
-def patch_html(elo_data, fifa_data):
+
+# ── Step 3: Fetch Polymarket win probabilities ───────────────────────────────
+POLYMARKET_SLUG = "which-country-will-win-the-2026-fifa-world-cup"
+
+# Map Polymarket outcome labels → our TEAM_DATA keys
+POLY_NAME_MAP = {
+    "Spain":            "Spain",
+    "Argentina":        "Argentina",
+    "France":           "France",
+    "England":          "England",
+    "Colombia":         "Colombia",
+    "Brazil":           "Brazil",
+    "Portugal":         "Portugal",
+    "Netherlands":      "Netherlands",
+    "Germany":          "Germany",
+    "Uruguay":          "Uruguay",
+    "Morocco":          "Morocco",
+    "Mexico":           "Mexico",
+    "United States":    "USA",
+    "USA":              "USA",
+    "Belgium":          "Belgium",
+    "Japan":            "Japan",
+    "Ecuador":          "Ecuador",
+    "Senegal":          "Senegal",
+    "Norway":           "Norway",
+    "Croatia":          "Croatia",
+    "Switzerland":      "Switzerland",
+    "Canada":           "Canada",
+    "Korea Republic":   "South Korea",
+    "South Korea":      "South Korea",
+    "Australia":        "Australia",
+    "Iran":             "Iran",
+    "Turkey":           "Turkey",
+    "Austria":          "Austria",
+    "Sweden":           "Sweden",
+    "Egypt":            "Egypt",
+    "Algeria":          "Algeria",
+    "Paraguay":         "Paraguay",
+    "Ivory Coast":      "Ivory Coast",
+    "Ghana":            "Ghana",
+    "Panama":           "Panama",
+    "Saudi Arabia":     "Saudi Arabia",
+    "Scotland":         "Scotland",
+    "Tunisia":          "Tunisia",
+    "Uzbekistan":       "Uzbekistan",
+    "Iraq":             "Iraq",
+    "Jordan":           "Jordan",
+    "Bosnia":           "Bosnia",
+    "Bosnia and Herzegovina": "Bosnia",
+    "DR Congo":         "DR Congo",
+    "Congo DR":         "DR Congo",
+    "Cape Verde":       "Cape Verde",
+    "Haiti":            "Haiti",
+    "Qatar":            "Qatar",
+    "South Africa":     "South Africa",
+    "New Zealand":      "New Zealand",
+    "Curacao":          "Curacao",
+    "Curaçao":          "Curacao",
+}
+
+def fetch_polymarket():
+    """
+    Fetches live tournament win probabilities from Polymarket's public API.
+    Returns dict: {our_team_name: probability_pct_float}
+    No API key needed — Polymarket data is public.
+    """
+    print("Fetching Polymarket probabilities ...")
+    url = f"https://gamma-api.polymarket.com/markets?slug={POLYMARKET_SLUG}&limit=1"
+    try:
+        r = requests.get(url, timeout=15,
+                         headers={"User-Agent": "WC2026-updater/1.0"})
+        r.raise_for_status()
+        markets = r.json()
+        if not markets:
+            raise ValueError("Empty response")
+        market = markets[0]
+        market_id = market.get("id") or market.get("conditionId")
+    except Exception as e:
+        print(f"  WARNING: Polymarket market lookup failed — {e}")
+        return {}
+
+    # Fetch order book to get current prices (= implied probabilities)
+    try:
+        r2 = requests.get(
+            f"https://clob.polymarket.com/markets/{market_id}",
+            timeout=15,
+            headers={"User-Agent": "WC2026-updater/1.0"}
+        )
+        r2.raise_for_status()
+        data = r2.json()
+        tokens = data.get("tokens") or data.get("outcomes") or []
+    except Exception:
+        # Fallback: use outcomes from gamma API directly
+        tokens = market.get("outcomes") or []
+        outcomes_prices = market.get("outcomePrices") or []
+        if isinstance(outcomes_prices, str):
+            try:
+                outcomes_prices = __import__("json").loads(outcomes_prices)
+            except:
+                outcomes_prices = []
+        if tokens and outcomes_prices:
+            result = {}
+            for i, name in enumerate(tokens):
+                our = POLY_NAME_MAP.get(name)
+                if our and i < len(outcomes_prices):
+                    try:
+                        result[our] = round(float(outcomes_prices[i]) * 100, 2)
+                    except:
+                        pass
+            print(f"  Got {len(result)} Polymarket entries (gamma fallback)")
+            return result
+        return {}
+
+    result = {}
+    for t in tokens:
+        name  = t.get("outcome") or t.get("name") or t.get("token_id","")
+        price = t.get("price") or t.get("midpoint") or t.get("lastPrice") or 0
+        our   = POLY_NAME_MAP.get(name) or POLY_NAME_MAP.get(name.title())
+        if our:
+            try:
+                pct = round(float(price) * 100, 2)
+                result[our] = pct
+            except:
+                pass
+
+    print(f"  Got {len(result)} Polymarket entries")
+    return result
+
+# ── Step 4: Patch index.html ─────────────────────────────────────────────────
+def patch_html(elo_data, fifa_data, poly_data):
     """
     Reads index.html, updates elo: and fifaPts: values for each team,
     updates the last-updated comment, and writes the file back.
@@ -235,9 +363,10 @@ def patch_html(elo_data, fifa_data):
     td_block = html[td_start:td_end]
     td_new   = td_block
 
-    elo_updated  = []
-    fifa_updated = []
-    skipped      = []
+    elo_updated   = []
+    fifa_updated  = []
+    poly_updated  = []
+    skipped       = []
 
     # Reverse map: official source name → our TEAM_DATA key
     elo_reverse  = {v: k for k, v in ELO_NAME_MAP.items()}
@@ -259,6 +388,23 @@ def patch_html(elo_data, fifa_data):
                         elo_updated.append(f"{our_name}: {old_elo}→{new_elo}")
         else:
             skipped.append(f"Elo/{our_name}")
+
+        # ── Update Polymarket % ──
+        new_poly = poly_data.get(our_name)
+        if new_poly is not None:
+            team_idx = td_new.find(f"\'{our_name}\':")
+            if team_idx >= 0:
+                mp_idx = td_new.find("marketPct:", team_idx)
+                if mp_idx >= 0 and mp_idx < team_idx + 400:
+                    comma = td_new.find("}", mp_idx + 10)
+                    old_val_str = td_new[mp_idx+10:comma].strip().rstrip(",")
+                    try:
+                        old_poly = float(old_val_str)
+                        if abs(old_poly - new_poly) >= 0.1:
+                            td_new = td_new[:mp_idx+10] + f"{new_poly}" + td_new[mp_idx+10+len(old_val_str):]
+                            poly_updated.append(f"{our_name}: {old_poly}→{new_poly}")
+                    except:
+                        pass
 
         # ── Update FIFA points ──
         official_fifa_name = FIFA_NAME_MAP.get(our_name)
@@ -296,6 +442,8 @@ def patch_html(elo_data, fifa_data):
     with open(HTML_FILE, "w", encoding="utf-8") as f:
         f.write(html)
 
+    if poly_updated:
+        print(f"Polymarket updated ({len(poly_updated)} teams): {', '.join(poly_updated[:5])}" + ("..." if len(poly_updated) > 5 else ""))
     print(f"\nElo updated ({len(elo_updated)} teams): {', '.join(elo_updated[:5])}" +
           ("..." if len(elo_updated) > 5 else ""))
     print(f"FIFA updated ({len(fifa_updated)} teams): {', '.join(fifa_updated[:5])}" +
@@ -311,10 +459,11 @@ if __name__ == "__main__":
 
     elo_data  = fetch_elo_ratings()
     fifa_data = fetch_fifa_rankings()
+    poly_data = fetch_polymarket()
 
-    if not elo_data and not fifa_data:
+    if not elo_data and not fifa_data and not poly_data:
         print("No data fetched — exiting without changes")
         sys.exit(0)
 
-    patch_html(elo_data, fifa_data)
+    patch_html(elo_data, fifa_data, poly_data)
     print("\nDone ✓")
