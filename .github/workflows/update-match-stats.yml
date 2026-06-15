@@ -1,0 +1,42 @@
+name: Update Match Analytics
+
+on:
+  schedule:
+    # Runs every 3 hours during the group stage (June 11 – June 28)
+    # World Cup matches typically finish by 02:00 UTC, so 03:00/06:00/09:00/12:00 UTC catches them all
+    - cron: '0 3,6,9,12,15,18,21 * * *'
+  workflow_dispatch:
+    # Also allows manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch finished matches and update index.html
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+        run: python update_match_stats.py
+
+      - name: Commit if anything changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && echo "Nothing to commit" || \
+            git commit -m "chore: add match stats $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
