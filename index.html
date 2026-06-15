@@ -429,7 +429,7 @@
           <div class="stat-card sc-red"><div class="stat-num">3</div><div class="stat-label">Own Goals</div><div class="stat-sub">Paraguay, Cura&ccedil;ao, Tunisia</div></div>
           <div class="stat-card sc-blue"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (SUI), Havertz (GER)</div></div>
           <div class="stat-card sc-gold"><div class="stat-num">5</div><div class="stat-label">Sweden Goals</div><div class="stat-sub">vs Tunisia &mdash; 2nd highest</div></div>
-          <div class="stat-card sc-green"><div class="stat-num">13</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
+          <div class="stat-card sc-green"><div class="stat-num">16</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
         </div>
         <div class="section-title">GOALS BY PERIOD</div>
         <div class="chart-wrap">
@@ -1171,10 +1171,14 @@ var MATCH_STATS = {
   m11: {home:'Netherlands', away:'Japan',       hf:'NL', af:'JP', score:'2-2', date:'Jun 14 - AT&T Stadium, Dallas',           poss:[55,45], stats:[['Shots',14,11],['Shots on Target',5,4],['Passes',487,398],['Pass Accuracy %',85,81],['Dribbles Won',9,11],['Tackles',16,18],['Fouls',10,12],['Corners',7,5],['Clearances',14,17],['Turnovers',13,16]], xtra:[['xG',2.1,1.3],['Yellow Cards',1,2],['Offsides',1,1],['Saves',2,4]]},
   m12: {home:'Sweden',      away:'Tunisia',     hf:'SE', af:'TN', score:'5-1', date:'Jun 14 - Estadio BBVA, Monterrey',        poss:[64,36], stats:[['Shots',19,8],['Shots on Target',7,2],['Passes',534,301],['Pass Accuracy %',87,73],['Dribbles Won',12,5],['Tackles',13,18],['Fouls',9,14],['Corners',8,2],['Clearances',8,22],['Turnovers',10,20]], xtra:[['xG',3.9,0.8],['Yellow Cards',0,2],['Offsides',2,1],['Saves',1,2]]},
   m13: {home:'Spain',      away:'Cape Verde',  hf:'\u{1F1EA}\u{1F1F8}', af:'CV', score:'0-0', date:'Jun 15 - Mercedes-Benz Stadium, Atlanta',    poss:[74,26], stats:[['Shots',27,6],['Shots on Target',7,1],['Passes',648,204],['Pass Accuracy %',91,68],['Dribbles Won',10,3],['Tackles',8,22],['Fouls',10,14],['Corners',11,1],['Clearances',4,28],['Turnovers',8,19]], xtra:[['xG',2.8,0.2],['Yellow Cards',1,2],['Offsides',3,0],['Saves',0,6]]}
+  m14: {home:'South Korea', away:'Czechia', hf:'KR', af:'CZ', score:'2-1', date:'Jun 12 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m15: {home:'Canada', away:'Bosnia-Herzegovina', hf:'CA', af:'BO', score:'1-1', date:'Jun 12 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m16: {home:'Australia', away:'Turkey', hf:'AU', af:'TR', score:'2-0', date:'Jun 14 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m17: {home:'Spain', away:'Cape Verde Islands', hf:'ES', af:'CA', score:'0-0', date:'Jun 15 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 function buildMatchSelector() {
-  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13'];
+  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13','m14','m15','m16','m17'];
   var out = '';
   for (var i = 0; i < ids.length; i++) {
     var id = ids[i];
