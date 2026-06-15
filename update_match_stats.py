@@ -255,43 +255,6 @@ def patch_html(new_entries):
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
-    token = os.environ.get("FOOTBALL_DATA_TOKEN", "").strip()
-    if not token or token == "YOUR_API_TOKEN_HERE":
-        print("WARNING: FOOTBALL_DATA_TOKEN not set — skipping match stats update")
-        print("  Add it in GitHub repo Settings → Secrets → Actions")
-        print("  Get a free token at https://www.football-data.org/client/register")
-        sys.exit(0)   # exit 0 so the workflow doesn't fail
-
-    print(f"=== Match Stats Updater — {datetime.date.today()} ===\n")
-
-    matches = fetch_matches(token)
-    print(f"Found {len(matches)} finished matches\n")
-
-    new_entries = {}
-    for m in matches:
-        home = m["homeTeam"]["name"]
-        away = m["awayTeam"]["name"]
-        mid  = m["id"]
-        print(f"  Fetching: {short(home)} vs {short(away)} ...", end=" ", flush=True)
-        detail = fetch_match_detail(token, mid)
-        time.sleep(0.7)  # free tier: 10 req/min
-        entry = build_entry(m, detail)
-        key   = f"{short(home)}|{short(away)}"
-        new_entries[key] = entry
-        print("done")
-
-    print()
-    patch_html(new_entries)
-
-    print("\nUpdating MATCHES array...")
-    patch_matches(new_entries)
-
-    print("\nUpdating GOALS feed...")
-    patch_goals(matches)
-
-    print("\nDone ✓")
-
 
 # ── Patch MATCHES array ───────────────────────────────────────────────────────
 def patch_matches(new_entries):
@@ -471,3 +434,40 @@ def patch_goals(matches_api):
     with open(HTML_FILE, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"  GOALS updated: {added_goals} new entries added")
+
+if __name__ == "__main__":
+    token = os.environ.get("FOOTBALL_DATA_TOKEN", "").strip()
+    if not token or token == "YOUR_API_TOKEN_HERE":
+        print("WARNING: FOOTBALL_DATA_TOKEN not set — skipping match stats update")
+        print("  Add it in GitHub repo Settings → Secrets → Actions")
+        print("  Get a free token at https://www.football-data.org/client/register")
+        sys.exit(0)   # exit 0 so the workflow doesn't fail
+
+    print(f"=== Match Stats Updater — {datetime.date.today()} ===\n")
+
+    matches = fetch_matches(token)
+    print(f"Found {len(matches)} finished matches\n")
+
+    new_entries = {}
+    for m in matches:
+        home = m["homeTeam"]["name"]
+        away = m["awayTeam"]["name"]
+        mid  = m["id"]
+        print(f"  Fetching: {short(home)} vs {short(away)} ...", end=" ", flush=True)
+        detail = fetch_match_detail(token, mid)
+        time.sleep(0.7)  # free tier: 10 req/min
+        entry = build_entry(m, detail)
+        key   = f"{short(home)}|{short(away)}"
+        new_entries[key] = entry
+        print("done")
+
+    print()
+    patch_html(new_entries)
+
+    print("\nUpdating MATCHES array...")
+    patch_matches(new_entries)
+
+    print("\nUpdating GOALS feed...")
+    patch_goals(matches)
+
+    print("\nDone ✓")
