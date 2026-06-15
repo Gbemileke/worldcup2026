@@ -424,12 +424,12 @@
       <div class="analytics-section">
         <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 15, 2026</div>
         <div class="analytics-grid">
-          <div class="stat-card sc-gold"><div class="stat-num">38</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match avg (13 matches)</div></div>
-          <div class="stat-card sc-green"><div class="stat-num">7</div><div class="stat-label">Germany vs Cura&ccedil;ao</div><div class="stat-sub">Biggest win of tournament</div></div>
-          <div class="stat-card sc-red"><div class="stat-num">3</div><div class="stat-label">Own Goals</div><div class="stat-sub">Paraguay, Cura&ccedil;ao, Tunisia</div></div>
-          <div class="stat-card sc-blue"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (SUI), Havertz (GER)</div></div>
-          <div class="stat-card sc-gold"><div class="stat-num">5</div><div class="stat-label">Sweden Goals</div><div class="stat-sub">vs Tunisia &mdash; 2nd highest</div></div>
-          <div class="stat-card sc-green"><div class="stat-num">16</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
+          <div class="stat-card sc-gold" id="stat-total-goals"><div class="stat-num">38</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match avg (13 matches)</div></div>
+          <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">7</div><div class="stat-label">Germany vs Cura&ccedil;ao</div><div class="stat-sub">Most goals in one match</div></div>
+          <div class="stat-card sc-red" id="stat-own-goals"><div class="stat-num">2</div><div class="stat-label">Own Goals</div><div class="stat-sub">Paraguay, Cura&ccedil;ao, Tunisia</div></div>
+          <div class="stat-card sc-blue" id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (SUI), Havertz (GER)</div></div>
+          <div class="stat-card sc-gold" id="stat-top-team"><div class="stat-num">7</div><div class="stat-label">Germany Goals</div><div class="stat-sub">vs Tunisia &mdash; 2nd highest</div></div>
+          <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">13</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
         </div>
         <div class="section-title">GOALS BY PERIOD</div>
         <div class="chart-wrap">
@@ -874,7 +874,8 @@ var MATCHES = [
   {id:'m9',  date:'Jun 14', home:'Germany',     away:'Curacao',        hf:'\u{1F1E9}\u{1F1EA}', af:'\u{1F1E8}\u{1F1FC}', score:'7-1', group:'Group E', ytId:'xHtIzadh4Lg'},
   {id:'m10', date:'Jun 14', home:'Ivory Coast', away:'Ecuador',        hf:'\u{1F1E8}\u{1F1EE}', af:'\u{1F1EA}\u{1F1E8}', score:'1-0', group:'Group E', ytId:'m7sQP_AZ5vM'},
   {id:'m11', date:'Jun 14', home:'Netherlands', away:'Japan',          hf:'\u{1F1F3}\u{1F1F1}', af:'\u{1F1EF}\u{1F1F5}', score:'2-2', group:'Group F', ytId:'SaTyQMmOpPM'},
-  {id:'m12', date:'Jun 14', home:'Sweden',      away:'Tunisia',        hf:'\u{1F1F8}\u{1F1EA}', af:'\u{1F1F9}\u{1F1F3}', score:'5-1', group:'Group F', ytId:'F47z0suCV7Y'}
+  {id:'m12', date:'Jun 14', home:'Sweden',      away:'Tunisia',        hf:'\u{1F1F8}\u{1F1EA}', af:'\u{1F1F9}\u{1F1F3}', score:'5-1', group:'Group F', ytId:'F47z0suCV7Y'},
+  {id:'m13', date:'Jun 15', home:'Spain',      away:'Cape Verde',  hf:'\u{1F1EA}\u{1F1F8}', af:'CV', score:'0-0', group:'Group H', ytId:''}
 ];
 
 var GOALS = [
@@ -932,12 +933,84 @@ function init() {
   buildScorers();
 }
 
+// Store for live/in-progress match data from API
+var LIVE_MATCHES = [];
+
 function buildTicker() {
-  var items = GOALS.map(function(g) {
-    return '<div class="ticker-item">&#9917; ' + g.hf + ' ' + g.home + ' ' + g.score + ' ' + g.away + ' ' + g.af + ' &middot; ' + g.scorer + ' ' + g.minute + "'</div>";
+  var items = [];
+
+  // ── Live/in-progress games FIRST (pulsing dot) ───────────────────────────
+  var liveNow = LIVE_MATCHES.filter(function(m) {
+    return m.status === 'IN_PLAY' || m.status === 'PAUSED' || m.status === 'HALFTIME';
   });
+  liveNow.forEach(function(m) {
+    var min = m.minute ? m.minute + "'" : 'LIVE';
+    if (m.status === 'HALFTIME' || m.status === 'PAUSED') min = 'HT';
+    items.push(
+      '<div class="ticker-item" style="background:rgba(0,0,0,.12);border-radius:3px;padding:1px 8px">' +
+        '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#000;animation:pulse 1s ease-in-out infinite;vertical-align:middle;margin-right:4px"></span>' +
+        m.hf + ' <b>' + m.home + '</b>' +
+        ' <span style="font-size:12px;font-weight:900;letter-spacing:0"> ' + m.homeScore + '-' + m.awayScore + ' </span>' +
+        '<b>' + m.away + '</b> ' + m.af +
+        ' <span style="font-size:9px;opacity:.7;margin-left:2px">' + min + '</span>' +
+      '</div>'
+    );
+  });
+
+  if (liveNow.length > 0) {
+    items.push('<div class="ticker-item" style="opacity:.3;padding:0 10px;font-size:16px">|</div>');
+  }
+
+  // ── Concluded matches from MATCH_STATS ────────────────────────────────────
+  if (typeof MATCH_STATS !== 'undefined' && MATCH_STATS) {
+  var msKeys = Object.keys(MATCH_STATS).sort(function(a,b){
+    return parseInt(a.replace('m','')) - parseInt(b.replace('m',''));
+  });
+  msKeys.forEach(function(k) {
+    var m = MATCH_STATS[k];
+    items.push(
+      '<div class="ticker-item">' +
+        '&#9917; ' + (m.hf||m.home.slice(0,2)) + ' ' + m.home +
+        ' <span style="font-size:11px;font-weight:900"> ' + m.score + ' </span>' +
+        m.away + ' ' + (m.af||m.away.slice(0,2)) +
+      '</div>'
+    );
+  });
+  } // end if MATCH_STATS
+
+  if (items.length === 0) return;
   var doubled = items.concat(items).join('');
-  document.getElementById('ticker').innerHTML = doubled;
+  var speed = Math.max(35, Math.min(90, items.length * 5));
+  var inner = document.getElementById('ticker');
+  if (inner) {
+    inner.style.animation = 'none';
+    void inner.offsetWidth;  // force reflow to restart animation
+    inner.innerHTML = doubled;
+    inner.style.animation = 'ticker ' + speed + 's linear infinite';
+  }
+}
+
+// Called from processMatches to update ticker with live API data
+function updateTickerWithLive(apiMatches) {
+  LIVE_MATCHES = (apiMatches || []).map(function(m) {
+    var hs = m.score && m.score.fullTime && m.score.fullTime.home !== null
+             ? m.score.fullTime.home
+             : (m.score && m.score.halfTime && m.score.halfTime.home) || 0;
+    var as = m.score && m.score.fullTime && m.score.fullTime.away !== null
+             ? m.score.fullTime.away
+             : (m.score && m.score.halfTime && m.score.halfTime.away) || 0;
+    return {
+      status:    m.status,
+      minute:    m.minute || null,
+      home:      (m.homeTeam && (m.homeTeam.shortName || m.homeTeam.name)) || '?',
+      away:      (m.awayTeam && (m.awayTeam.shortName || m.awayTeam.name)) || '?',
+      hf:        getFlag((m.homeTeam && m.homeTeam.name) || ''),
+      af:        getFlag((m.awayTeam && m.awayTeam.name) || ''),
+      homeScore: hs,
+      awayScore: as,
+    };
+  }).filter(function(m){ return m.home !== '?'; });
+  buildTicker();
 }
 
 function renderGoalsList() {
@@ -1054,31 +1127,63 @@ function switchTab(tab, btn) {
     if (el) el.style.display = tabs[j] === tab ? 'block' : 'none';
   }
   // Rebuild on-demand so content is always fresh when tab is shown
-  if (tab === 'groups')   buildGroupsGrid();
-  if (tab === 'bracket')  { buildTeamGrid(); runSimulation(); buildTop4(); }
+  if (tab === 'groups')    buildGroupsGrid();
+  if (tab === 'bracket')   { buildTeamGrid(); runSimulation(); buildTop4(); }
+  if (tab === 'analytics') { buildSnapshotStats(); buildMinuteChart(); buildDonut(); }
 }
 
 function buildMinuteChart() {
-  var buckets = [5, 3, 6, 7, 4, 3, 5, 5];
-  var labels = ["0-15'","16-30'","31-45'","45+'","46-60'","61-75'","76-90'","90+'"];
-  var max = 0;
-  for (var i = 0; i < buckets.length; i++) { if (buckets[i] > max) max = buckets[i]; }
-  var colors = ['var(--gold)','var(--gold)','var(--gold)','#4cde7e','var(--gold)','var(--gold)','var(--gold)','#ff6b81'];
+  var labels  = ["0-15'","16-30'","31-45'","45+'","46-60'","61-75'","76-90'","90+'"];
+  var colors  = ['var(--gold)','var(--gold)','var(--gold)','#4cde7e','var(--gold)','var(--gold)','var(--gold)','#ff6b81'];
+  var buckets = [0,0,0,0,0,0,0,0];
+  GOALS.forEach(function(g) {
+    var min = g.minute || 0;
+    if      (min <= 15)  buckets[0]++;
+    else if (min <= 30)  buckets[1]++;
+    else if (min <= 45)  buckets[2]++;
+    else if (min <= 45 && g.stoppage) buckets[3]++;  // 45+
+    else if (min <= 60)  buckets[4]++;
+    else if (min <= 75)  buckets[5]++;
+    else if (min <= 90)  buckets[6]++;
+    else                 buckets[7]++;  // 90+
+  });
+  // Better bucket: use minute directly
+  buckets = [0,0,0,0,0,0,0,0];
+  GOALS.forEach(function(g) {
+    var min = g.minute || 0;
+    if      (min >= 1  && min <= 15) buckets[0]++;
+    else if (min >= 16 && min <= 30) buckets[1]++;
+    else if (min >= 31 && min <= 45) buckets[2]++;
+    else if (min === 45 || (min > 45 && min < 46)) buckets[3]++;
+    else if (min >= 46 && min <= 60) buckets[4]++;
+    else if (min >= 61 && min <= 75) buckets[5]++;
+    else if (min >= 76 && min <= 90) buckets[6]++;
+    else                             buckets[7]++;
+  });
+  var max = Math.max.apply(null, buckets) || 1;
   var html = buckets.map(function(v, i) {
     return '<div style="flex:1;display:flex;flex-direction:column;align-items:center">' +
-      '<div style="width:100%;height:' + Math.round((v/max)*68) + 'px;background:' + colors[i] + ';border-radius:2px 2px 0 0;min-height:2px" title="' + labels[i] + ': ~' + v + ' goals"></div>' +
+      '<div style="width:100%;height:' + Math.round((v/max)*68) + 'px;background:' + colors[i] + ';border-radius:2px 2px 0 0;min-height:2px" title="' + labels[i] + ': ' + v + ' goals"></div>' +
     '</div>';
   }).join('');
   var _mc = document.getElementById('minuteChart'); if (_mc) _mc.innerHTML = html;
 }
 
 function buildDonut() {
+  // Compute goal types dynamically from GOALS array
+  var counts = {'open-play':0,'header':0,'own-goal':0,'penalty':0,'free-kick':0};
+  GOALS.forEach(function(g) {
+    var t = (g.type||'open-play').toLowerCase().replace(' ','-');
+    if (counts[t] !== undefined) counts[t]++;
+    else counts['open-play']++;
+  });
+  var total = GOALS.length || 1;
   var data = [
-    {label:'Open Play', pct:63, color:'#4cde7e'},
-    {label:'Header',    pct:16, color:'#8ab4f8'},
-    {label:'Own Goal',  pct:8,  color:'#aaa'},
-    {label:'Penalty',   pct:5,  color:'#ff6b81'},
-    {label:'Free Kick', pct:8,  color:'var(--gold)'}
+    {label:'Open Play', pct:Math.round((counts['open-play']/total)*100), color:'#4cde7e'},
+    {label:'Header',    pct:Math.round((counts['header']/total)*100),    color:'#8ab4f8'},
+    {label:'Own Goal',  pct:Math.round((counts['own-goal']/total)*100),  color:'#aaa'},
+    {label:'Penalty',   pct:Math.round((counts['penalty']/total)*100),   color:'#ff6b81'},
+    {label:'Free Kick', pct:Math.round((counts['free-kick']/total)*100), color:'var(--gold)'}
   ];
   var r=45, cx=65, cy=65, circ=2*Math.PI*r;
   var offset = 0;
@@ -1090,7 +1195,7 @@ function buildDonut() {
   }).join('');
   var _ds = document.getElementById('donutSvg'); if (_ds) _ds.innerHTML =
     '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="var(--border)" stroke-width="15"/>' + paths +
-    '<text x="' + cx + '" y="' + (cy-4) + '" text-anchor="middle" fill="var(--gold)" font-family="Bebas Neue" font-size="20">38</text>' +
+    '<text x="' + cx + '" y="' + (cy-4) + '" text-anchor="middle" fill="var(--gold)" font-family="Bebas Neue" font-size="20">' + GOALS.length + '</text>' +
     '<text x="' + cx + '" y="' + (cy+12) + '" text-anchor="middle" fill="var(--muted)" font-family="Inter" font-size="9">GOALS</text>';
   var _dl = document.getElementById('donutLegend'); if (_dl) _dl.innerHTML = data.map(function(d) {
     return '<div class="legend-item">' +
@@ -1171,14 +1276,10 @@ var MATCH_STATS = {
   m11: {home:'Netherlands', away:'Japan',       hf:'NL', af:'JP', score:'2-2', date:'Jun 14 - AT&T Stadium, Dallas',           poss:[55,45], stats:[['Shots',14,11],['Shots on Target',5,4],['Passes',487,398],['Pass Accuracy %',85,81],['Dribbles Won',9,11],['Tackles',16,18],['Fouls',10,12],['Corners',7,5],['Clearances',14,17],['Turnovers',13,16]], xtra:[['xG',2.1,1.3],['Yellow Cards',1,2],['Offsides',1,1],['Saves',2,4]]},
   m12: {home:'Sweden',      away:'Tunisia',     hf:'SE', af:'TN', score:'5-1', date:'Jun 14 - Estadio BBVA, Monterrey',        poss:[64,36], stats:[['Shots',19,8],['Shots on Target',7,2],['Passes',534,301],['Pass Accuracy %',87,73],['Dribbles Won',12,5],['Tackles',13,18],['Fouls',9,14],['Corners',8,2],['Clearances',8,22],['Turnovers',10,20]], xtra:[['xG',3.9,0.8],['Yellow Cards',0,2],['Offsides',2,1],['Saves',1,2]]},
   m13: {home:'Spain',      away:'Cape Verde',  hf:'\u{1F1EA}\u{1F1F8}', af:'CV', score:'0-0', date:'Jun 15 - Mercedes-Benz Stadium, Atlanta',    poss:[74,26], stats:[['Shots',27,6],['Shots on Target',7,1],['Passes',648,204],['Pass Accuracy %',91,68],['Dribbles Won',10,3],['Tackles',8,22],['Fouls',10,14],['Corners',11,1],['Clearances',4,28],['Turnovers',8,19]], xtra:[['xG',2.8,0.2],['Yellow Cards',1,2],['Offsides',3,0],['Saves',0,6]]}
-  m14: {home:'South Korea', away:'Czechia', hf:'KR', af:'CZ', score:'2-1', date:'Jun 12 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m15: {home:'Canada', away:'Bosnia-Herzegovina', hf:'CA', af:'BO', score:'1-1', date:'Jun 12 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m16: {home:'Australia', away:'Turkey', hf:'AU', af:'TR', score:'2-0', date:'Jun 14 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m17: {home:'Spain', away:'Cape Verde Islands', hf:'ES', af:'CA', score:'0-0', date:'Jun 15 - ', poss:[50,50], stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]], xtra:[['xG',1.7,1.3],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 function buildMatchSelector() {
-  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13','m14','m15','m16','m17'];
+  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13'];
   var out = '';
   for (var i = 0; i < ids.length; i++) {
     var id = ids[i];
@@ -1604,7 +1705,7 @@ function renderBracket() {
 // ── TEAM GRID ────────────────────────────────────────────────────────
 function buildTeamGrid() {
   var el = document.getElementById('teamGrid');
-  if (!el || !TEAM_DATA) return;
+  if (!el || typeof TEAM_DATA === 'undefined' || !TEAM_DATA) return;
   var sorted = Object.keys(TEAM_DATA).sort(function(a,b) {
     return TEAM_DATA[b].elo - TEAM_DATA[a].elo;
   });
@@ -2129,8 +2230,68 @@ function initSettings() {
    All calls that depend on MATCHES, GOALS, MATCH_STATS, TEAM_DATA,
    R32_MATCHUPS, GROUPS, PREVIEW_MATCHUPS — placed after every var
    and function declaration so the JS engine has parsed them all first. */
+
+/* ── buildSnapshotStats: computes all analytics stat cards from live data ── */
+function buildSnapshotStats() {
+  if (typeof MATCH_STATS === 'undefined' || !MATCH_STATS) return;
+  if (typeof GOALS === 'undefined' || !GOALS) return;
+  var totalGoals   = GOALS.length;
+  var matchCount   = Object.keys(MATCH_STATS).length;
+  var avgPerMatch  = matchCount > 0 ? (totalGoals / matchCount).toFixed(2) : '0.00';
+
+  // Own goals
+  var ownGoals     = GOALS.filter(function(g){ return g.type === 'own-goal'; });
+  var ownTeams     = ownGoals.map(function(g){ return g.away; }).join(', ');
+
+  // Penalties
+  var pens         = GOALS.filter(function(g){ return g.type === 'penalty'; });
+  var penScorers   = pens.map(function(g){ return g.scorer.split(' ').pop() + ' (' + (g.hf||'') + ')'; }).join(', ');
+
+  // Biggest single-match score
+  var biggestGoals = 0, biggestLabel = '';
+  Object.keys(MATCH_STATS).forEach(function(k) {
+    var m = MATCH_STATS[k];
+    var parts = (m.score||'0-0').split('-').map(Number);
+    var total = (parts[0]||0) + (parts[1]||0);
+    if (total > biggestGoals) {
+      biggestGoals = total;
+      biggestLabel = m.home + ' vs ' + m.away;
+    }
+  });
+  // Highest single-team score
+  var topTeamGoals = 0, topTeamLabel = '';
+  Object.keys(MATCH_STATS).forEach(function(k) {
+    var m = MATCH_STATS[k];
+    var parts = (m.score||'0-0').split('-').map(Number);
+    if ((parts[0]||0) > topTeamGoals) { topTeamGoals = parts[0]||0; topTeamLabel = m.home + ' Goals'; }
+    if ((parts[1]||0) > topTeamGoals) { topTeamGoals = parts[1]||0; topTeamLabel = m.away + ' Goals'; }
+  });
+
+  // Update DOM — using data-stat attributes for safe targeting
+  var els = {
+    'stat-total-goals':   { num: totalGoals,   sub: avgPerMatch + ' per match avg (' + matchCount + ' matches)' },
+    'stat-biggest-win':   { num: biggestGoals,  lbl: biggestLabel, sub: 'Most goals in one match' },
+    'stat-own-goals':     { num: ownGoals.length, sub: ownTeams || '—' },
+    'stat-penalties':     { num: pens.length,   sub: penScorers || '—' },
+    'stat-top-team':      { num: topTeamGoals,  sub: topTeamLabel + ' — highest single-team tally' },
+    'stat-matches':       { num: matchCount,    sub: 'Group Stage matches concluded' },
+  };
+  Object.keys(els).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var d = els[id];
+    var numEl = el.querySelector('.stat-num');
+    var lblEl = el.querySelector('.stat-label');
+    var subEl = el.querySelector('.stat-sub');
+    if (numEl) numEl.textContent = d.num;
+    if (lblEl && d.lbl) lblEl.textContent = d.lbl;
+    if (subEl) subEl.textContent = d.sub;
+  });
+}
+
 buildMatchSelector();
 buildTeamGrid();
+buildSnapshotStats();
 runSimulation();
 buildTop4();
 buildGroupsGrid();
@@ -2269,10 +2430,11 @@ function processMatches(apiMatches) {
 
   // Refresh UI
   renderGoalsList();
-  buildTicker();
+  updateTickerWithLive(apiMatches);  // live + concluded scores in banner
   buildMatchVideoGrid();
   buildMinuteChart();
   buildDonut();
+  buildSnapshotStats();
 }
 
 // ── Fetch top scorers ────────────────────────────────────────────────
@@ -2546,7 +2708,7 @@ function computeFullModelScore(teamName) {
 
 function buildTop4() {
   var el = document.getElementById('top4Grid');
-  if (!el || typeof TEAM_DATA === 'undefined') return;
+  if (!el || typeof TEAM_DATA === 'undefined' || !TEAM_DATA) return;
 
   // Score every team and sort descending
   var scored = Object.keys(TEAM_DATA).map(function(name) {
