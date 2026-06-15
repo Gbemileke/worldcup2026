@@ -201,7 +201,7 @@ def patch_html(new_entries):
         # Find the closing }; of MATCH_STATS and insert before it
         close_idx = ms_block.rfind("\n};")
         if close_idx < 0:
-            print(f"  ERROR: cannot find closing }; — skipping {key}")
+            print(f"  ERROR: cannot find closing braces — skipping {key}")
             continue
 
         insert = f"\n  m{next_id}: {entry},"
@@ -256,11 +256,12 @@ def patch_html(new_entries):
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    token = os.environ.get("FOOTBALL_DATA_TOKEN", "")
+    token = os.environ.get("FOOTBALL_DATA_TOKEN", "").strip()
     if not token or token == "YOUR_API_TOKEN_HERE":
-        print("ERROR: Set FOOTBALL_DATA_TOKEN environment variable")
-        print("  export FOOTBALL_DATA_TOKEN=your_token_here")
-        sys.exit(1)
+        print("WARNING: FOOTBALL_DATA_TOKEN not set — skipping match stats update")
+        print("  Add it in GitHub repo Settings → Secrets → Actions")
+        print("  Get a free token at https://www.football-data.org/client/register")
+        sys.exit(0)   # exit 0 so the workflow doesn't fail
 
     print(f"=== Match Stats Updater — {datetime.date.today()} ===\n")
 
