@@ -429,7 +429,7 @@
           <div class="stat-card sc-red" id="stat-own-goals"><div class="stat-num">2</div><div class="stat-label">Own Goals</div><div class="stat-sub">Paraguay, Cura&ccedil;ao, Tunisia</div></div>
           <div class="stat-card sc-blue" id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (SUI), Havertz (GER)</div></div>
           <div class="stat-card sc-gold" id="stat-top-team"><div class="stat-num">7</div><div class="stat-label">Germany Goals</div><div class="stat-sub">vs Tunisia &mdash; 2nd highest</div></div>
-          <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">20</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
+          <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">21</div><div class="stat-label">Matches Played</div><div class="stat-sub">MD1 complete + MD2 underway</div></div>
         </div>
         <div class="section-title">GOALS BY PERIOD</div>
         <div class="chart-wrap">
@@ -884,6 +884,7 @@ var MATCHES = [
   {id:'m19', date:'Jun ??', home:'Belgium', away:'Egypt', hf:'BE', af:'EG', score:'?-?', group:'Group ?', ytId:''},
   {id:'m20', date:'Jun ??', home:'Saudi Arabia', away:'Uruguay', hf:'SA', af:'UY', score:'?-?', group:'Group ?', ytId:''},
   {id:'m21', date:'Jun ??', home:'Iran', away:'New Zealand', hf:'IR', af:'NZ', score:'?-?', group:'Group ?', ytId:''},
+  {id:'m22', date:'Jun ??', home:'France', away:'Senegal', hf:'FR', af:'SN', score:'?-?', group:'Group ?', ytId:''},
 ];
 
 var GOALS = [
@@ -930,7 +931,8 @@ var GOALS = [
   {id:41, matchId:'m16', home:'Australia', away:'Turkey', hf:'AU', af:'TU', scorer:'See match report', flag:'AU', minute:45, type:'open-play', phase:'Group ?', score:'2-0', desc:'Australia 2-0 Turkey — full match report on FIFA.com'},
   {id:42, matchId:'m18', home:'Belgium', away:'Egypt', hf:'BE', af:'EG', scorer:'See match report', flag:'BE', minute:45, type:'open-play', phase:'Group ?', score:'1-1', desc:'Belgium 1-1 Egypt — full match report on FIFA.com'},
   {id:43, matchId:'m19', home:'Saudi Arabia', away:'Uruguay', hf:'SA', af:'UY', scorer:'See match report', flag:'SA', minute:45, type:'open-play', phase:'Group ?', score:'1-1', desc:'Saudi Arabia 1-1 Uruguay — full match report on FIFA.com'},
-  {id:44, matchId:'m20', home:'Iran', away:'New Zealand', hf:'IR', af:'NZ', scorer:'See match report', flag:'IR', minute:45, type:'open-play', phase:'Group ?', score:'2-2', desc:'Iran 2-2 New Zealand — full match report on FIFA.com'},}
+  {id:44, matchId:'m20', home:'Iran', away:'New Zealand', hf:'IR', af:'NZ', scorer:'See match report', flag:'IR', minute:45, type:'open-play', phase:'Group ?', score:'2-2', desc:'Iran 2-2 New Zealand — full match report on FIFA.com'},
+  {id:45, matchId:'m21', home:'France', away:'Senegal', hf:'FR', af:'SN', scorer:'See match report', flag:'FR', minute:45, type:'open-play', phase:'Group ?', score:'3-1', desc:'France 3-1 Senegal — full match report on FIFA.com'},}
 ];
 
 var currentFilter = 'all';
@@ -1297,10 +1299,11 @@ var MATCH_STATS = {
   m18: {home:'Belgium',away:'Egypt',hf:'BE',af:'EG',score:'1-1',date:'Jun 15 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
   m19: {home:'Saudi Arabia',away:'Uruguay',hf:'SA',af:'UY',score:'1-1',date:'Jun 15 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
   m20: {home:'Iran',away:'New Zealand',hf:'IR',af:'NZ',score:'2-2',date:'Jun 16 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m21: {home:'France',away:'Senegal',hf:'FR',af:'SN',score:'3-1',date:'Jun 16 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 function buildMatchSelector() {
-  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13','m14','m15','m16','m17','m18','m19','m20'];
+  var ids = ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','m11','m12','m13','m14','m15','m16','m17','m18','m19','m20','m21'];
   var out = '';
   for (var i = 0; i < ids.length; i++) {
     var id = ids[i];
