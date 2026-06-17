@@ -1338,12 +1338,12 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 17, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">51</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.83 per match avg (18 matches)</div></div>
-            <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in one match</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">51</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.83 per match · 18 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">4</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein</div></div>
-            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">B. Embolo (B), K. Havertz (E)</div></div>
-            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">2</div><div class="stat-label">Joint Top Scorers</div><div class="stat-sub">F. Balogun, K. Havertz, E. Just + 2 more</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">18</div><div class="stat-label">Matches Played</div><div class="stat-sub">9 headers · 2 penalties · 4 OGs</div></div>
+            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E)</div></div>
+            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">2</div><div class="stat-label">Joint Top Scorers (5)</div><div class="stat-sub">Balogun, Havertz, Just, Mbappe, Haaland</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">18</div><div class="stat-label">Matches Played</div><div class="stat-sub">36 open play · 9 headers · 2 penalties · 4 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1750,6 +1750,10 @@ var GOALS = [
   {id:54, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'L. Ostigard', flag:'', minute:76, type:'header', phase:'Group I', score:'3-1', desc:'Ostigard leaps brilliantly to head home Odegaard corner — Norway put the game to bed'},
   {id:55, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'A. Hussein OG', flag:'', minute:96, type:'own-goal', phase:'Group I', score:'4-1', desc:'Hussein own goal — cruel twist as Haaland header across goal is poked into his own net by the Iraq striker who scored the equaliser'}
 ];
+
+
+
+
 
 
 
@@ -2765,22 +2769,34 @@ function initSettings() {
 function buildSnapshotStats() {
   if (typeof MATCH_STATS === 'undefined' || !MATCH_STATS) return;
   if (typeof GOALS === 'undefined' || !GOALS) return;
-  var totalGoals   = GOALS.length;
-  var matchCount   = Object.keys(MATCH_STATS).length;
-  var avgPerMatch  = matchCount > 0 ? (totalGoals / matchCount).toFixed(2) : '0.00';
 
-  // Own goals
-  var ownGoals     = GOALS.filter(function(g){ return g.type === 'own-goal'; });
-  var ownTeams     = ownGoals.map(function(g){ return g.away; }).join(', ');
+  var totalGoals  = GOALS.length;
+  var matchCount  = Object.keys(MATCH_STATS).length;
+  var avgPerMatch = matchCount > 0 ? (totalGoals / matchCount).toFixed(2) : '0.00';
 
-  // Penalties
-  var pens         = GOALS.filter(function(g){ return g.type === 'penalty'; });
-  var penScorers   = pens.map(function(g){ return g.scorer + ' · ' + g.phase.split(' ')[1]; }).join(', ');
+  // ── Own goals ───────────────────────────────────────────────────────────
+  var ownGoals  = GOALS.filter(function(g){ return g.type === 'own-goal'; });
+  var ogNames   = ownGoals.map(function(g){
+    return g.scorer.replace(/ OG$/,'').split('.').pop().trim();
+  }).join(', ');
 
-  // Biggest single-match score
+  // ── Penalties ──────────────────────────────────────────────────────────
+  var pens = GOALS.filter(function(g){ return g.type === 'penalty'; });
+  var penNames = pens.map(function(g){
+    var namePart = g.scorer.split('.').pop().trim();
+    var grp = g.phase ? g.phase.replace('Group ','Grp ') : '';
+    return namePart + ' (' + grp + ')';
+  }).join(', ');
+
+  // ── Headers ────────────────────────────────────────────────────────────
+  var headers   = GOALS.filter(function(g){ return g.type === 'header'; });
+  var openPlay  = GOALS.filter(function(g){ return g.type === 'open-play'; });
+  var freeKicks = GOALS.filter(function(g){ return g.type === 'free-kick'; });
+
+  // ── Biggest match (most goals) ─────────────────────────────────────────
   var biggestGoals = 0, biggestLabel = '';
   Object.keys(MATCH_STATS).forEach(function(k) {
-    var m = MATCH_STATS[k];
+    var m     = MATCH_STATS[k];
     var parts = (m.score||'0-0').split('-').map(Number);
     var total = (parts[0]||0) + (parts[1]||0);
     if (total > biggestGoals) {
@@ -2788,35 +2804,76 @@ function buildSnapshotStats() {
       biggestLabel = m.home + ' vs ' + m.away;
     }
   });
-  // Highest single-team score
-  var topTeamGoals = 0, topTeamLabel = '';
-  Object.keys(MATCH_STATS).forEach(function(k) {
-    var m = MATCH_STATS[k];
-    var parts = (m.score||'0-0').split('-').map(Number);
-    if ((parts[0]||0) > topTeamGoals) { topTeamGoals = parts[0]||0; topTeamLabel = m.home + ' Goals'; }
-    if ((parts[1]||0) > topTeamGoals) { topTeamGoals = parts[1]||0; topTeamLabel = m.away + ' Goals'; }
-  });
 
-  // Update DOM — using data-stat attributes for safe targeting
-  var els = {
-    'stat-total-goals':   { num: totalGoals,   sub: avgPerMatch + ' per match avg (' + matchCount + ' matches)' },
-    'stat-biggest-win':   { num: biggestGoals,  lbl: biggestLabel, sub: 'Most goals in one match' },
-    'stat-own-goals':     { num: ownGoals.length, sub: ownTeams || '—' },
-    'stat-penalties':     { num: pens.length,   sub: penScorers || '—' },
-    'stat-top-team':      { num: 2,  lbl:'Joint Top Scorers', sub:'Mbapp\u00E9, Havertz, Ayari, Just, Balogun (5 players)' },
-    'stat-matches':       { num: matchCount,    sub: 'Group Stage matches concluded' },
-    'stat-alltime':       { num: 16,  lbl:'All-Time WC Record', sub:'Miroslav Klose, GER (2002\u20132014) \u2014 Mbapp\u00E9 on 14' },
+  // ── Top scorers — computed live from GOALS ─────────────────────────────
+  var scorerMap = {};
+  GOALS.forEach(function(g) {
+    if (g.type === 'own-goal') return;
+    var name = g.scorer.replace(/ OG$/,'').trim();
+    scorerMap[name] = (scorerMap[name] || 0) + 1;
+  });
+  var topCount = 0;
+  Object.keys(scorerMap).forEach(function(n){ if (scorerMap[n] > topCount) topCount = scorerMap[n]; });
+  var topScorers = Object.keys(scorerMap).filter(function(n){ return scorerMap[n] === topCount; });
+  var topLabel   = topScorers.length === 1 ? 'Top Scorer' : 'Joint Top Scorers (' + topScorers.length + ')';
+  var topSub     = topScorers.map(function(n){ return n.split('.').pop().trim(); }).join(', ');
+
+  // ── Goals breakdown sub-text ───────────────────────────────────────────
+  var breakdownSub = openPlay.length + ' open play · ' +
+                     headers.length  + ' headers · ' +
+                     pens.length     + ' penalties · ' +
+                     ownGoals.length + ' OGs' +
+                     (freeKicks.length ? ' · ' + freeKicks.length + ' free kicks' : '');
+
+  // ── Update DOM ─────────────────────────────────────────────────────────
+  var cards = {
+    'stat-total-goals': {
+      num: totalGoals,
+      lbl: 'Total Goals',
+      sub: avgPerMatch + ' per match · ' + matchCount + ' matches played'
+    },
+    'stat-biggest-win': {
+      num: biggestGoals,
+      lbl: biggestLabel,
+      sub: 'Most goals in a single match'
+    },
+    'stat-own-goals': {
+      num: ownGoals.length,
+      lbl: 'Own Goals',
+      sub: ogNames || '—'
+    },
+    'stat-penalties': {
+      num: pens.length,
+      lbl: 'Penalties Scored',
+      sub: penNames || '—'
+    },
+    'stat-top-team': {
+      num: topCount,
+      lbl: topLabel,
+      sub: topSub || '—'
+    },
+    'stat-matches': {
+      num: matchCount,
+      lbl: 'Matches Played',
+      sub: breakdownSub
+    },
+    'stat-alltime': {
+      num: 16,
+      lbl: 'All-Time WC Record',
+      sub: 'Miroslav Klose, GER (2002–2014) — Mbappé on 14'
+    },
   };
-  Object.keys(els).forEach(function(id) {
+
+  Object.keys(cards).forEach(function(id) {
     var el = document.getElementById(id);
     if (!el) return;
-    var d = els[id];
-    var numEl = el.querySelector('.stat-num');
-    var lblEl = el.querySelector('.stat-label');
-    var subEl = el.querySelector('.stat-sub');
+    var d      = cards[id];
+    var numEl  = el.querySelector('.stat-num');
+    var lblEl  = el.querySelector('.stat-label');
+    var subEl  = el.querySelector('.stat-sub');
     if (numEl) numEl.textContent = d.num;
     if (lblEl && d.lbl) lblEl.textContent = d.lbl;
-    if (subEl) subEl.textContent = d.sub;
+    if (subEl && d.sub) subEl.textContent = d.sub;
   });
 }
 
@@ -3239,6 +3296,10 @@ buildMatchVideoGrid();
 buildMinuteChart();
 buildDonut();
 buildScorers();
+
+
+
+
 
 
 

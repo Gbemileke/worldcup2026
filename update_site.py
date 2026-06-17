@@ -23,6 +23,15 @@ DATA_DIR    = 'data'
 BASE_URL    = 'https://raw.githubusercontent.com/gbemileke/worldcup2026/main/data/'
 FIFA_BASE   = 'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/'
 
+def esc_js(s):
+    """Escape a string for safe embedding inside JS single-quoted strings"""
+    s = str(s)
+    s = s.replace('\\', '\\\\')  # backslashes first
+    s = s.replace("'", "\\'"  )      # single quotes
+    s = s.replace('\n', ' ')          # newlines
+    s = s.replace('\r', '')           # carriage returns
+    return s
+
 def load(fname):
     path = os.path.join(DATA_DIR, fname)
     if not os.path.exists(path):
@@ -64,10 +73,10 @@ def update_matches():
             fifa_url = f"{FIFA_BASE}{h}-v-{a}-highlights-match-report"
         
         entry = (
-            f"  {{id:'{m['id']}', date:'{m['date']}', home:'{m['home']}', "
-            f"away:'{m['away']}', hf:'', af:'', score:'{m['score']}', "
-            f"group:'{m['group']}', ytId:'{m.get('ytId','')}',"
-            f" fifaUrl:'{fifa_url}'}}"
+            f"  {{id:'{esc_js(m['id'])}', date:'{esc_js(m['date'])}', home:'{esc_js(m['home'])}', "
+            f"away:'{esc_js(m['away'])}', hf:'', af:'', score:'{esc_js(m['score'])}', "
+            f"group:'{esc_js(m['group'])}', ytId:'{esc_js(m.get('ytId',''))}',"
+            f" fifaUrl:'{esc_js(fifa_url)}'}}"
         )
         entries.append(entry)
 
@@ -94,16 +103,21 @@ def update_goals():
     js       = c[js_start:js_end]
 
     def esc(s):
-        return str(s).replace("'","\\'").replace('\n',' ')
+        s = str(s)
+        s = s.replace('\\', '\\\\')  # escape backslashes first
+        s = s.replace("'", "\\'"  )      # escape single quotes
+        s = s.replace('\n', ' ')          # remove newlines
+        s = s.replace('\r', '')           # remove carriage returns
+        return s
 
     entries = []
     for g in data:
         entry = (
-            f"  {{id:{g['id']}, matchId:'{g['matchId']}', "
-            f"home:'{g['home']}', away:'{g['away']}', hf:'', af:'', "
-            f"scorer:'{esc(g['scorer'])}', flag:'', minute:{g['minute']}, "
-            f"type:'{g['type']}', phase:'{g['phase']}', score:'{g['score']}', "
-            f"desc:'{esc(g['desc'])}'}}"
+            f"  {{id:{g['id']}, matchId:'{esc_js(g['matchId'])}', "
+            f"home:'{esc_js(g['home'])}', away:'{esc_js(g['away'])}', hf:'', af:'', "
+            f"scorer:'{esc_js(g['scorer'])}', flag:'', minute:{g['minute']}, "
+            f"type:'{esc_js(g['type'])}', phase:'{esc_js(g['phase'])}', score:'{esc_js(g['score'])}', "
+            f"desc:'{esc_js(g['desc'])}'}}"
         )
         entries.append(entry)
 
@@ -289,75 +303,102 @@ def sync_upcoming():
 # SECTION 6: SNAPSHOT CARDS (analytics page header cards)
 # ═══════════════════════════════════════════════════════════
 def update_snapshot():
-    """Recomputes snapshot from goals.json + match_stats.json"""
+    """Recomputes all snapshot cards from goals.json + match_stats.json.
+    buildSnapshotStats() in JS now does this dynamically too,
+    but this updates the HTML initial state for first-paint."""
     goals_data = load('goals.json')
     stats_data = load('match_stats.json')
     if not goals_data or not stats_data:
         return
     c = read_html()
+    import datetime
+    from collections import Counter
 
     total_goals = len(goals_data)
     match_count = len(stats_data)
     avg = f"{total_goals/match_count:.2f}" if match_count else "0.00"
-    own_goals   = [g for g in goals_data if g['type'] == 'own-goal']
-    penalties   = [g for g in goals_data if g['type'] == 'penalty']
 
-    # Top scorers — exclude own goals
-    from collections import Counter
-    scorer_counts = Counter(
-        g['scorer'].replace(' OG','') 
-        for g in goals_data 
-        if g['type'] != 'own-goal'
-    )
-    top_count = scorer_counts.most_common(1)[0][1] if scorer_counts else 0
-    top_scorers = [s for s,n in scorer_counts.items() if n == top_count]
+    own_goals  = [g for g in goals_data if g['type'] == 'own-goal']
+    penalties  = [g for g in goals_data if g['type'] == 'penalty']
+    headers    = [g for g in goals_data if g['type'] == 'header']
+    open_play  = [g for g in goals_data if g['type'] == 'open-play']
+    free_kicks = [g for g in goals_data if g['type'] == 'free-kick']
 
     # Biggest match
-    biggest = max(stats_data.items(), 
-                  key=lambda x: sum(int(p) for p in x[1]['score'].split('-') if p.isdigit()),
-                  default=(None,None))
-    biggest_label = f"{biggest[1]['home']} vs {biggest[1]['away']}" if biggest[0] else "—"
-    biggest_goals = sum(int(p) for p in biggest[1]['score'].split('-') if p.isdigit()) if biggest[0] else 0
+    biggest = max(
+        stats_data.items(),
+        key=lambda x: sum(int(p) for p in x[1]['score'].split('-') if p.isdigit()),
+        default=(None, {'home':'?','away':'?','score':'0-0'})
+    )
+    biggest_goals = sum(int(p) for p in biggest[1]['score'].split('-') if p.isdigit())
+    biggest_label = f"{biggest[1]['home']} vs {biggest[1]['away']}"
 
-    # Own goal names (without OG suffix)
-    og_names = ', '.join(g['scorer'].replace(' OG','').split('.')[-1].strip() for g in own_goals)
-    pen_names = ', '.join(f"{g['scorer']} ({g['phase'].split()[1] if ' ' in g['phase'] else g['phase'][:3]})" for g in penalties)
-    top_names = ', '.join(top_scorers[:3]) + (f' + {len(top_scorers)-3} more' if len(top_scorers) > 3 else '')
+    # Top scorers — exclude own goals
+    scorer_counts = Counter(
+        g['scorer'].replace(' OG','').strip()
+        for g in goals_data if g['type'] != 'own-goal'
+    )
+    top_count   = scorer_counts.most_common(1)[0][1] if scorer_counts else 0
+    top_scorers = [s for s,n in scorer_counts.items() if n == top_count]
+    top_label   = f"Joint Top Scorers ({len(top_scorers)})" if len(top_scorers) > 1 else "Top Scorer"
+    top_sub     = ', '.join(s.split('.')[-1].strip() for s in top_scorers[:6])
+    if len(top_scorers) > 6:
+        top_sub += f' +{len(top_scorers)-6} more'
+
+    # OG names
+    og_names = ', '.join(
+        g['scorer'].replace(' OG','').split('.')[-1].strip() for g in own_goals
+    ) or '—'
+
+    # Penalty names
+    pen_names = ', '.join(
+        f"{g['scorer'].split('.')[-1].strip()} ({g['phase'].replace('Group ','Grp ')})"
+        for g in penalties
+    ) or '—'
+
+    # Goals breakdown
+    breakdown = (f"{len(open_play)} open play · {len(headers)} headers · "
+                 f"{len(penalties)} penalties · {len(own_goals)} OGs"
+                 + (f" · {len(free_kicks)} free kicks" if free_kicks else ""))
 
     updates = {
-        'stat-total-goals': (total_goals, 'Total Goals', f"{avg} per match avg ({match_count} matches)"),
-        'stat-biggest-win': (biggest_goals, biggest_label, 'Most goals in one match'),
-        'stat-own-goals':   (len(own_goals), 'Own Goals', og_names or '—'),
-        'stat-penalties':   (len(penalties), 'Penalties Scored', pen_names or '—'),
-        'stat-top-team':    (top_count, f'Joint Top Scorers' if len(top_scorers) > 1 else 'Top Scorer', top_names),
-        'stat-matches':     (match_count, 'Matches Played', f"{len([g for g in goals_data if g['type']=='header'])} headers · {len(penalties)} penalties · {len(own_goals)} OGs"),
-        'stat-alltime':     (16, 'All-Time WC Record', 'Miroslav Klose, GER (2002–2014) — Mbappé on 14'),
+        'stat-total-goals': (total_goals, 'Total Goals',
+                             f"{avg} per match · {match_count} matches played"),
+        'stat-biggest-win': (biggest_goals, biggest_label,
+                             'Most goals in a single match'),
+        'stat-own-goals':   (len(own_goals),  'Own Goals',     og_names),
+        'stat-penalties':   (len(penalties),  'Penalties Scored', pen_names),
+        'stat-top-team':    (top_count,       top_label,       top_sub),
+        'stat-matches':     (match_count,     'Matches Played', breakdown),
+        'stat-alltime':     (16, 'All-Time WC Record',
+                             'Miroslav Klose, GER (2002\u20132014) \u2014 Mbapp\u00E9 on 14'),
     }
 
+    import re
     for card_id, (num, label, sub) in updates.items():
-        # Replace num
         c = re.sub(
-            rf'(id="{card_id}"><div class="stat-num">)\d+(</div>)',
-            rf'\g<1>{num}\2', c, count=1)
-        # Replace label
+            rf'(id="{card_id}"><div class="stat-num">)[^<]*(</div>)',
+            rf'\g<1>{num}\g<2>', c, count=1)
         c = re.sub(
             rf'(id="{card_id}">.*?<div class="stat-label">)[^<]*(</div>)',
-            rf'\g<1>{label}\2', c, count=1, flags=re.DOTALL)
-        # Replace sub
+            rf'\g<1>{label}\g<2>', c, count=1, flags=re.DOTALL)
         c = re.sub(
             rf'(id="{card_id}">.*?<div class="stat-sub">)[^<]*(</div>)',
-            rf'\g<1>{sub}\2', c, count=1, flags=re.DOTALL)
+            rf'\g<1>{sub}\g<2>', c, count=1, flags=re.DOTALL)
 
-    # Update snapshot date
-    import datetime
+    # Update date
     today = datetime.date.today().strftime("%B %-d, %Y").upper()
-    c = re.sub(r'TOURNAMENT SNAPSHOT &mdash; [^<]+<', f'TOURNAMENT SNAPSHOT &mdash; {today}<', c, count=1)
+    c = re.sub(r'TOURNAMENT SNAPSHOT &mdash; [^<]+<',
+               f'TOURNAMENT SNAPSHOT &mdash; {today}<', c, count=1)
 
     write_html(c)
-    print(f"  → Snapshot: {total_goals} goals, {match_count} matches, top={top_count}")
+    print(f"  \u2192 Snapshot: {total_goals} goals · {match_count} matches · "
+          f"top={top_count} ({len(top_scorers)} players) · {len(own_goals)} OGs · {len(penalties)} pens")
+
+
 
 # ═══════════════════════════════════════════════════════════
-# MAIN
+# SECTIONS + MAIN
 # ═══════════════════════════════════════════════════════════
 SECTIONS = {
     'matches':  update_matches,
@@ -370,6 +411,7 @@ SECTIONS = {
 }
 
 if __name__ == '__main__':
+    import sys
     section = None
     if len(sys.argv) >= 3 and sys.argv[1] == '--section':
         section = sys.argv[2]
