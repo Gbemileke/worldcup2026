@@ -419,7 +419,7 @@
     margin-bottom: 16px;
   }
 
-  .minute-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .minute-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; padding-bottom: 2px; }
 
   .minute-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
 
@@ -1372,10 +1372,7 @@
           <div class="chart-card" style="overflow-y:auto;max-height:260px">
             <div class="chart-title">TOP SCORERS</div>
             <div id="topScorersList"></div>
-            <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
-              <div class="chart-title" style="margin-bottom:6px">ONE GOAL</div>
-              <div id="moreScorers"></div>
-            </div>
+            <div id="moreScorers" style="margin-top:4px;border-top:1px solid var(--border)"></div>
           </div>
         </div>
         <div class="ma-section">
@@ -1979,7 +1976,7 @@ function buildMinuteChart() {
   var el = document.getElementById('minuteChart');
   if (!el) return;
 
-  // Compute from GOALS dynamically
+  // Count goals per 15-min band from GOALS
   var bands  = ['1-15','16-30','31-45','46-60','61-75','76-90','90+'];
   var counts = [0,0,0,0,0,0,0];
   GOALS.forEach(function(g) {
@@ -1993,31 +1990,22 @@ function buildMinuteChart() {
     else              counts[6]++;
   });
 
-  var total = counts.reduce(function(a,b){return a+b;}, 0) || 1;
   var maxVal = Math.max.apply(null, counts) || 1;
+  var total  = counts.reduce(function(a,b){return a+b;},0) || 1;
+  var colors = ['#1a56db','#1a56db','#c8920a','#1a56db','#1a56db','#c8920a','#b91c2e'];
 
-  var colors = [
-    'var(--blue)','var(--blue)','var(--gold)',
-    'var(--blue)','var(--blue)','var(--gold)','var(--red)'
-  ];
-
-  el.innerHTML = '<div style="display:flex;align-items:flex-end;gap:6px;height:120px;padding:0 4px">' +
-    counts.map(function(v, i) {
-      var pct  = Math.round((v / maxVal) * 100);
-      var tipPct = Math.round((v / total) * 100);
-      return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">' +
-        '<div style="font-size:9px;color:var(--muted);font-weight:700">' + v + '</div>' +
-        '<div style="width:100%;background:' + colors[i] + ';border-radius:3px 3px 0 0;' +
-          'height:' + Math.max(4, pct) + '%;opacity:0.85;' +
-          'transition:height 0.4s ease;cursor:default" ' +
-          'title="' + bands[i] + ': ' + v + ' goals (' + tipPct + '%)">' +
-        '</div>' +
-        '<div style="font-size:8px;color:var(--muted);text-align:center;white-space:nowrap">' + bands[i] + '</div>' +
-      '</div>';
-    }).join('') +
-  '</div>' +
-  '<div style="font-size:9px;color:var(--muted);text-align:center;margin-top:6px">' +
-    'Goals by 15-minute period · Gold = key periods</div>';
+  // Write bars directly — el already has display:flex from CSS
+  el.innerHTML = counts.map(function(v, i) {
+    var pct    = Math.max(4, Math.round((v / maxVal) * 100));
+    var tipPct = Math.round((v / total) * 100);
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%">' +
+      '<div style="font-size:9px;color:var(--text2);font-weight:700;line-height:1">' + v + '</div>' +
+      '<div style="width:85%;background:' + colors[i] + ';border-radius:2px 2px 0 0;' +
+        'height:' + pct + '%;min-height:4px;opacity:0.85" ' +
+        'title="' + bands[i] + '\': ' + v + ' goals (' + tipPct + '%)">' +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 function buildDonut() {
@@ -2058,68 +2046,76 @@ function buildDonut() {
 }
 
 function buildScorers() {
-  // ── Compute from GOALS array dynamically ──────────────────────────────────
-  var counts = {};   // name -> {goals, team, ownGoals}
-
+  // Compute scorer tallies from GOALS
+  var counts = {};
   GOALS.forEach(function(g) {
-    var isOG  = g.type === 'own-goal';
-    var name  = g.scorer.replace(/ OG$/,'').trim();
-    var team  = isOG ? g.away : g.home;  // OG credited to opposing team's match
-
-    // Determine team from MATCHES
-    for (var mi = 0; mi < MATCHES.length; mi++) {
-      if (MATCHES[mi].id === g.matchId) {
-        // scorer team = home or away based on goal context
-        // For non-OG we use the phase info or just keep the home team
-        break;
-      }
-    }
-
-    if (isOG) {
-      // Track OGs separately — don't count toward scorer tally
-      return;
-    }
-
-    if (!counts[name]) counts[name] = {goals: 0, team: team};
+    if (g.type === 'own-goal') return;
+    var name = (g.scorer || '').replace(/ OG$/, '').trim();
+    if (!name) return;
+    if (!counts[name]) counts[name] = {goals:0, team: g.home};
     counts[name].goals++;
   });
 
-  // Sort by goals descending
   var sorted = Object.keys(counts).map(function(name) {
-    return {name: name, goals: counts[name].goals, team: counts[name].team};
-  }).sort(function(a, b) {
-    return b.goals - a.goals || a.name.localeCompare(b.name);
-  });
+    return {name:name, goals:counts[name].goals, team:counts[name].team};
+  }).sort(function(a,b) { return b.goals - a.goals || a.name.localeCompare(b.name); });
 
   if (!sorted.length) return;
 
   var topGoals = sorted[0].goals;
-  var topList  = sorted.filter(function(s) { return s.goals === topGoals; });
-  var restList = sorted.filter(function(s) { return s.goals < topGoals; });
+  var topList  = sorted.filter(function(s){ return s.goals === topGoals; });
+  var restList = sorted.filter(function(s){ return s.goals < topGoals; });
 
-  // ── Top scorers panel ─────────────────────────────────────────────────────
+  // ── Top scorers ────────────────────────────────────────────────────────────
   var _ts = document.getElementById('topScorersList');
-  if (_ts) _ts.innerHTML = topList.map(function(s, i) {
-    var barW = Math.round((s.goals / topGoals) * 100);
-    return '<div class="scorer-row-item">' +
-      '<div class="scorer-rank top">' + (i+1) + '</div>' +
-      '<div class="scorer-name-sm">' + s.name +
-        ' <span style="color:var(--muted);font-weight:400;font-size:10px">' + s.team + '</span>' +
+  if (_ts) {
+    _ts.innerHTML =
+      '<div style="font-size:9px;font-weight:800;color:var(--gold);letter-spacing:.6px;' +
+        'text-transform:uppercase;padding:8px 12px 4px;border-bottom:1px solid var(--border)">' +
+        (topGoals + ' Goal' + (topGoals > 1 ? 's' : '')) +
       '</div>' +
-      '<div class="bar-container"><div class="bar-fill" style="width:' + barW + '%"></div></div>' +
-      '<div class="scorer-goals-sm">' + s.goals + '</div>' +
-    '</div>';
-  }).join('');
+      topList.map(function(s, i) {
+        var barW = 100;
+        return '<div class="scorer-row-item">' +
+          '<div class="scorer-rank top">' + (i+1) + '</div>' +
+          '<div class="scorer-name-sm">' + s.name +
+            ' <span style="color:var(--muted);font-weight:400;font-size:10px">' + s.team + '</span>' +
+          '</div>' +
+          '<div class="bar-container"><div class="bar-fill" style="width:' + barW + '%"></div></div>' +
+          '<div class="scorer-goals-sm">' + s.goals + '</div>' +
+        '</div>';
+      }).join('');
+  }
 
-  // ── One-goal scorers (next 20) ────────────────────────────────────────────
+  // ── Rest of scorers grouped by goal count ──────────────────────────────────
   var _ms = document.getElementById('moreScorers');
-  if (_ms) _ms.innerHTML = restList.slice(0, 20).map(function(s) {
-    return '<div class="scorer-row-item" style="padding:7px 11px">' +
-      '<div class="scorer-name-sm" style="font-size:11px">' + s.name + '</div>' +
-      '<span style="font-size:9px;color:var(--muted);margin-left:4px">' + s.team + '</span>' +
-      '<div class="scorer-goals-sm" style="font-size:15px">' + s.goals + '</div>' +
-    '</div>';
-  }).join('');
+  if (_ms) {
+    // Group restList by goal count
+    var byCount = {};
+    restList.forEach(function(s) {
+      if (!byCount[s.goals]) byCount[s.goals] = [];
+      byCount[s.goals].push(s);
+    });
+    var countKeys = Object.keys(byCount).map(Number).sort(function(a,b){return b-a;});
+
+    _ms.innerHTML = countKeys.map(function(cnt) {
+      var header = '<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.6px;' +
+        'text-transform:uppercase;padding:6px 12px 2px;border-bottom:1px solid var(--border);' +
+        'background:var(--surface)">' +
+        cnt + ' Goal' + (cnt > 1 ? 's' : '') +
+      '</div>';
+      var rows = byCount[cnt].slice(0, 20).map(function(s) {
+        var barW = Math.round((s.goals / topGoals) * 100);
+        return '<div class="scorer-row-item" style="padding:6px 12px">' +
+          '<div class="scorer-name-sm" style="font-size:11px">' + s.name + '</div>' +
+          '<span style="font-size:9px;color:var(--muted);margin-left:4px;flex:1">' + s.team + '</span>' +
+          '<div class="bar-container" style="width:60px"><div class="bar-fill" style="width:' + barW + '%;background:var(--muted);opacity:0.5"></div></div>' +
+          '<div class="scorer-goals-sm" style="font-size:13px">' + s.goals + '</div>' +
+        '</div>';
+      }).join('');
+      return header + rows;
+    }).join('');
+  }
 }
 
 function buildMatchSelector() {
@@ -2317,7 +2313,7 @@ function switchTab(tab, btn) {
   var btns = document.querySelectorAll('.tab-btn');
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   btn.classList.add('active');
-  var tabs = ['highlights', 'videos', 'analytics', 'scorers', 'bracket', 'groups'];
+  var tabs = ['highlights', 'videos', 'analytics', 'bracket', 'groups'];
   for (var j = 0; j < tabs.length; j++) {
     var el = document.getElementById('tab-' + tabs[j]);
     if (el) el.style.display = tabs[j] === tab ? 'block' : 'none';
