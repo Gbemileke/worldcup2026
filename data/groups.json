@@ -161,22 +161,22 @@
     "teams": [
       {
         "name": "Belgium",
-        "polymarket": 55.0,
+        "polymarket": 55,
         "fanDuelOdds": -180
       },
       {
         "name": "New Zealand",
-        "polymarket": 20.0,
+        "polymarket": 20,
         "fanDuelOdds": 350
       },
       {
         "name": "Iran",
-        "polymarket": 15.0,
+        "polymarket": 15,
         "fanDuelOdds": 500
       },
       {
         "name": "Egypt",
-        "polymarket": 10.0,
+        "polymarket": 10,
         "fanDuelOdds": 700
       }
     ]
@@ -187,22 +187,22 @@
     "teams": [
       {
         "name": "Spain",
-        "polymarket": 72.0,
+        "polymarket": 72,
         "fanDuelOdds": -280
       },
       {
         "name": "Uruguay",
-        "polymarket": 20.0,
+        "polymarket": 20,
         "fanDuelOdds": 280
       },
       {
         "name": "Cape Verde",
-        "polymarket": 5.0,
+        "polymarket": 5,
         "fanDuelOdds": 3000
       },
       {
         "name": "Saudi Arabia",
-        "polymarket": 3.0,
+        "polymarket": 3,
         "fanDuelOdds": 4000
       }
     ]
@@ -213,12 +213,12 @@
     "teams": [
       {
         "name": "France",
-        "polymarket": 88.0,
+        "polymarket": 88,
         "fanDuelOdds": -450
       },
       {
         "name": "Norway",
-        "polymarket": 10.0,
+        "polymarket": 10,
         "fanDuelOdds": 200
       },
       {
