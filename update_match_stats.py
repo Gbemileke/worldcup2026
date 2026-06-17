@@ -66,9 +66,27 @@ def fmt_date(dt_str):
         return dt_str[:10]
 
 def fifa_url(home, away):
-    h = home.lower().replace(' ','-').replace("'","").replace('.','')
-    a = away.lower().replace(' ','-').replace("'","").replace('.','')
+    # FIFA uses their own name slugs — map our short names
+    FIFA_NAME_MAP = {
+        'S. Korea':'south-korea','South Korea':'south-korea',
+        'Bosnia':'bosnia-herzegovina','Turkiye':'turkey','Turkey':'turkey',
+        'Cape Verde':'cabo-verde','DR Congo':'democratic-republic-of-congo',
+        'Ivory Coast':'cote-divoire','USA':'united-states',
+        'S. Africa':'south-africa','South Africa':'south-africa',
+        'Curacao':'curacao',
+    }
+    # FIFA sometimes lists away team first in the URL
+    FIFA_URL_SWAPS = {
+        ('Qatar','Switzerland'),
+        ('Norway','Iraq'),
+    }
+    def slug(name):
+        return FIFA_NAME_MAP.get(name, name.lower().replace(' ','-').replace("'","").replace('.',''))
+    h, a = slug(home), slug(away)
+    if (home, away) in FIFA_URL_SWAPS:
+        return f"{FIFA_BASE}{a}-v-{h}-highlights-match-report"
     return f"{FIFA_BASE}{h}-v-{a}-highlights-match-report"
+
 
 def load(fname):
     path = os.path.join(DATA_DIR, fname)
