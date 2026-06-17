@@ -29,10 +29,13 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Step 2 — Update team form from WC results
+      - name: Step 2 — Auto-generate goal descriptions
+        run: python generate_descriptions.py
+
+      - name: Step 3 — Update team form from WC results
         run: python update_site.py --section form
 
-      - name: Step 3 — Rebuild index.html from all JSON files
+      - name: Step 4 — Full rebuild of index.html
         run: python update_site.py
 
       - name: Commit and push if anything changed
