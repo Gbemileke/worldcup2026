@@ -2,7 +2,7 @@ name: Auto-Update Match Data
 
 on:
   schedule:
-    - cron: '0 */3 * * *'   # every 3 hours
+    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,10 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Step 2 — Rebuild index.html from JSON files
+      - name: Step 2 — Update team form from WC results
+        run: python update_site.py --section form
+
+      - name: Step 3 — Rebuild index.html from all JSON files
         run: python update_site.py
 
       - name: Commit and push if anything changed

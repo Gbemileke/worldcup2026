@@ -397,6 +397,74 @@ def update_snapshot():
 
 
 
+
+# ═══════════════════════════════════════════════════════════
+# SECTION 7: TEAM FORM — computed from actual WC results
+# ═══════════════════════════════════════════════════════════
+def update_form():
+    """Recomputes team form from actual WC match results.
+    Blends pre-tournament form (40%) with WC results (60%).
+    win=1.0, draw=0.5, loss=0.0
+    Updates team_data.json then patches index.html TEAM_DATA block."""
+    matches_data = load('matches.json')
+    teams_data   = load('team_data.json')
+    if not matches_data or not teams_data:
+        return
+
+    # Compute WC results per team
+    wc_results = {}
+    for m in matches_data:
+        score = m.get('score','?-?')
+        if '?' in score: continue
+        parts = score.split('-')
+        if len(parts) != 2: continue
+        try:
+            h, a = int(parts[0]), int(parts[1])
+        except:
+            continue
+        home, away = m['home'], m['away']
+        if home not in wc_results: wc_results[home] = []
+        if away not in wc_results: wc_results[away] = []
+        if h > a:
+            wc_results[home].append(1.0); wc_results[away].append(0.0)
+        elif h < a:
+            wc_results[home].append(0.0); wc_results[away].append(1.0)
+        else:
+            wc_results[home].append(0.5); wc_results[away].append(0.5)
+
+    # Update form values
+    updated = 0
+    for team, results in wc_results.items():
+        if team in teams_data:
+            avg = sum(results) / len(results)
+            old = teams_data[team].get('form', 0.7)
+            teams_data[team]['form'] = round(old * 0.4 + avg * 0.6, 2)
+            updated += 1
+
+    import os, json as _json
+    path = os.path.join(DATA_DIR, 'team_data.json')
+    with open(path, 'w') as f:
+        _json.dump(teams_data, f, indent=2)
+
+    # Patch TEAM_DATA in index.html
+    c = read_html()
+    js_start = c.rfind('<script>') + len('<script>')
+    js = c[js_start:c.rfind('</script>')]
+
+    # Find TEAM_DATA block and update each team's form
+    import re
+    for team, data in teams_data.items():
+        form_val = data.get('form', 0.7)
+        # Replace form: X.XX for this team
+        pattern = rf"('{re.escape(team)}':\s*\{{[^}}]*?form:)([\d.]+)"
+        new_js = re.sub(pattern, rf'\g<1>{form_val}', js, count=1)
+        if new_js != js:
+            js = new_js
+
+    c = c[:js_start] + js + c[c.rfind('</script>'):]
+    write_html(c)
+    print(f"  → Form updated for {updated} teams")
+
 # ═══════════════════════════════════════════════════════════
 # SECTIONS + MAIN
 # ═══════════════════════════════════════════════════════════
@@ -408,6 +476,7 @@ SECTIONS = {
     'upcoming': update_upcoming,
     'sync':     sync_upcoming,
     'snapshot': update_snapshot,
+    'form':     update_form,
 }
 
 if __name__ == '__main__':
