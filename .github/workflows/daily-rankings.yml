@@ -24,15 +24,14 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 lxml
 
-      - name: Update Elo and FIFA rankings
-        env:
-          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+      - name: Update Elo, FIFA pts and Polymarket odds
         run: python update_rankings.py
 
-      - name: Commit if changed
+      - name: Commit and push if anything changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html data/
+          git add index.html data/team_data.json
           git diff --staged --quiet \
-            || git commit -m "auto: rankings update $(date -u +'%Y-%m-%d')" && git push
+            && echo "No changes — already up to date" \
+            || git commit -m "auto: rankings + odds update $(date -u +'%Y-%m-%d')" && git push

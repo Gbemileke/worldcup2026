@@ -2,22 +2,76 @@
 """
 update_rankings.py  —  WC 2026 daily data updater
 ──────────────────────────────────────────────────
-Updates in index.html:
-  • elo:       from eloratings.net  (scraped via multiple fallbacks)
-  • fifaPts:   from football-data.org API v4  (needs FOOTBALL_DATA_TOKEN)
-  • marketPct: from Polymarket gamma API  (public, no key)
+Updates TEAM_DATA in index.html with:
+  • elo:       from trueline.online (mirrors eloratings.net) — updated after every match
+  • fifaPts:   HARDCODED — FIFA rankings frozen until July 20 2026 (next update post-WC)
+  • marketPct: from Polymarket gamma API — live tournament win probabilities
+
+KEY FACTS:
+  - FIFA rankings last updated: June 11 2026
+  - FIFA rankings next update:  July 20 2026  (won't change during tournament)
+  - Elo updates after every match (real-time)
+  - Polymarket updates continuously (real money prediction market)
 
 Run locally : python update_rankings.py
-GitHub CI   : .github/workflows/update-rankings.yml  (runs daily at 06:00 UTC)
+GitHub CI   : .github/workflows/update-rankings.yml  (runs daily 06:00 UTC)
 """
 
 import os, re, sys, json, time, datetime, requests
 
 HTML_FILE = "index.html"
 
-# ── Team name maps ────────────────────────────────────────────────────────────
-# Keys = our TEAM_DATA names.  Values = what each external source calls them.
-ELO_NAME_MAP = {
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept":          "application/json, text/html, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control":   "no-cache",
+}
+
+# ── FIFA points: HARDCODED June 11 2026 (frozen until July 20 2026) ──────────
+# Source: inside.fifa.com/fifa-world-ranking/men  — Official June 11 2026 update
+# Argentina #1 (after pre-WC wins vs Iceland & Honduras), Spain #2, France #3
+# These will NOT change until July 20 — no need to fetch them daily.
+FIFA_POINTS_JUNE_11_2026 = {
+    "Argentina":   1875.12, "Spain":       1876.40, "France":      1877.32,
+    "England":     1825.97, "Portugal":    1763.83, "Brazil":      1761.16,
+    "Netherlands": 1757.87, "Morocco":     1755.87, "Belgium":     1734.71,
+    "Germany":     1730.37, "Croatia":     1717.07, "Colombia":    1693.09,
+    "Senegal":     1688.99, "Mexico":      1681.03, "USA":         1673.13,
+    "Uruguay":     1673.07, "Japan":       1660.43, "Switzerland": 1649.40,
+    "Iran":        1613.00, "Turkey":      1609.00, "Ecuador":     1602.00,
+    "Austria":     1598.00, "South Korea": 1588.00, "Australia":   1572.00,
+    "Algeria":     1540.00, "Egypt":       1535.00, "Canada":      1530.00,
+    "Norway":      1520.00, "Paraguay":    1498.00, "Scotland":    1490.00,
+    "Saudi Arabia":1460.00, "Ghana":       1445.00, "Uzbekistan":  1430.00,
+    "Czechia":     1420.00, "Sweden":      1415.00, "Panama":      1400.00,
+    "Ivory Coast": 1395.00, "Tunisia":     1380.00, "Bosnia":      1370.00,
+    "Jordan":      1340.00, "Iraq":        1330.00, "Qatar":       1320.00,
+    "DR Congo":    1300.00, "South Africa":1280.00, "Cape Verde":  1270.00,
+    "Haiti":       1250.00, "New Zealand": 1240.00, "Curacao":     1200.00,
+}
+
+# ── Elo fallback (June 15 2026, from trueline.online/eloratings.net) ─────────
+# Used only if the live fetch fails. Update after each matchday.
+ELO_FALLBACK = {
+    "Spain":2172,"Argentina":2113,"France":2062,"England":2042,"Colombia":1998,
+    "Brazil":1978,"Portugal":1976,"Netherlands":1959,"Germany":1939,"Ecuador":1933,
+    "Norway":1922,"Croatia":1912,"Japan":1910,"Switzerland":1897,"Uruguay":1890,
+    "Turkey":1880,"Senegal":1869,"Mexico":1857,"Belgium":1850,"Paraguay":1833,
+    "Austria":1818,"Morocco":1806,"Canada":1805,"South Korea":1784,"Australia":1774,
+    "Iran":1755,"USA":1747,"Panama":1733,"Czechia":1731,"Algeria":1728,
+    "Uzbekistan":1728,"Jordan":1689,"Sweden":1660,"Egypt":1659,"Ivory Coast":1650,
+    "Scotland":1645,"Saudi Arabia":1635,"Tunisia":1630,"Ghana":1620,"Iraq":1600,
+    "Bosnia":1580,"DR Congo":1550,"Haiti":1550,"Qatar":1550,"South Africa":1500,
+    "Cape Verde":1500,"Curacao":1500,"New Zealand":1500,
+}
+
+# ── Source name maps ──────────────────────────────────────────────────────────
+# Our TEAM_DATA key → how the source names the team
+ELO_NAMES = {
     "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
     "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
     "Netherlands":"Netherlands","Ecuador":"Ecuador","Croatia":"Croatia",
@@ -28,18 +82,18 @@ ELO_NAME_MAP = {
     "Australia":"Australia","Iran":"IR Iran","USA":"United States",
     "Panama":"Panama","Czechia":"Czech Republic","Algeria":"Algeria",
     "Uzbekistan":"Uzbekistan","Jordan":"Jordan","Sweden":"Sweden","Egypt":"Egypt",
-    "Ivory Coast":"Côte d'Ivoire","Scotland":"Scotland","Saudi Arabia":"Saudi Arabia",
-    "Tunisia":"Tunisia","Ghana":"Ghana","Iraq":"Iraq",
+    "Ivory Coast":"Côte d'Ivoire","Scotland":"Scotland",
+    "Saudi Arabia":"Saudi Arabia","Tunisia":"Tunisia","Ghana":"Ghana","Iraq":"Iraq",
     "Bosnia":"Bosnia-Herzegovina","DR Congo":"DR Congo","Haiti":"Haiti",
     "Qatar":"Qatar","South Africa":"South Africa","Cape Verde":"Cape Verde",
     "Curacao":"Curaçao","New Zealand":"New Zealand",
 }
 
-POLY_NAME_MAP = {
+POLY_NAMES = {
     "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
     "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
     "Netherlands":"Netherlands","Germany":"Germany","Uruguay":"Uruguay",
-    "Morocco":"Morocco","Mexico":"Mexico","United States":"USA","USA":"USA",
+    "Morocco":"Morocco","Mexico":"Mexico","United States":"USA",
     "Belgium":"Belgium","Japan":"Japan","Ecuador":"Ecuador","Senegal":"Senegal",
     "Norway":"Norway","Croatia":"Croatia","Switzerland":"Switzerland",
     "Canada":"Canada","Korea Republic":"South Korea","South Korea":"South Korea",
@@ -48,197 +102,196 @@ POLY_NAME_MAP = {
     "Paraguay":"Paraguay","Côte d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
     "Ghana":"Ghana","Panama":"Panama","Saudi Arabia":"Saudi Arabia",
     "Scotland":"Scotland","Tunisia":"Tunisia","Uzbekistan":"Uzbekistan",
-    "Iraq":"Iraq","Jordan":"Jordan",
-    "Bosnia and Herzegovina":"Bosnia","Bosnia-Herzegovina":"Bosnia",
-    "Congo DR":"DR Congo","DR Congo":"DR Congo",
-    "Cape Verde":"Cape Verde","Cabo Verde":"Cape Verde",
-    "Haiti":"Haiti","Qatar":"Qatar","South Africa":"South Africa",
-    "New Zealand":"New Zealand","Curaçao":"Curacao","Curacao":"Curacao",
-}
-
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-                  "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "application/json, text/html, */*",
+    "Iraq":"Iraq","Jordan":"Jordan","Bosnia and Herzegovina":"Bosnia",
+    "Bosnia-Herzegovina":"Bosnia","Congo DR":"DR Congo","DR Congo":"DR Congo",
+    "Cape Verde":"Cape Verde","Cabo Verde":"Cape Verde","Haiti":"Haiti",
+    "Qatar":"Qatar","South Africa":"South Africa","New Zealand":"New Zealand",
+    "Curaçao":"Curacao","Curacao":"Curacao",
 }
 
 
-# ── 1. Elo — try three sources in order ───────────────────────────────────────
-def fetch_elo_ratings():
-    print("Fetching Elo ratings ...")
+# ── 1. Elo — live from trueline.online, fallback to hardcoded ────────────────
+def fetch_elo():
+    print("Fetching Elo ratings from trueline.online ...")
+    data = {}
 
-    # Source A: trueline.online (same data as eloratings.net, cleaner markup)
-    result = _elo_from_trueline()
-    if result:
-        return result
-
-    # Source B: eloratings.net direct (often JS-heavy but sometimes works)
-    result = _elo_from_eloratings()
-    if result:
-        return result
-
-    # Source C: footballratings.org JSON API
-    result = _elo_from_footballratings_api()
-    if result:
-        return result
-
-    print("  WARNING: all Elo sources failed — Elo will not be updated this run")
-    return {}
-
-
-def _elo_from_trueline():
+    # Try trueline.online — plain HTML table, most reliable
     try:
         r = requests.get("https://trueline.online/elo", headers=HEADERS, timeout=20)
-        if not r.ok:
-            return {}
-        text = r.text
-        data = {}
-        # Table rows:  | #  | Nation | ELO | Change |
-        for m in re.finditer(
-            r'\|\s*\d+\s*\|\s*([A-Za-zÀ-ÿ \'.\-]+?)\s*\|\s*(\d{4})\s*\|', text
-        ):
-            name, elo = m.group(1).strip(), int(m.group(2))
-            if 1400 <= elo <= 2400:
-                data[name] = elo
-        # Also try JSON embedded in page
-        for jm in re.findall(r'\{[^{}]*"rating"\s*:\s*(\d+)[^{}]*"name"\s*:\s*"([^"]+)"[^{}]*\}', text):
-            elo, name = int(jm[0]), jm[1]
-            if 1400 <= elo <= 2400:
-                data[name] = elo
-        if data:
-            print(f"  Got {len(data)} entries from trueline.online")
-        return data
-    except Exception as e:
-        print(f"  trueline.online failed: {e}")
-        return {}
-
-
-def _elo_from_eloratings():
-    try:
-        r = requests.get("https://www.eloratings.net/World_Cup_2026",
-                         headers=HEADERS, timeout=20)
-        if not r.ok:
-            return {}
-        text = r.text
-        data = {}
-        # Try JSON in script tags
-        for jblock in re.findall(r'<script[^>]*>(.*?)</script>', text, re.DOTALL):
-            try:
-                teams = json.loads(jblock.strip())
-                if isinstance(teams, list):
-                    for t in teams:
-                        if "name" in t and "rating" in t:
-                            data[t["name"]] = int(t["rating"])
-            except:
-                pass
-        # Try TSV rows
-        if not data:
-            for line in text.split('\n'):
-                parts = line.strip().split('\t')
-                if len(parts) >= 2:
-                    try:
-                        elo = int(parts[1].replace(',',''))
-                        if 1400 <= elo <= 2400:
-                            data[parts[0].strip()] = elo
-                    except:
-                        pass
-        if data:
-            print(f"  Got {len(data)} entries from eloratings.net")
-        return data
-    except Exception as e:
-        print(f"  eloratings.net failed: {e}")
-        return {}
-
-
-def _elo_from_footballratings_api():
-    try:
-        r = requests.get("https://www.footballratings.org/api/ratings",
-                         headers=HEADERS, timeout=15)
-        if not r.ok:
-            return {}
-        teams = r.json()
-        data = {}
-        for t in teams:
-            name, elo = t.get("name",""), t.get("rating",0)
-            try:
-                elo = int(elo)
-                if 1400 <= elo <= 2400 and name:
+        if r.ok:
+            text = r.text
+            # Match markdown table rows: | N | Nation | ELO | Change |
+            for m in re.finditer(
+                r'\|\s*\d+\s*\|\s*([A-Za-zÀ-ÿ\' \-\.]+?)\s*\|\s*(\d{3,4})\s*\|',
+                text
+            ):
+                name, elo = m.group(1).strip(), int(m.group(2))
+                if 1300 <= elo <= 2400 and len(name) > 1:
                     data[name] = elo
-            except:
-                pass
-        if data:
-            print(f"  Got {len(data)} entries from footballratings.org API")
-        return data
+
+            # Also try JSON blocks
+            if len(data) < 10:
+                for jblk in re.findall(r'\[[\s\S]*?\]', text):
+                    try:
+                        rows = json.loads(jblk)
+                        if isinstance(rows, list) and len(rows) > 5:
+                            for row in rows:
+                                if isinstance(row, dict):
+                                    name = row.get("name") or row.get("Nation","")
+                                    elo  = row.get("rating") or row.get("ELO",0)
+                                    try:
+                                        elo = int(elo)
+                                        if 1300 <= elo <= 2400 and name:
+                                            data[name] = elo
+                                    except: pass
+                    except: pass
     except Exception as e:
-        print(f"  footballratings.org API failed: {e}")
-        return {}
+        print(f"  trueline.online error: {e}")
 
-
-# ── 2. FIFA points — football-data.org ───────────────────────────────────────
-def fetch_fifa_rankings():
-    token = os.environ.get("FOOTBALL_DATA_TOKEN", "")
-    if not token or token == "YOUR_API_TOKEN_HERE":
-        print("FIFA: FOOTBALL_DATA_TOKEN not set — skipping")
-        return {}
-
-    print("Fetching FIFA ranking points from football-data.org ...")
-    h = {**HEADERS, "X-Auth-Token": token}
-    try:
-        r = requests.get("https://api.football-data.org/v4/competitions/WC/teams",
-                         headers=h, timeout=15)
-        if r.status_code == 403:
-            print(f"  HTTP 403 — token may lack permission for this endpoint")
-            return {}
-        r.raise_for_status()
-        data = {}
-        for team in r.json().get("teams", []):
-            name = team.get("name") or team.get("shortName","")
-            pts  = (team.get("fifaRankingPoints") or
-                    (team.get("ranking") or {}).get("points"))
-            if name and pts:
-                try: data[name] = float(pts)
-                except: pass
-        print(f"  Got {len(data)} FIFA entries")
+    if len(data) >= 20:
+        print(f"  ✓ Got {len(data)} Elo ratings from trueline.online")
         return data
-    except Exception as e:
-        print(f"  football-data.org failed: {e}")
-        return {}
+
+    # Fallback
+    print(f"  ⚠ Live fetch got only {len(data)} entries — using hardcoded fallback")
+    print(f"    (Last updated: June 15 2026. Update ELO_FALLBACK after each matchday.)")
+    return ELO_FALLBACK.copy()
 
 
-# ── 3. Polymarket ─────────────────────────────────────────────────────────────
+
+# ── FIFA points calculator (Elo-based, post-2018 formula) ────────────────────
+# Formula: P_new = P_before + I × (W − We)
+# We = 1 / (10^(−Δr/600) + 1)
+# Match importance I: WC group stage = 40, knockouts = 40 (FIFA uses same)
+#
+# WC 2026 concluded matches — add each result here as the tournament progresses.
+# result: 1=win, 0.5=draw, 0=loss  (from HOME team perspective)
+WC_RESULTS = [
+    # Group A — MD1
+    {"home":"Mexico",      "away":"South Africa", "result":1.0},  # 2-0
+    {"home":"South Korea", "away":"Czechia",       "result":1.0},  # 2-1
+    # Group B — MD1
+    {"home":"Canada",      "away":"Bosnia",        "result":0.5},  # 1-1
+    # Group C — MD1
+    {"home":"Brazil",      "away":"Morocco",       "result":0.5},  # 1-1
+    {"home":"Haiti",       "away":"Scotland",      "result":0.0},  # 0-1
+    # Group D — MD1
+    {"home":"USA",         "away":"Paraguay",      "result":1.0},  # 4-1
+    {"home":"Australia",   "away":"Turkey",        "result":1.0},  # 2-0
+    # Group B — MD1
+    {"home":"Qatar",       "away":"Switzerland",   "result":0.5},  # 1-1
+    # Group E — MD1
+    {"home":"Germany",     "away":"Curacao",       "result":1.0},  # 7-1
+    {"home":"Ivory Coast", "away":"Ecuador",       "result":1.0},  # 1-0
+    # Group F — MD1
+    {"home":"Netherlands", "away":"Japan",         "result":0.5},  # 2-2
+    {"home":"Sweden",      "away":"Tunisia",       "result":1.0},  # 5-1
+    # Group H — MD1
+    {"home":"Spain",       "away":"Cape Verde",    "result":0.5},  # 0-0
+    {"home":"Iran",      "away":"New Zealand", "result":0.5},  # 2-2 Jun 15
+    # Group I — MD1
+    {"home":"France",    "away":"Senegal",     "result":1.0},  # 3-1 Jun 16
+    {"home":"Norway",    "away":"Iraq",        "result":1.0},  # 4-1 Jun 16
+    # Group J — MD1
+    {"home":"Argentina", "away":"Algeria",     "result":1.0},  # 3-0 Jun 16
+    {"home":"Austria",   "away":"Jordan",      "result":1.0},  # 2-0 Jun 16
+    # Group G — MD1 (missing from original)
+    {"home":"Belgium",   "away":"Egypt",       "result":0.5},  # 1-1 Jun 15
+    # Group H — MD1 (additional)
+    {"home":"Saudi Arabia","away":"Uruguay",   "result":0.5},  # 1-1 Jun 15
+    # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
+]
+
+import math as _math
+
+def _expected(pa, pb):
+    return 1.0 / (10.0 ** ((pb - pa) / 600.0) + 1.0)
+
+def compute_fifa_points():
+    """
+    Start from June 11 2026 baseline and apply every concluded WC match
+    result using the FIFA Elo formula. Returns updated points for all teams.
+    """
+    pts = {k: v for k, v in FIFA_POINTS_JUNE_11_2026.items()}
+    I = 40  # World Cup finals importance factor
+
+    for match in WC_RESULTS:
+        h, a, w = match["home"], match["away"], match["result"]
+        ph = pts.get(h)
+        pa = pts.get(a)
+        if ph is None or pa is None:
+            continue  # team not in our data
+
+        we_h = _expected(ph, pa)
+        we_a = 1.0 - we_h
+        w_a  = 1.0 - w
+
+        pts[h] = round(ph + I * (w   - we_h), 2)
+        pts[a] = round(pa + I * (w_a - we_a), 2)
+
+    return pts
+
+# ── 2. FIFA points — use hardcoded June 11 values ────────────────────────────
+def get_fifa_points():
+    pts = compute_fifa_points()
+    concluded = len(WC_RESULTS)
+    print(f"FIFA points: computed from {concluded} concluded WC matches")
+    print(f"  (Baseline: June 11 2026 | Formula: P_new = P + 40×(W−We))")
+    # Show top 5 for verification
+    top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
+    for name, p in top5:
+        baseline = FIFA_POINTS_JUNE_11_2026.get(name, 0)
+        diff = round(p - baseline, 2)
+        sign = "+" if diff >= 0 else ""
+        print(f"  {name}: {p} ({sign}{diff} from baseline)")
+    return pts
+
+
+# ── 3. Polymarket — live from gamma API ──────────────────────────────────────
 def fetch_polymarket():
     print("Fetching Polymarket probabilities ...")
-    url = "https://gamma-api.polymarket.com/events?slug=world-cup-winner&limit=1"
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=20)
-        r.raise_for_status()
-        events = r.json()
-        if not events:
-            raise ValueError("empty")
-    except Exception as e:
-        print(f"  Polymarket gamma API failed: {e}")
-        return {}
+    data = {}
 
-    markets = events[0].get("markets") or []
-    result  = {}
-    for mkt in markets:
-        team_label = (mkt.get("groupItemTitle") or
-                      re.sub(r" to win.*", "", mkt.get("question",""), flags=re.I).strip())
-        prices = mkt.get("outcomePrices","[]")
-        if isinstance(prices, str):
-            try: prices = json.loads(prices)
-            except: prices = []
-        if prices:
-            try:
-                yes_pct = round(float(prices[0]) * 100, 2)
-                our = POLY_NAME_MAP.get(team_label)
-                if our:
-                    result[our] = yes_pct
-            except:
-                pass
+    for slug in ["world-cup-winner", "2026-fifa-world-cup-winner-595"]:
+        try:
+            url = f"https://gamma-api.polymarket.com/events?slug={slug}&limit=1"
+            r = requests.get(url, headers=HEADERS, timeout=20)
+            if not r.ok:
+                print(f"  HTTP {r.status_code} for slug={slug}")
+                continue
 
-    print(f"  Got {len(result)} Polymarket entries")
-    return result
+            events = r.json()
+            if not events:
+                print(f"  Empty response for slug={slug}")
+                continue
+
+            markets = events[0].get("markets") or []
+            print(f"  Found {len(markets)} markets for slug={slug}")
+
+            for mkt in markets:
+                label  = (mkt.get("groupItemTitle") or
+                          re.sub(r"\s+to win.*", "", mkt.get("question",""), flags=re.I).strip())
+                prices = mkt.get("outcomePrices","[]")
+                if isinstance(prices, str):
+                    try: prices = json.loads(prices)
+                    except: prices = []
+                if prices:
+                    try:
+                        yes_pct = round(float(prices[0]) * 100, 2)
+                        our = POLY_NAMES.get(label)
+                        if our:
+                            data[our] = yes_pct
+                    except: pass
+
+            if data:
+                print(f"  ✓ Got {len(data)} Polymarket probabilities")
+                return data
+
+        except Exception as e:
+            print(f"  Polymarket error (slug={slug}): {e}")
+
+    print("  ⚠ Polymarket unavailable — marketPct not updated this run")
+    return {}
 
 
 # ── 4. Patch index.html ───────────────────────────────────────────────────────
@@ -249,91 +302,110 @@ def patch_html(elo_data, fifa_data, poly_data):
     td_start = html.find("var TEAM_DATA = {")
     td_end   = html.find("\n};\n", td_start) + 4
     if td_start < 0:
-        print("ERROR: TEAM_DATA block not found"); sys.exit(1)
+        print("ERROR: TEAM_DATA not found"); sys.exit(1)
 
     td = html[td_start:td_end]
-    elo_upd, fifa_upd, poly_upd, skipped = [], [], [], []
+    elo_upd, fifa_upd, poly_upd, missing = [], [], [], []
 
-    for name in ELO_NAME_MAP:
-        ti = td.find(f"'{name}':")
+    for our in ELO_NAMES:
+        ti = td.find(f"'{our}':")
         if ti < 0:
             continue
 
-        # Elo
-        src_name = ELO_NAME_MAP[name]
-        new_elo  = elo_data.get(src_name) or elo_data.get(name)
-        if new_elo:
+        # ── Elo ──
+        src  = ELO_NAMES[our]
+        new  = elo_data.get(src) or elo_data.get(our)
+        if new:
             ei = td.find("elo:", ti)
             if 0 < ei < ti + 300:
-                c = td.find(",", ei+4)
+                c   = td.find(",", ei + 4)
                 old = int(td[ei+4:c].strip())
-                if old != new_elo:
-                    td = td[:ei+4] + str(new_elo) + td[c:]
-                    elo_upd.append(f"{name}: {old}→{new_elo}")
+                if old != int(new):
+                    td = td[:ei+4] + str(int(new)) + td[c:]
+                    elo_upd.append(f"{our}:{old}→{int(new)}")
         else:
-            skipped.append(name)
+            missing.append(our)
 
-        # FIFA
-        new_fifa = fifa_data.get(ELO_NAME_MAP.get(name, name)) or fifa_data.get(name)
+        # ── FIFA pts ──
+        new_fifa = fifa_data.get(our)
         if new_fifa:
             fi = td.find("fifaPts:", ti)
             if 0 < fi < ti + 300:
-                c = td.find(",", fi+8)
+                c   = td.find(",", fi + 8)
                 old = int(td[fi+8:c].strip())
                 nf  = int(round(new_fifa))
-                if abs(old - nf) > 1:
+                if abs(old - nf) > 5:          # only update if diff > 5 pts
                     td = td[:fi+8] + str(nf) + td[c:]
-                    fifa_upd.append(f"{name}: {old}→{nf}")
+                    fifa_upd.append(f"{our}:{old}→{nf}")
 
-        # Polymarket
-        new_poly = poly_data.get(name)
+        # ── Polymarket ──
+        new_poly = poly_data.get(our)
         if new_poly is not None:
             pi = td.find("marketPct:", ti)
             if 0 < pi < ti + 400:
-                vs = pi + 10
-                ve = td.find("}", vs)
+                vs      = pi + 10
+                ve      = td.find("}", vs)
                 old_str = td[vs:ve].strip().rstrip(",")
                 try:
                     old_p = float(old_str)
                     if abs(old_p - new_poly) >= 0.1:
-                        td = td[:vs] + str(new_poly) + td[vs+len(old_str):]
-                        poly_upd.append(f"{name}: {old_p}→{new_poly}")
-                except:
-                    pass
+                        td = td[:vs] + str(new_poly) + td[vs + len(old_str):]
+                        poly_upd.append(f"{our}:{old_p}→{new_poly}")
+                except: pass
 
     html = html[:td_start] + td + html[td_end:]
 
-    # Safety check
-    js_start = html.rfind('<script>') + len('<script>')
-    js       = html[js_start:html.rfind('</script>')]
-    if js.count('{') != js.count('}'):
-        print(f"SAFETY ABORT: brace mismatch {js.count('{')} / {js.count('}')}")
+    # Safety brace check
+    js = html[html.rfind('<script>') + len('<script>'):html.rfind('</script>')]
+    o, c = js.count('{'), js.count('}')
+    if o != c:
+        print(f"SAFETY ABORT: brace mismatch {o}/{c} — file NOT written")
         sys.exit(1)
+
+    # Save updated values to team_data.json to keep data/ in sync
+    data_path = os.path.join("data", "team_data.json")
+    if os.path.exists(data_path):
+        with open(data_path) as f:
+            team_json = json.load(f)
+        for our in ELO_NAMES:
+            if our not in team_json: continue
+            src = ELO_NAMES[our]
+            new_elo = elo_data.get(src) or elo_data.get(our)
+            if new_elo:
+                team_json[our]["elo"] = int(new_elo)
+            new_fifa = fifa_data.get(our)
+            if new_fifa:
+                team_json[our]["fifaPts"] = round(new_fifa, 2)
+            new_poly = poly_data.get(our)
+            if new_poly is not None:
+                team_json[our]["marketPct"] = new_poly
+        with open(data_path, "w") as f:
+            json.dump(team_json, f, indent=2)
+        print("  team_data.json updated")
 
     with open(HTML_FILE, "w", encoding="utf-8") as f:
         f.write(html)
 
     today = datetime.date.today().isoformat()
-    print(f"\nElo     updated: {len(elo_upd):2d} teams  — {', '.join(elo_upd[:4])}{'...' if len(elo_upd)>4 else ''}")
-    print(f"FIFA    updated: {len(fifa_upd):2d} teams  — {', '.join(fifa_upd[:4])}{'...' if len(fifa_upd)>4 else ''}")
-    print(f"Poly    updated: {len(poly_upd):2d} teams  — {', '.join(poly_upd[:4])}{'...' if len(poly_upd)>4 else ''}")
-    if skipped:
-        print(f"Skipped (no Elo source): {', '.join(skipped[:6])}{'...' if len(skipped)>6 else ''}")
-    print(f"\nindex.html written — {today}")
+    print(f"\n  Elo  updated : {len(elo_upd):2d}  {', '.join(elo_upd[:5])}{'...' if len(elo_upd)>5 else ''}")
+    print(f"  FIFA updated : {len(fifa_upd):2d}  {', '.join(fifa_upd[:5])}{'...' if len(fifa_upd)>5 else ''}")
+    print(f"  Poly updated : {len(poly_upd):2d}  {', '.join(poly_upd[:5])}{'...' if len(poly_upd)>5 else ''}")
+    if missing:
+        print(f"  Elo missing  : {', '.join(missing[:8])}")
+    print(f"\n  index.html written — {today}")
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print(f"=== WC 2026 Rankings Updater — {datetime.date.today()} ===\n")
 
-    elo_data  = fetch_elo_ratings();  time.sleep(1)
-    fifa_data = fetch_fifa_rankings(); time.sleep(1)
+    elo_data  = fetch_elo()
+    time.sleep(1)
+    fifa_data = get_fifa_points()   # no network call needed
+    time.sleep(1)
     poly_data = fetch_polymarket()
 
-    if not elo_data and not fifa_data and not poly_data:
-        print("\nNo data fetched from any source — exiting without changes")
-        print("Check network access and API token in GitHub Secrets")
-        sys.exit(0)
-
+    print(f"\nPatching index.html ...")
     patch_html(elo_data, fifa_data, poly_data)
     print("\nDone ✓")
+
