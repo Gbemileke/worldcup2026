@@ -1359,9 +1359,9 @@
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">64</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.05 per match · 21 matches played</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">4</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein</div></div>
-            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">3</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E), Ronaldo (Grp K)</div></div>
+            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E)</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">21</div><div class="stat-label">Matches Played</div><div class="stat-sub">47 open play · 10 headers · 3 penalties · 4 OGs</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">21</div><div class="stat-label">Matches Played</div><div class="stat-sub">47 open play · 11 headers · 2 penalties · 4 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1778,9 +1778,13 @@ var GOALS = [
   {id:59, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'C. Gregoritsch', flag:'', minute:64, type:'header', phase:'Group J', score:'2-0', desc:'Gregoritsch heads home to double Austria\'s lead'},
   {id:79, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'M. Gregoritsch', flag:'', minute:78, type:'open-play', phase:'Group J', score:'3-0', desc:'Gregoritsch gets his brace — Austria put the game beyond doubt'},
   {id:80, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'Y. Al-Naimat', flag:'', minute:88, type:'open-play', phase:'Group J', score:'3-1', desc:'Al-Naimat grabs a late consolation for Jordan'},
-  {id:81, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'C. Ronaldo', flag:'', minute:22, type:'penalty', phase:'Group K', score:'1-0', desc:'Ronaldo converts from the spot — his first goal of the 2026 World Cup'},
-  {id:82, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'B. Mayele', flag:'', minute:76, type:'open-play', phase:'Group K', score:'1-1', desc:'Mayele equalises for DR Congo in a stunning upset — Portugal stunned at SoFi Stadium'}
+  {id:81, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'J. Neves', flag:'', minute:6, type:'open-play', phase:'Group K', score:'1-0', desc:'Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike — Ronaldo becomes the oldest outfield player to start a World Cup match at 41'},
+  {id:82, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'Y. Wissa', flag:'', minute:45, type:'header', phase:'Group K', score:'1-1', desc:'Wissa heads home Masuaku\'s cross in stoppage time — DR Congo\'s historic first ever World Cup goal and point'}
 ];
+
+
+
+
 
 
 
@@ -1854,7 +1858,7 @@ var TEAM_DATA = {
   'France':      {flag:'fr', group:'I', elo:2062, fifaPts:1871, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:17.76},
   'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1826, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:1.0, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:8.64},
   'Brazil':      {flag:'br', group:'C', elo:1978, fifaPts:1761, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.5, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:5.76},
-  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1764, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.62, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:7.68},
+  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1764, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.55, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:7.68},
   'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1693, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.7, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.92},
   'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1758, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.5, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:3.36},
   'Croatia':     {flag:'hr', group:'L', elo:1932, fifaPts:1717, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.7, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:1.06},
@@ -1894,7 +1898,7 @@ var TEAM_DATA = {
   'Iraq':         {flag:'iq', group:'I', elo:1600, fifaPts:1390, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.0, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.03},
   'Jordan':       {flag:'jo', group:'J', elo:1689, fifaPts:1370, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.0, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.03},
   'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1430, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.7, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
-  'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.54, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.12},
+  'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.52, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.12},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.7, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.14},
 };
@@ -3403,6 +3407,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 

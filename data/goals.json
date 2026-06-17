@@ -748,23 +748,23 @@
     "matchId": "m25",
     "home": "Portugal",
     "away": "DR Congo",
-    "scorer": "C. Ronaldo",
-    "minute": 22,
-    "type": "penalty",
+    "scorer": "J. Neves",
+    "minute": 6,
+    "type": "open-play",
     "phase": "Group K",
     "score": "1-0",
-    "desc": "Ronaldo converts from the spot \u2014 his first goal of the 2026 World Cup"
+    "desc": "Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike \u2014 Ronaldo becomes the oldest outfield player to start a World Cup match at 41"
   },
   {
     "id": 82,
     "matchId": "m25",
     "home": "Portugal",
     "away": "DR Congo",
-    "scorer": "B. Mayele",
-    "minute": 76,
-    "type": "open-play",
+    "scorer": "Y. Wissa",
+    "minute": 45,
+    "type": "header",
     "phase": "Group K",
     "score": "1-1",
-    "desc": "Mayele equalises for DR Congo in a stunning upset \u2014 Portugal stunned at SoFi Stadium"
+    "desc": "Wissa heads home Masuaku's cross in stoppage time \u2014 DR Congo's historic first ever World Cup goal and point"
   }
 ]
