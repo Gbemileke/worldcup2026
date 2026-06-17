@@ -1,0 +1,314 @@
+{
+  "A": {
+    "name": "Group A",
+    "venue": "Mexico City / Guadalajara",
+    "teams": [
+      {
+        "name": "Mexico",
+        "polymarket": 62.0,
+        "fanDuelOdds": -160
+      },
+      {
+        "name": "South Korea",
+        "polymarket": 27.0,
+        "fanDuelOdds": 160
+      },
+      {
+        "name": "Czechia",
+        "polymarket": 9.0,
+        "fanDuelOdds": 1700
+      },
+      {
+        "name": "South Africa",
+        "polymarket": 2.0,
+        "fanDuelOdds": 8000
+      }
+    ]
+  },
+  "B": {
+    "name": "Group B",
+    "venue": "Toronto / San Francisco",
+    "teams": [
+      {
+        "name": "Switzerland",
+        "polymarket": 58.0,
+        "fanDuelOdds": -165
+      },
+      {
+        "name": "Canada",
+        "polymarket": 26.0,
+        "fanDuelOdds": 250
+      },
+      {
+        "name": "Bosnia",
+        "polymarket": 13.0,
+        "fanDuelOdds": 420
+      },
+      {
+        "name": "Qatar",
+        "polymarket": 3.0,
+        "fanDuelOdds": 3500
+      }
+    ]
+  },
+  "C": {
+    "name": "Group C",
+    "venue": "New York / Boston / Miami",
+    "teams": [
+      {
+        "name": "Brazil",
+        "polymarket": 72.0,
+        "fanDuelOdds": -330
+      },
+      {
+        "name": "Morocco",
+        "polymarket": 20.0,
+        "fanDuelOdds": 320
+      },
+      {
+        "name": "Scotland",
+        "polymarket": 7.0,
+        "fanDuelOdds": 1000
+      },
+      {
+        "name": "Haiti",
+        "polymarket": 1.0,
+        "fanDuelOdds": 10000
+      }
+    ]
+  },
+  "D": {
+    "name": "Group D",
+    "venue": "Los Angeles / Vancouver",
+    "teams": [
+      {
+        "name": "USA",
+        "polymarket": 65.0,
+        "fanDuelOdds": -180
+      },
+      {
+        "name": "Turkey",
+        "polymarket": 22.0,
+        "fanDuelOdds": 185
+      },
+      {
+        "name": "Australia",
+        "polymarket": 10.0,
+        "fanDuelOdds": 1200
+      },
+      {
+        "name": "Paraguay",
+        "polymarket": 3.0,
+        "fanDuelOdds": 3000
+      }
+    ]
+  },
+  "E": {
+    "name": "Group E",
+    "venue": "Houston / Philadelphia / Kansas City",
+    "teams": [
+      {
+        "name": "Germany",
+        "polymarket": 71.0,
+        "fanDuelOdds": -260
+      },
+      {
+        "name": "Ecuador",
+        "polymarket": 15.0,
+        "fanDuelOdds": 320
+      },
+      {
+        "name": "Ivory Coast",
+        "polymarket": 12.0,
+        "fanDuelOdds": 550
+      },
+      {
+        "name": "Curacao",
+        "polymarket": 2.0,
+        "fanDuelOdds": 12500
+      }
+    ]
+  },
+  "F": {
+    "name": "Group F",
+    "venue": "Dallas / Monterrey",
+    "teams": [
+      {
+        "name": "Netherlands",
+        "polymarket": 44.0,
+        "fanDuelOdds": -130
+      },
+      {
+        "name": "Sweden",
+        "polymarket": 32.0,
+        "fanDuelOdds": 450
+      },
+      {
+        "name": "Japan",
+        "polymarket": 20.0,
+        "fanDuelOdds": 260
+      },
+      {
+        "name": "Tunisia",
+        "polymarket": 4.0,
+        "fanDuelOdds": 1500
+      }
+    ]
+  },
+  "G": {
+    "name": "Group G",
+    "venue": "Seattle / Vancouver",
+    "teams": [
+      {
+        "name": "Belgium",
+        "polymarket": 55.0,
+        "fanDuelOdds": -180
+      },
+      {
+        "name": "New Zealand",
+        "polymarket": 20.0,
+        "fanDuelOdds": 350
+      },
+      {
+        "name": "Iran",
+        "polymarket": 15.0,
+        "fanDuelOdds": 500
+      },
+      {
+        "name": "Egypt",
+        "polymarket": 10.0,
+        "fanDuelOdds": 700
+      }
+    ]
+  },
+  "H": {
+    "name": "Group H",
+    "venue": "Atlanta / Miami",
+    "teams": [
+      {
+        "name": "Spain",
+        "polymarket": 72.0,
+        "fanDuelOdds": -280
+      },
+      {
+        "name": "Uruguay",
+        "polymarket": 20.0,
+        "fanDuelOdds": 280
+      },
+      {
+        "name": "Cape Verde",
+        "polymarket": 5.0,
+        "fanDuelOdds": 3000
+      },
+      {
+        "name": "Saudi Arabia",
+        "polymarket": 3.0,
+        "fanDuelOdds": 4000
+      }
+    ]
+  },
+  "I": {
+    "name": "Group I",
+    "venue": "East Rutherford / Boston / Philadelphia",
+    "teams": [
+      {
+        "name": "France",
+        "polymarket": 88.0,
+        "fanDuelOdds": -450
+      },
+      {
+        "name": "Norway",
+        "polymarket": 10.0,
+        "fanDuelOdds": 200
+      },
+      {
+        "name": "Senegal",
+        "polymarket": 1.5,
+        "fanDuelOdds": 1200
+      },
+      {
+        "name": "Iraq",
+        "polymarket": 0.5,
+        "fanDuelOdds": 15000
+      }
+    ]
+  },
+  "J": {
+    "name": "Group J",
+    "venue": "Kansas City / Santa Clara",
+    "teams": [
+      {
+        "name": "Argentina",
+        "polymarket": 75.0,
+        "fanDuelOdds": -260
+      },
+      {
+        "name": "Austria",
+        "polymarket": 16.0,
+        "fanDuelOdds": 390
+      },
+      {
+        "name": "Algeria",
+        "polymarket": 8.0,
+        "fanDuelOdds": 750
+      },
+      {
+        "name": "Jordan",
+        "polymarket": 1.0,
+        "fanDuelOdds": 6500
+      }
+    ]
+  },
+  "K": {
+    "name": "Group K",
+    "venue": "Houston / Mexico City / Miami",
+    "teams": [
+      {
+        "name": "Portugal",
+        "polymarket": 62.0,
+        "fanDuelOdds": -200
+      },
+      {
+        "name": "Colombia",
+        "polymarket": 30.0,
+        "fanDuelOdds": 220
+      },
+      {
+        "name": "DR Congo",
+        "polymarket": 5.0,
+        "fanDuelOdds": 2000
+      },
+      {
+        "name": "Uzbekistan",
+        "polymarket": 3.0,
+        "fanDuelOdds": 2700
+      }
+    ]
+  },
+  "L": {
+    "name": "Group L",
+    "venue": "Arlington / Toronto",
+    "teams": [
+      {
+        "name": "England",
+        "polymarket": 72.0,
+        "fanDuelOdds": -270
+      },
+      {
+        "name": "Croatia",
+        "polymarket": 19.0,
+        "fanDuelOdds": 340
+      },
+      {
+        "name": "Ghana",
+        "polymarket": 6.0,
+        "fanDuelOdds": 1300
+      },
+      {
+        "name": "Panama",
+        "polymarket": 3.0,
+        "fanDuelOdds": 2700
+      }
+    ]
+  }
+}
