@@ -882,23 +882,11 @@
   #bracketSettings { padding:20px 0; }
 
   /* ── Responsive ───────────────────────────────── */
-  @media(max-width:1100px) {
-    .team-grid { grid-template-columns:repeat(3,1fr); }
-    .top4-grid { grid-template-columns:repeat(2,1fr); }
+      .top4-grid { grid-template-columns:repeat(2,1fr); }
     .groups-grid { grid-template-columns:repeat(2,1fr); }
   }
-  @media(max-width:800px) {
-    .app-layout { flex-direction:column; }
-    .sidebar { width:100%; height:260px; }
+      .sidebar { width:100%; height:260px; }
     .match-selector{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-    .stat-grid { grid-template-columns:repeat(2,1fr); }
-    .chart-grid { grid-template-columns:1fr; }
-    .team-grid { grid-template-columns:repeat(2,1fr); }
-    .top4-grid { grid-template-columns:repeat(2,1fr); }
-    .groups-grid { grid-template-columns:1fr; }
-    .match-video-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-    .tabs { display:none; }
-  }
 
 
   /* ── Missing classes used by JS ───────────────────────────────────────────── */
@@ -983,13 +971,11 @@
   .donut-legend{display:flex;flex-direction:column;gap:4px}
   .bracket-grid{display:grid;grid-template-columns:1fr;gap:8px}
   .bracket-grid-2{grid-template-columns:1fr 1fr;gap:10px}
-  @media(max-width:900px){.bracket-grid-2{grid-template-columns:1fr}}
-  .bracket-intro-text{flex:1}
+    .bracket-intro-text{flex:1}
   .bracket-intro-text p{font-size:12px;color:var(--text2);max-width:480px;line-height:1.6}
   .groups-wrap{padding:0}
   .scorers-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media(max-width:700px){.scorers-grid{grid-template-columns:1fr}}
-  .match-videos{padding:0}
+    .match-videos{padding:0}
 
   /* Hero panel */
   .goal-hero{display:none}
@@ -1036,8 +1022,7 @@
 
   /* Settings panel */
   .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-  @media(max-width:700px){.settings-grid{grid-template-columns:1fr}}
-  .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)}
+    .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm)}
   .settings-card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:12px}
   .settings-card-desc{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
   .settings-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
@@ -1087,6 +1072,188 @@
   .gtr-out{background:#f5f5f5;color:var(--muted)}
   .group-team-row{padding:9px 14px;border-bottom:1px solid var(--border)}
   .group-team-row:last-child{border-bottom:none}
+
+  /* ═══════════════════════════════════════════════════════
+     RESPONSIVE — Tablet (≤1100px) + Mobile (≤768px / ≤480px)
+     ═══════════════════════════════════════════════════════ */
+
+  /* ── Tablet: ≤1100px ───────────────────────────────── */
+  @media (max-width: 1100px) {
+    .team-grid          { grid-template-columns: repeat(3, 1fr); }
+    .top4-grid          { grid-template-columns: repeat(2, 1fr); }
+    .groups-grid        { grid-template-columns: repeat(2, 1fr); }
+    .match-video-grid   { grid-template-columns: repeat(3, 1fr); }
+    .bracket-grid-2     { grid-template-columns: 1fr 1fr; }
+    .analytics-3col     { grid-template-columns: 1fr 1fr; }
+    .match-selector     { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ── Small Tablet: ≤900px ──────────────────────────── */
+  @media (max-width: 900px) {
+    .sidebar            { width: 260px; }
+    .team-grid          { grid-template-columns: repeat(2, 1fr); }
+    .top4-grid          { grid-template-columns: repeat(2, 1fr); }
+    .analytics-3col     { grid-template-columns: 1fr 1fr; }
+    .match-video-grid   { grid-template-columns: repeat(2, 1fr); }
+    .bracket-grid-2     { grid-template-columns: 1fr; }
+    .settings-grid      { grid-template-columns: 1fr; }
+    .xtra-grid          { grid-template-columns: repeat(2, 1fr); }
+    .tab-panel          { padding: 16px 18px; }
+    .bracket-wrap       { padding: 16px 18px; }
+  }
+
+  /* ── Mobile: ≤768px ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    /* Header: stack logo + tab scroller */
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 14px 6px;
+      height: auto;
+      gap: 8px;
+    }
+    .app-title          { font-size: 16px; gap: 7px; }
+    .app-title svg      { width: 32px; height: 32px; }
+    .live-badge         { display: none; }
+
+    /* Tab bar becomes horizontal scroller */
+    .tabs {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 3px 4px;
+      gap: 2px;
+      background: rgba(255,255,255,.08);
+      border-radius: 6px;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      white-space: nowrap;
+      font-size: 10px;
+      padding: 5px 11px;
+      flex-shrink: 0;
+    }
+
+    /* Ticker stays, slightly smaller */
+    .ticker-item        { font-size: 10px; padding: 0 14px; }
+
+    /* Layout: sidebar on top, main below */
+    .app-layout {
+      flex-direction: column;
+      height: auto;
+      min-height: calc(100vh - 120px);
+      overflow: visible;
+    }
+    .sidebar {
+      width: 100%;
+      height: 220px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      flex-direction: row;
+    }
+    .sidebar-header     { padding: 10px 12px 8px; }
+    .sidebar-title      { font-size: 12px; margin-bottom: 6px; }
+    .filter-row         { gap: 4px; }
+    .filter-chip        { font-size: 9px; padding: 3px 8px; }
+    .goal-list          { flex: 1; overflow-y: auto; }
+    .goals-list         { padding: 6px 8px; }
+    .gc-card            { padding: 8px 10px; margin-bottom: 4px; }
+    .gc-scorer          { font-size: 11px; }
+    .gc-match           { font-size: 9px; }
+
+    .main-content,
+    .main-panel         { overflow-y: visible; }
+
+    /* Tabs: single column panels */
+    .tab-panel          { padding: 12px 14px; }
+    .bracket-wrap       { padding: 12px 14px; }
+
+    /* Stat snapshot: 2-col */
+    .analytics-grid     { gap: 6px; }
+    .stat-card          { min-width: 130px; padding: 9px 12px; }
+    .stat-num           { font-size: 22px; }
+    .stat-label         { font-size: 10px; }
+    .stat-sub           { font-size: 8px; }
+
+    /* Charts: single column */
+    .analytics-3col     { grid-template-columns: 1fr; gap: 10px; }
+    .chart-card         { padding: 14px; }
+
+    /* Match selector: 2-col */
+    .match-selector     { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .ms-card            { padding: 8px 10px; }
+    .ms-teams           { font-size: 10px; }
+    .ms-score           { font-size: 14px; }
+
+    /* Videos: 2-col */
+    .match-video-grid   { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .match-card-score   { padding: 10px 12px 8px; }
+    .mc-team            { font-size: 10px; }
+    .mc-team-r          { font-size: 10px; }
+    .mc-score           { font-size: 15px; }
+
+    /* Teams: 2-col */
+    .team-grid          { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .team-card          { padding: 10px; }
+    .team-card-name     { font-size: 13px; }
+
+    /* Top4: 1-col */
+    .top4-grid          { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Groups: 1-col */
+    .groups-grid        { grid-template-columns: 1fr; gap: 10px; }
+
+    /* Bracket */
+    .bracket-intro      { flex-direction: column; gap: 10px; }
+    .sim-btn            { width: 100%; text-align: center; }
+    .bracket-grid-2     { grid-template-columns: 1fr; }
+    .stage-tabs         { overflow-x: auto; scrollbar-width: none; }
+    .stage-tabs::-webkit-scrollbar { display: none; }
+    .stage-tab          { white-space: nowrap; flex-shrink: 0; padding: 7px 12px; }
+
+    /* Hero panel */
+    .hero-panel         { padding: 16px 14px; }
+    .hero-score         { gap: 10px; }
+    .hero-team          { font-size: 20px; }
+    .hero-scoreline     { font-size: 30px; }
+    .hero-details       { grid-template-columns: 1fr 1fr; gap: 6px; }
+
+    /* Settings */
+    .settings-grid      { grid-template-columns: 1fr; }
+    .preset-grid        { grid-template-columns: repeat(2, 1fr); }
+
+    /* xtra grid */
+    .xtra-grid          { grid-template-columns: repeat(2, 1fr); }
+
+    /* Section title */
+    .section-title      { font-size: 12px; }
+    .section-title-hero { font-size: 15px; }
+  }
+
+  /* ── Small mobile: ≤480px ───────────────────────────── */
+  @media (max-width: 480px) {
+    .app-title          { font-size: 14px; }
+    .tab-btn            { font-size: 9px; padding: 4px 9px; }
+
+    .top4-grid          { grid-template-columns: 1fr; }
+    .team-grid          { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .match-video-grid   { grid-template-columns: 1fr; }
+    .match-selector     { grid-template-columns: repeat(2, 1fr); }
+    .analytics-grid     { gap: 5px; }
+    .stat-card          { min-width: 110px; padding: 8px 10px; }
+    .stat-num           { font-size: 20px; }
+
+    .hero-details       { grid-template-columns: 1fr; }
+    .xtra-grid          { grid-template-columns: repeat(2, 1fr); }
+
+    /* Tab panel full bleed */
+    .tab-panel          { padding: 10px 10px; }
+    .bracket-wrap       { padding: 10px 10px; }
+
+    /* Donut chart: stack vertically */
+    .donut-area         { flex-direction: column; align-items: center; }
+  }
 </style>
 </head>
 <body>
