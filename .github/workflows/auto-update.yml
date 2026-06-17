@@ -3,7 +3,7 @@ name: Auto-Update Match Data
 on:
   schedule:
     - cron: '0 */3 * * *'   # every 3 hours
-  workflow_dispatch:          # manual trigger from GitHub Actions tab
+  workflow_dispatch:          # manual trigger
 
 permissions:
   contents: write
@@ -29,7 +29,19 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Rebuild index.html from data files
+      - name: Sync data files (scores, goals, stats) into JSON
+        run: |
+          python update_site.py --section matches
+          python update_site.py --section goals
+          python update_site.py --section stats
+
+      - name: Remove completed matches from upcoming fixtures
+        run: python update_site.py --section sync
+
+      - name: Update snapshot analytics cards
+        run: python update_site.py --section snapshot
+
+      - name: Final full rebuild
         run: python update_site.py
 
       - name: Commit and push if anything changed

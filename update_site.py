@@ -248,6 +248,44 @@ def update_upcoming():
     print(f"  → {len(data)} upcoming fixtures written")
 
 # ═══════════════════════════════════════════════════════════
+
+
+# ═══════════════════════════════════════════════════════════
+# SECTION 5b: SYNC UPCOMING — remove completed matches
+# ═══════════════════════════════════════════════════════════
+def sync_upcoming():
+    """Remove fixtures from upcoming_fixtures.json that are now in match_stats.json"""
+    upcoming = load('upcoming_fixtures.json')
+    stats    = load('match_stats.json')
+    if not upcoming or not stats:
+        return
+
+    # Build set of completed match pairs
+    completed = set()
+    for mid, m in stats.items():
+        h = m['home'].lower().strip()
+        a = m['away'].lower().strip()
+        completed.add((h, a))
+        completed.add((a, h))  # both directions
+
+    before = len(upcoming)
+    upcoming = [
+        f for f in upcoming
+        if (f['home'].lower().strip(), f['away'].lower().strip()) not in completed
+    ]
+    removed = before - len(upcoming)
+
+    if removed > 0:
+        import os, json
+        path = os.path.join(DATA_DIR, 'upcoming_fixtures.json')
+        with open(path, 'w') as f:
+            json.dump(upcoming, f, indent=2)
+        print(f"  → Removed {removed} completed fixtures from upcoming")
+        # Re-run upcoming section
+        update_upcoming()
+    else:
+        print(f"  → No completed fixtures to remove")
+
 # SECTION 6: SNAPSHOT CARDS (analytics page header cards)
 # ═══════════════════════════════════════════════════════════
 def update_snapshot():
@@ -264,9 +302,13 @@ def update_snapshot():
     own_goals   = [g for g in goals_data if g['type'] == 'own-goal']
     penalties   = [g for g in goals_data if g['type'] == 'penalty']
 
-    # Top scorers
+    # Top scorers — exclude own goals
     from collections import Counter
-    scorer_counts = Counter(g['scorer'] for g in goals_data if g['type'] != 'own-goal')
+    scorer_counts = Counter(
+        g['scorer'].replace(' OG','') 
+        for g in goals_data 
+        if g['type'] != 'own-goal'
+    )
     top_count = scorer_counts.most_common(1)[0][1] if scorer_counts else 0
     top_scorers = [s for s,n in scorer_counts.items() if n == top_count]
 
@@ -278,7 +320,7 @@ def update_snapshot():
     biggest_goals = sum(int(p) for p in biggest[1]['score'].split('-') if p.isdigit()) if biggest[0] else 0
 
     # Own goal names (without OG suffix)
-    og_names = ', '.join(g['scorer'].replace(' OG','') for g in own_goals)
+    og_names = ', '.join(g['scorer'].replace(' OG','').split('.')[-1].strip() for g in own_goals)
     pen_names = ', '.join(f"{g['scorer']} ({g['phase'].split()[1] if ' ' in g['phase'] else g['phase'][:3]})" for g in penalties)
     top_names = ', '.join(top_scorers[:3]) + (f' + {len(top_scorers)-3} more' if len(top_scorers) > 3 else '')
 
@@ -323,6 +365,7 @@ SECTIONS = {
     'stats':    update_match_stats,
     'groups':   update_groups,
     'upcoming': update_upcoming,
+    'sync':     sync_upcoming,
     'snapshot': update_snapshot,
 }
 
