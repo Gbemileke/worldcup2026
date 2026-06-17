@@ -1712,8 +1712,8 @@ var MATCHES = [
   {id:'m18', date:'Jun 16', home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', group:'Group I', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report'},
   {id:'m19', date:'Jun 16', home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report'},
   {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'},
-  {id:'m22', date:'Jun 17', home:'England', away:'Croatia', hf:'', af:'', score:'4-2', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report'},
-  {id:'m25', date:'Jun 17', home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report'}
+  {id:'m21', date:'Jun 17', home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report'},
+  {id:'m22', date:'Jun 17', home:'England', away:'Croatia', hf:'', af:'', score:'4-2', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -1779,15 +1779,17 @@ var GOALS = [
   {id:100, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'A. Olwan', flag:'', minute:50, type:'open-play', phase:'Group J', score:'1-1', desc:'Olwan equalises for Jordan — a fine finish from the midfielder'},
   {id:101, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'Y. Al-Arab OG', flag:'', minute:76, type:'own-goal', phase:'Group J', score:'2-1', desc:'Al-Arab deflects into his own net — Austria regain the lead'},
   {id:102, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'M. Arnautovic', flag:'', minute:90, type:'penalty', phase:'Group J', score:'3-1', desc:'Arnautovic converts from the spot deep in injury time to seal Austria\'s win'},
+  {id:81, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'J. Neves', flag:'', minute:6, type:'header', phase:'Group K', score:'1-0', desc:'Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike — Ronaldo becomes the oldest outfield player to start a World Cup match at 41'},
+  {id:82, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'Y. Wissa', flag:'', minute:45, type:'header', phase:'Group K', score:'1-1', desc:'Wissa heads home Masuaku\'s cross in stoppage time — DR Congo\'s historic first ever World Cup goal and point'},
   {id:93, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'H. Kane', flag:'', minute:12, type:'penalty', phase:'Group L', score:'1-0', desc:'Kane converts from the spot — England break the deadlock early on'},
   {id:94, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Baturina', flag:'', minute:36, type:'open-play', phase:'Group L', score:'1-1', desc:'Baturina scores a stunning equaliser into the top corner — Croatia level'},
   {id:95, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'H. Kane', flag:'', minute:42, type:'header', phase:'Group L', score:'2-1', desc:'Kane heads home from a Declan Rice corner — his second goal of the game'},
   {id:96, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'P. Musa', flag:'', minute:45, type:'open-play', phase:'Group L', score:'2-2', desc:'Musa levels for Croatia — Perisic flicks the ball to the FC Dallas striker who fires through Pickford'},
   {id:97, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:47, type:'open-play', phase:'Group L', score:'3-2', desc:'Bellingham immediately restores England\'s lead seconds after half time — a brilliant solo run and finish'},
-  {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'},
-  {id:81, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'J. Neves', flag:'', minute:6, type:'header', phase:'Group K', score:'1-0', desc:'Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike — Ronaldo becomes the oldest outfield player to start a World Cup match at 41'},
-  {id:82, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'Y. Wissa', flag:'', minute:45, type:'header', phase:'Group K', score:'1-1', desc:'Wissa heads home Masuaku\'s cross in stoppage time — DR Congo\'s historic first ever World Cup goal and point'}
+  {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'}
 ];
+
+
 
 
 
@@ -1864,8 +1866,8 @@ var MATCH_STATS = {
   m18: {home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', date:'Jun 16 - Gillette Stadium (Boston), Foxborough MA', poss:[62, 38], stats:[["Shots", 18, 7], ["Shots on Target", 7, 3], ["Passes", 521, 298], ["Pass Accuracy %", 86, 73], ["Fouls", 10, 16], ["Corners", 7, 3], ["Clearances", 8, 22], ["Turnovers", 11, 18]], xtra:[["xG", 3.4, 0.9], ["Yellow Cards", 1, 2], ["Offsides", 3, 2], ["Saves", 2, 5]]},
   m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', date:'Jun 16 - Mercedes-Benz Stadium, Atlanta', poss:[72, 28], stats:[["Shots", 22, 4], ["Shots on Target", 9, 1], ["Passes", 680, 240], ["Pass Accuracy %", 91, 68], ["Fouls", 9, 14], ["Corners", 10, 1], ["Saves", 1, 6]], xtra:[["xG", 3.4, 0.3], ["Yellow Cards", 1, 2], ["Offsides", 4, 0]]},
   m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', date:'Jun 16 - Arrowhead Stadium, Kansas City', poss:[58, 42], stats:[["Shots", 14, 7], ["Shots on Target", 6, 2], ["Passes", 480, 320], ["Pass Accuracy %", 85, 74], ["Fouls", 11, 12], ["Corners", 6, 3], ["Saves", 2, 4]], xtra:[["xG", 2.1, 0.6], ["Yellow Cards", 2, 1], ["Offsides", 2, 2]]},
-  m22: {home:'England', away:'Croatia', hf:'', af:'', score:'4-2', date:'Jun 17 - AT&T Stadium, Dallas', poss:[57, 43], stats:[["Shots", 18, 12], ["Shots on Target", 8, 4], ["Passes", 530, 400], ["Pass Accuracy %", 83, 79], ["Fouls", 11, 13], ["Corners", 8, 5], ["Saves", 2, 4]], xtra:[["xG", 3.1, 1.8], ["Yellow Cards", 2, 1], ["Offsides", 3, 2]]},
-  m25: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', date:'Jun 17 - SoFi Stadium, Los Angeles', poss:[68, 32], stats:[["Shots", 19, 7], ["Shots on Target", 6, 2], ["Passes", 610, 280], ["Pass Accuracy %", 88, 71], ["Fouls", 10, 14], ["Corners", 8, 2], ["Saves", 1, 5]], xtra:[["xG", 2.8, 0.6], ["Yellow Cards", 1, 2], ["Offsides", 3, 1]]}
+  m21: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', date:'Jun 17 - SoFi Stadium, Los Angeles', poss:[68, 32], stats:[["Shots", 19, 7], ["Shots on Target", 6, 2], ["Passes", 610, 280], ["Pass Accuracy %", 88, 71], ["Fouls", 10, 14], ["Corners", 8, 2], ["Saves", 1, 5]], xtra:[["xG", 2.8, 0.6], ["Yellow Cards", 1, 2], ["Offsides", 3, 1]]},
+  m22: {home:'England', away:'Croatia', hf:'', af:'', score:'4-2', date:'Jun 17 - AT&T Stadium, Dallas', poss:[57, 43], stats:[["Shots", 18, 12], ["Shots on Target", 8, 4], ["Passes", 530, 400], ["Pass Accuracy %", 83, 79], ["Fouls", 11, 13], ["Corners", 8, 5], ["Saves", 2, 4]], xtra:[["xG", 3.1, 1.8], ["Yellow Cards", 2, 1], ["Offsides", 3, 2]]}
 };
 
 // ── Simulation state ─────────────────────────────────────
@@ -3428,6 +3430,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
