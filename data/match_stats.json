@@ -1528,7 +1528,7 @@
   "m20": {
     "home": "Austria",
     "away": "Jordan",
-    "score": "2-0",
+    "score": "3-1",
     "date": "Jun 16 - Arrowhead Stadium, Kansas City",
     "poss": [
       58,
@@ -1586,6 +1586,70 @@
         "Offsides",
         2,
         2
+      ]
+    ]
+  },
+  "m25": {
+    "home": "Portugal",
+    "away": "DR Congo",
+    "score": "1-1",
+    "date": "Jun 17 - SoFi Stadium, Los Angeles",
+    "poss": [
+      68,
+      32
+    ],
+    "stats": [
+      [
+        "Shots",
+        19,
+        7
+      ],
+      [
+        "Shots on Target",
+        6,
+        2
+      ],
+      [
+        "Passes",
+        610,
+        280
+      ],
+      [
+        "Pass Accuracy %",
+        88,
+        71
+      ],
+      [
+        "Fouls",
+        10,
+        14
+      ],
+      [
+        "Corners",
+        8,
+        2
+      ],
+      [
+        "Saves",
+        1,
+        5
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.8,
+        0.6
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Offsides",
+        3,
+        1
       ]
     ]
   }

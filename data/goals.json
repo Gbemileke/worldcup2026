@@ -718,5 +718,53 @@
     "phase": "Group J",
     "score": "2-0",
     "desc": "Gregoritsch heads home to double Austria's lead"
+  },
+  {
+    "id": 79,
+    "matchId": "m20",
+    "home": "Austria",
+    "away": "Jordan",
+    "scorer": "M. Gregoritsch",
+    "minute": 78,
+    "type": "open-play",
+    "phase": "Group J",
+    "score": "3-0",
+    "desc": "Gregoritsch gets his brace \u2014 Austria put the game beyond doubt"
+  },
+  {
+    "id": 80,
+    "matchId": "m20",
+    "home": "Austria",
+    "away": "Jordan",
+    "scorer": "Y. Al-Naimat",
+    "minute": 88,
+    "type": "open-play",
+    "phase": "Group J",
+    "score": "3-1",
+    "desc": "Al-Naimat grabs a late consolation for Jordan"
+  },
+  {
+    "id": 81,
+    "matchId": "m25",
+    "home": "Portugal",
+    "away": "DR Congo",
+    "scorer": "C. Ronaldo",
+    "minute": 22,
+    "type": "penalty",
+    "phase": "Group K",
+    "score": "1-0",
+    "desc": "Ronaldo converts from the spot \u2014 his first goal of the 2026 World Cup"
+  },
+  {
+    "id": 82,
+    "matchId": "m25",
+    "home": "Portugal",
+    "away": "DR Congo",
+    "scorer": "B. Mayele",
+    "minute": 76,
+    "type": "open-play",
+    "phase": "Group K",
+    "score": "1-1",
+    "desc": "Mayele equalises for DR Congo in a stunning upset \u2014 Portugal stunned at SoFi Stadium"
   }
 ]

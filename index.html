@@ -1098,31 +1098,30 @@
   }
 
   /* ── Mobile: ≤768px ─────────────────────────────────── */
+
+  /* ── 768px: tablet / large phone ─────────────────────────────── */
   @media (max-width: 768px) {
-    .sidebar { width:100%; height:260px; }
-    .match-selector { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
-    /* Header: stack logo + tab scroller */
+
+    /* Header stacks */
     header {
       flex-direction: column;
       align-items: flex-start;
       padding: 10px 14px 6px;
       height: auto;
-      gap: 8px;
+      gap: 6px;
     }
-    .app-title          { font-size: 16px; gap: 7px; }
-    .app-title svg      { width: 32px; height: 32px; }
-    .live-badge         { display: none; }
+    .app-title        { font-size: 15px; gap: 6px; }
+    .app-title svg    { width: 30px; height: 30px; }
+    .live-badge       { display: none; }
 
-    /* Tab bar becomes horizontal scroller */
+    /* Tab bar scrolls horizontally */
     .tabs {
       width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      padding: 3px 4px;
+      padding: 2px 4px;
       gap: 2px;
-      background: rgba(255,255,255,.08);
-      border-radius: 6px;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
@@ -1132,125 +1131,144 @@
       flex-shrink: 0;
     }
 
-    /* Ticker stays, slightly smaller */
-    .ticker-item        { font-size: 10px; padding: 0 14px; }
+    /* Ticker */
+    .ticker-wrap      { font-size: 11px; }
+    .ticker-item      { padding: 0 10px; }
 
-    /* Layout: sidebar on top, main below */
+    /* Layout: sidebar stacks above content */
     .app-layout {
       flex-direction: column;
       height: auto;
-      min-height: calc(100vh - 120px);
       overflow: visible;
+      min-height: 100vh;
     }
     .sidebar {
       width: 100%;
       height: 220px;
       border-right: none;
       border-bottom: 1px solid var(--border);
-      flex-direction: row;
+      flex-shrink: 0;
     }
-    .sidebar-header     { padding: 10px 12px 8px; }
-    .sidebar-title      { font-size: 12px; margin-bottom: 6px; }
-    .filter-row         { gap: 4px; }
-    .filter-chip        { font-size: 9px; padding: 3px 8px; }
-    .goal-list          { flex: 1; overflow-y: auto; }
-    .goals-list         { padding: 6px 8px; }
-    .gc-card            { padding: 8px 10px; margin-bottom: 4px; }
-    .gc-scorer          { font-size: 11px; }
-    .gc-match           { font-size: 9px; }
+    .main-panel {
+      flex: 1;
+      overflow-y: visible;
+      min-height: 0;
+    }
 
-    .main-content,
-    .main-panel         { overflow-y: visible; }
+    /* Tab panels */
+    .tab-panel        { padding: 14px 14px; }
+    .bracket-wrap     { padding: 14px 14px; }
 
-    /* Tabs: single column panels */
-    .tab-panel          { padding: 12px 14px; }
-    .bracket-wrap       { padding: 12px 14px; }
+    /* Grids */
+    .team-grid        { grid-template-columns: repeat(2, 1fr); }
+    .top4-grid        { grid-template-columns: repeat(2, 1fr); }
+    .groups-grid      { grid-template-columns: 1fr; }
+    .match-video-grid { grid-template-columns: repeat(2, 1fr); }
+    .analytics-3col   { grid-template-columns: 1fr; gap: 10px; }
+    .analytics-grid   { gap: 6px; }
+    .bracket-grid-2   { grid-template-columns: 1fr; }
+    .settings-grid    { grid-template-columns: 1fr; }
+    .match-selector   { grid-template-columns: repeat(3, 1fr); }
+    .xtra-grid        { grid-template-columns: repeat(2, 1fr); }
 
-    /* Stat snapshot: 2-col */
-    .analytics-grid     { gap: 6px; }
-    .stat-card          { min-width: 130px; padding: 9px 12px; }
-    .stat-num           { font-size: 22px; }
-    .stat-label         { font-size: 10px; }
-    .stat-sub           { font-size: 8px; }
+    /* Snapshot cards scroll horizontally */
+    .snapshot-cards {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+      padding-bottom: 6px;
+    }
+    .snapshot-cards::-webkit-scrollbar { display: none; }
+    .stat-card        { min-width: 130px; flex-shrink: 0; }
 
-    /* Charts: single column */
-    .analytics-3col     { grid-template-columns: 1fr; gap: 10px; }
-    .chart-card         { padding: 14px; }
-
-    /* Match selector: 2-col */
-    .match-selector     { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-    .ms-card            { padding: 8px 10px; }
-    .ms-teams           { font-size: 10px; }
-    .ms-score           { font-size: 14px; }
-
-    /* Videos: 2-col */
-    .match-video-grid   { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .match-card-score   { padding: 10px 12px 8px; }
-    .mc-team            { font-size: 10px; }
-    .mc-team-r          { font-size: 10px; }
-    .mc-score           { font-size: 15px; }
-
-    /* Teams: 2-col */
-    .team-grid          { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .team-card          { padding: 10px; }
-    .team-card-name     { font-size: 13px; }
-
-    /* Top4: 1-col */
-    .top4-grid          { grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    /* Groups: 1-col */
-    .groups-grid        { grid-template-columns: 1fr; gap: 10px; }
+    /* Hero */
+    .hero-details     { grid-template-columns: 1fr; }
+    .goal-hero        { flex-direction: column; }
 
     /* Bracket */
-    .bracket-intro      { flex-direction: column; gap: 10px; }
-    .sim-btn            { width: 100%; text-align: center; }
-    .bracket-grid-2     { grid-template-columns: 1fr; }
-    .stage-tabs         { overflow-x: auto; scrollbar-width: none; }
-    .stage-tabs::-webkit-scrollbar { display: none; }
-    .stage-tab          { white-space: nowrap; flex-shrink: 0; padding: 7px 12px; }
+    .bracket-stage    { min-width: 120px; }
+    .matchup-card     { padding: 6px 8px; }
+  }
 
-    /* Hero panel */
-    .hero-panel         { padding: 16px 14px; }
-    .hero-score         { gap: 10px; }
-    .hero-team          { font-size: 20px; }
-    .hero-scoreline     { font-size: 30px; }
-    .hero-details       { grid-template-columns: 1fr 1fr; gap: 6px; }
+  /* ── 480px: iPhone ────────────────────────────────────────────── */
+  @media (max-width: 480px) {
+
+    /* Header */
+    .app-title        { font-size: 13px; gap: 5px; }
+    .app-title svg    { width: 26px; height: 26px; }
+    .tab-btn          { font-size: 9px; padding: 4px 9px; }
+
+    /* Layout */
+    .sidebar          { height: 200px; }
+    .tab-panel        { padding: 10px 12px; }
+    .bracket-wrap     { padding: 10px 12px; }
+
+    /* Analytics */
+    .stat-card        { min-width: 120px; padding: 8px 10px; }
+    .stat-num         { font-size: 22px; }
+    .stat-label       { font-size: 9px; }
+    .stat-sub         { font-size: 9px; }
+    .section-title    { font-size: 11px; }
+    .chart-title      { font-size: 9px; letter-spacing: .4px; }
+    .analytics-3col   { grid-template-columns: 1fr; }
+    .match-selector   { grid-template-columns: repeat(2, 1fr); }
+    .xtra-grid        { grid-template-columns: repeat(2, 1fr); }
+    .ms-teams         { font-size: 11px; }
+    .ms-score         { font-size: 13px; }
+
+    /* Videos */
+    .match-video-grid { grid-template-columns: 1fr; }
+    .match-card       { padding: 10px 12px; }
+
+    /* Bracket */
+    .top4-grid        { grid-template-columns: 1fr; }
+    .team-grid        { grid-template-columns: 1fr 1fr; gap: 5px; }
+    .bracket-stage    { min-width: 100px; }
+
+    /* Groups */
+    .groups-grid      { grid-template-columns: 1fr; gap: 8px; }
+    .group-card-hd    { padding: 8px 10px; }
+    .group-team-row   { padding: 6px 10px; }
+    .gtr-name         { font-size: 11px; }
+    .gtr-probs        { gap: 8px; }
+    .gtr-prob-lbl     { font-size: 9px; }
+    .gtr-prob-val     { font-size: 11px; }
+
+    /* Goal feed */
+    .goal-card        { padding: 8px 10px; }
+    .scorer-name      { font-size: 12px; }
+    .goal-minute      { font-size: 11px; min-width: 28px; }
+    .match-teams      { font-size: 9px; }
+
+    /* Donut + chart: stack */
+    .donut-wrap       { flex-direction: column; align-items: center; }
+    .donut-legend     { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px; }
+
+    /* Scorers */
+    .scorer-row-item  { padding: 6px 10px; }
 
     /* Settings */
-    .settings-grid      { grid-template-columns: 1fr; }
-    .preset-grid        { grid-template-columns: repeat(2, 1fr); }
+    .weight-row       { flex-direction: column; gap: 4px; }
+    .weight-label     { width: auto; }
 
-    /* xtra grid */
-    .xtra-grid          { grid-template-columns: repeat(2, 1fr); }
-
-    /* Section title */
-    .section-title      { font-size: 12px; }
-    .section-title-hero { font-size: 15px; }
+    /* Ticker slightly smaller */
+    .ticker-wrap      { font-size: 10px; }
+    .ticker-item      { padding: 0 8px; }
   }
 
-  /* ── Small mobile: ≤480px ───────────────────────────── */
-  @media (max-width: 480px) {
-    .app-title          { font-size: 14px; }
-    .tab-btn            { font-size: 9px; padding: 4px 9px; }
-
-    .top4-grid          { grid-template-columns: 1fr; }
-    .team-grid          { grid-template-columns: 1fr 1fr; gap: 6px; }
-    .match-video-grid   { grid-template-columns: 1fr; }
-    .match-selector     { grid-template-columns: repeat(2, 1fr); }
-    .analytics-grid     { gap: 5px; }
-    .stat-card          { min-width: 110px; padding: 8px 10px; }
-    .stat-num           { font-size: 20px; }
-
-    .hero-details       { grid-template-columns: 1fr; }
-    .xtra-grid          { grid-template-columns: repeat(2, 1fr); }
-
-    /* Tab panel full bleed */
-    .tab-panel          { padding: 10px 10px; }
-    .bracket-wrap       { padding: 10px 10px; }
-
-    /* Donut chart: stack vertically */
-    .donut-area         { flex-direction: column; align-items: center; }
+  /* ── 390px: iPhone 14 / 15 (most common) ─────────────────────── */
+  @media (max-width: 390px) {
+    .tab-btn          { font-size: 8px; padding: 4px 7px; }
+    .stat-card        { min-width: 105px; padding: 7px 8px; }
+    .stat-num         { font-size: 20px; }
+    .group-card-hd    { padding: 7px 8px; }
+    .gtr-name         { font-size: 10px; }
+    .tab-panel        { padding: 8px 10px; }
+    .bracket-wrap     { padding: 8px 10px; }
+    .sidebar          { height: 185px; }
   }
+
 </style>
 </head>
 <body>
@@ -1338,12 +1356,12 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 17, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">60</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.00 per match · 20 matches played</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">64</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.05 per match · 21 matches played</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">4</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein</div></div>
-            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E)</div></div>
+            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">3</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E), Ronaldo (Grp K)</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">20</div><div class="stat-label">Matches Played</div><div class="stat-sub">44 open play · 10 headers · 2 penalties · 4 OGs</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">21</div><div class="stat-label">Matches Played</div><div class="stat-sub">47 open play · 10 headers · 3 penalties · 4 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1693,7 +1711,8 @@ var MATCHES = [
   {id:'m17', date:'Jun 16', home:'France', away:'Senegal', hf:'', af:'', score:'3-1', group:'Group I', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report'},
   {id:'m18', date:'Jun 16', home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', group:'Group I', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report'},
   {id:'m19', date:'Jun 16', home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report'},
-  {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'}
+  {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'},
+  {id:'m25', date:'Jun 17', home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -1756,8 +1775,14 @@ var GOALS = [
   {id:73, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:71, type:'open-play', phase:'Group J', score:'2-0', desc:'Messi\'s second — Argentina cruise to a 2-0 lead'},
   {id:74, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:88, type:'open-play', phase:'Group J', score:'3-0', desc:'Messi completes his hat-trick — his 16th World Cup goal equals Klose\'s all-time record. Argentina win 3-0.'},
   {id:58, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'M. Sabitzer', flag:'', minute:28, type:'open-play', phase:'Group J', score:'1-0', desc:'Sabitzer opens the scoring with a powerful drive from outside the box'},
-  {id:59, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'C. Gregoritsch', flag:'', minute:64, type:'header', phase:'Group J', score:'2-0', desc:'Gregoritsch heads home to double Austria\'s lead'}
+  {id:59, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'C. Gregoritsch', flag:'', minute:64, type:'header', phase:'Group J', score:'2-0', desc:'Gregoritsch heads home to double Austria\'s lead'},
+  {id:79, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'M. Gregoritsch', flag:'', minute:78, type:'open-play', phase:'Group J', score:'3-0', desc:'Gregoritsch gets his brace — Austria put the game beyond doubt'},
+  {id:80, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'Y. Al-Naimat', flag:'', minute:88, type:'open-play', phase:'Group J', score:'3-1', desc:'Al-Naimat grabs a late consolation for Jordan'},
+  {id:81, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'C. Ronaldo', flag:'', minute:22, type:'penalty', phase:'Group K', score:'1-0', desc:'Ronaldo converts from the spot — his first goal of the 2026 World Cup'},
+  {id:82, matchId:'m25', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'B. Mayele', flag:'', minute:76, type:'open-play', phase:'Group K', score:'1-1', desc:'Mayele equalises for DR Congo in a stunning upset — Portugal stunned at SoFi Stadium'}
 ];
+
+
 
 
 
@@ -1784,7 +1809,6 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jun 17', home:'Portugal', away:'DR Congo', time:'12PM CST', group:'K'},
   {date:'Jun 17', home:'England', away:'Croatia', time:'3PM CST', group:'L'},
   {date:'Jun 17', home:'Ghana', away:'Panama', time:'6PM CST', group:'L'},
   {date:'Jun 17', home:'Uzbekistan', away:'Colombia', time:'9PM CST', group:'K'},
@@ -1815,7 +1839,8 @@ var MATCH_STATS = {
   m17: {home:'France', away:'Senegal', hf:'', af:'', score:'3-1', date:'Jun 16 - MetLife Stadium, New Jersey', poss:[60, 40], stats:[["Shots", 18, 14], ["Shots on Target", 6, 5], ["Passes", 542, 338], ["Pass Accuracy %", 88, 78], ["Fouls", 12, 14], ["Corners", 7, 4], ["Clearances", 8, 14], ["Turnovers", 10, 13]], xtra:[["xG", 2.1, 1.8], ["Yellow Cards", 1, 2], ["Offsides", 3, 1], ["Saves", 4, 3]]},
   m18: {home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', date:'Jun 16 - Gillette Stadium (Boston), Foxborough MA', poss:[62, 38], stats:[["Shots", 18, 7], ["Shots on Target", 7, 3], ["Passes", 521, 298], ["Pass Accuracy %", 86, 73], ["Fouls", 10, 16], ["Corners", 7, 3], ["Clearances", 8, 22], ["Turnovers", 11, 18]], xtra:[["xG", 3.4, 0.9], ["Yellow Cards", 1, 2], ["Offsides", 3, 2], ["Saves", 2, 5]]},
   m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', date:'Jun 16 - Mercedes-Benz Stadium, Atlanta', poss:[72, 28], stats:[["Shots", 22, 4], ["Shots on Target", 9, 1], ["Passes", 680, 240], ["Pass Accuracy %", 91, 68], ["Fouls", 9, 14], ["Corners", 10, 1], ["Saves", 1, 6]], xtra:[["xG", 3.4, 0.3], ["Yellow Cards", 1, 2], ["Offsides", 4, 0]]},
-  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', date:'Jun 16 - Arrowhead Stadium, Kansas City', poss:[58, 42], stats:[["Shots", 14, 7], ["Shots on Target", 6, 2], ["Passes", 480, 320], ["Pass Accuracy %", 85, 74], ["Fouls", 11, 12], ["Corners", 6, 3], ["Saves", 2, 4]], xtra:[["xG", 2.1, 0.6], ["Yellow Cards", 2, 1], ["Offsides", 2, 2]]}
+  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', date:'Jun 16 - Arrowhead Stadium, Kansas City', poss:[58, 42], stats:[["Shots", 14, 7], ["Shots on Target", 6, 2], ["Passes", 480, 320], ["Pass Accuracy %", 85, 74], ["Fouls", 11, 12], ["Corners", 6, 3], ["Saves", 2, 4]], xtra:[["xG", 2.1, 0.6], ["Yellow Cards", 2, 1], ["Offsides", 2, 2]]},
+  m25: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', date:'Jun 17 - SoFi Stadium, Los Angeles', poss:[68, 32], stats:[["Shots", 19, 7], ["Shots on Target", 6, 2], ["Passes", 610, 280], ["Pass Accuracy %", 88, 71], ["Fouls", 10, 14], ["Corners", 8, 2], ["Saves", 1, 5]], xtra:[["xG", 2.8, 0.6], ["Yellow Cards", 1, 2], ["Offsides", 3, 1]]}
 };
 
 // ── Simulation state ─────────────────────────────────────
@@ -1829,25 +1854,25 @@ var TEAM_DATA = {
   'France':      {flag:'fr', group:'I', elo:2062, fifaPts:1871, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:17.76},
   'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1826, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:1.0, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:8.64},
   'Brazil':      {flag:'br', group:'C', elo:1978, fifaPts:1761, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.5, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:5.76},
-  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1764, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.8, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:7.68},
+  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1764, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.62, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:7.68},
   'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1693, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.7, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.92},
   'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1758, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.5, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:3.36},
   'Croatia':     {flag:'hr', group:'L', elo:1932, fifaPts:1717, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.7, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:1.06},
   'Norway':      {flag:'no', group:'I', elo:1922, fifaPts:1600, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:1.0, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:3.84},
   'Germany':     {flag:'de', group:'E', elo:1910, fifaPts:1730, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:1.0, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:6.72},
   'Switzerland': {flag:'ch', group:'B', elo:1897, fifaPts:1649, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.5, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.96},
-  'Ecuador':     {flag:'ec', group:'E', elo:1933, fifaPts:1560, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.01, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.29},
+  'Ecuador':     {flag:'ec', group:'E', elo:1933, fifaPts:1560, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.0, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.29},
   'Uruguay':     {flag:'uy', group:'H', elo:1890, fifaPts:1673, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.5, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.86},
   'Turkey':      {flag:'tr', group:'D', elo:1880, fifaPts:1578, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.9, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
   'Japan':       {flag:'jp', group:'F', elo:1878, fifaPts:1660, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.5, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:1.34},
-  'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1689, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.01, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.1},
+  'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1689, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.0, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.1},
   'Belgium':     {flag:'be', group:'G', elo:1850, fifaPts:1735, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.5, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:2.4},
   'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1756, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.5, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:1.73},
   'USA':         {flag:'us', group:'D', elo:1747, fifaPts:1673, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:1.0, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:3.36},
   'Mexico':      {flag:'mx', group:'A', elo:1857, fifaPts:1681, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:1.44},
   'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1580, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:1.0, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:1.15},
   'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1570, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.7, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.77},
-  'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1550, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.01, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.19},
+  'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1550, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.0, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.19},
   'Austria':     {flag:'at', group:'J', elo:1818, fifaPts:1540, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:4, form:1.0, squadDepth:74, exp:4,  keyPlayer:'M. Sabitzer',  marketPct:0.48},
   'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1530, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:1.0, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.48},
   'Scotland':    {flag:'gb-sct', group:'C', elo:1645, fifaPts:1480, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:1.0, squadDepth:65, exp:1, keyPlayer:'J. McGinn', marketPct:0.58},
@@ -1856,20 +1881,20 @@ var TEAM_DATA = {
   'Iran':        {flag:'ir', group:'G', elo:1755, fifaPts:1480, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:7, form:0.5, squadDepth:59, exp:6,  keyPlayer:'M. Taremi',    marketPct:0.19},
   'Saudi Arabia':{flag:'sa', group:'H', elo:1635, fifaPts:1460, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:57, exp:6,  keyPlayer:'S. Al-Dawsari',marketPct:0.1},
   'South Africa': {flag:'za', group:'A', elo:1500, fifaPts:1380, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:11,form:0.0, squadDepth:50, exp:3,  keyPlayer:'P. Tau',       marketPct:0.06},
-  'Czechia':      {flag:'cz', group:'A', elo:1731, fifaPts:1520, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:9, form:0.01, squadDepth:70, exp:6,  keyPlayer:'T. Soucek',    marketPct:0.14},
+  'Czechia':      {flag:'cz', group:'A', elo:1731, fifaPts:1520, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:9, form:0.0, squadDepth:70, exp:6,  keyPlayer:'T. Soucek',    marketPct:0.14},
   'Qatar':        {flag:'qa', group:'B', elo:1550, fifaPts:1400, qualW:3,qualD:1,qualL:4,qualGF:12,qualGA:14,form:0.5, squadDepth:52, exp:2,  keyPlayer:'A. Afif',      marketPct:0.04},
   'Bosnia':       {flag:'ba', group:'B', elo:1580, fifaPts:1510, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.5, squadDepth:67, exp:1,  keyPlayer:'E. Dzeko',     marketPct:0.19},
   'Haiti':        {flag:'ht', group:'C', elo:1550, fifaPts:1300, qualW:2,qualD:2,qualL:4,qualGF:8, qualGA:14,form:0.0, squadDepth:42, exp:1,  keyPlayer:'N. Geffrard',  marketPct:0.02},
   'Paraguay':     {flag:'py', group:'D', elo:1833, fifaPts:1450, qualW:4,qualD:3,qualL:11,qualGF:15,qualGA:32,form:0.0, squadDepth:55, exp:7,  keyPlayer:'M. Almiron',   marketPct:0.05},
   'Curacao':      {flag:'cw', group:'E', elo:1500, fifaPts:1250, qualW:2,qualD:1,qualL:5,qualGF:7, qualGA:16,form:0.0, squadDepth:38, exp:1,  keyPlayer:'J. Antonisse', marketPct:0.01},
-  'Tunisia':      {flag:'tn', group:'F', elo:1630, fifaPts:1455, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.01, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.05},
+  'Tunisia':      {flag:'tn', group:'F', elo:1630, fifaPts:1455, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.0, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.05},
   'Egypt':        {flag:'eg', group:'G', elo:1659, fifaPts:1490, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.5, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.24},
   'New Zealand':  {flag:'nz', group:'G', elo:1500, fifaPts:1320, qualW:3,qualD:1,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:44, exp:4,  keyPlayer:'C. Wood',      marketPct:0.07},
   'Cape Verde':   {flag:'cv', group:'H', elo:1500, fifaPts:1420, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.08},
   'Iraq':         {flag:'iq', group:'I', elo:1600, fifaPts:1390, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.0, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.03},
   'Jordan':       {flag:'jo', group:'J', elo:1689, fifaPts:1370, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.0, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.03},
   'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1430, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.7, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
-  'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.6, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.12},
+  'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.54, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.12},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.7, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.14},
 };
@@ -3378,6 +3403,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 

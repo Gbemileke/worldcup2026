@@ -194,9 +194,19 @@
     "date": "Jun 16",
     "home": "Austria",
     "away": "Jordan",
-    "score": "2-0",
+    "score": "3-1",
     "group": "Group J",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report"
+  },
+  {
+    "id": "m25",
+    "date": "Jun 17",
+    "home": "Portugal",
+    "away": "DR Congo",
+    "score": "1-1",
+    "group": "Group K",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report"
   }
 ]

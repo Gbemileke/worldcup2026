@@ -23,8 +23,8 @@ SHORT = {
     "South Africa":"S. Africa", "Côte d'Ivoire":"Ivory Coast",
     "Bosnia and Herzegovina":"Bosnia", "Curaçao":"Curacao",
     "United States":"USA", "IR Iran":"Iran", "Türkiye":"Turkey",
-    "Korea Republic":"S. Korea", "Cape Verde":"Cape Verde",
-    "Congo DR":"DR Congo",
+    "Korea Republic":"S. Korea", "Cape Verde":"Cape Verde", "Cape Verde Islands":"Cape Verde",
+    "Congo DR":"DR Congo", "Democratic Republic of Congo":"DR Congo",
 }
 
 VENUES = {
@@ -109,7 +109,12 @@ def fetch_matches(token):
     if r.status_code == 403:
         print("ERROR: Invalid or expired token"); sys.exit(1)
     r.raise_for_status()
-    return r.json().get('matches', [])
+    data = r.json()
+    matches = data.get('matches', [])
+    # Log how many have goals in the list response
+    with_goals = sum(1 for m in matches if m.get('goals'))
+    print(f"  List endpoint: {len(matches)} matches, {with_goals} have goals array")
+    return matches
 
 def fetch_detail(token, match_id):
     headers = {'X-Auth-Token': token}
@@ -352,11 +357,12 @@ def run(token):
 
         # ── 3. Update goals.json ───────────────────────────────────────────
         if need_goals:
-            # Use the detail already fetched above (no extra API call needed)
-            detail_goals = detail.get('goals') or []
-            # football-data.org free tier: goals are in detail['goals']
-            # Each goal: {scorer:{name}, team:{name}, minute, type}
-            print(f"  Goals for {mid}: {len(detail_goals)} found")
+            # Try goals from the competition LIST response first (often populated sooner)
+            list_goals = m.get('goals') or []
+            # Fall back to detail endpoint if list has none
+            detail_goals = list_goals if list_goals else (detail.get('goals') or [])
+            source = 'list' if list_goals else 'detail'
+            print(f"  Goals for {mid}: {len(detail_goals)} found (from {source})")
 
             if detail_goals:
                 for gd in detail_goals:
