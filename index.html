@@ -2053,7 +2053,8 @@ function buildScorers() {
   GOALS.forEach(function(g) {
     if (g.type === 'own-goal') return;
     var name = (g.scorer || '').replace(/ OG$/, '').trim();
-    if (!name) return;
+    // Filter out placeholder entries added when API returned no goals
+    if (!name || name === 'See FIFA.com' || name === 'Unknown') return;
     if (!counts[name]) counts[name] = {goals:0, team: g.home};
     counts[name].goals++;
   });

@@ -209,6 +209,14 @@ def run(token):
     goals     = load('goals.json')         or []
     upcoming  = load('upcoming_fixtures.json') or []
 
+    # Clean up any placeholder goals added in previous runs
+    placeholder_scorers = {'See FIFA.com', 'Unknown', ''}
+    before = len(goals)
+    goals = [g for g in goals if g.get('scorer','').strip() not in placeholder_scorers]
+    removed = before - len(goals)
+    if removed > 0:
+        print(f"  Cleaned up {removed} placeholder goal entries")
+
     # Build lookup of what we already have
     existing_match_ids = {m['id'] for m in matches}
     existing_stat_keys = set(stats.keys())
@@ -381,23 +389,9 @@ def run(token):
             else:
                 # API returned no goals — add placeholder so match appears in feed
                 # Will be overwritten next run if API returns goals
-                print(f"  WARNING: No goals from API for {mid} ({home} {home_score}-{away_score} {away})")
-                total_goals_in_match = (home_score or 0) + (away_score or 0)
-                if total_goals_in_match > 0:
-                    goals.append({
-                        "id":      next_goal_id,
-                        "matchId": mid,
-                        "home":    home,
-                        "away":    away,
-                        "scorer":  'See FIFA.com',
-                        "minute":  90,
-                        "type":    'open-play',
-                        "phase":   group_raw,
-                        "score":   f"{home_score}-{away_score}",
-                        "desc":    f"{home} {home_score}-{away_score} {away} — scorers not yet available from API. Check FIFA.com for full details."
-                    })
-                    next_goal_id += 1
-                    goals_added += 1
+                print(f"  WARNING: No goals from API for {mid} ({home} {home_score}-{away_score} {away}) — will retry next run")
+                # Do NOT add placeholder — it corrupts the top scorers table
+                # The match will be retried on the next Action run
 
         # ── 4. Remove from upcoming_fixtures.json ─────────────────────────
         before = len(upcoming)
