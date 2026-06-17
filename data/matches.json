@@ -184,7 +184,7 @@
     "date": "Jun 16",
     "home": "Argentina",
     "away": "Algeria",
-    "score": "2-0",
+    "score": "3-0",
     "group": "Group J",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report"
@@ -198,45 +198,5 @@
     "group": "Group J",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report"
-  },
-  {
-    "id": "m21",
-    "date": "Jun 17",
-    "home": "Portugal",
-    "away": "DR Congo",
-    "score": "4-0",
-    "group": "Group K",
-    "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-dr-congo-highlights-match-report"
-  },
-  {
-    "id": "m22",
-    "date": "Jun 17",
-    "home": "Colombia",
-    "away": "Uzbekistan",
-    "score": "3-0",
-    "group": "Group K",
-    "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-uzbekistan-highlights-match-report"
-  },
-  {
-    "id": "m23",
-    "date": "Jun 17",
-    "home": "England",
-    "away": "Croatia",
-    "score": "3-1",
-    "group": "Group L",
-    "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report"
-  },
-  {
-    "id": "m24",
-    "date": "Jun 17",
-    "home": "Panama",
-    "away": "Ghana",
-    "score": "0-2",
-    "group": "Group L",
-    "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-ghana-highlights-match-report"
   }
 ]

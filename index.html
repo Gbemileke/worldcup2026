@@ -1338,12 +1338,12 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 17, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">68</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.83 per match · 24 matches played</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">56</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.80 per match · 20 matches played</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">4</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein</div></div>
-            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">4</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E), Ronaldo (Grp K), Kane (Grp L)</div></div>
-            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">2</div><div class="stat-label">Joint Top Scorers (6)</div><div class="stat-sub">Balogun, Havertz, Just, Mbappe, Haaland, Messi</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">24</div><div class="stat-label">Matches Played</div><div class="stat-sub">48 open play · 12 headers · 4 penalties · 4 OGs</div></div>
+            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">2</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E)</div></div>
+            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">20</div><div class="stat-label">Matches Played</div><div class="stat-sub">40 open play · 10 headers · 2 penalties · 4 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1695,12 +1695,8 @@ var MATCHES = [
   {id:'m16', date:'Jun 15', home:'Iran', away:'New Zealand', hf:'', af:'', score:'2-2', group:'Group G', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iran-v-new-zealand-highlights-match-report'},
   {id:'m17', date:'Jun 16', home:'France', away:'Senegal', hf:'', af:'', score:'3-1', group:'Group I', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report'},
   {id:'m18', date:'Jun 16', home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', group:'Group I', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report'},
-  {id:'m19', date:'Jun 16', home:'Argentina', away:'Algeria', hf:'', af:'', score:'2-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report'},
-  {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'},
-  {id:'m21', date:'Jun 17', home:'Portugal', away:'DR Congo', hf:'', af:'', score:'4-0', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-dr-congo-highlights-match-report'},
-  {id:'m22', date:'Jun 17', home:'Colombia', away:'Uzbekistan', hf:'', af:'', score:'3-0', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-uzbekistan-highlights-match-report'},
-  {id:'m23', date:'Jun 17', home:'England', away:'Croatia', hf:'', af:'', score:'3-1', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report'},
-  {id:'m24', date:'Jun 17', home:'Panama', away:'Ghana', hf:'', af:'', score:'0-2', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-ghana-highlights-match-report'}
+  {id:'m19', date:'Jun 16', home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report'},
+  {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -1756,23 +1752,13 @@ var GOALS = [
   {id:54, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'L. Ostigard', flag:'', minute:76, type:'header', phase:'Group I', score:'3-1', desc:'Ostigard leaps brilliantly to head home Odegaard corner — Norway put the game to bed'},
   {id:55, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'A. Hussein OG', flag:'', minute:96, type:'own-goal', phase:'Group I', score:'4-1', desc:'Hussein own goal — cruel twist as Haaland header across goal is poked into his own net by the Iraq striker who scored the equaliser'},
   {id:56, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:34, type:'open-play', phase:'Group J', score:'1-0', desc:'Messi opens his 2026 World Cup account with a clinical finish — his 15th World Cup goal'},
-  {id:73, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:71, type:'open-play', phase:'Group J', score:'2-0', desc:'Messi doubles his tally and Argentina\'s lead — 16th World Cup goal equals Klose\'s all-time record'},
+  {id:73, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:71, type:'open-play', phase:'Group J', score:'2-0', desc:'Messi\'s second — Argentina cruise to a 2-0 lead'},
+  {id:74, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:88, type:'open-play', phase:'Group J', score:'3-0', desc:'Messi completes his hat-trick — his 16th World Cup goal equals Klose\'s all-time record. Argentina win 3-0.'},
   {id:58, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'M. Sabitzer', flag:'', minute:28, type:'open-play', phase:'Group J', score:'1-0', desc:'Sabitzer opens the scoring with a powerful drive from outside the box'},
-  {id:59, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'C. Gregoritsch', flag:'', minute:64, type:'header', phase:'Group J', score:'2-0', desc:'Gregoritsch heads home to double Austria\'s lead'},
-  {id:60, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'B. Fernandes', flag:'', minute:18, type:'open-play', phase:'Group K', score:'1-0', desc:'Bruno Fernandes opens the scoring with a stunning volley'},
-  {id:61, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'C. Ronaldo', flag:'', minute:36, type:'penalty', phase:'Group K', score:'2-0', desc:'Ronaldo converts from the spot — his first goal of the 2026 tournament'},
-  {id:62, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'R. Leao', flag:'', minute:58, type:'open-play', phase:'Group K', score:'3-0', desc:'Leao cuts in from the left and fires into the far corner'},
-  {id:63, matchId:'m21', home:'Portugal', away:'DR Congo', hf:'', af:'', scorer:'G. Ramos', flag:'', minute:81, type:'header', phase:'Group K', score:'4-0', desc:'Ramos heads home Fernandes cross to complete a dominant Portugal victory'},
-  {id:64, matchId:'m22', home:'Colombia', away:'Uzbekistan', hf:'', af:'', scorer:'L. Diaz', flag:'', minute:22, type:'open-play', phase:'Group K', score:'1-0', desc:'Luis Diaz opens the scoring with a trademark run and finish'},
-  {id:65, matchId:'m22', home:'Colombia', away:'Uzbekistan', hf:'', af:'', scorer:'J. Cuadrado', flag:'', minute:55, type:'open-play', phase:'Group K', score:'2-0', desc:'Cuadrado adds a second with a well-placed shot from the edge of the box'},
-  {id:66, matchId:'m22', home:'Colombia', away:'Uzbekistan', hf:'', af:'', scorer:'R. Arias', flag:'', minute:78, type:'open-play', phase:'Group K', score:'3-0', desc:'Arias finishes off a Colombia counter-attack to complete the rout'},
-  {id:67, matchId:'m23', home:'England', away:'Croatia', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:15, type:'open-play', phase:'Group L', score:'1-0', desc:'Bellingham opens with a brilliant curling effort from 25 yards'},
-  {id:68, matchId:'m23', home:'England', away:'Croatia', hf:'', af:'', scorer:'I. Perisic', flag:'', minute:38, type:'header', phase:'Group L', score:'1-1', desc:'Perisic levels with a trademark header from a corner'},
-  {id:69, matchId:'m23', home:'England', away:'Croatia', hf:'', af:'', scorer:'H. Kane', flag:'', minute:62, type:'penalty', phase:'Group L', score:'2-1', desc:'Kane restores England\'s lead from the penalty spot'},
-  {id:70, matchId:'m23', home:'England', away:'Croatia', hf:'', af:'', scorer:'P. Foden', flag:'', minute:84, type:'open-play', phase:'Group L', score:'3-1', desc:'Foden seals it with a cool finish to confirm England\'s Group L victory'},
-  {id:71, matchId:'m24', home:'Panama', away:'Ghana', hf:'', af:'', scorer:'J. Ayew', flag:'', minute:41, type:'open-play', phase:'Group L', score:'0-1', desc:'Jordan Ayew gives Ghana the lead with a precise finish'},
-  {id:72, matchId:'m24', home:'Panama', away:'Ghana', hf:'', af:'', scorer:'M. Kudus', flag:'', minute:77, type:'open-play', phase:'Group L', score:'0-2', desc:'Kudus doubles Ghana\'s advantage with a powerful strike to seal all three points'}
+  {id:59, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'C. Gregoritsch', flag:'', minute:64, type:'header', phase:'Group J', score:'2-0', desc:'Gregoritsch heads home to double Austria\'s lead'}
 ];
+
+
 
 
 
@@ -1793,6 +1779,10 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
+  {date:'Jun 17', home:'Portugal', away:'DR Congo', time:'9PM ET', group:'K'},
+  {date:'Jun 17', home:'Colombia', away:'Uzbekistan', time:'12AM ET', group:'K'},
+  {date:'Jun 17', home:'England', away:'Croatia', time:'3PM ET', group:'L'},
+  {date:'Jun 17', home:'Panama', away:'Ghana', time:'6PM ET', group:'L'},
   {date:'Jun 18', home:'Mexico', away:'South Korea', time:'1PM ET', group:'A'},
   {date:'Jun 18', home:'Czechia', away:'South Africa', time:'4PM ET', group:'A'},
   {date:'Jun 18', home:'Canada', away:'Qatar', time:'7PM ET', group:'B'},
@@ -1819,12 +1809,8 @@ var MATCH_STATS = {
   m16: {home:'Iran', away:'New Zealand', hf:'', af:'', score:'2-2', date:'Jun 15 - SoFi Stadium, Los Angeles', poss:[43, 57], stats:[["Shots", 17, 14], ["Shots on Target", 4, 8], ["Passes", 380, 460], ["Pass Accuracy %", 80, 83], ["Fouls", 14, 11], ["Corners", 7, 5], ["Clearances", 14, 9], ["Turnovers", 13, 10]], xtra:[["xG", 1.8, 2.1], ["Yellow Cards", 1, 0], ["Offsides", 2, 1], ["Saves", 6, 2]]},
   m17: {home:'France', away:'Senegal', hf:'', af:'', score:'3-1', date:'Jun 16 - MetLife Stadium, New Jersey', poss:[60, 40], stats:[["Shots", 18, 14], ["Shots on Target", 6, 5], ["Passes", 542, 338], ["Pass Accuracy %", 88, 78], ["Fouls", 12, 14], ["Corners", 7, 4], ["Clearances", 8, 14], ["Turnovers", 10, 13]], xtra:[["xG", 2.1, 1.8], ["Yellow Cards", 1, 2], ["Offsides", 3, 1], ["Saves", 4, 3]]},
   m18: {home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', date:'Jun 16 - Gillette Stadium (Boston), Foxborough MA', poss:[62, 38], stats:[["Shots", 18, 7], ["Shots on Target", 7, 3], ["Passes", 521, 298], ["Pass Accuracy %", 86, 73], ["Fouls", 10, 16], ["Corners", 7, 3], ["Clearances", 8, 22], ["Turnovers", 11, 18]], xtra:[["xG", 3.4, 0.9], ["Yellow Cards", 1, 2], ["Offsides", 3, 2], ["Saves", 2, 5]]},
-  m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'2-0', date:'Jun 16 - Mercedes-Benz Stadium, Atlanta', poss:[68, 32], stats:[["Shots", 18, 5], ["Shots on Target", 8, 1], ["Passes", 620, 280], ["Pass Accuracy %", 88, 71], ["Fouls", 10, 13], ["Corners", 8, 2], ["Saves", 1, 6]], xtra:[["xG", 2.8, 0.4], ["Yellow Cards", 1, 2], ["Offsides", 3, 1]]},
-  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', date:'Jun 16 - Arrowhead Stadium, Kansas City', poss:[58, 42], stats:[["Shots", 14, 7], ["Shots on Target", 6, 2], ["Passes", 480, 320], ["Pass Accuracy %", 85, 74], ["Fouls", 11, 12], ["Corners", 6, 3], ["Saves", 2, 4]], xtra:[["xG", 2.1, 0.6], ["Yellow Cards", 2, 1], ["Offsides", 2, 2]]},
-  m21: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'4-0', date:'Jun 17 - SoFi Stadium, Los Angeles', poss:[71, 29], stats:[["Shots", 22, 4], ["Shots on Target", 10, 1], ["Passes", 680, 240], ["Pass Accuracy %", 89, 68], ["Fouls", 9, 14], ["Corners", 9, 1], ["Saves", 1, 8]], xtra:[["xG", 3.9, 0.3], ["Yellow Cards", 0, 3], ["Offsides", 4, 0]]},
-  m22: {home:'Colombia', away:'Uzbekistan', hf:'', af:'', score:'3-0', date:'Jun 17 - Hard Rock Stadium, Miami', poss:[63, 37], stats:[["Shots", 16, 6], ["Shots on Target", 7, 1], ["Passes", 560, 310], ["Pass Accuracy %", 86, 72], ["Fouls", 11, 11], ["Corners", 7, 2], ["Saves", 1, 5]], xtra:[["xG", 2.6, 0.5], ["Yellow Cards", 1, 2], ["Offsides", 2, 1]]},
-  m23: {home:'England', away:'Croatia', hf:'', af:'', score:'3-1', date:'Jun 17 - MetLife Stadium, New Jersey', poss:[59, 41], stats:[["Shots", 17, 10], ["Shots on Target", 8, 3], ["Passes", 540, 380], ["Pass Accuracy %", 84, 78], ["Fouls", 12, 10], ["Corners", 7, 4], ["Saves", 2, 5]], xtra:[["xG", 2.7, 1.2], ["Yellow Cards", 1, 1], ["Offsides", 2, 3]]},
-  m24: {home:'Panama', away:'Ghana', hf:'', af:'', score:'0-2', date:'Jun 17 - NRG Stadium, Houston', poss:[38, 62], stats:[["Shots", 5, 14], ["Shots on Target", 1, 6], ["Passes", 280, 480], ["Pass Accuracy %", 68, 83], ["Fouls", 14, 10], ["Corners", 2, 7], ["Saves", 4, 1]], xtra:[["xG", 0.5, 2.1], ["Yellow Cards", 2, 1], ["Offsides", 1, 2]]}
+  m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', date:'Jun 16 - Mercedes-Benz Stadium, Atlanta', poss:[72, 28], stats:[["Shots", 22, 4], ["Shots on Target", 9, 1], ["Passes", 680, 240], ["Pass Accuracy %", 91, 68], ["Fouls", 9, 14], ["Corners", 10, 1], ["Saves", 1, 6]], xtra:[["xG", 3.4, 0.3], ["Yellow Cards", 1, 2], ["Offsides", 4, 0]]},
+  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'2-0', date:'Jun 16 - Arrowhead Stadium, Kansas City', poss:[58, 42], stats:[["Shots", 14, 7], ["Shots on Target", 6, 2], ["Passes", 480, 320], ["Pass Accuracy %", 85, 74], ["Fouls", 11, 12], ["Corners", 6, 3], ["Saves", 2, 4]], xtra:[["xG", 2.1, 0.6], ["Yellow Cards", 2, 1], ["Offsides", 2, 2]]}
 };
 
 // ── Simulation state ─────────────────────────────────────
@@ -3343,6 +3329,8 @@ buildMatchVideoGrid();
 buildMinuteChart();
 buildDonut();
 buildScorers();
+
+
 
 
 

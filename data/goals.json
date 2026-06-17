@@ -633,7 +633,19 @@
     "type": "open-play",
     "phase": "Group J",
     "score": "2-0",
-    "desc": "Messi doubles his tally and Argentina's lead \u2014 16th World Cup goal equals Klose's all-time record"
+    "desc": "Messi's second \u2014 Argentina cruise to a 2-0 lead"
+  },
+  {
+    "id": 74,
+    "matchId": "m19",
+    "home": "Argentina",
+    "away": "Algeria",
+    "scorer": "L. Messi",
+    "minute": 88,
+    "type": "open-play",
+    "phase": "Group J",
+    "score": "3-0",
+    "desc": "Messi completes his hat-trick \u2014 his 16th World Cup goal equals Klose's all-time record. Argentina win 3-0."
   },
   {
     "id": 58,
@@ -658,161 +670,5 @@
     "phase": "Group J",
     "score": "2-0",
     "desc": "Gregoritsch heads home to double Austria's lead"
-  },
-  {
-    "id": 60,
-    "matchId": "m21",
-    "home": "Portugal",
-    "away": "DR Congo",
-    "scorer": "B. Fernandes",
-    "minute": 18,
-    "type": "open-play",
-    "phase": "Group K",
-    "score": "1-0",
-    "desc": "Bruno Fernandes opens the scoring with a stunning volley"
-  },
-  {
-    "id": 61,
-    "matchId": "m21",
-    "home": "Portugal",
-    "away": "DR Congo",
-    "scorer": "C. Ronaldo",
-    "minute": 36,
-    "type": "penalty",
-    "phase": "Group K",
-    "score": "2-0",
-    "desc": "Ronaldo converts from the spot \u2014 his first goal of the 2026 tournament"
-  },
-  {
-    "id": 62,
-    "matchId": "m21",
-    "home": "Portugal",
-    "away": "DR Congo",
-    "scorer": "R. Leao",
-    "minute": 58,
-    "type": "open-play",
-    "phase": "Group K",
-    "score": "3-0",
-    "desc": "Leao cuts in from the left and fires into the far corner"
-  },
-  {
-    "id": 63,
-    "matchId": "m21",
-    "home": "Portugal",
-    "away": "DR Congo",
-    "scorer": "G. Ramos",
-    "minute": 81,
-    "type": "header",
-    "phase": "Group K",
-    "score": "4-0",
-    "desc": "Ramos heads home Fernandes cross to complete a dominant Portugal victory"
-  },
-  {
-    "id": 64,
-    "matchId": "m22",
-    "home": "Colombia",
-    "away": "Uzbekistan",
-    "scorer": "L. Diaz",
-    "minute": 22,
-    "type": "open-play",
-    "phase": "Group K",
-    "score": "1-0",
-    "desc": "Luis Diaz opens the scoring with a trademark run and finish"
-  },
-  {
-    "id": 65,
-    "matchId": "m22",
-    "home": "Colombia",
-    "away": "Uzbekistan",
-    "scorer": "J. Cuadrado",
-    "minute": 55,
-    "type": "open-play",
-    "phase": "Group K",
-    "score": "2-0",
-    "desc": "Cuadrado adds a second with a well-placed shot from the edge of the box"
-  },
-  {
-    "id": 66,
-    "matchId": "m22",
-    "home": "Colombia",
-    "away": "Uzbekistan",
-    "scorer": "R. Arias",
-    "minute": 78,
-    "type": "open-play",
-    "phase": "Group K",
-    "score": "3-0",
-    "desc": "Arias finishes off a Colombia counter-attack to complete the rout"
-  },
-  {
-    "id": 67,
-    "matchId": "m23",
-    "home": "England",
-    "away": "Croatia",
-    "scorer": "J. Bellingham",
-    "minute": 15,
-    "type": "open-play",
-    "phase": "Group L",
-    "score": "1-0",
-    "desc": "Bellingham opens with a brilliant curling effort from 25 yards"
-  },
-  {
-    "id": 68,
-    "matchId": "m23",
-    "home": "England",
-    "away": "Croatia",
-    "scorer": "I. Perisic",
-    "minute": 38,
-    "type": "header",
-    "phase": "Group L",
-    "score": "1-1",
-    "desc": "Perisic levels with a trademark header from a corner"
-  },
-  {
-    "id": 69,
-    "matchId": "m23",
-    "home": "England",
-    "away": "Croatia",
-    "scorer": "H. Kane",
-    "minute": 62,
-    "type": "penalty",
-    "phase": "Group L",
-    "score": "2-1",
-    "desc": "Kane restores England's lead from the penalty spot"
-  },
-  {
-    "id": 70,
-    "matchId": "m23",
-    "home": "England",
-    "away": "Croatia",
-    "scorer": "P. Foden",
-    "minute": 84,
-    "type": "open-play",
-    "phase": "Group L",
-    "score": "3-1",
-    "desc": "Foden seals it with a cool finish to confirm England's Group L victory"
-  },
-  {
-    "id": 71,
-    "matchId": "m24",
-    "home": "Panama",
-    "away": "Ghana",
-    "scorer": "J. Ayew",
-    "minute": 41,
-    "type": "open-play",
-    "phase": "Group L",
-    "score": "0-1",
-    "desc": "Jordan Ayew gives Ghana the lead with a precise finish"
-  },
-  {
-    "id": 72,
-    "matchId": "m24",
-    "home": "Panama",
-    "away": "Ghana",
-    "scorer": "M. Kudus",
-    "minute": 77,
-    "type": "open-play",
-    "phase": "Group L",
-    "score": "0-2",
-    "desc": "Kudus doubles Ghana's advantage with a powerful strike to seal all three points"
   }
 ]

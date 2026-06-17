@@ -1464,42 +1464,42 @@
   "m19": {
     "home": "Argentina",
     "away": "Algeria",
-    "score": "2-0",
+    "score": "3-0",
     "date": "Jun 16 - Mercedes-Benz Stadium, Atlanta",
     "poss": [
-      68,
-      32
+      72,
+      28
     ],
     "stats": [
       [
         "Shots",
-        18,
-        5
+        22,
+        4
       ],
       [
         "Shots on Target",
-        8,
+        9,
         1
       ],
       [
         "Passes",
-        620,
-        280
+        680,
+        240
       ],
       [
         "Pass Accuracy %",
-        88,
-        71
+        91,
+        68
       ],
       [
         "Fouls",
-        10,
-        13
+        9,
+        14
       ],
       [
         "Corners",
-        8,
-        2
+        10,
+        1
       ],
       [
         "Saves",
@@ -1510,8 +1510,8 @@
     "xtra": [
       [
         "xG",
-        2.8,
-        0.4
+        3.4,
+        0.3
       ],
       [
         "Yellow Cards",
@@ -1520,8 +1520,8 @@
       ],
       [
         "Offsides",
-        3,
-        1
+        4,
+        0
       ]
     ]
   },
@@ -1585,262 +1585,6 @@
       [
         "Offsides",
         2,
-        2
-      ]
-    ]
-  },
-  "m21": {
-    "home": "Portugal",
-    "away": "DR Congo",
-    "score": "4-0",
-    "date": "Jun 17 - SoFi Stadium, Los Angeles",
-    "poss": [
-      71,
-      29
-    ],
-    "stats": [
-      [
-        "Shots",
-        22,
-        4
-      ],
-      [
-        "Shots on Target",
-        10,
-        1
-      ],
-      [
-        "Passes",
-        680,
-        240
-      ],
-      [
-        "Pass Accuracy %",
-        89,
-        68
-      ],
-      [
-        "Fouls",
-        9,
-        14
-      ],
-      [
-        "Corners",
-        9,
-        1
-      ],
-      [
-        "Saves",
-        1,
-        8
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.9,
-        0.3
-      ],
-      [
-        "Yellow Cards",
-        0,
-        3
-      ],
-      [
-        "Offsides",
-        4,
-        0
-      ]
-    ]
-  },
-  "m22": {
-    "home": "Colombia",
-    "away": "Uzbekistan",
-    "score": "3-0",
-    "date": "Jun 17 - Hard Rock Stadium, Miami",
-    "poss": [
-      63,
-      37
-    ],
-    "stats": [
-      [
-        "Shots",
-        16,
-        6
-      ],
-      [
-        "Shots on Target",
-        7,
-        1
-      ],
-      [
-        "Passes",
-        560,
-        310
-      ],
-      [
-        "Pass Accuracy %",
-        86,
-        72
-      ],
-      [
-        "Fouls",
-        11,
-        11
-      ],
-      [
-        "Corners",
-        7,
-        2
-      ],
-      [
-        "Saves",
-        1,
-        5
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.6,
-        0.5
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ]
-    ]
-  },
-  "m23": {
-    "home": "England",
-    "away": "Croatia",
-    "score": "3-1",
-    "date": "Jun 17 - MetLife Stadium, New Jersey",
-    "poss": [
-      59,
-      41
-    ],
-    "stats": [
-      [
-        "Shots",
-        17,
-        10
-      ],
-      [
-        "Shots on Target",
-        8,
-        3
-      ],
-      [
-        "Passes",
-        540,
-        380
-      ],
-      [
-        "Pass Accuracy %",
-        84,
-        78
-      ],
-      [
-        "Fouls",
-        12,
-        10
-      ],
-      [
-        "Corners",
-        7,
-        4
-      ],
-      [
-        "Saves",
-        2,
-        5
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.7,
-        1.2
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Offsides",
-        2,
-        3
-      ]
-    ]
-  },
-  "m24": {
-    "home": "Panama",
-    "away": "Ghana",
-    "score": "0-2",
-    "date": "Jun 17 - NRG Stadium, Houston",
-    "poss": [
-      38,
-      62
-    ],
-    "stats": [
-      [
-        "Shots",
-        5,
-        14
-      ],
-      [
-        "Shots on Target",
-        1,
-        6
-      ],
-      [
-        "Passes",
-        280,
-        480
-      ],
-      [
-        "Pass Accuracy %",
-        68,
-        83
-      ],
-      [
-        "Fouls",
-        14,
-        10
-      ],
-      [
-        "Corners",
-        2,
-        7
-      ],
-      [
-        "Saves",
-        4,
-        1
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.5,
-        2.1
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Offsides",
-        1,
         2
       ]
     ]

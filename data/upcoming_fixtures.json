@@ -1,5 +1,33 @@
 [
   {
+    "date": "Jun 17",
+    "home": "Portugal",
+    "away": "DR Congo",
+    "time": "9PM ET",
+    "group": "K"
+  },
+  {
+    "date": "Jun 17",
+    "home": "Colombia",
+    "away": "Uzbekistan",
+    "time": "12AM ET",
+    "group": "K"
+  },
+  {
+    "date": "Jun 17",
+    "home": "England",
+    "away": "Croatia",
+    "time": "3PM ET",
+    "group": "L"
+  },
+  {
+    "date": "Jun 17",
+    "home": "Panama",
+    "away": "Ghana",
+    "time": "6PM ET",
+    "group": "L"
+  },
+  {
     "date": "Jun 18",
     "home": "Mexico",
     "away": "South Korea",
