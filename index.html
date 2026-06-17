@@ -1758,6 +1758,10 @@ var GOALS = [
 
 
 
+
+
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -1853,6 +1857,11 @@ var TEAM_DATA = {
   'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.6, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.1},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.7, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.1},
+  m19: {home:'South Korea',away:'Czechia',hf:'SO',af:'CZ',score:'2-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m20: {home:'Canada',away:'Bosnia-Herzegovina',hf:'CA',af:'BO',score:'1-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m21: {home:'Australia',away:'Turkey',hf:'AU',af:'TU',score:'2-0',date:'Jun 14 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m22: {home:'Spain',away:'Cape Verde Islands',hf:'ES',af:'CA',score:'0-0',date:'Jun 15 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m23: {home:'Iraq',away:'Norway',hf:'IQ',af:'NO',score:'1-4',date:'Jun 16 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 // ── ROUND OF 32 PROJECTED MATCHUPS ───────────────────────────────────
@@ -3234,6 +3243,8 @@ buildScorers();
 
 
 
+
+
 var GROUPS = {
   A: {
     name: 'Group A', venue: 'Mexico City / Guadalajara',
@@ -3292,26 +3303,26 @@ var GROUPS = {
   G: {
     name: 'Group G', venue: 'Seattle / Vancouver',
     teams: [
-      {name:'Belgium', polymarket:55.0, fanDuelOdds:-180},
-      {name:'New Zealand', polymarket:20.0, fanDuelOdds:350},
-      {name:'Iran', polymarket:15.0, fanDuelOdds:500},
-      {name:'Egypt', polymarket:10.0, fanDuelOdds:700}
+      {name:'Belgium', polymarket:55, fanDuelOdds:-180},
+      {name:'New Zealand', polymarket:20, fanDuelOdds:350},
+      {name:'Iran', polymarket:15, fanDuelOdds:500},
+      {name:'Egypt', polymarket:10, fanDuelOdds:700}
     ]
   },
   H: {
     name: 'Group H', venue: 'Atlanta / Miami',
     teams: [
-      {name:'Spain', polymarket:72.0, fanDuelOdds:-280},
-      {name:'Uruguay', polymarket:20.0, fanDuelOdds:280},
-      {name:'Cape Verde', polymarket:5.0, fanDuelOdds:3000},
-      {name:'Saudi Arabia', polymarket:3.0, fanDuelOdds:4000}
+      {name:'Spain', polymarket:72, fanDuelOdds:-280},
+      {name:'Uruguay', polymarket:20, fanDuelOdds:280},
+      {name:'Cape Verde', polymarket:5, fanDuelOdds:3000},
+      {name:'Saudi Arabia', polymarket:3, fanDuelOdds:4000}
     ]
   },
   I: {
     name: 'Group I', venue: 'East Rutherford / Boston / Philadelphia',
     teams: [
-      {name:'France', polymarket:88.0, fanDuelOdds:-450},
-      {name:'Norway', polymarket:10.0, fanDuelOdds:200},
+      {name:'France', polymarket:88, fanDuelOdds:-450},
+      {name:'Norway', polymarket:10, fanDuelOdds:200},
       {name:'Senegal', polymarket:1.5, fanDuelOdds:1200},
       {name:'Iraq', polymarket:0.5, fanDuelOdds:15000}
     ]
