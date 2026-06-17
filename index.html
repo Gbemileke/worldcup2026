@@ -1271,9 +1271,9 @@
   <ellipse cx="13" cy="10" rx="4" ry="3" fill="white" opacity=".2" transform="rotate(-30 13 10)"/>
 </svg> 2026 FIFA <span style="color:#c8920a;margin:0 6px">·</span> World Cup</div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('highlights',this)">Highlights</button>
+    <button class="tab-btn" onclick="switchTab('highlights',this)">Highlights</button>
     <button class="tab-btn" onclick="switchTab('videos',this)">Videos</button>
-    <button class="tab-btn" onclick="switchTab('analytics',this)">Analytics</button>
+    <button class="tab-btn active" onclick="switchTab('analytics',this)">Analytics</button>
     
     <button class="tab-btn" onclick="switchTab('bracket',this)">&#127942; Bracket</button>
     <button class="tab-btn" onclick="switchTab('groups',this)">&#127967; Groups</button>
@@ -1299,7 +1299,7 @@
     <div class="goals-list" id="goalsList"></div>
   </aside>
   <main class="main-panel">
-    <div id="tab-highlights">
+    <div id="tab-highlights" style="display:none">
       <div class="goal-hero" id="goalHero">
         <div class="video-wrapper" id="videoWrapper">
           <div class="video-placeholder" id="videoPlaceholder">
@@ -1333,7 +1333,7 @@
         <div class="match-video-grid" id="matchVideoGrid"></div>
       </div>
     </div>
-    <div id="tab-analytics" style="display:none">
+    <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 17, 2026</div>
@@ -2245,13 +2245,22 @@ function showMatchStats(id) {
   if (m.xtra && m.xtra.length) {
     for (var k = 0; k < m.xtra.length; k++) {
       var x = m.xtra[k];
+      var isXG = x[0] === 'xG';
+      var labelHtml = isXG
+        ? '<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">' +
+            x[0] +
+            '<span title="Expected Goals: measures shot quality (0-1 per shot). Higher xG = better chances created. A team scoring more than their xG overperformed; less = underperformed." ' +
+              'style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;' +
+              'background:var(--blue);color:#fff;font-size:8px;font-weight:700;margin-left:4px;cursor:help;line-height:1;flex-shrink:0">?</span>' +
+          '</div>'
+        : '<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">' + x[0] + '</div>';
       xtraHtml +=
         '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;text-align:center">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">' +
             '<div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:' + homeCol + '">' + x[1] + '</div>' +
             '<div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:' + awayCol + '">' + x[2] + '</div>' +
           '</div>' +
-          '<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">' + x[0] + '</div>' +
+          labelHtml +
         '</div>';
     }
   }
@@ -3349,6 +3358,9 @@ function initLiveData() {
 buildMatchSelector();
 buildTeamGrid();
 buildSnapshotStats();
+buildMinuteChart();
+buildDonut();
+buildScorers();
 runSimulation();
 buildTop4();
 buildGroupsGrid();
@@ -3357,9 +3369,6 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
-buildMinuteChart();
-buildDonut();
-buildScorers();
 
 
 
