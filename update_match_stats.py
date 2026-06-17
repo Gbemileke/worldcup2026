@@ -96,11 +96,79 @@ def fetch_matches(token):
 def fetch_detail(token, match_id):
     headers = {'X-Auth-Token': token}
     try:
-        r = requests.get(f"{API_BASE}/matches/{match_id}", headers=headers, timeout=10)
+        r = requests.get(f"{API_BASE}/matches/{match_id}", headers=headers, timeout=15)
+        if r.status_code == 429:
+            print(f"  RATE LIMIT hit — waiting 60s...")
+            time.sleep(60)
+            r = requests.get(f"{API_BASE}/matches/{match_id}", headers=headers, timeout=15)
         r.raise_for_status()
-        return r.json()
-    except:
+        data = r.json()
+        goals_count = len(data.get('goals') or [])
+        print(f"  API: match {match_id} — {goals_count} goals in response")
+        return data
+    except Exception as e:
+        print(f"  WARNING: fetch_detail({match_id}) failed: {e}")
         return {}
+
+def fetch_upcoming(token):
+    """Fetch next 10 scheduled matches from football-data.org
+    and update upcoming_fixtures.json"""
+    headers = {'X-Auth-Token': token}
+    try:
+        r = requests.get(
+            f"{API_BASE}/competitions/{WC_CODE}/matches?status=SCHEDULED",
+            headers=headers, timeout=15)
+        r.raise_for_status()
+        scheduled = r.json().get('matches', [])
+    except Exception as e:
+        print(f"  WARNING: Could not fetch upcoming fixtures: {e}")
+        return
+
+    # Convert timezone: API returns UTC, convert to CST (UTC-6)
+    import datetime
+    upcoming = []
+    for m in scheduled[:12]:  # next 12 scheduled
+        home = short(m['homeTeam']['name'])
+        away = short(m['awayTeam']['name'])
+        utc_str = m.get('utcDate','')
+        group_raw = m.get('stage','') or m.get('group','') or ''
+        # Extract group letter
+        group_letter = ''
+        if 'GROUP_' in group_raw:
+            group_letter = group_raw.replace('GROUP_','')
+        elif group_raw.startswith('Group '):
+            group_letter = group_raw.replace('Group ','')
+
+        # Parse UTC time and convert to CST (UTC-6)
+        try:
+            dt_utc = datetime.datetime.fromisoformat(utc_str.replace('Z','+00:00'))
+            dt_cst = dt_utc - datetime.timedelta(hours=6)
+            date_str = dt_cst.strftime('%-d %b').replace(' ','\xa0')
+            date_str = 'Jun ' + str(dt_cst.day) if dt_cst.month == 6 else \
+                       'Jul ' + str(dt_cst.day)
+            # Format time
+            hour = dt_cst.hour
+            minute = dt_cst.minute
+            ampm = 'AM' if hour < 12 else 'PM'
+            hour12 = hour % 12 or 12
+            time_str = f"{hour12}{':{:02d}'.format(minute) if minute else ''}{'\u200b'}{ampm} CST"
+        except:
+            date_str = utc_str[:10]
+            time_str = '?:?? CST'
+
+        upcoming.append({
+            "date":  date_str,
+            "home":  home,
+            "away":  away,
+            "time":  time_str,
+            "group": group_letter
+        })
+
+    if upcoming:
+        save('upcoming_fixtures.json', upcoming)
+        print(f"  Upcoming fixtures updated: {len(upcoming)} matches")
+        for f in upcoming[:4]:
+            print(f"    {f['date']} {f['home']} vs {f['away']} {f['time']}")
 
 def get_stat(stats_raw, label, default_h, default_a):
     for s in stats_raw or []:
@@ -125,7 +193,13 @@ def run(token):
     # Build lookup of what we already have
     existing_match_ids = {m['id'] for m in matches}
     existing_stat_keys = set(stats.keys())
-    existing_goal_matchids = {g['matchId'] for g in goals}
+    # Only count matches as 'goals done' if they have at least 1 goal
+    # Only mark a match as 'goals done' if it actually has goals in goals.json
+    goals_per_match = {}
+    for g in goals:
+        gmid = g['matchId']
+        goals_per_match[gmid] = goals_per_match.get(gmid, 0) + 1
+    existing_goal_matchids = {k for k, v in goals_per_match.items() if v > 0}
 
     # Build match number lookup: "Home|Away" -> "m1", "m2" etc
     match_lookup = {}
@@ -195,11 +269,18 @@ def run(token):
             matches_added += 1
             print(f"  Added match: {mid} {home} {score} {away}")
 
-        # ── 2. Update match_stats.json ─────────────────────────────────────
-        if mid not in existing_stat_keys:
-            print(f"  Fetching stats for {mid}...", end=' ', flush=True)
+        # ── 2+3. Fetch detail once for BOTH stats AND goals ───────────────
+        need_stats = mid not in existing_stat_keys
+        need_goals = mid not in existing_goal_matchids
+        
+        detail = {}
+        if need_stats or need_goals:
+            print(f"  Fetching detail for {mid} ({home} vs {away})...", end=' ', flush=True)
             detail = fetch_detail(token, m['id'])
-            time.sleep(0.8)  # rate limit: free tier = 10 req/min
+            time.sleep(1.0)  # rate limit: free tier = 10 req/min
+            print("done")
+
+        if need_stats:
 
             sr = detail.get('statistics') or []
             venue_raw = m.get('venue','') or ''
@@ -243,41 +324,61 @@ def run(token):
             print("done")
 
         # ── 3. Update goals.json ───────────────────────────────────────────
-        if mid not in existing_goal_matchids:
-            detail_goals = m.get('goals') or []
-            if not detail_goals:
-                # Try from match detail
-                d = fetch_detail(token, m['id'])
-                time.sleep(0.8)
-                detail_goals = d.get('goals') or []
+        if need_goals:
+            # Use the detail already fetched above (no extra API call needed)
+            detail_goals = detail.get('goals') or []
+            # football-data.org free tier: goals are in detail['goals']
+            # Each goal: {scorer:{name}, team:{name}, minute, type}
+            print(f"  Goals for {mid}: {len(detail_goals)} found")
 
-            for gd in detail_goals:
-                scorer_name = (gd.get('scorer') or {}).get('name','Unknown')
-                team_name   = (gd.get('team')   or {}).get('name','')
-                minute      = gd.get('minute') or 0
-                gtype_raw   = (gd.get('type') or 'REGULAR').upper()
-                gtype = ('penalty'  if gtype_raw == 'PENALTY'  else
-                         'own-goal' if gtype_raw == 'OWN_GOAL' else
-                         'open-play')
+            if detail_goals:
+                for gd in detail_goals:
+                    scorer_name = (gd.get('scorer') or {}).get('name','Unknown')
+                    team_name   = (gd.get('team')   or {}).get('name','')
+                    minute      = gd.get('minute') or 0
+                    gtype_raw   = (gd.get('type') or 'REGULAR').upper()
+                    gtype = ('penalty'  if gtype_raw == 'PENALTY'  else
+                             'own-goal' if gtype_raw == 'OWN_GOAL' else
+                             'open-play')
 
-                is_og    = gtype == 'own-goal'
-                scorer   = scorer_name + (' OG' if is_og else '')
-                run_score = f"{home_score}-{away_score}"  # full time (incremental hard)
+                    is_og    = gtype == 'own-goal'
+                    scorer   = scorer_name + (' OG' if is_og else '')
+                    run_score = f"{home_score}-{away_score}"
 
-                goals.append({
-                    "id":      next_goal_id,
-                    "matchId": mid,
-                    "home":    home,
-                    "away":    away,
-                    "scorer":  scorer,
-                    "minute":  minute,
-                    "type":    gtype,
-                    "phase":   group_raw,
-                    "score":   run_score,
-                    "desc":    f"{scorer_name} {'(OG) ' if is_og else ''}for {short(team_name) if team_name else home} vs {away}"
-                })
-                next_goal_id += 1
-                goals_added += 1
+                    goals.append({
+                        "id":      next_goal_id,
+                        "matchId": mid,
+                        "home":    home,
+                        "away":    away,
+                        "scorer":  scorer,
+                        "minute":  minute,
+                        "type":    gtype,
+                        "phase":   group_raw,
+                        "score":   run_score,
+                        "desc":    f"{scorer_name}{'(OG) ' if is_og else ' '}scored for {short(team_name) if team_name else home} — {home} {home_score}-{away_score} {away}"
+                    })
+                    next_goal_id += 1
+                    goals_added += 1
+            else:
+                # API returned no goals — add placeholder so match appears in feed
+                # Will be overwritten next run if API returns goals
+                print(f"  WARNING: No goals from API for {mid} ({home} {home_score}-{away_score} {away})")
+                total_goals_in_match = (home_score or 0) + (away_score or 0)
+                if total_goals_in_match > 0:
+                    goals.append({
+                        "id":      next_goal_id,
+                        "matchId": mid,
+                        "home":    home,
+                        "away":    away,
+                        "scorer":  'See FIFA.com',
+                        "minute":  90,
+                        "type":    'open-play',
+                        "phase":   group_raw,
+                        "score":   f"{home_score}-{away_score}",
+                        "desc":    f"{home} {home_score}-{away_score} {away} — scorers not yet available from API. Check FIFA.com for full details."
+                    })
+                    next_goal_id += 1
+                    goals_added += 1
 
         # ── 4. Remove from upcoming_fixtures.json ─────────────────────────
         before = len(upcoming)
@@ -296,7 +397,10 @@ def run(token):
     save('matches.json', matches)
     save('match_stats.json', stats)
     save('goals.json', sorted(goals, key=lambda g: (int(g['matchId'].replace('m','')), g['minute'])))
-    save('upcoming_fixtures.json', upcoming)
+
+    # Fetch upcoming fixtures directly from API (always fresh)
+    print("\nFetching upcoming fixtures from API...")
+    fetch_upcoming(token)
 
     print(f"\n=== SUMMARY ===")
     print(f"  Matches added:    {matches_added}")
