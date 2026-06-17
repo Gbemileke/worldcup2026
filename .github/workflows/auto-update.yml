@@ -3,7 +3,7 @@ name: Auto-Update Match Data
 on:
   schedule:
     - cron: '0 */3 * * *'   # every 3 hours
-  workflow_dispatch:          # manual trigger
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,24 +24,12 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Fetch latest match data from football-data.org
+      - name: Step 1 — Fetch match data into JSON files
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Sync data files (scores, goals, stats) into JSON
-        run: |
-          python update_site.py --section matches
-          python update_site.py --section goals
-          python update_site.py --section stats
-
-      - name: Remove completed matches from upcoming fixtures
-        run: python update_site.py --section sync
-
-      - name: Update snapshot analytics cards
-        run: python update_site.py --section snapshot
-
-      - name: Final full rebuild
+      - name: Step 2 — Rebuild index.html from JSON files
         run: python update_site.py
 
       - name: Commit and push if anything changed
@@ -51,4 +39,4 @@ jobs:
           git add index.html data/
           git diff --staged --quiet \
             && echo "No changes — already up to date" \
-            || git commit -m "auto: match data update $(date -u +'%Y-%m-%d %H:%M UTC')" && git push
+            || git commit -m "auto: $(date -u +'%Y-%m-%d %H:%M UTC')" && git push
