@@ -1,26 +1,5 @@
 [
   {
-    "date": "Jun 17",
-    "home": "England",
-    "away": "Croatia",
-    "time": "3PM CST",
-    "group": "L"
-  },
-  {
-    "date": "Jun 17",
-    "home": "Ghana",
-    "away": "Panama",
-    "time": "6PM CST",
-    "group": "L"
-  },
-  {
-    "date": "Jun 17",
-    "home": "Uzbekistan",
-    "away": "Colombia",
-    "time": "9PM CST",
-    "group": "K"
-  },
-  {
     "date": "Jun 18",
     "home": "Czechia",
     "away": "S. Africa",
@@ -47,5 +26,19 @@
     "away": "S. Korea",
     "time": "8PM CST",
     "group": "A"
+  },
+  {
+    "date": "Jun 17",
+    "home": "Ghana",
+    "away": "Panama",
+    "time": "6PM CST",
+    "group": "L"
+  },
+  {
+    "date": "Jun 17",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "time": "9PM CST",
+    "group": "K"
   }
 ]

@@ -207,7 +207,7 @@
     "id": 18,
     "matchId": "m8",
     "home": "Australia",
-    "away": "Turkiye",
+    "away": "Turkey",
     "scorer": "N. Irankunda",
     "minute": 27,
     "type": "open-play",
@@ -219,7 +219,7 @@
     "id": 19,
     "matchId": "m8",
     "home": "Australia",
-    "away": "Turkiye",
+    "away": "Turkey",
     "scorer": "C. Metcalfe",
     "minute": 75,
     "type": "open-play",
@@ -328,12 +328,12 @@
     "matchId": "m10",
     "home": "Ivory Coast",
     "away": "Ecuador",
-    "scorer": "Ivory Coast",
-    "minute": 55,
+    "scorer": "A. Diallo",
+    "minute": 90,
     "type": "open-play",
     "phase": "Group E",
     "score": "1-0",
-    "desc": "Ivory Coast edged past Ecuador with the only goal in a tight Group E clash"
+    "desc": "Amad Diallo comes off the bench and sidefoots home Singo's square pass in the 90th minute \u2014 a dramatic late winner for Ivory Coast"
   },
   {
     "id": 29,
@@ -440,7 +440,7 @@
     "minute": 71,
     "type": "open-play",
     "phase": "Group F",
-    "score": "5-1",
+    "score": "4-1",
     "desc": "Ayari grabs a consolation for Tunisia as Sweden ease up late in the game"
   },
   {
@@ -452,7 +452,7 @@
     "minute": 84,
     "type": "open-play",
     "phase": "Group F",
-    "score": "5-0",
+    "score": "5-1",
     "desc": "Svanberg completed an emphatic Swedish performance"
   },
   {
@@ -696,52 +696,124 @@
     "desc": "Messi completes his hat-trick \u2014 his 16th World Cup goal equals Klose's all-time record. Argentina win 3-0."
   },
   {
-    "id": 58,
+    "id": 99,
     "matchId": "m20",
     "home": "Austria",
     "away": "Jordan",
-    "scorer": "M. Sabitzer",
-    "minute": 28,
+    "scorer": "R. Schmid",
+    "minute": 21,
     "type": "open-play",
     "phase": "Group J",
     "score": "1-0",
-    "desc": "Sabitzer opens the scoring with a powerful drive from outside the box"
+    "desc": "Schmid opens for Austria with a composed finish"
   },
   {
-    "id": 59,
+    "id": 100,
     "matchId": "m20",
     "home": "Austria",
     "away": "Jordan",
-    "scorer": "C. Gregoritsch",
-    "minute": 64,
-    "type": "header",
-    "phase": "Group J",
-    "score": "2-0",
-    "desc": "Gregoritsch heads home to double Austria's lead"
-  },
-  {
-    "id": 79,
-    "matchId": "m20",
-    "home": "Austria",
-    "away": "Jordan",
-    "scorer": "M. Gregoritsch",
-    "minute": 78,
+    "scorer": "A. Olwan",
+    "minute": 50,
     "type": "open-play",
     "phase": "Group J",
-    "score": "3-0",
-    "desc": "Gregoritsch gets his brace \u2014 Austria put the game beyond doubt"
+    "score": "1-1",
+    "desc": "Olwan equalises for Jordan \u2014 a fine finish from the midfielder"
   },
   {
-    "id": 80,
+    "id": 101,
     "matchId": "m20",
     "home": "Austria",
     "away": "Jordan",
-    "scorer": "Y. Al-Naimat",
-    "minute": 88,
-    "type": "open-play",
+    "scorer": "Y. Al-Arab OG",
+    "minute": 76,
+    "type": "own-goal",
+    "phase": "Group J",
+    "score": "2-1",
+    "desc": "Al-Arab deflects into his own net \u2014 Austria regain the lead"
+  },
+  {
+    "id": 102,
+    "matchId": "m20",
+    "home": "Austria",
+    "away": "Jordan",
+    "scorer": "M. Arnautovic",
+    "minute": 90,
+    "type": "penalty",
     "phase": "Group J",
     "score": "3-1",
-    "desc": "Al-Naimat grabs a late consolation for Jordan"
+    "desc": "Arnautovic converts from the spot deep in injury time to seal Austria's win"
+  },
+  {
+    "id": 93,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "H. Kane",
+    "minute": 12,
+    "type": "penalty",
+    "phase": "Group L",
+    "score": "1-0",
+    "desc": "Kane converts from the spot \u2014 England break the deadlock early on"
+  },
+  {
+    "id": 94,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "M. Baturina",
+    "minute": 36,
+    "type": "open-play",
+    "phase": "Group L",
+    "score": "1-1",
+    "desc": "Baturina scores a stunning equaliser into the top corner \u2014 Croatia level"
+  },
+  {
+    "id": 95,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "H. Kane",
+    "minute": 42,
+    "type": "header",
+    "phase": "Group L",
+    "score": "2-1",
+    "desc": "Kane heads home from a Declan Rice corner \u2014 his second goal of the game"
+  },
+  {
+    "id": 96,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "P. Musa",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group L",
+    "score": "2-2",
+    "desc": "Musa levels for Croatia \u2014 Perisic flicks the ball to the FC Dallas striker who fires through Pickford"
+  },
+  {
+    "id": 97,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "J. Bellingham",
+    "minute": 47,
+    "type": "open-play",
+    "phase": "Group L",
+    "score": "3-2",
+    "desc": "Bellingham immediately restores England's lead seconds after half time \u2014 a brilliant solo run and finish"
+  },
+  {
+    "id": 98,
+    "matchId": "m22",
+    "home": "England",
+    "away": "Croatia",
+    "scorer": "M. Rashford",
+    "minute": 85,
+    "type": "open-play",
+    "phase": "Group L",
+    "score": "4-2",
+    "desc": "Rashford seals it from the bench \u2014 Saka finds him on the left and he cuts inside to make it four"
   },
   {
     "id": 81,

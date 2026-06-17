@@ -1652,5 +1652,69 @@
         1
       ]
     ]
+  },
+  "m22": {
+    "home": "England",
+    "away": "Croatia",
+    "score": "4-2",
+    "date": "Jun 17 - AT&T Stadium, Dallas",
+    "poss": [
+      57,
+      43
+    ],
+    "stats": [
+      [
+        "Shots",
+        18,
+        12
+      ],
+      [
+        "Shots on Target",
+        8,
+        4
+      ],
+      [
+        "Passes",
+        530,
+        400
+      ],
+      [
+        "Pass Accuracy %",
+        83,
+        79
+      ],
+      [
+        "Fouls",
+        11,
+        13
+      ],
+      [
+        "Corners",
+        8,
+        5
+      ],
+      [
+        "Saves",
+        2,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.1,
+        1.8
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Offsides",
+        3,
+        2
+      ]
+    ]
   }
 }

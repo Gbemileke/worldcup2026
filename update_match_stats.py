@@ -20,11 +20,24 @@ WC_CODE  = 'WC'
 
 # ── Name normalisation ────────────────────────────────────────────────────────
 SHORT = {
-    "South Africa":"S. Africa", "Côte d'Ivoire":"Ivory Coast",
-    "Bosnia and Herzegovina":"Bosnia", "Curaçao":"Curacao",
-    "United States":"USA", "IR Iran":"Iran", "Türkiye":"Turkey",
-    "Korea Republic":"S. Korea", "Cape Verde":"Cape Verde", "Cape Verde Islands":"Cape Verde",
-    "Congo DR":"DR Congo", "Democratic Republic of Congo":"DR Congo",
+    # African teams
+    "South Africa":"S. Africa",
+    "Côte d'Ivoire":"Ivory Coast", "Ivory Coast":"Ivory Coast",
+    # Asian teams
+    "Korea Republic":"S. Korea", "South Korea":"S. Korea",
+    "IR Iran":"Iran",
+    # European teams
+    "Bosnia and Herzegovina":"Bosnia", "Bosnia-Herzegovina":"Bosnia",
+    "Türkiye":"Turkey", "Turkey":"Turkey",
+    # Americas
+    "United States":"USA",
+    # African/other
+    "Congo DR":"DR Congo", "DR Congo":"DR Congo",
+    "Democratic Republic of Congo":"DR Congo",
+    "Curaçao":"Curacao",
+    # Cape Verde variations
+    "Cape Verde":"Cape Verde", "Cape Verde Islands":"Cape Verde",
+    "Cabo Verde":"Cape Verde",
 }
 
 VENUES = {

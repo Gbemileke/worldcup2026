@@ -73,7 +73,7 @@
     "id": "m8",
     "date": "Jun 13",
     "home": "Australia",
-    "away": "Turkiye",
+    "away": "Turkey",
     "score": "2-0",
     "group": "Group D",
     "ytId": "jdnyNn9XsDc",
@@ -198,6 +198,16 @@
     "group": "Group J",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report"
+  },
+  {
+    "id": "m22",
+    "date": "Jun 17",
+    "home": "England",
+    "away": "Croatia",
+    "score": "4-2",
+    "group": "Group L",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report"
   },
   {
     "id": "m25",
