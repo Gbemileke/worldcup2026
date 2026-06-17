@@ -3451,6 +3451,23 @@ var GROUPS = {
   }
 };
 
+// ── Model presets ─────────────────────────────────────────────────────────────
+var PRESETS = {
+  'default':     {elo:30, form:20, qual:10, squad:20, fifa:15, exp:5},
+  'elo-pure':    {elo:70, form:20, qual:10, squad:0,  fifa:0,  exp:0},
+  'form-heavy':  {elo:30, form:40, qual:20, squad:5,  fifa:0,  exp:5},
+  'squad-heavy': {elo:30, form:20, qual:5,  squad:35, fifa:5,  exp:5},
+  'qual-heavy':  {elo:30, form:20, qual:30, squad:5,  fifa:10, exp:5},
+  'equal':       {elo:17, form:17, qual:17, squad:17, fifa:16, exp:16},
+};
+
+// ── R32 preview matchups (first 8 for settings panel) ─────────────────────────
+var PREVIEW_MATCHUPS = R32_MATCHUPS.slice(0, 8).map(function(m) {
+  return {home: m.home, away: m.away, label: m.label};
+});
+
+
+
 
 
 </script>
