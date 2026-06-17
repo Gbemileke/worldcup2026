@@ -446,24 +446,31 @@ def update_form():
     with open(path, 'w') as f:
         _json.dump(teams_data, f, indent=2)
 
-    # Patch TEAM_DATA in index.html
+    # Patch TEAM_DATA in index.html — form AND marketPct
     c = read_html()
     js_start = c.rfind('<script>') + len('<script>')
     js = c[js_start:c.rfind('</script>')]
 
-    # Find TEAM_DATA block and update each team's form
     import re
+    form_updated = 0
+    pct_updated  = 0
     for team, data in teams_data.items():
         form_val = data.get('form', 0.7)
-        # Replace form: X.XX for this team
-        pattern = rf"('{re.escape(team)}':\s*\{{[^}}]*?form:)([\d.]+)"
-        new_js = re.sub(pattern, rf'\g<1>{form_val}', js, count=1)
+        pct_val  = data.get('marketPct', 0)
+        pattern_form = rf"('{re.escape(team)}':\s*\{{[^}}]*?form:)([\d.]+)"
+        pattern_pct  = rf"('{re.escape(team)}':\s*\{{[^}}]*?marketPct:)([\d.]+)"
+        new_js = re.sub(pattern_form, rf'\g<1>{form_val}', js, count=1)
         if new_js != js:
             js = new_js
+            form_updated += 1
+        new_js2 = re.sub(pattern_pct, rf'\g<1>{pct_val}', js, count=1)
+        if new_js2 != js:
+            js = new_js2
+            pct_updated += 1
 
     c = c[:js_start] + js + c[c.rfind('</script>'):]
     write_html(c)
-    print(f"  → Form updated for {updated} teams")
+    print(f"  → Form updated for {form_updated} teams, marketPct for {pct_updated} teams")
 
 # ═══════════════════════════════════════════════════════════
 # SECTIONS + MAIN

@@ -3,31 +3,31 @@
     "group": "H",
     "elo": 2172,
     "fifaPts": 1877.0,
-    "form": 0.56,
+    "form": 0.51,
     "squadDepth": 92,
     "exp": 10,
     "keyPlayer": "L. Yamal",
-    "marketPct": 16.0
+    "marketPct": 12.77
   },
   "Argentina": {
     "group": "J",
     "elo": 2113,
     "fifaPts": 1875.0,
-    "form": 0.95,
+    "form": 0.99,
     "squadDepth": 90,
     "exp": 10,
     "keyPlayer": "L. Messi",
-    "marketPct": 9.0
+    "marketPct": 10.37
   },
   "France": {
     "group": "I",
     "elo": 2062,
     "fifaPts": 1871.0,
-    "form": 0.98,
+    "form": 1.0,
     "squadDepth": 93,
     "exp": 10,
     "keyPlayer": "K. Mbappe",
-    "marketPct": 13.0
+    "marketPct": 17.76
   },
   "England": {
     "group": "L",
@@ -37,17 +37,17 @@
     "squadDepth": 90,
     "exp": 10,
     "keyPlayer": "H. Kane",
-    "marketPct": 12.0
+    "marketPct": 8.64
   },
   "Brazil": {
     "group": "C",
     "elo": 1978,
     "fifaPts": 1761.0,
-    "form": 0.52,
+    "form": 0.5,
     "squadDepth": 91,
     "exp": 10,
     "keyPlayer": "Vinicius Jr.",
-    "marketPct": 8.5
+    "marketPct": 5.76
   },
   "Portugal": {
     "group": "K",
@@ -57,7 +57,7 @@
     "squadDepth": 88,
     "exp": 10,
     "keyPlayer": "B. Fernandes",
-    "marketPct": 6.5
+    "marketPct": 7.68
   },
   "Colombia": {
     "group": "K",
@@ -67,17 +67,17 @@
     "squadDepth": 83,
     "exp": 5,
     "keyPlayer": "L. Diaz",
-    "marketPct": 1.6
+    "marketPct": 1.92
   },
   "Netherlands": {
     "group": "F",
     "elo": 1959,
     "fifaPts": 1758.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 87,
     "exp": 10,
     "keyPlayer": "V. van Dijk",
-    "marketPct": 3.5
+    "marketPct": 3.36
   },
   "Croatia": {
     "group": "L",
@@ -87,57 +87,57 @@
     "squadDepth": 82,
     "exp": 8,
     "keyPlayer": "L. Modric",
-    "marketPct": 1.2
+    "marketPct": 1.06
   },
   "Norway": {
     "group": "I",
     "elo": 1922,
     "fifaPts": 1600.0,
-    "form": 0.98,
+    "form": 1.0,
     "squadDepth": 78,
     "exp": 1,
     "keyPlayer": "E. Haaland",
-    "marketPct": 3.0
+    "marketPct": 3.84
   },
   "Germany": {
     "group": "E",
     "elo": 1910,
     "fifaPts": 1730.0,
-    "form": 0.98,
+    "form": 1.0,
     "squadDepth": 87,
     "exp": 10,
     "keyPlayer": "J. Musiala",
-    "marketPct": 5.5
+    "marketPct": 6.72
   },
   "Switzerland": {
     "group": "B",
     "elo": 1897,
     "fifaPts": 1649.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 78,
     "exp": 6,
     "keyPlayer": "G. Xhaka",
-    "marketPct": 1.2
+    "marketPct": 0.96
   },
   "Ecuador": {
     "group": "E",
     "elo": 1933,
     "fifaPts": 1560.0,
-    "form": 0.11,
+    "form": 0.02,
     "squadDepth": 72,
     "exp": 4,
     "keyPlayer": "M. Caicedo",
-    "marketPct": 0.85
+    "marketPct": 0.29
   },
   "Uruguay": {
     "group": "H",
     "elo": 1890,
     "fifaPts": 1673.0,
-    "form": 0.52,
+    "form": 0.5,
     "squadDepth": 76,
     "exp": 8,
     "keyPlayer": "D. Nunez",
-    "marketPct": 1.35
+    "marketPct": 0.86
   },
   "Turkey": {
     "group": "D",
@@ -147,77 +147,77 @@
     "squadDepth": 77,
     "exp": 5,
     "keyPlayer": "H. Calhanoglu",
-    "marketPct": 0.6
+    "marketPct": 0.67
   },
   "Japan": {
     "group": "F",
     "elo": 1878,
     "fifaPts": 1660.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 74,
     "exp": 8,
     "keyPlayer": "D. Kamada",
-    "marketPct": 1.6
+    "marketPct": 1.34
   },
   "Senegal": {
     "group": "I",
     "elo": 1869,
     "fifaPts": 1689.0,
-    "form": 0.11,
+    "form": 0.02,
     "squadDepth": 74,
     "exp": 4,
     "keyPlayer": "S. Mane",
-    "marketPct": 0.5
+    "marketPct": 0.1
   },
   "Belgium": {
     "group": "G",
     "elo": 1850,
     "fifaPts": 1735.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 84,
     "exp": 8,
     "keyPlayer": "K. De Bruyne",
-    "marketPct": 2.0
+    "marketPct": 2.4
   },
   "Morocco": {
     "group": "C",
     "elo": 1806,
     "fifaPts": 1756.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 72,
     "exp": 6,
     "keyPlayer": "H. Ziyech",
-    "marketPct": 1.55
+    "marketPct": 1.73
   },
   "USA": {
     "group": "D",
     "elo": 1747,
     "fifaPts": 1673.0,
-    "form": 0.98,
+    "form": 1.0,
     "squadDepth": 73,
     "exp": 5,
     "keyPlayer": "C. Pulisic",
-    "marketPct": 1.65
+    "marketPct": 3.36
   },
   "Mexico": {
     "group": "A",
     "elo": 1857,
     "fifaPts": 1681.0,
-    "form": 0.97,
+    "form": 1.0,
     "squadDepth": 71,
     "exp": 10,
     "keyPlayer": "R. Jimenez",
-    "marketPct": 1.1
+    "marketPct": 1.44
   },
   "Sweden": {
     "group": "F",
     "elo": 1660,
     "fifaPts": 1580.0,
-    "form": 0.95,
+    "form": 0.99,
     "squadDepth": 76,
     "exp": 7,
     "keyPlayer": "A. Isak",
-    "marketPct": 0.7
+    "marketPct": 1.15
   },
   "South Korea": {
     "group": "A",
@@ -227,77 +227,77 @@
     "squadDepth": 70,
     "exp": 8,
     "keyPlayer": "H. Son",
-    "marketPct": 0.6
+    "marketPct": 0.77
   },
   "Algeria": {
     "group": "J",
     "elo": 1728,
     "fifaPts": 1550.0,
-    "form": 0.11,
+    "form": 0.02,
     "squadDepth": 68,
     "exp": 4,
     "keyPlayer": "R. Mahrez",
-    "marketPct": 0.3
+    "marketPct": 0.19
   },
   "Austria": {
     "group": "J",
     "elo": 1818,
     "fifaPts": 1540.0,
-    "form": 0.97,
+    "form": 1.0,
     "squadDepth": 74,
     "exp": 4,
     "keyPlayer": "M. Sabitzer",
-    "marketPct": 0.5
+    "marketPct": 0.48
   },
   "Ivory Coast": {
     "group": "E",
     "elo": 1650,
     "fifaPts": 1530.0,
-    "form": 0.95,
+    "form": 0.99,
     "squadDepth": 72,
     "exp": 4,
     "keyPlayer": "S. Diomande",
-    "marketPct": 0.5
+    "marketPct": 0.48
   },
   "Scotland": {
     "group": "C",
     "elo": 1645,
     "fifaPts": 1480.0,
-    "form": 0.95,
+    "form": 0.99,
     "squadDepth": 65,
     "exp": 1,
     "keyPlayer": "J. McGinn",
-    "marketPct": 0.3
+    "marketPct": 0.58
   },
   "Australia": {
     "group": "D",
     "elo": 1774,
     "fifaPts": 1460.0,
-    "form": 0.94,
+    "form": 0.99,
     "squadDepth": 63,
     "exp": 5,
     "keyPlayer": "M. Leckie",
-    "marketPct": 0.5
+    "marketPct": 1.25
   },
   "Canada": {
     "group": "B",
     "elo": 1805,
     "fifaPts": 1445.0,
-    "form": 0.55,
+    "form": 0.51,
     "squadDepth": 65,
     "exp": 2,
     "keyPlayer": "A. Davies",
-    "marketPct": 0.4
+    "marketPct": 0.43
   },
   "Iran": {
     "group": "G",
     "elo": 1755,
     "fifaPts": 1480.0,
-    "form": 0.52,
+    "form": 0.5,
     "squadDepth": 59,
     "exp": 6,
     "keyPlayer": "M. Taremi",
-    "marketPct": 0.2
+    "marketPct": 0.19
   },
   "Saudi Arabia": {
     "group": "H",
@@ -307,53 +307,53 @@
     "squadDepth": 57,
     "exp": 6,
     "keyPlayer": "S. Al-Dawsari",
-    "marketPct": 0.15
+    "marketPct": 0.1
   },
   "South Africa": {
     "group": "A",
     "elo": 1500,
     "fifaPts": 1380.0,
-    "form": 0.08,
+    "form": 0.01,
     "squadDepth": 50,
     "exp": 3,
     "keyPlayer": "P. Tau",
-    "marketPct": 0.1
+    "marketPct": 0.06
   },
   "Czechia": {
     "group": "A",
     "elo": 1731,
     "fifaPts": 1520.0,
-    "form": 0.11,
+    "form": 0.02,
     "squadDepth": 70,
     "exp": 6,
     "keyPlayer": "T. Soucek",
-    "marketPct": 0.3
+    "marketPct": 0.14
   },
   "Qatar": {
     "group": "B",
     "elo": 1550,
     "fifaPts": 1400.0,
-    "form": 0.48,
+    "form": 0.5,
     "squadDepth": 52,
     "exp": 2,
     "keyPlayer": "A. Afif",
-    "marketPct": 0.05
+    "marketPct": 0.04
   },
   "Bosnia": {
     "group": "B",
     "elo": 1580,
     "fifaPts": 1510.0,
-    "form": 0.53,
+    "form": 0.5,
     "squadDepth": 67,
     "exp": 1,
     "keyPlayer": "E. Dzeko",
-    "marketPct": 0.2
+    "marketPct": 0.19
   },
   "Haiti": {
     "group": "C",
     "elo": 1550,
     "fifaPts": 1300.0,
-    "form": 0.06,
+    "form": 0.01,
     "squadDepth": 42,
     "exp": 1,
     "keyPlayer": "N. Geffrard",
@@ -363,17 +363,17 @@
     "group": "D",
     "elo": 1833,
     "fifaPts": 1450.0,
-    "form": 0.06,
+    "form": 0.01,
     "squadDepth": 55,
     "exp": 7,
     "keyPlayer": "M. Almiron",
-    "marketPct": 0.1
+    "marketPct": 0.05
   },
   "Curacao": {
     "group": "E",
     "elo": 1500,
     "fifaPts": 1250.0,
-    "form": 0.05,
+    "form": 0.01,
     "squadDepth": 38,
     "exp": 1,
     "keyPlayer": "J. Antonisse",
@@ -383,57 +383,57 @@
     "group": "F",
     "elo": 1630,
     "fifaPts": 1455.0,
-    "form": 0.1,
+    "form": 0.02,
     "squadDepth": 56,
     "exp": 6,
     "keyPlayer": "W. Khazri",
-    "marketPct": 0.1
+    "marketPct": 0.05
   },
   "Egypt": {
     "group": "G",
     "elo": 1659,
     "fifaPts": 1490.0,
-    "form": 0.53,
+    "form": 0.5,
     "squadDepth": 61,
     "exp": 4,
     "keyPlayer": "M. Salah",
-    "marketPct": 0.2
+    "marketPct": 0.24
   },
   "New Zealand": {
     "group": "G",
     "elo": 1500,
     "fifaPts": 1320.0,
-    "form": 0.52,
+    "form": 0.5,
     "squadDepth": 44,
     "exp": 4,
     "keyPlayer": "C. Wood",
-    "marketPct": 0.03
+    "marketPct": 0.07
   },
   "Cape Verde": {
     "group": "H",
     "elo": 1500,
     "fifaPts": 1420.0,
-    "form": 0.53,
+    "form": 0.5,
     "squadDepth": 46,
     "exp": 2,
     "keyPlayer": "G. Tavares",
-    "marketPct": 0.05
+    "marketPct": 0.08
   },
   "Iraq": {
     "group": "I",
     "elo": 1600,
     "fifaPts": 1390.0,
-    "form": 0.08,
+    "form": 0.01,
     "squadDepth": 48,
     "exp": 4,
     "keyPlayer": "A. Hussein",
-    "marketPct": 0.05
+    "marketPct": 0.03
   },
   "Jordan": {
     "group": "J",
     "elo": 1689,
     "fifaPts": 1370.0,
-    "form": 0.08,
+    "form": 0.01,
     "squadDepth": 43,
     "exp": 1,
     "keyPlayer": "Y. Al-Naimat",
@@ -457,7 +457,7 @@
     "squadDepth": 50,
     "exp": 2,
     "keyPlayer": "S. Mbemba",
-    "marketPct": 0.1
+    "marketPct": 0.12
   },
   "Panama": {
     "group": "L",
@@ -477,6 +477,6 @@
     "squadDepth": 58,
     "exp": 5,
     "keyPlayer": "M. Kudus",
-    "marketPct": 0.1
+    "marketPct": 0.14
   }
 }
