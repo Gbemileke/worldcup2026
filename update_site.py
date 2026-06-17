@@ -207,7 +207,7 @@ def update_groups():
         )
         group_entries.append(entry)
 
-    new_groups = 'var GROUPS = {\n' + ',\n'.join(group_entries) + '\n};'
+    new_groups = '\n\nvar GROUPS = {\n' + ',\n'.join(group_entries) + '\n};\n'
 
     old_start = js.find('var GROUPS = {')
     old_end   = js.find('var PRESETS', old_start)
