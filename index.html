@@ -2063,59 +2063,94 @@ function buildScorers() {
   if (!sorted.length) return;
 
   var topGoals = sorted[0].goals;
-  var topList  = sorted.filter(function(s){ return s.goals === topGoals; });
-  var restList = sorted.filter(function(s){ return s.goals < topGoals; });
 
-  // ── Top scorers ────────────────────────────────────────────────────────────
-  var _ts = document.getElementById('topScorersList');
-  if (_ts) {
-    _ts.innerHTML =
-      '<div style="font-size:9px;font-weight:800;color:var(--gold);letter-spacing:.6px;' +
-        'text-transform:uppercase;padding:8px 12px 4px;border-bottom:1px solid var(--border)">' +
-        (topGoals + ' Goal' + (topGoals > 1 ? 's' : '')) +
-      '</div>' +
-      topList.map(function(s, i) {
-        var barW = 100;
-        return '<div class="scorer-row-item">' +
-          '<div class="scorer-rank top">' + (i+1) + '</div>' +
-          '<div class="scorer-name-sm">' + s.name +
-            ' <span style="color:var(--muted);font-weight:400;font-size:10px">' + s.team + '</span>' +
-          '</div>' +
-          '<div class="bar-container"><div class="bar-fill" style="width:' + barW + '%"></div></div>' +
-          '<div class="scorer-goals-sm">' + s.goals + '</div>' +
-        '</div>';
-      }).join('');
-  }
+  // Group by goal count
+  var byCount = {};
+  sorted.forEach(function(s) {
+    if (!byCount[s.goals]) byCount[s.goals] = [];
+    byCount[s.goals].push(s);
+  });
+  var countKeys = Object.keys(byCount).map(Number).sort(function(a,b){return b-a;});
 
-  // ── Rest of scorers grouped by goal count ──────────────────────────────────
-  var _ms = document.getElementById('moreScorers');
-  if (_ms) {
-    // Group restList by goal count
-    var byCount = {};
-    restList.forEach(function(s) {
-      if (!byCount[s.goals]) byCount[s.goals] = [];
-      byCount[s.goals].push(s);
-    });
-    var countKeys = Object.keys(byCount).map(Number).sort(function(a,b){return b-a;});
+  var html = '';
+  var rank = 1;
 
-    _ms.innerHTML = countKeys.map(function(cnt) {
-      var header = '<div style="font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.6px;' +
-        'text-transform:uppercase;padding:6px 12px 2px;border-bottom:1px solid var(--border);' +
-        'background:var(--surface)">' +
-        cnt + ' Goal' + (cnt > 1 ? 's' : '') +
+  countKeys.forEach(function(cnt) {
+    var isTop = cnt === topGoals;
+
+    // Section header
+    html += '<div style="font-size:10px;font-weight:500;color:' +
+      (isTop ? '#c8920a' : 'var(--muted)') +
+      ';letter-spacing:.5px;text-transform:uppercase;padding:10px 12px 4px">' +
+      cnt + ' Goal' + (cnt > 1 ? 's' : '') +
+    '</div>';
+
+    byCount[cnt].forEach(function(s) {
+      var isLeader = cnt === topGoals;
+      var circleStyle = isLeader
+        ? 'background:#c8920a;color:#fff'
+        : 'background:var(--surface2,#f1f3fa);color:var(--muted)';
+
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--border)">' +
+        '<div style="width:22px;height:22px;border-radius:50%;' + circleStyle + ';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">' +
+          (isLeader ? rank : '') +
+        '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:13px;font-weight:' + (isLeader ? '500' : '400') + ';color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
+          '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+        '</div>' +
+        '<div style="font-size:' + (isLeader ? '18' : '14') + 'px;font-weight:500;color:' +
+          (isLeader ? '#c8920a' : 'var(--muted)') +
+          ';min-width:16px;text-align:right">' + cnt + '</div>' +
       '</div>';
-      var rows = byCount[cnt].slice(0, 20).map(function(s) {
-        var barW = Math.round((s.goals / topGoals) * 100);
-        return '<div class="scorer-row-item" style="padding:6px 12px">' +
-          '<div class="scorer-name-sm" style="font-size:11px">' + s.name + '</div>' +
-          '<span style="font-size:9px;color:var(--muted);margin-left:4px;flex:1">' + s.team + '</span>' +
-          '<div class="bar-container" style="width:60px"><div class="bar-fill" style="width:' + barW + '%;background:var(--muted);opacity:0.5"></div></div>' +
-          '<div class="scorer-goals-sm" style="font-size:13px">' + s.goals + '</div>' +
-        '</div>';
-      }).join('');
-      return header + rows;
-    }).join('');
-  }
+
+      if (isLeader) rank++;
+    });
+  });
+
+  // Combine into topScorersList (reuse existing elements)
+  var _ts = document.getElementById('topScorersList');
+  var _ms = document.getElementById('moreScorers');
+
+  // Split: top goal tier into topScorersList, rest into moreScorers
+  var topHtml  = '';
+  var restHtml = '';
+
+  var topHeader = '<div style="font-size:10px;font-weight:500;color:#c8920a;letter-spacing:.5px;text-transform:uppercase;padding:8px 12px 4px">' +
+    topGoals + ' Goal' + (topGoals > 1 ? 's' : '') + '</div>';
+
+  var r = 1;
+  byCount[topGoals].forEach(function(s) {
+    topHtml += '<div style="display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--border)">' +
+      '<div style="width:22px;height:22px;border-radius:50%;background:#c8920a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">' + r++ + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
+        '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+      '</div>' +
+      '<div style="font-size:18px;font-weight:500;color:#c8920a;min-width:16px;text-align:right">' + topGoals + '</div>' +
+    '</div>';
+  });
+
+  countKeys.filter(function(cnt){ return cnt < topGoals; }).forEach(function(cnt) {
+    restHtml += '<div style="font-size:10px;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;padding:10px 12px 4px">' +
+      cnt + ' Goal' + (cnt > 1 ? 's' : '') + '</div>';
+    byCount[cnt].slice(0, 25).forEach(function(s) {
+      restHtml += '<div style="display:flex;align-items:center;gap:10px;padding:6px 12px;border-bottom:1px solid var(--border)">' +
+        '<div style="width:22px;height:22px;flex-shrink:0"></div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
+          '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+        '</div>' +
+        '<div style="font-size:14px;color:var(--muted);min-width:16px;text-align:right">' + cnt + '</div>' +
+      '</div>';
+    });
+    if (byCount[cnt].length > 25) {
+      restHtml += '<div style="font-size:11px;color:var(--muted);padding:6px 12px;text-align:center">+ ' + (byCount[cnt].length - 25) + ' more</div>';
+    }
+  });
+
+  if (_ts) _ts.innerHTML = topHeader + topHtml;
+  if (_ms) _ms.innerHTML = restHtml;
 }
 
 function buildMatchSelector() {
