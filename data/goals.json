@@ -72,6 +72,18 @@
     "desc": "Kolasinac flicked on corner; Lukic headed home in six-yard box for Bosnia"
   },
   {
+    "id": 75,
+    "matchId": "m3",
+    "home": "Canada",
+    "away": "Bosnia",
+    "scorer": "A. Davies",
+    "minute": 67,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "1-1",
+    "desc": "Davies drives forward and equalises for Canada \u2014 a crucial away goal for the hosts"
+  },
+  {
     "id": 8,
     "matchId": "m4",
     "home": "USA",
@@ -178,6 +190,18 @@
     "phase": "Group C",
     "score": "1-1",
     "desc": "Vini picked up near touchline, cut inside on right foot for a fierce equalizer"
+  },
+  {
+    "id": 76,
+    "matchId": "m7",
+    "home": "Haiti",
+    "away": "Scotland",
+    "scorer": "L. Ferguson",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group C",
+    "score": "0-1",
+    "desc": "Ferguson scores just before half-time to give Scotland a deserved lead"
   },
   {
     "id": 18,
@@ -360,6 +384,18 @@
     "desc": "Ogawa outjumped Van Dijk; header deflected off Kamada - dramatic Japan equalizer"
   },
   {
+    "id": 77,
+    "matchId": "m12",
+    "home": "Sweden",
+    "away": "Tunisia",
+    "scorer": "V. Gyokeres",
+    "minute": 12,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "1-0",
+    "desc": "Gyokeres opens the scoring early \u2014 Sweden in complete control from the first whistle"
+  },
+  {
     "id": 34,
     "matchId": "m12",
     "home": "Sweden",
@@ -394,6 +430,18 @@
     "phase": "Group F",
     "score": "4-0",
     "desc": "Gyokeres ruthless in front of goal as Sweden completely picked apart Tunisia"
+  },
+  {
+    "id": 78,
+    "matchId": "m12",
+    "home": "Sweden",
+    "away": "Tunisia",
+    "scorer": "Y. Ayari",
+    "minute": 71,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "5-1",
+    "desc": "Ayari grabs a consolation for Tunisia as Sweden ease up late in the game"
   },
   {
     "id": 37,
