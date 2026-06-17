@@ -1758,10 +1758,6 @@ var GOALS = [
 
 
 
-
-
-
-
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -1857,11 +1853,6 @@ var TEAM_DATA = {
   'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.6, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.1},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.7, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.1},
-  m19: {home:'South Korea',away:'Czechia',hf:'SO',af:'CZ',score:'2-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m20: {home:'Canada',away:'Bosnia-Herzegovina',hf:'CA',af:'BO',score:'1-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m21: {home:'Australia',away:'Turkey',hf:'AU',af:'TU',score:'2-0',date:'Jun 14 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m22: {home:'Spain',away:'Cape Verde Islands',hf:'ES',af:'CA',score:'0-0',date:'Jun 15 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
-  m23: {home:'Iraq',away:'Norway',hf:'IQ',af:'NO',score:'1-4',date:'Jun 16 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 // ── ROUND OF 32 PROJECTED MATCHUPS ───────────────────────────────────
@@ -2045,55 +2036,66 @@ function buildDonut() {
 }
 
 function buildScorers() {
-  var top = [
-    {name:'F. Balogun', flag:'us', team:'USA',     goals:2},
-    {name:'K. Havertz', flag:'de', team:'Germany', goals:2},
-    {name:'Y. Ayari',   flag:'se', team:'Sweden',  goals:2}
-  ];
-  var one = [
-    {name:'J. Quinones',   flag:'mx', team:'Mexico'},
-    {name:'R. Jimenez',    flag:'mx', team:'Mexico'},
-    {name:'L. Krejci',     flag:'cz', team:'Czechia'},
-    {name:'In-B. Hwang',   flag:'kr', team:'S. Korea'},
-    {name:'H. Oh',         flag:'kr', team:'S. Korea'},
-    {name:'J. Lukic',      flag:'ba', team:'Bosnia'},
-    {name:'C. Larin',      flag:'ca', team:'Canada'},
-    {name:'Mauricio',      flag:'py', team:'Paraguay'},
-    {name:'G. Reyna',      flag:'us', team:'USA'},
-    {name:'B. Embolo',     flag:'ch', team:'Switzerland'},
-    {name:'B. Khoukhi',    flag:'qa', team:'Qatar'},
-    {name:'I. Saibari',    flag:'ma', team:'Morocco'},
-    {name:'Vinicius Jr.',  flag:'br', team:'Brazil'},
-    {name:'J. McGinn',     flag:'gb-sct',           team:'Scotland'},
-    {name:'N. Irankunda',  flag:'au', team:'Australia'},
-    {name:'C. Metcalfe',   flag:'au', team:'Australia'},
-    {name:'F. Nmecha',     flag:'de', team:'Germany'},
-    {name:'J. Musiala',    flag:'de', team:'Germany'},
-    {name:'N. Schlotterbeck',flag:'de', team:'Germany'},
-    {name:'C. Gakpo',      flag:'nl', team:'Netherlands'},
-    {name:'V. van Dijk',   flag:'nl', team:'Netherlands'},
-    {name:'D. Kamada',     flag:'jp', team:'Japan'},
-    {name:'K. Ogawa',      flag:'jp', team:'Japan'},
-    {name:'A. Isak',       flag:'se', team:'Sweden'},
-    {name:'V. Gyokeres',   flag:'se', team:'Sweden'},
-    {name:'M. Svanberg',   flag:'se', team:'Sweden'},
-    {name:'L. Comenencia', flag:'cw', team:'Curacao'}
-  ];
-  var _ts = document.getElementById('topScorersList'); if (_ts) _ts.innerHTML = top.map(function(s, i) {
+  // ── Compute from GOALS array dynamically ──────────────────────────────────
+  var counts = {};   // name -> {goals, team, ownGoals}
+
+  GOALS.forEach(function(g) {
+    var isOG  = g.type === 'own-goal';
+    var name  = g.scorer.replace(/ OG$/,'').trim();
+    var team  = isOG ? g.away : g.home;  // OG credited to opposing team's match
+
+    // Determine team from MATCHES
+    for (var mi = 0; mi < MATCHES.length; mi++) {
+      if (MATCHES[mi].id === g.matchId) {
+        // scorer team = home or away based on goal context
+        // For non-OG we use the phase info or just keep the home team
+        break;
+      }
+    }
+
+    if (isOG) {
+      // Track OGs separately — don't count toward scorer tally
+      return;
+    }
+
+    if (!counts[name]) counts[name] = {goals: 0, team: team};
+    counts[name].goals++;
+  });
+
+  // Sort by goals descending
+  var sorted = Object.keys(counts).map(function(name) {
+    return {name: name, goals: counts[name].goals, team: counts[name].team};
+  }).sort(function(a, b) {
+    return b.goals - a.goals || a.name.localeCompare(b.name);
+  });
+
+  if (!sorted.length) return;
+
+  var topGoals = sorted[0].goals;
+  var topList  = sorted.filter(function(s) { return s.goals === topGoals; });
+  var restList = sorted.filter(function(s) { return s.goals < topGoals; });
+
+  // ── Top scorers panel ─────────────────────────────────────────────────────
+  var _ts = document.getElementById('topScorersList');
+  if (_ts) _ts.innerHTML = topList.map(function(s, i) {
+    var barW = Math.round((s.goals / topGoals) * 100);
     return '<div class="scorer-row-item">' +
-      '<div class="scorer-rank ' + (i < 3 ? 'top' : '') + '">' + (i+1) + '</div>' +
-      '<div class="scorer-flag-sm">' + renderFlag(s.flag,'16px') + '</div>' +
-      '<div class="scorer-name-sm">' + s.name + ' <span style="color:var(--muted);font-weight:400;font-size:10px">' + s.team + '</span></div>' +
-      '<div class="bar-container"><div class="bar-fill" style="width:100%"></div></div>' +
+      '<div class="scorer-rank top">' + (i+1) + '</div>' +
+      '<div class="scorer-name-sm">' + s.name +
+        ' <span style="color:var(--muted);font-weight:400;font-size:10px">' + s.team + '</span>' +
+      '</div>' +
+      '<div class="bar-container"><div class="bar-fill" style="width:' + barW + '%"></div></div>' +
       '<div class="scorer-goals-sm">' + s.goals + '</div>' +
     '</div>';
   }).join('');
-  var _ms = document.getElementById('moreScorers'); if (_ms) _ms.innerHTML = one.slice(0, 14).map(function(s) {
+
+  // ── One-goal scorers (next 20) ────────────────────────────────────────────
+  var _ms = document.getElementById('moreScorers');
+  if (_ms) _ms.innerHTML = restList.slice(0, 20).map(function(s) {
     return '<div class="scorer-row-item" style="padding:7px 11px">' +
-      '<div class="scorer-flag-sm" style="font-size:14px">' + renderFlag(s.flag,'14px') + '</div>' +
       '<div class="scorer-name-sm" style="font-size:11px">' + s.name + '</div>' +
-      '<span style="font-size:9px;color:var(--muted)">' + s.team + '</span>' +
-      '<div class="scorer-goals-sm" style="font-size:15px">1</div>' +
+      '<span style="font-size:9px;color:var(--muted);margin-left:4px">' + s.team + '</span>' +
+      '<div class="scorer-goals-sm" style="font-size:15px">' + s.goals + '</div>' +
     '</div>';
   }).join('');
 }
@@ -3243,8 +3245,6 @@ buildScorers();
 
 
 
-
-
 var GROUPS = {
   A: {
     name: 'Group A', venue: 'Mexico City / Guadalajara',
@@ -3303,26 +3303,26 @@ var GROUPS = {
   G: {
     name: 'Group G', venue: 'Seattle / Vancouver',
     teams: [
-      {name:'Belgium', polymarket:55, fanDuelOdds:-180},
-      {name:'New Zealand', polymarket:20, fanDuelOdds:350},
-      {name:'Iran', polymarket:15, fanDuelOdds:500},
-      {name:'Egypt', polymarket:10, fanDuelOdds:700}
+      {name:'Belgium', polymarket:55.0, fanDuelOdds:-180},
+      {name:'New Zealand', polymarket:20.0, fanDuelOdds:350},
+      {name:'Iran', polymarket:15.0, fanDuelOdds:500},
+      {name:'Egypt', polymarket:10.0, fanDuelOdds:700}
     ]
   },
   H: {
     name: 'Group H', venue: 'Atlanta / Miami',
     teams: [
-      {name:'Spain', polymarket:72, fanDuelOdds:-280},
-      {name:'Uruguay', polymarket:20, fanDuelOdds:280},
-      {name:'Cape Verde', polymarket:5, fanDuelOdds:3000},
-      {name:'Saudi Arabia', polymarket:3, fanDuelOdds:4000}
+      {name:'Spain', polymarket:72.0, fanDuelOdds:-280},
+      {name:'Uruguay', polymarket:20.0, fanDuelOdds:280},
+      {name:'Cape Verde', polymarket:5.0, fanDuelOdds:3000},
+      {name:'Saudi Arabia', polymarket:3.0, fanDuelOdds:4000}
     ]
   },
   I: {
     name: 'Group I', venue: 'East Rutherford / Boston / Philadelphia',
     teams: [
-      {name:'France', polymarket:88, fanDuelOdds:-450},
-      {name:'Norway', polymarket:10, fanDuelOdds:200},
+      {name:'France', polymarket:88.0, fanDuelOdds:-450},
+      {name:'Norway', polymarket:10.0, fanDuelOdds:200},
       {name:'Senegal', polymarket:1.5, fanDuelOdds:1200},
       {name:'Iraq', polymarket:0.5, fanDuelOdds:15000}
     ]
