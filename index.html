@@ -1754,6 +1754,8 @@ var GOALS = [
   {id:55, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'A. Hussein OG', flag:'', minute:96, type:'own-goal', phase:'Group I', score:'4-1', desc:'Hussein own goal — cruel twist as Haaland header across goal is poked into his own net by the Iraq striker who scored the equaliser'}
 ];
 
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -1794,8 +1796,6 @@ var MATCH_STATS = {
   m17: {home:'France', away:'Senegal', hf:'', af:'', score:'3-1', date:'Jun 16 - MetLife Stadium, New Jersey', poss:[60, 40], stats:[["Shots", 18, 14], ["Shots on Target", 6, 5], ["Passes", 542, 338], ["Pass Accuracy %", 88, 78], ["Fouls", 12, 14], ["Corners", 7, 4], ["Clearances", 8, 14], ["Turnovers", 10, 13]], xtra:[["xG", 2.1, 1.8], ["Yellow Cards", 1, 2], ["Offsides", 3, 1], ["Saves", 4, 3]]},
   m18: {home:'Norway', away:'Iraq', hf:'', af:'', score:'4-1', date:'Jun 16 - Gillette Stadium (Boston), Foxborough MA', poss:[62, 38], stats:[["Shots", 18, 7], ["Shots on Target", 7, 3], ["Passes", 521, 298], ["Pass Accuracy %", 86, 73], ["Fouls", 10, 16], ["Corners", 7, 3], ["Clearances", 8, 22], ["Turnovers", 11, 18]], xtra:[["xG", 3.4, 0.9], ["Yellow Cards", 1, 2], ["Offsides", 3, 2], ["Saves", 2, 5]]}
 };
-
-
 
 // ── Simulation state ─────────────────────────────────────
 var SIM = {};
@@ -1851,6 +1851,11 @@ var TEAM_DATA = {
   'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.6, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.1},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.7, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.1},
+  m19: {home:'South Korea',away:'Czechia',hf:'SO',af:'CZ',score:'2-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m20: {home:'Canada',away:'Bosnia-Herzegovina',hf:'CA',af:'BO',score:'1-1',date:'Jun 12 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m21: {home:'Australia',away:'Turkey',hf:'AU',af:'TU',score:'2-0',date:'Jun 14 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m22: {home:'Spain',away:'Cape Verde Islands',hf:'ES',af:'CA',score:'0-0',date:'Jun 15 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
+  m23: {home:'Iraq',away:'Norway',hf:'IQ',af:'NO',score:'1-4',date:'Jun 16 - Stadium',poss:[50,50],stats:[['Shots',10,8],['Shots on Target',4,3],['Passes',400,300],['Pass Accuracy %',82,75],['Fouls',12,12],['Corners',5,4]],xtra:[['xG',1.6,1.2],['Yellow Cards',1,1],['Offsides',2,1]]},
 };
 
 // ── ROUND OF 32 PROJECTED MATCHUPS ───────────────────────────────────
