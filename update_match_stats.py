@@ -169,7 +169,8 @@ def fetch_upcoming(token):
             minute = dt_cst.minute
             ampm = 'AM' if hour < 12 else 'PM'
             hour12 = hour % 12 or 12
-            time_str = f"{hour12}{':{:02d}'.format(minute) if minute else ''}{'\u200b'}{ampm} CST"
+            min_part = ':{:02d}'.format(minute) if minute else ''
+            time_str = f"{hour12}{min_part}{ampm} CST"
         except:
             date_str = utc_str[:10]
             time_str = '?:?? CST'
