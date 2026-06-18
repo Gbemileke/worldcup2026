@@ -369,7 +369,7 @@ def update_snapshot():
         'stat-own-goals':   (len(own_goals),  'Own Goals',     og_names),
         'stat-penalties':   (len(penalties),  'Penalties Scored', pen_names),
         'stat-top-team':    (top_count,       top_label,       top_sub),
-        'stat-matches':     (match_count,     'Matches Played', breakdown),
+        'stat-matches':     (f'{match_count} of 104', 'Matches Played', breakdown),
         'stat-alltime':     (16, 'All-Time WC Record',
                              'Miroslav Klose, GER (2002\u20132014) \u2014 Mbapp\u00E9 on 14'),
     }

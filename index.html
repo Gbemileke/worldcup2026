@@ -1354,14 +1354,14 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 17, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 18, 2026</div>
           <div class="analytics-grid">
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">70</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.18 per match · 22 matches played</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">5</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein, Al-Arab</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">4</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E), Arnautovic (Grp J), Kane (Grp L)</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">22</div><div class="stat-label">Matches Played</div><div class="stat-sub">49 open play · 12 headers · 4 penalties · 5 OGs</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">22 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">49 open play · 12 headers · 4 penalties · 5 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1788,6 +1788,8 @@ var GOALS = [
   {id:97, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:47, type:'open-play', phase:'Group L', score:'3-2', desc:'Bellingham immediately restores England\'s lead seconds after half time — a brilliant solo run and finish'},
   {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'}
 ];
+
+
 
 
 
@@ -2973,7 +2975,7 @@ function buildSnapshotStats() {
       sub: topSub || '—'
     },
     'stat-matches': {
-      num: matchCount,
+      num: matchCount + ' of 104',
       lbl: 'Matches Played',
       sub: breakdownSub
     },
@@ -3430,6 +3432,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
