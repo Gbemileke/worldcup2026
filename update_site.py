@@ -57,8 +57,8 @@ def update_matches():
     if not data:
         return
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js_end   = c.rfind('</script>')
+    js_start = c.find('<script>') + len('<script>')
+    js_end   = c.find('</script>')
     js       = c[js_start:js_end]
 
     # Build new MATCHES array
@@ -98,8 +98,8 @@ def update_goals():
     if not data:
         return
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js_end   = c.rfind('</script>')
+    js_start = c.find('<script>') + len('<script>')
+    js_end   = c.find('</script>')
     js       = c[js_start:js_end]
 
     def esc(s):
@@ -149,8 +149,8 @@ def update_match_stats():
     if not data:
         return
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js_end   = c.rfind('</script>')
+    js_start = c.find('<script>') + len('<script>')
+    js_end   = c.find('</script>')
     js       = c[js_start:js_end]
 
     entries = []
@@ -200,8 +200,8 @@ def update_groups():
     if not data:
         return
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js_end   = c.rfind('</script>')
+    js_start = c.find('<script>') + len('<script>')
+    js_end   = c.find('</script>')
     js       = c[js_start:js_end]
 
     group_entries = []
@@ -239,8 +239,8 @@ def update_upcoming():
     if not data:
         return
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js_end   = c.rfind('</script>')
+    js_start = c.find('<script>') + len('<script>')
+    js_end   = c.find('</script>')
     js       = c[js_start:js_end]
 
     entries = []
@@ -345,16 +345,45 @@ def update_snapshot():
     if len(top_scorers) > 6:
         top_sub += f' +{len(top_scorers)-6} more'
 
-    # OG names
-    og_names = ', '.join(
-        g['scorer'].replace(' OG','').split('.')[-1].strip() for g in own_goals
-    ) or '—'
+    # OG sub-text: "in N matches" with tooltip details
+    def og_country(g):
+        # OG scorer plays for the team whose score DIDN'T increase
+        # Find prev goal to determine which team benefited
+        match_goals = sorted([x for x in goals_data if x['matchId']==g['matchId'] and x['minute']<g['minute']], key=lambda x: x['minute'])
+        prev_score  = match_goals[-1]['score'] if match_goals else '0-0'
+        ph_prev = int(prev_score.split('-')[0]) if prev_score.split('-')[0].isdigit() else 0
+        ph_now  = int(g['score'].split('-')[0]) if g['score'].split('-')[0].isdigit() else 0
+        return g['away'] if ph_now > ph_prev else g['home']
+    def og_opponent(g):
+        match_goals = sorted([x for x in goals_data if x['matchId']==g['matchId'] and x['minute']<g['minute']], key=lambda x: x['minute'])
+        prev_score  = match_goals[-1]['score'] if match_goals else '0-0'
+        ph_prev = int(prev_score.split('-')[0]) if prev_score.split('-')[0].isdigit() else 0
+        ph_now  = int(g['score'].split('-')[0]) if g['score'].split('-')[0].isdigit() else 0
+        return g['home'] if ph_now > ph_prev else g['away']
 
-    # Penalty names
-    pen_names = ', '.join(
-        f"{g['scorer'].split('.')[-1].strip()} ({g['phase'].replace('Group ','Grp ')})"
+    og_tip = ' | '.join(
+        f"{og_country(g)} ({g['scorer'].replace(' OG','').split('.')[-1].strip()}) vs {og_opponent(g)}"
+        for g in own_goals
+    )
+    og_match_count = len(set((g['home'],g['away']) for g in own_goals))
+    og_names = f"in {og_match_count} match{'es' if og_match_count != 1 else ''}"  
+
+    # Penalty sub-text: "in N matches" with tooltip details
+    def scorer_country(g):
+        parts = g['score'].split('-')
+        h, a = int(parts[0]) if parts[0].isdigit() else 0, int(parts[1]) if len(parts)>1 and parts[1].isdigit() else 0
+        return g['home'] if h > a else g['away']
+    def scorer_opponent(g):
+        parts = g['score'].split('-')
+        h, a = int(parts[0]) if parts[0].isdigit() else 0, int(parts[1]) if len(parts)>1 and parts[1].isdigit() else 0
+        return g['away'] if h > a else g['home']
+
+    pen_tip = ' | '.join(
+        f"{scorer_country(g)} ({g['scorer'].split('.')[-1].strip()}) vs {scorer_opponent(g)}"
         for g in penalties
-    ) or '—'
+    )
+    pen_match_count = len(set((g['home'],g['away']) for g in penalties))
+    pen_names = f"in {pen_match_count} match{'es' if pen_match_count != 1 else ''}"  
 
     # Goals breakdown
     breakdown = (f"{len(open_play)} open play · {len(headers)} headers · "
@@ -366,8 +395,8 @@ def update_snapshot():
                              f"{avg} per match · {match_count} matches played"),
         'stat-biggest-win': (biggest_goals, biggest_label,
                              'Most goals in a single match'),
-        'stat-own-goals':   (len(own_goals),  'Own Goals',     og_names),
-        'stat-penalties':   (len(penalties),  'Penalties Scored', pen_names),
+        'stat-own-goals':   (len(own_goals),  'Own Goals',     og_names, og_tip),
+        'stat-penalties':   (len(penalties),  'Penalties Scored', pen_names, pen_tip),
         'stat-top-team':    (top_count,       top_label,       top_sub),
         'stat-matches':     (f'{match_count} of 104', 'Matches Played', breakdown),
         'stat-alltime':     (16, 'All-Time WC Record',
@@ -375,16 +404,24 @@ def update_snapshot():
     }
 
     import re
-    for card_id, (num, label, sub) in updates.items():
+    for card_id, vals in updates.items():
+        num, label, sub = vals[0], vals[1], vals[2]
+        tip = vals[3] if len(vals) > 3 else None
         c = re.sub(
             rf'(id="{card_id}"><div class="stat-num">)[^<]*(</div>)',
             rf'\g<1>{num}\g<2>', c, count=1)
         c = re.sub(
             rf'(id="{card_id}">.*?<div class="stat-label">)[^<]*(</div>)',
             rf'\g<1>{label}\g<2>', c, count=1, flags=re.DOTALL)
-        c = re.sub(
-            rf'(id="{card_id}">.*?<div class="stat-sub">)[^<]*(</div>)',
-            rf'\g<1>{sub}\g<2>', c, count=1, flags=re.DOTALL)
+        if tip:
+            sub_with_tip = f'<span class="has-tip" data-tip="{tip}" title="{tip}">{sub}</span>'
+            c = re.sub(
+                rf'(id="{card_id}">.*?<div class="stat-sub">).*?(</div>)',
+                rf'\g<1>{sub_with_tip}\g<2>', c, count=1, flags=re.DOTALL)
+        else:
+            c = re.sub(
+                rf'(id="{card_id}">.*?<div class="stat-sub">).*?(</div>)',
+                rf'\g<1>{sub}\g<2>', c, count=1, flags=re.DOTALL)
 
     # Update date
     today = datetime.date.today().strftime("%B %-d, %Y").upper()
@@ -432,13 +469,23 @@ def update_form():
         else:
             wc_results[home].append(0.5); wc_results[away].append(0.5)
 
-    # Update form values
+    # Short name → full name aliases (matches.json uses short, team_data.json uses full)
+    NAME_ALIASES = {
+        'S. Korea':'South Korea', 'S. Africa':'South Africa',
+        'DR Congo':'Congo DR', 'Ivory Coast':"Côte d'Ivoire",
+        'Bosnia':'Bosnia and Herzegovina', 'Curacao':'Curaçao',
+        'Cape Verde':'Cabo Verde',
+    }
+
+    # Update form values — floor 0.10 so no team ever shows 0%
     updated = 0
     for team, results in wc_results.items():
-        if team in teams_data:
+        full_name = NAME_ALIASES.get(team, team)
+        target = full_name if full_name in teams_data else (team if team in teams_data else None)
+        if target:
             avg = sum(results) / len(results)
-            old = teams_data[team].get('form', 0.7)
-            teams_data[team]['form'] = round(old * 0.4 + avg * 0.6, 2)
+            old = teams_data[target].get('form', 0.7)
+            teams_data[target]['form'] = round(max(0.10, old * 0.4 + avg * 0.6), 2)
             updated += 1
 
     import os, json as _json
@@ -448,8 +495,8 @@ def update_form():
 
     # Patch TEAM_DATA in index.html — form AND marketPct
     c = read_html()
-    js_start = c.rfind('<script>') + len('<script>')
-    js = c[js_start:c.rfind('</script>')]
+    js_start = c.find('<script>') + len('<script>')
+    js = c[js_start:c.find('</script>')]
 
     import re
     form_updated = 0
@@ -468,7 +515,7 @@ def update_form():
             js = new_js2
             pct_updated += 1
 
-    c = c[:js_start] + js + c[c.rfind('</script>'):]
+    c = c[:js_start] + js + c[c.find('</script>'):]
     write_html(c)
     print(f"  → Form updated for {form_updated} teams, marketPct for {pct_updated} teams")
 

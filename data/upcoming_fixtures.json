@@ -1,44 +1,317 @@
 [
   {
     "date": "Jun 18",
-    "home": "Czechia",
-    "away": "S. Africa",
-    "time": "11AM CST",
-    "group": "A"
-  },
-  {
-    "date": "Jun 18",
-    "home": "Switzerland",
-    "away": "Bosnia",
-    "time": "2PM CST",
-    "group": "B"
-  },
-  {
-    "date": "Jun 18",
-    "home": "Canada",
-    "away": "Qatar",
-    "time": "5PM CST",
-    "group": "B"
-  },
-  {
-    "date": "Jun 18",
     "home": "Mexico",
     "away": "S. Korea",
     "time": "8PM CST",
     "group": "A"
   },
   {
-    "date": "Jun 17",
-    "home": "Ghana",
-    "away": "Panama",
-    "time": "6PM CST",
+    "date": "Jun 19",
+    "home": "Morocco",
+    "away": "Haiti",
+    "time": "11AM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jun 19",
+    "home": "Paraguay",
+    "away": "Turkey",
+    "time": "2PM CST",
+    "group": "D"
+  },
+  {
+    "date": "Jun 19",
+    "home": "Brazil",
+    "away": "Scotland",
+    "time": "5PM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jun 19",
+    "home": "USA",
+    "away": "Australia",
+    "time": "8PM CST",
+    "group": "D"
+  },
+  {
+    "date": "Jun 20",
+    "home": "Ecuador",
+    "away": "Curacao",
+    "time": "11AM CST",
+    "group": "E"
+  },
+  {
+    "date": "Jun 20",
+    "home": "Iran",
+    "away": "Egypt",
+    "time": "2PM CST",
+    "group": "G"
+  },
+  {
+    "date": "Jun 20",
+    "home": "Germany",
+    "away": "Ivory Coast",
+    "time": "5PM CST",
+    "group": "E"
+  },
+  {
+    "date": "Jun 20",
+    "home": "Belgium",
+    "away": "New Zealand",
+    "time": "8PM CST",
+    "group": "G"
+  },
+  {
+    "date": "Jun 21",
+    "home": "Sweden",
+    "away": "Netherlands",
+    "time": "11AM CST",
+    "group": "F"
+  },
+  {
+    "date": "Jun 21",
+    "home": "Spain",
+    "away": "Uruguay",
+    "time": "2PM CST",
+    "group": "H"
+  },
+  {
+    "date": "Jun 21",
+    "home": "Japan",
+    "away": "Tunisia",
+    "time": "5PM CST",
+    "group": "F"
+  },
+  {
+    "date": "Jun 21",
+    "home": "Saudi Arabia",
+    "away": "Cape Verde",
+    "time": "8PM CST",
+    "group": "H"
+  },
+  {
+    "date": "Jun 22",
+    "home": "Iraq",
+    "away": "Senegal",
+    "time": "11AM CST",
+    "group": "I"
+  },
+  {
+    "date": "Jun 22",
+    "home": "Jordan",
+    "away": "Algeria",
+    "time": "2PM CST",
+    "group": "J"
+  },
+  {
+    "date": "Jun 22",
+    "home": "France",
+    "away": "Norway",
+    "time": "5PM CST",
+    "group": "I"
+  },
+  {
+    "date": "Jun 22",
+    "home": "Argentina",
+    "away": "Austria",
+    "time": "8PM CST",
+    "group": "J"
+  },
+  {
+    "date": "Jun 23",
+    "home": "DR Congo",
+    "away": "Uzbekistan",
+    "time": "11AM CST",
+    "group": "K"
+  },
+  {
+    "date": "Jun 23",
+    "home": "Panama",
+    "away": "England",
+    "time": "2PM CST",
     "group": "L"
   },
   {
-    "date": "Jun 17",
-    "home": "Uzbekistan",
+    "date": "Jun 23",
+    "home": "Portugal",
     "away": "Colombia",
-    "time": "9PM CST",
+    "time": "5PM CST",
     "group": "K"
+  },
+  {
+    "date": "Jun 23",
+    "home": "Croatia",
+    "away": "Ghana",
+    "time": "8PM CST",
+    "group": "L"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Scotland",
+    "away": "Morocco",
+    "time": "11AM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Haiti",
+    "away": "Brazil",
+    "time": "11AM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Turkey",
+    "away": "USA",
+    "time": "3PM CST",
+    "group": "D"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Australia",
+    "away": "Paraguay",
+    "time": "3PM CST",
+    "group": "D"
+  },
+  {
+    "date": "Jun 26",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "time": "3PM CST",
+    "group": "G"
+  },
+  {
+    "date": "Jun 26",
+    "home": "Egypt",
+    "away": "Iran",
+    "time": "3PM CST",
+    "group": "G"
+  },
+  {
+    "date": "Jun 29",
+    "home": "Colombia",
+    "away": "DR Congo",
+    "time": "11AM CST",
+    "group": "K"
+  },
+  {
+    "date": "Jun 29",
+    "home": "Uzbekistan",
+    "away": "Portugal",
+    "time": "11AM CST",
+    "group": "K"
+  },
+  {
+    "date": "Jun 30",
+    "home": "Mexico",
+    "away": "S. Korea",
+    "time": "11AM CST",
+    "group": "A"
+  },
+  {
+    "date": "Jun 30",
+    "home": "Canada",
+    "away": "Qatar",
+    "time": "3PM CST",
+    "group": "B"
+  },
+  {
+    "date": "Jul 1",
+    "home": "Morocco",
+    "away": "Scotland",
+    "time": "11AM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jul 1",
+    "home": "Haiti",
+    "away": "Brazil",
+    "time": "11AM CST",
+    "group": "C"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Germany",
+    "away": "Ecuador",
+    "time": "11AM CST",
+    "group": "E"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Ivory Coast",
+    "away": "Curacao",
+    "time": "11AM CST",
+    "group": "E"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Netherlands",
+    "away": "Tunisia",
+    "time": "11AM CST",
+    "group": "F"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Sweden",
+    "away": "Japan",
+    "time": "11AM CST",
+    "group": "F"
+  },
+  {
+    "date": "Jul 2",
+    "home": "France",
+    "away": "Iraq",
+    "time": "11AM CST",
+    "group": "I"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Norway",
+    "away": "Senegal",
+    "time": "11AM CST",
+    "group": "I"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "time": "11AM CST",
+    "group": "K"
+  },
+  {
+    "date": "Jul 2",
+    "home": "DR Congo",
+    "away": "Colombia",
+    "time": "11AM CST",
+    "group": "K"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Argentina",
+    "away": "Jordan",
+    "time": "3PM CST",
+    "group": "J"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Austria",
+    "away": "Algeria",
+    "time": "3PM CST",
+    "group": "J"
+  },
+  {
+    "date": "Jul 2",
+    "home": "England",
+    "away": "Ghana",
+    "time": "3PM CST",
+    "group": "L"
+  },
+  {
+    "date": "Jul 2",
+    "home": "Croatia",
+    "away": "Panama",
+    "time": "3PM CST",
+    "group": "L"
   }
 ]

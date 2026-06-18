@@ -7,7 +7,8 @@
     "score": "2-0",
     "group": "Group A",
     "ytId": "PmevGCkUtM8",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report",
+    "espnId": "760399"
   },
   {
     "id": "m2",
@@ -17,7 +18,8 @@
     "score": "2-1",
     "group": "Group A",
     "ytId": "ILjc_CIwv1Q",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-korea-v-czechia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-korea-v-czechia-highlights-match-report",
+    "espnId": "760400"
   },
   {
     "id": "m3",
@@ -27,7 +29,8 @@
     "score": "1-1",
     "group": "Group B",
     "ytId": "w-_rY5morQY",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-bosnia-herzegovina-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-bosnia-herzegovina-highlights-match-report",
+    "espnId": "760401"
   },
   {
     "id": "m4",
@@ -37,7 +40,8 @@
     "score": "4-1",
     "group": "Group D",
     "ytId": "0PVo3bk-TMk",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/usa-v-paraguay-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/usa-v-paraguay-highlights-match-report",
+    "espnId": "760402"
   },
   {
     "id": "m5",
@@ -47,7 +51,8 @@
     "score": "1-1",
     "group": "Group B",
     "ytId": "DjYkkRPqV18",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-qatar-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-qatar-highlights-match-report",
+    "espnId": "760403"
   },
   {
     "id": "m6",
@@ -57,7 +62,8 @@
     "score": "1-1",
     "group": "Group C",
     "ytId": "r1Afsds3ZD0",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-morocco-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-morocco-highlights-match-report",
+    "espnId": "760404"
   },
   {
     "id": "m7",
@@ -67,7 +73,8 @@
     "score": "0-1",
     "group": "Group C",
     "ytId": "KLXtfCg6ON8",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/haiti-v-scotland-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/haiti-v-scotland-highlights-match-report",
+    "espnId": "760405"
   },
   {
     "id": "m8",
@@ -77,7 +84,8 @@
     "score": "2-0",
     "group": "Group D",
     "ytId": "jdnyNn9XsDc",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/australia-v-turkey-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/australia-v-turkey-highlights-match-report",
+    "espnId": "760406"
   },
   {
     "id": "m9",
@@ -87,7 +95,8 @@
     "score": "7-1",
     "group": "Group E",
     "ytId": "xHtIzadh4Lg",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-curacao-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-curacao-highlights-match-report",
+    "espnId": "760407"
   },
   {
     "id": "m10",
@@ -97,7 +106,8 @@
     "score": "1-0",
     "group": "Group E",
     "ytId": "m7sQP_AZ5vM",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ivory-coast-v-ecuador-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ivory-coast-v-ecuador-highlights-match-report",
+    "espnId": "760408"
   },
   {
     "id": "m11",
@@ -107,7 +117,8 @@
     "score": "2-2",
     "group": "Group F",
     "ytId": "SaTyQMmOpPM",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-japan-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-japan-highlights-match-report",
+    "espnId": "760409"
   },
   {
     "id": "m12",
@@ -117,7 +128,8 @@
     "score": "5-1",
     "group": "Group F",
     "ytId": "F47z0suCV7Y",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/sweden-v-tunisia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/sweden-v-tunisia-highlights-match-report",
+    "espnId": "760424"
   },
   {
     "id": "m13",
@@ -127,7 +139,8 @@
     "score": "0-0",
     "group": "Group H",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-cabo-verde-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-cabo-verde-highlights-match-report",
+    "espnId": "760410"
   },
   {
     "id": "m14",
@@ -137,7 +150,8 @@
     "score": "1-1",
     "group": "Group G",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-egypt-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-egypt-highlights-match-report",
+    "espnId": "760411"
   },
   {
     "id": "m15",
@@ -147,7 +161,8 @@
     "score": "1-1",
     "group": "Group H",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/saudi-arabia-v-uruguay-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/saudi-arabia-v-uruguay-highlights-match-report",
+    "espnId": "760412"
   },
   {
     "id": "m16",
@@ -157,7 +172,8 @@
     "score": "2-2",
     "group": "Group G",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iran-v-new-zealand-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iran-v-new-zealand-highlights-match-report",
+    "espnId": "760413"
   },
   {
     "id": "m17",
@@ -167,7 +183,8 @@
     "score": "3-1",
     "group": "Group I",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report",
+    "espnId": "760414"
   },
   {
     "id": "m18",
@@ -177,7 +194,8 @@
     "score": "4-1",
     "group": "Group I",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report",
+    "espnId": "760415"
   },
   {
     "id": "m19",
@@ -187,7 +205,8 @@
     "score": "3-0",
     "group": "Group J",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report",
+    "espnId": "760416"
   },
   {
     "id": "m20",
@@ -197,7 +216,8 @@
     "score": "3-1",
     "group": "Group J",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report",
+    "espnId": "760417"
   },
   {
     "id": "m21",
@@ -207,7 +227,8 @@
     "score": "1-1",
     "group": "Group K",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report",
+    "espnId": "760418"
   },
   {
     "id": "m22",
@@ -217,7 +238,8 @@
     "score": "4-2",
     "group": "Group L",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report",
+    "espnId": "760419"
   },
   {
     "id": "m23",
@@ -227,7 +249,8 @@
     "score": "1-0",
     "group": "Group L",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report",
+    "espnId": "760434"
   },
   {
     "id": "m24",
@@ -237,6 +260,29 @@
     "score": "1-3",
     "group": "Group K",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report",
+    "espnId": "760435"
+  },
+  {
+    "id": "m25",
+    "date": "Jun 18",
+    "home": "Czechia",
+    "away": "S. Africa",
+    "score": "1-1",
+    "group": "Group A",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-south-africa-highlights-match-report",
+    "espnId": "760437"
+  },
+  {
+    "id": "m26",
+    "date": "Jun 18",
+    "home": "Switzerland",
+    "away": "Bosnia",
+    "score": "4-1",
+    "group": "Group B",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report",
+    "espnId": "760438"
   }
 ]

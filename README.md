@@ -9,15 +9,15 @@ Live analytics dashboard for the 2026 FIFA World Cup (USA · Canada · Mexico).
 
 ## What it does
 
-A single-page analytics app with five tabs, fully responsive across desktop, tablet and iPhone:
+A single-page analytics app with five tabs:
 
 | Tab | Content |
 |---|---|
-| **Analytics** (default) | Snapshot cards · Goals by period chart · Goal type donut · Top scorers table · Match stats selector |
-| **Highlights** | Live goal feed with filters · Goal hero panel with FIFA.com highlight links |
-| **Videos** | Match cards linking directly to FIFA highlight pages |
-| **Bracket** | R32 simulation · Top 4 predictions · Model weight settings · Quick presets |
-| **Groups** | 12 group prediction tables · Model vs Polymarket vs FanDuel comparison |
+| **Analytics** | Snapshot cards · Goals by period chart · Goal type donut · Top scorers · Match stats selector |
+| **Highlights** | Live goal feed with filters · Goal hero panel with FIFA.com links |
+| **Videos** | Match video cards linking to FIFA highlight pages |
+| **Bracket** | R32 bracket simulation · Top 4 predictions · Model weight settings · Quick presets |
+| **Groups** | Match predictor · 12 group tables · Model vs Polymarket vs FanDuel comparison |
 
 ---
 
@@ -25,182 +25,139 @@ A single-page analytics app with five tabs, fully responsive across desktop, tab
 
 ```
 worldcup2026/
-├── index.html                    ← Entire app (~181KB, 48 JS functions, 5 mobile breakpoints)
-├── data/                         ← JSON files — single source of truth
-│   ├── matches.json              ← Match results + auto-generated FIFA highlight links
-│   ├── goals.json                ← Goals: scorer, minute, type, description
-│   ├── match_stats.json          ← Possession, shots, xG, yellow cards per match
-│   ├── team_data.json            ← 48 teams: Elo, FIFA pts, live form, Polymarket winner %
-│   ├── groups.json               ← 12 groups + Polymarket/FanDuel group winner odds
-│   └── upcoming_fixtures.json    ← Next fixtures with CST kick-off times (auto-updated)
-├── update_site.py                ← Master rebuild: data/ → index.html (8 sections)
-├── update_match_stats.py         ← Fetches matches, goals, stats + upcoming from API
-├── update_rankings.py            ← Fetches Elo, FIFA pts + Polymarket winner odds
-├── update_odds.py                ← Manual: Polymarket/FanDuel group winner odds
-├── add_match.py                  ← Manually add a match with descriptions + FIFA link
+├── index.html                    ← Entire app (~200KB single HTML file)
+├── data/
+│   ├── matches.json              ← All 26 matches + scores + espnId + FIFA links
+│   ├── goals.json                ← 82 goals + scorers + minute + type + descriptions
+│   ├── match_stats.json          ← Possession / shots / xG / cards per match (ESPN)
+│   ├── team_data.json            ← 48 teams: Elo, FIFA pts, live form, squad depth
+│   ├── groups.json               ← 12 groups + Polymarket / FanDuel odds
+│   └── upcoming_fixtures.json    ← All remaining fixtures with CST kick-off times
+├── update_site.py                ← Master rebuild: reads all JSON → writes index.html
+├── update_match_stats.py         ← Fetches from ESPN scoreboard + summary endpoints
+├── update_rankings.py            ← Updates Elo / FIFA rankings daily
+├── update_odds.py                ← Updates Polymarket / FanDuel group odds (manual)
+├── generate_descriptions.py      ← Template-based goal descriptions
+├── add_match.py                  ← Manually add a completed match
 └── .github/workflows/
-    ├── auto-update.yml           ← Every 3 hours: match data + form + upcoming
-    ├── daily-rankings.yml        ← Daily 6am UTC: Elo + FIFA pts + Polymarket odds
-    └── daily-odds.yml            ← Manual trigger: group winner odds
+    ├── auto-update.yml           ← Every 3 hours: ESPN match data + form + rebuild
+    ├── daily-rankings.yml        ← Daily 6am UTC: Elo + FIFA rankings
+    └── daily-odds.yml            ← Manual trigger: Polymarket + FanDuel odds
 ```
 
 ---
 
-## What updates automatically vs manually
-
-| Data | Auto? | Script | Schedule | Source |
-|---|---|---|---|---|
-| Match scores + stats | ✅ | `update_match_stats.py` | Every 3 hrs | football-data.org API |
-| Goal scorers + types | ✅ | `update_match_stats.py` | Every 3 hrs | football-data.org API (24hr delay) |
-| Goal descriptions (basic) | ✅ | `update_match_stats.py` | Every 3 hrs | Auto-generated |
-| Upcoming fixtures + CST times | ✅ | `update_match_stats.py` | Every 3 hrs | football-data.org API |
-| FIFA highlight links | ✅ | `update_match_stats.py` | Every 3 hrs | Auto-generated from name slugs |
-| Team form | ✅ | `update_site.py` | Every 3 hrs | Computed from WC results |
-| Elo ratings | ✅ | `update_rankings.py` | Daily 6am UTC | trueline.online |
-| FIFA ranking points | ✅ | `update_rankings.py` | Daily 6am UTC | June 11 baseline + WC formula |
-| WC winner odds (marketPct) | ✅ | `update_rankings.py` | Daily 6am UTC | Polymarket gamma API |
-| Group winner odds | ⚠️ Manual | `update_odds.py` | After each matchday | polymarket.com + FanDuel |
-| Goal descriptions (rich) | ⚠️ Manual | Edit `data/goals.json` | Optional | Written by you |
-
-> **Note:** football-data.org free tier delays goal scorer data by ~24 hours after the match. Scores and stats are available immediately. Goals populate on subsequent Action runs.
-
----
-
-## Automation flows
+## Automation — what updates automatically
 
 ### `auto-update.yml` — every 3 hours
 
 ```
-update_match_stats.py
-  ├── fetch FINISHED matches
-  │     → matches.json  (score, date, auto FIFA highlight URL)
-  │     → match_stats.json  (possession, shots, xG, cards)
-  │     → goals.json  (scorer, minute, type, auto-description)
-  │     → removes completed games from upcoming_fixtures.json
-  │     → cleans up any stale placeholder entries
-  └── fetch SCHEDULED matches
-        → upcoming_fixtures.json  (next 12 games, CST times)
+Step 1: update_match_stats.py
+  ├── ESPN scoreboard  → scores, goals, espnId stored per match
+  └── ESPN summary     → possession, shots, SOT, corners, fouls, saves (real Opta data)
 
-update_site.py --section form
-  └── new_form = old_form × 0.4 + wc_result × 0.6
+Step 2: update_site.py --section form
+  └── recomputes team form from WC results (floor: 10%)
 
-update_site.py  (full rebuild — all 8 sections)
+Step 3: update_site.py (full rebuild)
+  ├── matches    → goal feed, video cards, ticker results
+  ├── goals      → highlight feed, scorers table, charts
+  ├── stats      → match analytics selector (ESPN labels)
+  ├── groups     → group prediction odds
+  ├── upcoming   → scrolling ticker + predictor dropdown
+  ├── sync       → removes completed games from upcoming
+  ├── snapshot   → cards: goals, OGs, pens (in N matches + hover tooltip)
+  └── form       → team form values in bracket / group predictions
 
-git commit + push → GitHub Pages live in ~2 minutes
+Step 4: git commit + push → GitHub Pages live in ~2 minutes
 ```
 
-### `daily-rankings.yml` — 6am UTC every day
-
+### `daily-rankings.yml` — 6am UTC daily
 ```
-update_rankings.py
-  ├── fetch_elo()        → live Elo from trueline.online
-  ├── get_fifa_points()  → P_new = P_old + 40 × (W − We) on all WC results
-  └── fetch_polymarket() → WC winner % for all 48 teams, normalised to 100%
-
-patch_html() → patches index.html + saves data/team_data.json
-
-git commit + push
+update_rankings.py → Elo ratings + FIFA ranking points → team_data.json + index.html
 ```
 
 ### `daily-odds.yml` — manual trigger
-
 ```
-update_odds.py
-  └── edit ODDS_UPDATES (all 12 groups templated with current values)
-      → updates groups.json + rebuilds groups section in index.html
-
-git commit + push
+update_odds.py → Polymarket / FanDuel group odds → groups.json + index.html
 ```
 
 ---
 
-## FIFA highlight links — auto-generation
+## Features
 
-```python
-# Pattern: {home-slug}-v-{away-slug}-highlights-match-report
-# Name mapping handles FIFA's non-standard team names:
-'S. Korea' / 'Korea Republic'         → 'south-korea'
-'Bosnia' / 'Bosnia and Herzegovina'   → 'bosnia-herzegovina'
-'Turkiye' / 'Turkey'                  → 'turkey'
-'Cape Verde' / 'Cape Verde Islands'   → 'cabo-verde'
-'DR Congo' / 'Congo DR'               → 'democratic-republic-of-congo'
-'Ivory Coast' / "Côte d'Ivoire"       → 'cote-divoire'
-'USA' / 'United States'               → 'united-states'
+### Match Predictor (Groups tab)
+- Dropdown of all remaining group stage fixtures
+- **Left panel:** 6 model input factors with weights (form-heavy: 35% form)
+- **Right panel:** Model vs Polymarket win probabilities (Team A / Draw / Team B)
+- **Favourite bar:** 3-segment green|gray|blue with % labels under each segment
+- Fixed weights: Form 35% · Elo 20% · Squad 15% · FIFA pts 15% · Qual GD 10% · Exp 5%
+- Neutral venue — no home/away advantage applied
 
-# Some matches FIFA lists away team first in the URL:
-Qatar vs Switzerland  → switzerland-v-qatar
-Norway vs Iraq        → iraq-v-norway
-```
+### Snapshot Cards Tooltip
+- Penalties card: shows `in N matches` — hover reveals `Switzerland (Embolo) vs Qatar`
+- Own Goals card: shows `in N matches` — hover reveals `Paraguay (Bobadilla) vs USA`
+- JS tooltip (not CSS) — appends to body, avoids overflow clipping
+- Mobile: tooltip hidden (no hover on touch devices)
 
-If a new match link is wrong, add the pair to `FIFA_URL_SWAPS` in `update_match_stats.py`.
-
----
-
-## Goal descriptions
-
-**Auto-generated** (from API):
-`"Bellingham scored for England vs Croatia — England 1-0 Croatia"`
-
-**To add rich descriptions:**
-1. Edit `data/goals.json` → update the `desc` field
-2. `python update_site.py --section goals`
-3. `git add . && git commit -m "goals: descriptions" && git push`
-
----
-
-## Group winner odds — update after each matchday
-
-1. Open `update_odds.py` — all 12 groups already templated
-2. Update percentages from [polymarket.com](https://polymarket.com) and FanDuel
-3. `python update_odds.py`
-4. `git add data/groups.json index.html && git commit -m "odds: MD[N]" && git push`
+### Match Statistics
+- Source: **ESPN summary endpoint** (`site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event={espnId}`)
+- Labels match ESPN exactly: Shot Attempts, Shots on Goal, Corner Kicks, Fouls, Saves
+- Extra: Yellow Cards, Red Cards, Offsides
+- espnId stored per match in matches.json for re-fetching
 
 ---
 
 ## Prediction model
 
-### Match probability
+### Match probability formula
 
 ```
-score(team) = (elo/2200      × W.elo)   +
-              (form           × W.form)  +
-              (qualGDpg        × W.qual)  +
-              (squadDepth/100  × W.squad) +
-              (fifaPts/1900    × W.fifa)  +
-              (exp/10          × W.exp)
+score(team) = (elo / 2200      × W.elo)   +
+              (form             × W.form)  +
+              (qualGDpg         × W.qual)  +
+              (squadDepth / 100 × W.squad) +
+              (fifaPts / 1900   × W.fifa)  +
+              (exp / 10         × W.exp)
 
-P(home wins) = 1 / (1 + e^(−8 × (score_home − score_away)))
+P(A wins) = 1 / (1 + e^(−8 × (score_A − score_B)))
 ```
 
-### Default weights
+### Default weights (Bracket tab)
 
-| Factor | Weight | Auto-updated |
-|---|---|---|
-| Elo rating | 30% | ✅ Daily |
-| Squad depth | 20% | ❌ Static |
-| Recent form | 20% | ✅ Every 3 hrs |
-| FIFA points | 15% | ✅ Daily |
-| Qualifying record | 10% | ❌ Static |
-| Tournament experience | 5% | ❌ Static |
+| Factor | Weight |
+|---|---|
+| Elo rating | 30% |
+| Squad depth | 20% |
+| Recent form | 20% |
+| FIFA points | 15% |
+| Qualifying GD | 10% |
+| Experience | 5% |
 
-### Team form formula
+### Match Predictor weights (fixed, form-heavy)
+
+| Factor | Weight |
+|---|---|
+| Form | **35%** |
+| FIFA Rank (Elo) | 20% |
+| Squad depth | 15% |
+| FIFA points | 15% |
+| Qualifying GD | 10% |
+| Experience | 5% |
+
+### Team form — live from WC results
 
 ```
-new_form = (pre_tournament_form × 0.4) + (wc_result × 0.6)
-win=1.0 · draw=0.5 · loss=0.0
+new_form = max(0.10, old_form × 0.4 + wc_result × 0.6)
+
+win  → wc_result = 1.0
+draw → wc_result = 0.5
+loss → wc_result = 0.0
 ```
 
-### FIFA points formula
+Floor of 10% — no team ever shows 0% form. Updates every 3 hours automatically.
 
-```
-P_new = P_old + I × (W − We)
-We = 1 / (10^(−ΔR/600) + 1)    ← expected score based on Elo difference
-I  = 40                          ← World Cup match importance factor
-```
-
-### Bracket simulation
-
-Monte Carlo with 10,000 iterations. Re-runs instantly on weight change. Six Quick Presets:
+### Model presets
 
 | Preset | Elo | Form | Qual | Squad | FIFA | Exp |
 |---|---|---|---|---|---|---|
@@ -213,36 +170,43 @@ Monte Carlo with 10,000 iterations. Re-runs instantly on weight change. Six Quic
 
 ---
 
-## What xG means
+## Data sources
 
-**xG (Expected Goals)** — each shot assigned a probability (0–1) based on distance, angle, body part, and defensive pressure. Sum across all shots = xG total.
-
-- xG > goals scored → missed chances (underperformed)
-- xG < goals scored → clinical finishing (overperformed)
-
-Hover the **?** icon next to xG in any match's KEY NUMBERS panel for an inline tooltip.
-
----
-
-## Responsive design — breakpoints
-
-| Breakpoint | Target | Key changes |
+| Data | Source | Updated |
 |---|---|---|
-| 1100px | Small desktop | Grids reduce columns |
-| 900px | Tablet landscape | Sidebar narrows, single-col bracket |
-| 768px | Tablet / large phone | Sidebar stacks above content, header stacks, tab bar scrolls horizontally |
-| 480px | iPhone | All grids single column, snapshot cards scroll horizontally, fonts scale down |
-| 390px | iPhone 14/15 Pro | Fine-tuned for 390px viewport — most common iPhone width |
+| Match scores + goals | ESPN scoreboard API | Every 3 hours (auto) |
+| Match statistics | ESPN summary API (Opta) | Every 3 hours (auto) |
+| Upcoming fixtures | football-data.org API | Every 3 hours (auto) |
+| Team form | Computed from WC results | Every 3 hours (auto) |
+| Elo ratings | clubelo.com | Daily (auto) |
+| FIFA rankings | FIFA.com | Daily (auto) |
+| Group odds (Polymarket) | polymarket.com | Manual after each matchday |
+| Group odds (FanDuel) | FanDuel via Fox Sports | Manual after each matchday |
+| Qualifying records | Pre-loaded | Static |
+| Squad depth | Pre-loaded | Static |
+| FIFA highlight links | Manual | After each match |
 
 ---
 
-## How to manually add a match
+## GitHub secrets required
 
-```bash
-# 1. Edit add_match.py — fill in MATCH, STATS, GOALS
-python add_match.py
-git add . && git commit -m "add: [Home] vs [Away]" && git push
-```
+Go to **Settings → Secrets → Actions** and add:
+
+| Secret | Used by | Get it at |
+|---|---|---|
+| `FOOTBALL_DATA_TOKEN` | `update_match_stats.py` (upcoming fixtures) | football-data.org (free) |
+
+---
+
+## Tournament snapshot (Jun 18, 2026)
+
+- **26 matches** played · MD1 complete · MD2 in progress
+- **82 goals** · 3.15 per match average
+- **Top scorer:** L. Messi — 3 goals
+- **Own goals:** 4 — Bobadilla (Paraguay), Hany (Egypt), Hussein (Iraq), Al-Arab (Jordan)
+- **Penalties:** 6 — Embolo (Switzerland), Havertz (Germany), Arnautovic (Austria), Kane (England), Mokoena (S. Africa), Xhaka (Switzerland)
+- **Biggest match:** Germany 7–1 Curaçao
+- **Next up:** 45 remaining group stage fixtures through Jul 2
 
 ---
 
@@ -250,57 +214,15 @@ git add . && git commit -m "add: [Home] vs [Away]" && git push
 
 ```bash
 python update_site.py                      # rebuild everything
-python update_site.py --section matches    # match array + FIFA links
-python update_site.py --section goals      # goal feed + descriptions
-python update_site.py --section stats      # match analytics panel
-python update_site.py --section groups     # group winner odds
-python update_site.py --section upcoming   # ticker fixtures + CST times
+python update_site.py --section matches    # matches array only
+python update_site.py --section goals      # goals feed only
+python update_site.py --section stats      # match stats panel only
+python update_site.py --section groups     # group odds only
+python update_site.py --section upcoming   # ticker fixtures only
 python update_site.py --section sync       # remove completed from upcoming
-python update_site.py --section snapshot   # analytics snapshot cards
-python update_site.py --section form       # team form + marketPct
+python update_site.py --section snapshot   # analytics snapshot cards only
+python update_site.py --section form       # team form from WC results only
 ```
-
----
-
-## Secrets required
-
-**GitHub Settings → Secrets → Actions:**
-
-| Secret | Used by | Get at |
-|---|---|---|
-| `FOOTBALL_DATA_TOKEN` | `update_match_stats.py` | football-data.org (free) |
-
-Polymarket API is public — no token needed.
-
----
-
-## Tournament snapshot (Jun 17 2026)
-
-- **21 matches** played · MD1 complete · MD2 in progress
-- **64 goals** · 3.05 per match average
-- **Goals breakdown:** 47 open play · 11 headers · 2 penalties · 4 own goals
-- **Top scorer:** L. Messi — 3 goals (equals Klose all-time WC record of 16)
-- **Biggest match:** Germany 7–1 Curaçao (8 goals)
-- **Last played:** Portugal 1–1 DR Congo · Neves 6' · Wissa 45+5' (Jun 17)
-- **Notable:** Ronaldo became oldest outfield player to start a World Cup match (age 41)
-- **Notable:** DR Congo scored their first ever World Cup goal (Wissa)
-- **Polymarket WC winner:** France 17.8% · Spain 12.8% · Argentina 10.4%
-
----
-
-## Tech stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | Vanilla HTML/CSS/JS — zero frameworks, no build step |
-| Mobile | 5 responsive breakpoints (1100 / 900 / 768 / 480 / 390px) |
-| Charts | Pure SVG/HTML — no chart library |
-| Data | JSON files in `data/` — GitHub as database |
-| Hosting | GitHub Pages (free) |
-| Automation | GitHub Actions (3 workflows, free tier) |
-| Match API | football-data.org free tier (10 req/min, ~24hr goal delay) |
-| Odds API | Polymarket gamma API (public, no auth) |
-| Elo | trueline.online (mirrors eloratings.net) |
 
 ---
 
@@ -308,14 +230,25 @@ Polymarket API is public — no token needed.
 
 ```javascript
 console.table({
-  matches:         MATCHES.length,
-  goals:           GOALS.length,
-  matchStats:      Object.keys(MATCH_STATS).length,
-  teams:           Object.keys(TEAM_DATA).length,
-  groups:          Object.keys(GROUPS).length,
-  presets:         Object.keys(PRESETS).length,
-  switchTab:       typeof switchTab,
-  buildGroupsGrid: typeof buildGroupsGrid
+  matches:    MATCHES.length,        // expect 26+
+  goals:      GOALS.length,          // expect 82+
+  matchStats: Object.keys(MATCH_STATS).length,
+  teams:      Object.keys(TEAM_DATA).length,  // expect 48
+  groups:     Object.keys(GROUPS).length,     // expect 12
+  upcoming:   UPCOMING_FIXTURES.length,
+  predictor:  typeof buildMatchPredictor,     // expect 'function'
 })
-// Expected: matches:21, goals:64, matchStats:21, teams:48, groups:12, presets:6
 ```
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | Vanilla HTML/CSS/JavaScript — zero frameworks, no build step |
+| Data storage | JSON files in `data/` — GitHub as a free database |
+| Hosting | GitHub Pages (free) |
+| Automation | GitHub Actions (free tier, 3-hour schedule) |
+| Match API | ESPN (no auth) + football-data.org (free tier) |
+| Charts | Pure SVG/HTML — no chart library |

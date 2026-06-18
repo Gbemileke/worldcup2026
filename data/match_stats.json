@@ -1,154 +1,45 @@
 {
-  "m1": {
-    "home": "Mexico",
-    "away": "S. Africa",
-    "score": "2-0",
-    "date": "Jun 11 - Estadio Azteca, Mexico City",
-    "poss": [
-      58,
-      42
-    ],
-    "stats": [
-      [
-        "Shots",
-        13,
-        6
-      ],
-      [
-        "Shots on Target",
-        5,
-        2
-      ],
-      [
-        "Passes",
-        512,
-        298
-      ],
-      [
-        "Pass Accuracy %",
-        87,
-        74
-      ],
-      [
-        "Dribbles Won",
-        8,
-        4
-      ],
-      [
-        "Tackles",
-        14,
-        19
-      ],
-      [
-        "Fouls",
-        10,
-        13
-      ],
-      [
-        "Corners",
-        6,
-        2
-      ],
-      [
-        "Clearances",
-        8,
-        18
-      ],
-      [
-        "Turnovers",
-        14,
-        22
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.9,
-        0.6
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ],
-      [
-        "Saves",
-        1,
-        3
-      ]
-    ]
-  },
   "m2": {
     "home": "S. Korea",
     "away": "Czechia",
     "score": "2-1",
-    "date": "Jun 11 - Estadio Akron, Guadalajara",
+    "date": "Jun 11",
     "poss": [
-      55,
-      45
+      54,
+      46
     ],
     "stats": [
       [
-        "Shots",
-        14,
-        9
-      ],
-      [
-        "Shots on Target",
-        4,
-        3
-      ],
-      [
-        "Passes",
-        445,
-        364
-      ],
-      [
-        "Pass Accuracy %",
-        84,
-        79
-      ],
-      [
-        "Dribbles Won",
+        "Shot Attempts",
         9,
         5
       ],
       [
-        "Tackles",
-        17,
-        14
+        "Shots on Goal",
+        4,
+        2
       ],
       [
-        "Fouls",
-        12,
-        10
-      ],
-      [
-        "Corners",
+        "Corner Kicks",
         5,
         4
       ],
       [
-        "Clearances",
+        "Fouls",
         12,
-        14
+        12
       ],
       [
-        "Turnovers",
-        16,
-        12
+        "Saves",
+        1,
+        2
       ]
     ],
     "xtra": [
       [
         "xG",
-        1.6,
-        1.1
+        1.57,
+        0.81
       ],
       [
         "Yellow Cards",
@@ -157,13 +48,13 @@
       ],
       [
         "Offsides",
-        3,
-        2
+        2,
+        1
       ],
       [
-        "Saves",
-        2,
-        3
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -171,167 +62,58 @@
     "home": "Canada",
     "away": "Bosnia",
     "score": "1-1",
-    "date": "Jun 12 - BMO Field, Toronto",
+    "date": "Jun 12",
     "poss": [
-      66,
-      34
+      50,
+      50
     ],
     "stats": [
       [
-        "Shots",
-        18,
-        8
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
-        4,
+        "Shots on Goal",
+        3,
         2
       ],
       [
-        "Passes",
-        541,
-        278
-      ],
-      [
-        "Pass Accuracy %",
-        88,
-        72
-      ],
-      [
-        "Dribbles Won",
-        7,
-        3
-      ],
-      [
-        "Tackles",
-        12,
-        21
+        "Corner Kicks",
+        5,
+        4
       ],
       [
         "Fouls",
-        9,
-        14
+        12,
+        12
       ],
       [
-        "Corners",
-        8,
-        2
-      ],
-      [
-        "Clearances",
-        7,
-        22
-      ],
-      [
-        "Turnovers",
-        11,
-        19
+        "Saves",
+        1,
+        1
       ]
     ],
     "xtra": [
       [
         "xG",
-        0.9,
-        1.0
+        1.24,
+        0.81
       ],
       [
         "Yellow Cards",
-        0,
-        2
-      ],
-      [
-        "Offsides",
         1,
-        0
-      ],
-      [
-        "Saves",
-        1,
-        3
-      ]
-    ]
-  },
-  "m4": {
-    "home": "USA",
-    "away": "Paraguay",
-    "score": "4-1",
-    "date": "Jun 12 - LA Stadium, Inglewood",
-    "poss": [
-      65,
-      35
-    ],
-    "stats": [
-      [
-        "Shots",
-        17,
-        8
-      ],
-      [
-        "Shots on Target",
-        6,
         1
       ],
       [
-        "Passes",
-        598,
-        319
-      ],
-      [
-        "Pass Accuracy %",
-        88,
-        78
-      ],
-      [
-        "Dribbles Won",
-        11,
-        4
-      ],
-      [
-        "Tackles",
-        18,
-        22
-      ],
-      [
-        "Fouls",
-        13,
-        11
-      ],
-      [
-        "Corners",
-        5,
-        8
-      ],
-      [
-        "Clearances",
-        23,
-        29
-      ],
-      [
-        "Turnovers",
-        12,
-        21
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.4,
-        0.7
-      ],
-      [
-        "Yellow Cards",
-        3,
-        3
-      ],
-      [
         "Offsides",
-        1,
-        3
+        2,
+        1
       ],
       [
-        "Saves",
+        "Red Cards",
         0,
-        4
+        0
       ]
     ]
   },
@@ -339,83 +121,58 @@
     "home": "Qatar",
     "away": "Switzerland",
     "score": "1-1",
-    "date": "Jun 13 - Levis Stadium, Bay Area",
+    "date": "Jun 13",
     "poss": [
-      32,
-      68
+      50,
+      50
     ],
     "stats": [
       [
-        "Shots",
-        6,
-        26
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
-        2,
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
+        5,
         4
       ],
       [
-        "Passes",
-        241,
-        521
-      ],
-      [
-        "Pass Accuracy %",
-        71,
-        89
-      ],
-      [
-        "Dribbles Won",
-        4,
-        6
-      ],
-      [
-        "Tackles",
-        24,
-        11
-      ],
-      [
         "Fouls",
-        8,
+        12,
         12
       ],
       [
-        "Corners",
-        3,
-        11
-      ],
-      [
-        "Clearances",
-        31,
-        9
-      ],
-      [
-        "Turnovers",
-        24,
-        10
+        "Saves",
+        1,
+        1
       ]
     ],
     "xtra": [
       [
         "xG",
-        0.3,
-        2.1
+        1.24,
+        0.81
       ],
       [
         "Yellow Cards",
         1,
-        0
+        1
       ],
       [
         "Offsides",
-        0,
-        2
+        2,
+        1
       ],
       [
-        "Saves",
-        3,
-        1
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -423,73 +180,48 @@
     "home": "Brazil",
     "away": "Morocco",
     "score": "1-1",
-    "date": "Jun 13 - MetLife Stadium, New York/NJ",
+    "date": "Jun 13",
     "poss": [
-      61,
-      39
+      50,
+      50
     ],
     "stats": [
       [
-        "Shots",
-        19,
-        8
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
         5,
-        3
-      ],
-      [
-        "Passes",
-        577,
-        368
-      ],
-      [
-        "Pass Accuracy %",
-        86,
-        80
-      ],
-      [
-        "Dribbles Won",
-        12,
-        7
-      ],
-      [
-        "Tackles",
-        11,
-        20
+        4
       ],
       [
         "Fouls",
-        14,
-        11
+        12,
+        12
       ],
       [
-        "Corners",
-        9,
-        3
-      ],
-      [
-        "Clearances",
-        9,
-        19
-      ],
-      [
-        "Turnovers",
-        13,
-        17
+        "Saves",
+        1,
+        1
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.2,
-        0.9
+        1.24,
+        0.81
       ],
       [
         "Yellow Cards",
         1,
-        2
+        1
       ],
       [
         "Offsides",
@@ -497,9 +229,9 @@
         1
       ],
       [
-        "Saves",
-        2,
-        4
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -507,241 +239,107 @@
     "home": "Haiti",
     "away": "Scotland",
     "score": "0-1",
-    "date": "Jun 13 - Gillette Stadium, Boston",
+    "date": "Jun 13",
     "poss": [
-      38,
-      62
+      46,
+      54
     ],
     "stats": [
       [
-        "Shots",
-        7,
-        12
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
-        1,
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
+        5,
         4
       ],
       [
-        "Passes",
-        287,
-        462
-      ],
-      [
-        "Pass Accuracy %",
-        72,
-        83
-      ],
-      [
-        "Dribbles Won",
-        5,
-        8
-      ],
-      [
-        "Tackles",
-        19,
-        14
-      ],
-      [
         "Fouls",
-        13,
-        11
+        12,
+        12
       ],
       [
-        "Corners",
-        3,
-        7
-      ],
-      [
-        "Clearances",
-        24,
-        11
-      ],
-      [
-        "Turnovers",
-        21,
-        14
+        "Saves",
+        1,
+        1
       ]
     ],
     "xtra": [
       [
         "xG",
-        0.4,
-        1.2
+        1.24,
+        0.81
       ],
       [
         "Yellow Cards",
-        2,
+        1,
         1
       ],
       [
         "Offsides",
-        1,
-        0
+        2,
+        1
       ],
       [
-        "Saves",
-        3,
-        1
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
   "m8": {
     "home": "Australia",
-    "away": "Turkiye",
+    "away": "Turkey",
     "score": "2-0",
-    "date": "Jun 13 - BC Place, Vancouver",
+    "date": "Jun 13",
     "poss": [
-      44,
-      56
+      58,
+      42
     ],
     "stats": [
       [
-        "Shots",
-        10,
-        15
-      ],
-      [
-        "Shots on Target",
-        4,
-        3
-      ],
-      [
-        "Passes",
-        362,
-        458
-      ],
-      [
-        "Pass Accuracy %",
-        79,
-        83
-      ],
-      [
-        "Dribbles Won",
+        "Shot Attempts",
         8,
-        10
-      ],
-      [
-        "Tackles",
-        21,
-        16
-      ],
-      [
-        "Fouls",
-        11,
-        14
-      ],
-      [
-        "Corners",
-        4,
-        6
-      ],
-      [
-        "Clearances",
-        16,
-        12
-      ],
-      [
-        "Turnovers",
-        17,
-        13
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.4,
-        1.3
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        1,
-        2
-      ],
-      [
-        "Saves",
-        3,
-        2
-      ]
-    ]
-  },
-  "m9": {
-    "home": "Germany",
-    "away": "Curacao",
-    "score": "7-1",
-    "date": "Jun 14 - NRG Stadium, Houston",
-    "poss": [
-      72,
-      28
-    ],
-    "stats": [
-      [
-        "Shots",
-        24,
-        7
-      ],
-      [
-        "Shots on Target",
-        10,
-        3
-      ],
-      [
-        "Passes",
-        726,
-        243
-      ],
-      [
-        "Pass Accuracy %",
-        92,
-        71
-      ],
-      [
-        "Dribbles Won",
-        14,
         5
       ],
       [
-        "Tackles",
-        8,
-        19
+        "Shots on Goal",
+        3,
+        1
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
       ],
       [
         "Fouls",
         12,
-        15
+        12
       ],
       [
-        "Corners",
-        8,
+        "Saves",
+        1,
         2
-      ],
-      [
-        "Clearances",
-        6,
-        28
-      ],
-      [
-        "Turnovers",
-        8,
-        24
       ]
     ],
     "xtra": [
       [
         "xG",
-        5.8,
-        0.9
+        1.24,
+        0.53
       ],
       [
         "Yellow Cards",
-        2,
-        2
+        1,
+        1
       ],
       [
         "Offsides",
@@ -749,9 +347,9 @@
         1
       ],
       [
-        "Saves",
-        2,
-        3
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -759,83 +357,58 @@
     "home": "Ivory Coast",
     "away": "Ecuador",
     "score": "1-0",
-    "date": "Jun 14 - Lincoln Fin. Field, Philadelphia",
+    "date": "Jun 14",
     "poss": [
-      48,
-      52
+      54,
+      46
     ],
     "stats": [
       [
-        "Shots",
-        11,
-        14
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
+        "Shots on Goal",
         3,
+        1
+      ],
+      [
+        "Corner Kicks",
+        5,
         4
       ],
       [
-        "Passes",
-        389,
-        421
-      ],
-      [
-        "Pass Accuracy %",
-        80,
-        82
-      ],
-      [
-        "Dribbles Won",
-        10,
-        7
-      ],
-      [
-        "Tackles",
-        16,
-        14
-      ],
-      [
         "Fouls",
-        11,
-        13
-      ],
-      [
-        "Corners",
-        5,
-        6
-      ],
-      [
-        "Clearances",
-        14,
+        12,
         12
       ],
       [
-        "Turnovers",
-        15,
-        12
+        "Saves",
+        1,
+        1
       ]
     ],
     "xtra": [
       [
         "xG",
-        0.9,
-        1.4
+        1.24,
+        0.53
       ],
       [
         "Yellow Cards",
         1,
-        2
+        1
       ],
       [
         "Offsides",
-        1,
-        3
+        2,
+        1
       ],
       [
-        "Saves",
-        4,
-        2
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -843,68 +416,397 @@
     "home": "Netherlands",
     "away": "Japan",
     "score": "2-2",
-    "date": "Jun 14 - AT&T Stadium, Dallas",
+    "date": "Jun 14",
     "poss": [
-      55,
-      45
+      50,
+      50
     ],
     "stats": [
       [
-        "Shots",
-        14,
-        11
+        "Shot Attempts",
+        8,
+        5
       ],
       [
-        "Shots on Target",
+        "Shots on Goal",
+        3,
+        3
+      ],
+      [
+        "Corner Kicks",
         5,
         4
       ],
       [
-        "Passes",
-        487,
-        398
-      ],
-      [
-        "Pass Accuracy %",
-        85,
-        81
-      ],
-      [
-        "Dribbles Won",
-        9,
-        11
-      ],
-      [
-        "Tackles",
-        16,
-        18
-      ],
-      [
         "Fouls",
-        10,
+        12,
         12
       ],
       [
-        "Corners",
-        7,
-        5
-      ],
-      [
-        "Clearances",
-        14,
-        17
-      ],
-      [
-        "Turnovers",
-        13,
-        16
+        "Saves",
+        2,
+        2
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.1,
-        1.3
+        1.24,
+        1.09
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m13": {
+    "home": "Spain",
+    "away": "Cape Verde",
+    "score": "0-0",
+    "date": "Jun 15",
+    "poss": [
+      78,
+      22
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        27,
+        3
+      ],
+      [
+        "Shots on Goal",
+        8,
+        1
+      ],
+      [
+        "Corner Kicks",
+        12,
+        1
+      ],
+      [
+        "Fouls",
+        9,
+        15
+      ],
+      [
+        "Saves",
+        1,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.59,
+        0.43
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m14": {
+    "home": "Belgium",
+    "away": "Egypt",
+    "score": "1-1",
+    "date": "Jun 15",
+    "poss": [
+      50,
+      50
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        5
+      ],
+      [
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m15": {
+    "home": "Saudi Arabia",
+    "away": "Uruguay",
+    "score": "1-1",
+    "date": "Jun 15",
+    "poss": [
+      50,
+      50
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        5
+      ],
+      [
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m16": {
+    "home": "Iran",
+    "away": "New Zealand",
+    "score": "2-2",
+    "date": "Jun 15",
+    "poss": [
+      50,
+      50
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        5
+      ],
+      [
+        "Shots on Goal",
+        3,
+        3
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        2,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        1.09
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m20": {
+    "home": "Austria",
+    "away": "Jordan",
+    "score": "3-1",
+    "date": "Jun 16",
+    "poss": [
+      58,
+      42
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        11,
+        5
+      ],
+      [
+        "Shots on Goal",
+        4,
+        2
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.67,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m1": {
+    "home": "Mexico",
+    "away": "S. Africa",
+    "score": "2-0",
+    "date": "Jun 11 - SoFi Stadium, Los Angeles",
+    "poss": [
+      62,
+      38
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        5
+      ],
+      [
+        "Shots on Goal",
+        6,
+        2
+      ],
+      [
+        "Corner Kicks",
+        7,
+        2
+      ],
+      [
+        "Fouls",
+        10,
+        13
+      ],
+      [
+        "Saves",
+        2,
+        6
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.38,
+        0.81
       ],
       [
         "Yellow Cards",
@@ -913,13 +815,131 @@
       ],
       [
         "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m4": {
+    "home": "USA",
+    "away": "Paraguay",
+    "score": "2-0",
+    "date": "Jun 12 - MetLife Stadium, New Jersey",
+    "poss": [
+      58,
+      42
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        16,
+        8
+      ],
+      [
+        "Shots on Goal",
+        7,
+        3
+      ],
+      [
+        "Corner Kicks",
+        8,
+        3
+      ],
+      [
+        "Fouls",
+        11,
+        14
+      ],
+      [
+        "Saves",
+        3,
+        7
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.76,
+        1.24
+      ],
+      [
+        "Yellow Cards",
         1,
         1
       ],
       [
+        "Offsides",
+        3,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m9": {
+    "home": "Germany",
+    "away": "Curacao",
+    "score": "7-1",
+    "date": "Jun 13 - AT&T Stadium, Dallas",
+    "poss": [
+      71,
+      29
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        22,
+        5
+      ],
+      [
+        "Shots on Goal",
+        10,
+        2
+      ],
+      [
+        "Corner Kicks",
+        9,
+        1
+      ],
+      [
+        "Fouls",
+        8,
+        16
+      ],
+      [
         "Saves",
+        1,
+        9
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.9,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        0,
+        2
+      ],
+      [
+        "Offsides",
         2,
-        4
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -929,387 +949,56 @@
     "score": "5-1",
     "date": "Jun 14 - Estadio BBVA, Monterrey",
     "poss": [
-      64,
-      36
+      47,
+      42
     ],
     "stats": [
       [
-        "Shots",
-        19,
-        8
+        "Shot Attempts",
+        13,
+        6
       ],
       [
-        "Shots on Target",
+        "Shots on Goal",
         7,
         2
       ],
       [
-        "Passes",
-        534,
-        301
-      ],
-      [
-        "Pass Accuracy %",
-        87,
-        73
-      ],
-      [
-        "Dribbles Won",
-        12,
-        5
-      ],
-      [
-        "Tackles",
-        13,
-        18
+        "Corner Kicks",
+        4,
+        2
       ],
       [
         "Fouls",
         9,
-        14
+        8
       ],
       [
-        "Corners",
-        8,
-        2
-      ],
-      [
-        "Clearances",
-        8,
-        22
-      ],
-      [
-        "Turnovers",
-        10,
-        20
+        "Saves",
+        1,
+        6
       ]
     ],
     "xtra": [
       [
         "xG",
-        3.9,
-        0.8
+        1.51,
+        0.3
       ],
       [
         "Yellow Cards",
         0,
-        2
-      ],
-      [
-        "Offsides",
-        2,
         1
       ],
       [
-        "Saves",
-        1,
-        2
-      ]
-    ]
-  },
-  "m13": {
-    "home": "Spain",
-    "away": "Cape Verde",
-    "score": "0-0",
-    "date": "Jun 15 - Mercedes-Benz Stadium, Atlanta",
-    "poss": [
-      74,
-      26
-    ],
-    "stats": [
-      [
-        "Shots",
-        27,
+        "Offsides",
+        3,
         6
       ],
       [
-        "Shots on Target",
-        7,
-        1
-      ],
-      [
-        "Passes",
-        648,
-        204
-      ],
-      [
-        "Pass Accuracy %",
-        91,
-        68
-      ],
-      [
-        "Dribbles Won",
-        10,
-        3
-      ],
-      [
-        "Tackles",
-        8,
-        22
-      ],
-      [
-        "Fouls",
-        10,
-        14
-      ],
-      [
-        "Corners",
-        11,
-        1
-      ],
-      [
-        "Clearances",
-        4,
-        28
-      ],
-      [
-        "Turnovers",
-        8,
-        19
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.8,
-        0.2
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        3,
+        "Red Cards",
+        0,
         0
-      ],
-      [
-        "Saves",
-        0,
-        6
-      ]
-    ]
-  },
-  "m14": {
-    "home": "Belgium",
-    "away": "Egypt",
-    "score": "1-1",
-    "date": "Jun 15 - Lumen Field, Seattle",
-    "poss": [
-      53,
-      47
-    ],
-    "stats": [
-      [
-        "Shots",
-        15,
-        14
-      ],
-      [
-        "Shots on Target",
-        5,
-        4
-      ],
-      [
-        "Passes",
-        480,
-        420
-      ],
-      [
-        "Pass Accuracy %",
-        85,
-        80
-      ],
-      [
-        "Fouls",
-        13,
-        10
-      ],
-      [
-        "Corners",
-        6,
-        4
-      ],
-      [
-        "Clearances",
-        7,
-        12
-      ],
-      [
-        "Turnovers",
-        11,
-        9
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.6,
-        1.4
-      ],
-      [
-        "Yellow Cards",
-        2,
-        2
-      ],
-      [
-        "Offsides",
-        1,
-        2
-      ],
-      [
-        "Saves",
-        3,
-        4
-      ]
-    ]
-  },
-  "m15": {
-    "home": "Saudi Arabia",
-    "away": "Uruguay",
-    "score": "1-1",
-    "date": "Jun 15 - Hard Rock Stadium, Miami",
-    "poss": [
-      33,
-      67
-    ],
-    "stats": [
-      [
-        "Shots",
-        7,
-        28
-      ],
-      [
-        "Shots on Target",
-        3,
-        1
-      ],
-      [
-        "Passes",
-        290,
-        640
-      ],
-      [
-        "Pass Accuracy %",
-        78,
-        88
-      ],
-      [
-        "Fouls",
-        14,
-        9
-      ],
-      [
-        "Corners",
-        2,
-        8
-      ],
-      [
-        "Clearances",
-        22,
-        5
-      ],
-      [
-        "Turnovers",
-        16,
-        8
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.99,
-        1.58
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        0,
-        3
-      ],
-      [
-        "Saves",
-        0,
-        2
-      ]
-    ]
-  },
-  "m16": {
-    "home": "Iran",
-    "away": "New Zealand",
-    "score": "2-2",
-    "date": "Jun 15 - SoFi Stadium, Los Angeles",
-    "poss": [
-      43,
-      57
-    ],
-    "stats": [
-      [
-        "Shots",
-        17,
-        14
-      ],
-      [
-        "Shots on Target",
-        4,
-        8
-      ],
-      [
-        "Passes",
-        380,
-        460
-      ],
-      [
-        "Pass Accuracy %",
-        80,
-        83
-      ],
-      [
-        "Fouls",
-        14,
-        11
-      ],
-      [
-        "Corners",
-        7,
-        5
-      ],
-      [
-        "Clearances",
-        14,
-        9
-      ],
-      [
-        "Turnovers",
-        13,
-        10
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.8,
-        2.1
-      ],
-      [
-        "Yellow Cards",
-        1,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ],
-      [
-        "Saves",
-        6,
-        2
       ]
     ]
   },
@@ -1317,58 +1006,43 @@
     "home": "France",
     "away": "Senegal",
     "score": "3-1",
-    "date": "Jun 16 - MetLife Stadium, New Jersey",
+    "date": "Jun 16 - Hard Rock Stadium, Miami",
     "poss": [
-      60,
-      40
+      62,
+      38
     ],
     "stats": [
       [
-        "Shots",
-        18,
-        14
+        "Shot Attempts",
+        17,
+        9
       ],
       [
-        "Shots on Target",
-        6,
-        5
-      ],
-      [
-        "Passes",
-        542,
-        338
-      ],
-      [
-        "Pass Accuracy %",
-        88,
-        78
-      ],
-      [
-        "Fouls",
-        12,
-        14
-      ],
-      [
-        "Corners",
+        "Shots on Goal",
         7,
         4
       ],
       [
-        "Clearances",
-        8,
-        14
+        "Corner Kicks",
+        7,
+        3
       ],
       [
-        "Turnovers",
+        "Fouls",
         10,
-        13
+        12
+      ],
+      [
+        "Saves",
+        3,
+        4
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.1,
-        1.8
+        2.81,
+        1.57
       ],
       [
         "Yellow Cards",
@@ -1377,13 +1051,13 @@
       ],
       [
         "Offsides",
-        3,
+        2,
         1
       ],
       [
-        "Saves",
-        4,
-        3
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -1391,169 +1065,26 @@
     "home": "Norway",
     "away": "Iraq",
     "score": "4-1",
-    "date": "Jun 16 - Gillette Stadium (Boston), Foxborough MA",
-    "poss": [
-      62,
-      38
-    ],
-    "stats": [
-      [
-        "Shots",
-        18,
-        7
-      ],
-      [
-        "Shots on Target",
-        7,
-        3
-      ],
-      [
-        "Passes",
-        521,
-        298
-      ],
-      [
-        "Pass Accuracy %",
-        86,
-        73
-      ],
-      [
-        "Fouls",
-        10,
-        16
-      ],
-      [
-        "Corners",
-        7,
-        3
-      ],
-      [
-        "Clearances",
-        8,
-        22
-      ],
-      [
-        "Turnovers",
-        11,
-        18
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.4,
-        0.9
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        3,
-        2
-      ],
-      [
-        "Saves",
-        2,
-        5
-      ]
-    ]
-  },
-  "m19": {
-    "home": "Argentina",
-    "away": "Algeria",
-    "score": "3-0",
-    "date": "Jun 16 - Mercedes-Benz Stadium, Atlanta",
-    "poss": [
-      72,
-      28
-    ],
-    "stats": [
-      [
-        "Shots",
-        22,
-        4
-      ],
-      [
-        "Shots on Target",
-        9,
-        1
-      ],
-      [
-        "Passes",
-        680,
-        240
-      ],
-      [
-        "Pass Accuracy %",
-        91,
-        68
-      ],
-      [
-        "Fouls",
-        9,
-        14
-      ],
-      [
-        "Corners",
-        10,
-        1
-      ],
-      [
-        "Saves",
-        1,
-        6
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.4,
-        0.3
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Offsides",
-        4,
-        0
-      ]
-    ]
-  },
-  "m20": {
-    "home": "Austria",
-    "away": "Jordan",
-    "score": "3-1",
     "date": "Jun 16 - Arrowhead Stadium, Kansas City",
     "poss": [
-      58,
-      42
+      54,
+      46
     ],
     "stats": [
       [
-        "Shots",
-        14,
-        7
+        "Shot Attempts",
+        15,
+        8
       ],
       [
-        "Shots on Target",
+        "Shots on Goal",
+        7,
+        3
+      ],
+      [
+        "Corner Kicks",
         6,
-        2
-      ],
-      [
-        "Passes",
-        480,
-        320
-      ],
-      [
-        "Pass Accuracy %",
-        85,
-        74
+        3
       ],
       [
         "Fouls",
@@ -1561,11 +1092,6 @@
         12
       ],
       [
-        "Corners",
-        6,
-        3
-      ],
-      [
         "Saves",
         2,
         4
@@ -1574,18 +1100,82 @@
     "xtra": [
       [
         "xG",
-        2.1,
-        0.6
+        2.71,
+        1.24
       ],
       [
         "Yellow Cards",
-        2,
+        1,
         1
       ],
       [
         "Offsides",
-        2,
+        1,
         2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m19": {
+    "home": "Argentina",
+    "away": "Algeria",
+    "score": "3-0",
+    "date": "Jun 16 - Gillette Stadium, Boston",
+    "poss": [
+      65,
+      35
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        18,
+        5
+      ],
+      [
+        "Shots on Goal",
+        8,
+        1
+      ],
+      [
+        "Corner Kicks",
+        8,
+        2
+      ],
+      [
+        "Fouls",
+        9,
+        14
+      ],
+      [
+        "Saves",
+        1,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.14,
+        0.53
+      ],
+      [
+        "Yellow Cards",
+        0,
+        3
+      ],
+      [
+        "Offsides",
+        4,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -1595,29 +1185,24 @@
     "score": "1-1",
     "date": "Jun 17 - SoFi Stadium, Los Angeles",
     "poss": [
-      68,
-      32
+      75,
+      25
     ],
     "stats": [
       [
-        "Shots",
-        19,
-        7
+        "Shot Attempts",
+        7,
+        8
       ],
       [
-        "Shots on Target",
-        6,
+        "Shots on Goal",
+        3,
         2
       ],
       [
-        "Passes",
-        610,
-        280
-      ],
-      [
-        "Pass Accuracy %",
-        88,
-        71
+        "Corner Kicks",
+        8,
+        2
       ],
       [
         "Fouls",
@@ -1625,21 +1210,16 @@
         14
       ],
       [
-        "Corners",
-        8,
-        2
-      ],
-      [
         "Saves",
         1,
-        5
+        2
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.8,
-        0.6
+        1.19,
+        0.96
       ],
       [
         "Yellow Cards",
@@ -1650,6 +1230,11 @@
         "Offsides",
         3,
         1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
       ]
     ]
   },
@@ -1659,39 +1244,201 @@
     "score": "4-2",
     "date": "Jun 17 - AT&T Stadium, Dallas",
     "poss": [
-      57,
-      43
+      52,
+      48
     ],
     "stats": [
       [
-        "Shots",
-        18,
+        "Shot Attempts",
+        22,
+        10
+      ],
+      [
+        "Shots on Goal",
+        11,
+        5
+      ],
+      [
+        "Corner Kicks",
+        8,
+        2
+      ],
+      [
+        "Fouls",
+        10,
         12
       ],
       [
-        "Shots on Target",
+        "Saves",
+        3,
+        7
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        4.18,
+        1.9
+      ],
+      [
+        "Yellow Cards",
+        0,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m23": {
+    "home": "Ghana",
+    "away": "Panama",
+    "score": "1-0",
+    "date": "Jun 17 - BMO Field, Toronto",
+    "poss": [
+      38,
+      62
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
         8,
+        11
+      ],
+      [
+        "Shots on Goal",
+        2,
         4
       ],
       [
-        "Passes",
-        530,
-        400
+        "Corner Kicks",
+        4,
+        5
       ],
       [
-        "Pass Accuracy %",
-        83,
-        79
+        "Fouls",
+        9,
+        11
+      ],
+      [
+        "Saves",
+        4,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.31,
+        0.73
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Offsides",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m24": {
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "score": "1-3",
+    "date": "Jun 17 - Estadio Azteca, Mexico City",
+    "poss": [
+      38,
+      62
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        9,
+        17
+      ],
+      [
+        "Shots on Goal",
+        3,
+        7
+      ],
+      [
+        "Corner Kicks",
+        3,
+        7
+      ],
+      [
+        "Fouls",
+        13,
+        11
+      ],
+      [
+        "Saves",
+        4,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.29,
+        2.81
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Offsides",
+        1,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m25": {
+    "home": "Czechia",
+    "away": "S. Africa",
+    "score": "1-1",
+    "date": "Jun 18 - Mercedes-Benz Stadium, Atlanta",
+    "poss": [
+      55,
+      45
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        9
+      ],
+      [
+        "Shots on Goal",
+        5,
+        3
+      ],
+      [
+        "Corner Kicks",
+        6,
+        3
       ],
       [
         "Fouls",
         11,
         13
-      ],
-      [
-        "Corners",
-        8,
-        5
       ],
       [
         "Saves",
@@ -1702,18 +1449,72 @@
     "xtra": [
       [
         "xG",
-        3.1,
-        1.8
+        2.1,
+        1.29
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m26": {
+    "home": "Switzerland",
+    "away": "Bosnia",
+    "score": "4-1",
+    "date": "Jun 18 - SoFi Stadium, Los Angeles",
+    "poss": [
+      58,
+      42
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        8
+      ],
+      [
+        "Shots on Goal",
+        7,
+        2
+      ],
+      [
+        "Corner Kicks",
+        9,
+        3
+      ],
+      [
+        "Fouls",
+        10,
+        14
+      ],
+      [
+        "Saves",
+        1,
+        6
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.96,
+        0.96
       ],
       [
         "Yellow Cards",
         2,
-        1
+        3
       ],
       [
-        "Offsides",
-        3,
-        2
+        "Red Cards",
+        0,
+        1
       ]
     ]
   }
