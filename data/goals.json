@@ -384,19 +384,19 @@
     "desc": "Ogawa outjumped Van Dijk; header deflected off Kamada - dramatic Japan equalizer"
   },
   {
-    "id": 77,
+    "id": 108,
     "matchId": "m12",
     "home": "Sweden",
     "away": "Tunisia",
-    "scorer": "V. Gyokeres",
-    "minute": 12,
+    "scorer": "Y. Ayari",
+    "minute": 7,
     "type": "open-play",
     "phase": "Group F",
     "score": "1-0",
-    "desc": "Gyokeres opens the scoring early \u2014 Sweden in complete control from the first whistle"
+    "desc": "Ayari pounces on the rebound after Gyokeres forces a save \u2014 mutes his celebration out of respect for Tunisia, his father's homeland"
   },
   {
-    "id": 34,
+    "id": 109,
     "matchId": "m12",
     "home": "Sweden",
     "away": "Tunisia",
@@ -405,22 +405,22 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "2-0",
-    "desc": "Isak swift counter to make it two for Sweden before Tunisia pulled one back"
+    "desc": "Isak drives forward from halfway, cuts onto his right foot and slots into the bottom corner \u2014 a crisp solo finish"
   },
   {
-    "id": 35,
+    "id": 110,
     "matchId": "m12",
     "home": "Sweden",
     "away": "Tunisia",
-    "scorer": "O. Rekik OG",
+    "scorer": "O. Rekik",
     "minute": 43,
-    "type": "own-goal",
+    "type": "header",
     "phase": "Group F",
-    "score": "3-0",
-    "desc": "Tunisia own goal before half-time - brutal for a side that conceded zero in qualifying"
+    "score": "2-1",
+    "desc": "Rekik meets Mejbri's cross with a glancing header \u2014 Tunisia halve the deficit and spark hopes of a comeback"
   },
   {
-    "id": 36,
+    "id": 111,
     "matchId": "m12",
     "home": "Sweden",
     "away": "Tunisia",
@@ -428,23 +428,11 @@
     "minute": 59,
     "type": "open-play",
     "phase": "Group F",
-    "score": "4-0",
-    "desc": "Gyokeres ruthless in front of goal as Sweden completely picked apart Tunisia"
+    "score": "3-1",
+    "desc": "Gyokeres sweeps home after Isak turns provider \u2014 Sweden restore the two-goal cushion"
   },
   {
-    "id": 78,
-    "matchId": "m12",
-    "home": "Sweden",
-    "away": "Tunisia",
-    "scorer": "Y. Ayari",
-    "minute": 71,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "4-1",
-    "desc": "Ayari grabs a consolation for Tunisia as Sweden ease up late in the game"
-  },
-  {
-    "id": 37,
+    "id": 112,
     "matchId": "m12",
     "home": "Sweden",
     "away": "Tunisia",
@@ -452,8 +440,20 @@
     "minute": 84,
     "type": "open-play",
     "phase": "Group F",
+    "score": "4-1",
+    "desc": "Svanberg scores 18 seconds after coming on \u2014 allowed to stand after a VAR review for the fastest sub goal in World Cup history"
+  },
+  {
+    "id": 113,
+    "matchId": "m12",
+    "home": "Sweden",
+    "away": "Tunisia",
+    "scorer": "Y. Ayari",
+    "minute": 96,
+    "type": "open-play",
+    "phase": "Group F",
     "score": "5-1",
-    "desc": "Svanberg completed an emphatic Swedish performance"
+    "desc": "Ayari completes his brace with another stunning long-range strike \u2014 blasts home from the edge of the box to round off a dominant Swedish display"
   },
   {
     "id": 39,
