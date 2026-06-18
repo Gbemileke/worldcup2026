@@ -3,7 +3,7 @@
     "id": 1,
     "matchId": "m1",
     "home": "Mexico",
-    "away": "South Africa",
+    "away": "S. Africa",
     "scorer": "J. Quinones",
     "minute": 9,
     "type": "open-play",
@@ -15,7 +15,7 @@
     "id": 2,
     "matchId": "m1",
     "home": "Mexico",
-    "away": "South Africa",
+    "away": "S. Africa",
     "scorer": "R. Jimenez",
     "minute": 67,
     "type": "header",
@@ -838,5 +838,65 @@
     "phase": "Group L",
     "score": "4-2",
     "desc": "Rashford seals it from the bench \u2014 Saka finds him on the left and he cuts inside to make it four"
+  },
+  {
+    "id": 103,
+    "matchId": "m23",
+    "home": "Ghana",
+    "away": "Panama",
+    "scorer": "C. Yirenkyi",
+    "minute": 95,
+    "type": "open-play",
+    "phase": "Group L",
+    "score": "1-0",
+    "desc": "Yirenkyi taps in Thomas-Asante's cross in the 95th minute \u2014 Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point"
+  },
+  {
+    "id": 104,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "D. Munoz",
+    "minute": 40,
+    "type": "open-play",
+    "phase": "Group K",
+    "score": "0-1",
+    "desc": "Munoz gets on the end of a delightful team move \u2014 Luis Diaz the architect of a deserved Colombia lead"
+  },
+  {
+    "id": 105,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "A. Fayzullaev",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Group K",
+    "score": "1-1",
+    "desc": "Fayzullaev taps in to score Uzbekistan's first ever World Cup goal \u2014 historic moment at the Azteca"
+  },
+  {
+    "id": 106,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "L. Diaz",
+    "minute": 65,
+    "type": "open-play",
+    "phase": "Group K",
+    "score": "1-2",
+    "desc": "Diaz fires Colombia back in front \u2014 a weak shot that slips through the goalkeeper's hands"
+  },
+  {
+    "id": 107,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "J. Campaz",
+    "minute": 99,
+    "type": "header",
+    "phase": "Group K",
+    "score": "1-3",
+    "desc": "Campaz heads home in stoppage time \u2014 Colombia seal the win at the Azteca"
   }
 ]

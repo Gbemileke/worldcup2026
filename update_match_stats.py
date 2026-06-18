@@ -341,10 +341,16 @@ def run():
     existing_stat_keys  = set(stats.keys())
     existing_goal_mids  = {g['matchId'] for g in goals
                            if sum(1 for x in goals if x['matchId']==g['matchId']) > 0}
+    # Build lookup using short() on stored names to ensure consistency with API names
     match_lookup = {}
     for m in matches:
-        match_lookup[f"{m['home']}|{m['away']}"] = m['id']
-        match_lookup[f"{m['away']}|{m['home']}"] = m['id']
+        h = short(m['home'])
+        a = short(m['away'])
+        # Update stored names to short form if different
+        if m['home'] != h: m['home'] = h
+        if m['away'] != a: m['away'] = a
+        match_lookup[f"{h}|{a}"] = m['id']
+        match_lookup[f"{a}|{h}"] = m['id']
 
     existing_nums = [int(m['id'].replace('m','')) for m in matches]
     next_num = max(existing_nums)+1 if existing_nums else 1

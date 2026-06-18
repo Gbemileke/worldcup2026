@@ -3,7 +3,7 @@
     "id": "m1",
     "date": "Jun 11",
     "home": "Mexico",
-    "away": "South Africa",
+    "away": "S. Africa",
     "score": "2-0",
     "group": "Group A",
     "ytId": "PmevGCkUtM8",
@@ -218,5 +218,25 @@
     "group": "Group L",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report"
+  },
+  {
+    "id": "m23",
+    "date": "Jun 17",
+    "home": "Ghana",
+    "away": "Panama",
+    "score": "1-0",
+    "group": "Group L",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report"
+  },
+  {
+    "id": "m24",
+    "date": "Jun 17",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "score": "1-3",
+    "group": "Group K",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report"
   }
 ]

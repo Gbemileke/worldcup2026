@@ -1356,12 +1356,12 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 18, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">70</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.18 per match · 22 matches played</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">75</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.41 per match · 22 matches played</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">5</div><div class="stat-label">Own Goals</div><div class="stat-sub">Bobadilla, Rekik, Hany, Hussein, Al-Arab</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">4</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">Embolo (Grp B), Havertz (Grp E), Arnautovic (Grp J), Kane (Grp L)</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">22 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">49 open play · 12 headers · 4 penalties · 5 OGs</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">22 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">53 open play · 13 headers · 4 penalties · 5 OGs</div></div>
 
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
         </div>
@@ -1692,7 +1692,7 @@ function getFlag(name) {
 
 // ── Match data ───────────────────────────────────────
 var MATCHES = [
-  {id:'m1', date:'Jun 11', home:'Mexico', away:'South Africa', hf:'', af:'', score:'2-0', group:'Group A', ytId:'PmevGCkUtM8', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report'},
+  {id:'m1', date:'Jun 11', home:'Mexico', away:'S. Africa', hf:'', af:'', score:'2-0', group:'Group A', ytId:'PmevGCkUtM8', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report'},
   {id:'m2', date:'Jun 11', home:'S. Korea', away:'Czechia', hf:'', af:'', score:'2-1', group:'Group A', ytId:'ILjc_CIwv1Q', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-korea-v-czechia-highlights-match-report'},
   {id:'m3', date:'Jun 12', home:'Canada', away:'Bosnia', hf:'', af:'', score:'1-1', group:'Group B', ytId:'w-_rY5morQY', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-bosnia-herzegovina-highlights-match-report'},
   {id:'m4', date:'Jun 12', home:'USA', away:'Paraguay', hf:'', af:'', score:'4-1', group:'Group D', ytId:'0PVo3bk-TMk', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/usa-v-paraguay-highlights-match-report'},
@@ -1713,12 +1713,14 @@ var MATCHES = [
   {id:'m19', date:'Jun 16', home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report'},
   {id:'m20', date:'Jun 16', home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report'},
   {id:'m21', date:'Jun 17', home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report'},
-  {id:'m22', date:'Jun 17', home:'England', away:'Croatia', hf:'', af:'', score:'4-2', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report'}
+  {id:'m22', date:'Jun 17', home:'England', away:'Croatia', hf:'', af:'', score:'4-2', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report'},
+  {id:'m23', date:'Jun 17', home:'Ghana', away:'Panama', hf:'', af:'', score:'1-0', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report'},
+  {id:'m24', date:'Jun 17', home:'Uzbekistan', away:'Colombia', hf:'', af:'', score:'1-3', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report'}
 ];
 
 var GOALS = [
-  {id:1, matchId:'m1', home:'Mexico', away:'South Africa', hf:'', af:'', scorer:'J. Quinones', flag:'', minute:9, type:'open-play', phase:'Group A', score:'1-0', desc:'Erik Lira found Quinones around penalty spot - tournament opening goal'},
-  {id:2, matchId:'m1', home:'Mexico', away:'South Africa', hf:'', af:'', scorer:'R. Jimenez', flag:'', minute:67, type:'header', phase:'Group A', score:'2-0', desc:'Alvarado cross to far post; Jimenez headed home - first ever World Cup goal'},
+  {id:1, matchId:'m1', home:'Mexico', away:'S. Africa', hf:'', af:'', scorer:'J. Quinones', flag:'', minute:9, type:'open-play', phase:'Group A', score:'1-0', desc:'Erik Lira found Quinones around penalty spot - tournament opening goal'},
+  {id:2, matchId:'m1', home:'Mexico', away:'S. Africa', hf:'', af:'', scorer:'R. Jimenez', flag:'', minute:67, type:'header', phase:'Group A', score:'2-0', desc:'Alvarado cross to far post; Jimenez headed home - first ever World Cup goal'},
   {id:3, matchId:'m2', home:'S. Korea', away:'Czechia', hf:'', af:'', scorer:'L. Krejci', flag:'', minute:28, type:'header', phase:'Group A', score:'0-1', desc:'Coufal long throw-in; Krejci rose highest to head Czechia ahead'},
   {id:4, matchId:'m2', home:'S. Korea', away:'Czechia', hf:'', af:'', scorer:'In-B. Hwang', flag:'', minute:71, type:'open-play', phase:'Group A', score:'1-1', desc:'Kang-In Lee played Hwang into box; stopped on a dime and chipped Kovar brilliantly'},
   {id:5, matchId:'m2', home:'S. Korea', away:'Czechia', hf:'', af:'', scorer:'H. Oh', flag:'', minute:84, type:'open-play', phase:'Group A', score:'2-1', desc:'Hwang passed from left; substitute Oh completed the South Korea comeback'},
@@ -1786,8 +1788,15 @@ var GOALS = [
   {id:95, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'H. Kane', flag:'', minute:42, type:'header', phase:'Group L', score:'2-1', desc:'Kane heads home from a Declan Rice corner — his second goal of the game'},
   {id:96, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'P. Musa', flag:'', minute:45, type:'open-play', phase:'Group L', score:'2-2', desc:'Musa levels for Croatia — Perisic flicks the ball to the FC Dallas striker who fires through Pickford'},
   {id:97, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:47, type:'open-play', phase:'Group L', score:'3-2', desc:'Bellingham immediately restores England\'s lead seconds after half time — a brilliant solo run and finish'},
-  {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'}
+  {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'},
+  {id:103, matchId:'m23', home:'Ghana', away:'Panama', hf:'', af:'', scorer:'C. Yirenkyi', flag:'', minute:95, type:'open-play', phase:'Group L', score:'1-0', desc:'Yirenkyi taps in Thomas-Asante\'s cross in the 95th minute — Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point'},
+  {id:104, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'D. Munoz', flag:'', minute:40, type:'open-play', phase:'Group K', score:'0-1', desc:'Munoz gets on the end of a delightful team move — Luis Diaz the architect of a deserved Colombia lead'},
+  {id:105, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'A. Fayzullaev', flag:'', minute:60, type:'open-play', phase:'Group K', score:'1-1', desc:'Fayzullaev taps in to score Uzbekistan\'s first ever World Cup goal — historic moment at the Azteca'},
+  {id:106, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'L. Diaz', flag:'', minute:65, type:'open-play', phase:'Group K', score:'1-2', desc:'Diaz fires Colombia back in front — a weak shot that slips through the goalkeeper\'s hands'},
+  {id:107, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'J. Campaz', flag:'', minute:99, type:'header', phase:'Group K', score:'1-3', desc:'Campaz heads home in stoppage time — Colombia seal the win at the Azteca'}
 ];
+
+
 
 
 
@@ -1922,7 +1931,7 @@ var TEAM_DATA = {
   'Cape Verde':   {flag:'cv', group:'H', elo:1500, fifaPts:1420, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.08},
   'Iraq':         {flag:'iq', group:'I', elo:1600, fifaPts:1390, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.0, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.03},
   'Jordan':       {flag:'jo', group:'J', elo:1689, fifaPts:1370, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.0, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.03},
-  'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1430, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.01, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
+  'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1430, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.0, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
   'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1410, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.5, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.12},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1360, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.0, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.03},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1440, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:1.0, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.14},
@@ -2975,7 +2984,8 @@ function buildSnapshotStats() {
       sub: topSub || '—'
     },
     'stat-matches': {
-      num: matchCount + ' of 104',
+      num: matchCount,
+      numSuffix: '<span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:2px">of 104</span>',
       lbl: 'Matches Played',
       sub: breakdownSub
     },
@@ -3007,7 +3017,13 @@ function buildSnapshotStats() {
     var numEl  = el.querySelector('.stat-num');
     var lblEl  = el.querySelector('.stat-label');
     var subEl  = el.querySelector('.stat-sub');
-    if (numEl) numEl.textContent = d.num;
+    if (numEl) {
+      if (d.numSuffix) {
+        numEl.innerHTML = d.num + d.numSuffix;
+      } else {
+        numEl.textContent = d.num;
+      }
+    }
     if (lblEl && d.lbl) lblEl.textContent = d.lbl;
     if (subEl && d.sub) subEl.textContent = d.sub;
   });
@@ -3432,6 +3448,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
