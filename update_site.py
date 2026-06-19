@@ -503,14 +503,23 @@ def update_form():
     }
 
     # Update form values — floor 0.10 so no team ever shows 0%
+    # Base form computed from qualifying record (stable baseline, not the current form value)
+    # Then blended 40% base + 60% WC results
     updated = 0
     for team, results in wc_results.items():
         full_name = NAME_ALIASES.get(team, team)
         target = full_name if full_name in teams_data else (team if team in teams_data else None)
         if target:
+            td = teams_data[target]
+            # Compute qualifying form from stored qual record
+            qw = td.get('qualW', 0); qd = td.get('qualD', 0); ql = td.get('qualL', 0)
+            qtotal = qw + qd + ql
+            if qtotal > 0:
+                base_form = (qw + 0.5 * qd) / qtotal
+            else:
+                base_form = td.get('form', 0.7)  # fallback to stored form
             avg = sum(results) / len(results)
-            old = teams_data[target].get('form', 0.7)
-            teams_data[target]['form'] = round(max(0.10, old * 0.4 + avg * 0.6), 2)
+            td['form'] = round(max(0.10, base_form * 0.4 + avg * 0.6), 3)
             updated += 1
 
     import os, json as _json
