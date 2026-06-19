@@ -1932,6 +1932,8 @@ var GOALS = [
 
 
 
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2825,15 +2827,17 @@ function buildTeamGrid() {
   var el = document.getElementById('teamGrid');
   if (!el || typeof TEAM_DATA === 'undefined' || !TEAM_DATA) return;
 
-  // Sort by FIFA points (descending) for FIFA rank
-  var sorted = Object.keys(TEAM_DATA).sort(function(a,b) {
+  // Only show WC teams (those with a group assigned) — non-WC anchor teams stay in DB for ranking
+  var sorted = Object.keys(TEAM_DATA).filter(function(name) {
+    return TEAM_DATA[name].group !== '';
+  }).sort(function(a,b) {
     return TEAM_DATA[b].fifaPts - TEAM_DATA[a].fifaPts;
   });
 
   el.innerHTML = sorted.map(function(name, i) {
     var t = TEAM_DATA[name];
-    var fifaRank = i + 1;
-    var rankColor = fifaRank <= 8 ? 'var(--gold)' : fifaRank <= 16 ? 'var(--blue)' : 'var(--muted)';
+    var fifaRank = parseInt(getFifaRank(name).replace('#','')) || (i + 1);
+    var rankColor = fifaRank <= 8 ? 'var(--gold)' : fifaRank <= 16 ? 'var(--blue)' : fifaRank <= 32 ? 'var(--text)' : 'var(--muted)';
     var form = Math.round(t.form * 100);
     var formColor = form >= 70 ? 'var(--green)' : form >= 40 ? 'var(--gold)' : 'var(--red)';
     var qual = qualGDpg(t).toFixed(1);
@@ -3452,8 +3456,10 @@ function buildTop4() {
   var el = document.getElementById('top4Grid');
   if (!el || typeof TEAM_DATA === 'undefined' || !TEAM_DATA) return;
 
-  // Score every team and sort descending
-  var scored = Object.keys(TEAM_DATA).map(function(name) {
+  // Score WC teams only (non-WC anchor teams excluded)
+  var scored = Object.keys(TEAM_DATA).filter(function(name) {
+    return TEAM_DATA[name].group !== '';
+  }).map(function(name) {
     var t = TEAM_DATA[name];
     var score = computeFullModelScore(name);
     return {name: name, t: t, score: score};
@@ -3741,8 +3747,15 @@ function initLiveData() {
 // ── Match Predictor ───────────────────────────────────────────────────────────
 var PRED_W = {elo:0.20, form:0.35, qual:0.10, squad:0.15, fifa:0.15, exp:0.05};
 
+// Name aliases so both short ('S. Korea') and long ('South Korea') names work
+var FIFA_NAME_ALIASES = {
+  'S. Korea':'South Korea', 'S. Africa':'South Africa',
+  'South Korea':'South Korea', 'South Africa':'South Africa',
+};
+
 function getFifaRank(name) {
-  var t = getT(name);
+  var resolved = FIFA_NAME_ALIASES[name] || name;
+  var t = TEAM_DATA[resolved] || getT(name);
   if (!t || !t.fifaPts) return '--';
   var pts  = parseFloat(t.fifaPts) || 0;
   var rank = 1;
@@ -3920,6 +3933,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
