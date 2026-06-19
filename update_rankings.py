@@ -35,23 +35,26 @@ HEADERS = {
 # Source: inside.fifa.com/fifa-world-ranking/men  — Official June 11 2026 update
 # Argentina #1 (after pre-WC wins vs Iceland & Honduras), Spain #2, France #3
 # These will NOT change until July 20 — no need to fetch them daily.
+# Official FIFA rankings — June 11, 2026 (frozen until July 20, 2026)
+# Official FIFA/Coca-Cola Men's World Ranking — June 11, 2026 (live, sourced from inside.fifa.com)
+# Next update: July 20, 2026
 FIFA_POINTS_JUNE_11_2026 = {
-    "Argentina":   1875.12, "Spain":       1876.40, "France":      1877.32,
-    "England":     1825.97, "Portugal":    1763.83, "Brazil":      1761.16,
-    "Netherlands": 1757.87, "Morocco":     1755.87, "Belgium":     1734.71,
-    "Germany":     1730.37, "Croatia":     1717.07, "Colombia":    1693.09,
-    "Senegal":     1688.99, "Mexico":      1681.03, "USA":         1673.13,
-    "Uruguay":     1673.07, "Japan":       1660.43, "Switzerland": 1649.40,
-    "Iran":        1613.00, "Turkey":      1609.00, "Ecuador":     1602.00,
-    "Austria":     1598.00, "South Korea": 1588.00, "Australia":   1572.00,
-    "Algeria":     1540.00, "Egypt":       1535.00, "Canada":      1530.00,
-    "Norway":      1520.00, "Paraguay":    1498.00, "Scotland":    1490.00,
-    "Saudi Arabia":1460.00, "Ghana":       1445.00, "Uzbekistan":  1430.00,
-    "Czechia":     1420.00, "Sweden":      1415.00, "Panama":      1400.00,
-    "Ivory Coast": 1395.00, "Tunisia":     1380.00, "Bosnia":      1370.00,
-    "Jordan":      1340.00, "Iraq":        1330.00, "Qatar":       1320.00,
-    "DR Congo":    1300.00, "South Africa":1280.00, "Cape Verde":  1270.00,
-    "Haiti":       1250.00, "New Zealand": 1240.00, "Curacao":     1200.00,
+    "Argentina": 1877.27,  "Spain": 1874.71,  "France": 1870.7,
+    "England": 1828.02,  "Portugal": 1767.85,  "Brazil": 1765.86,
+    "Morocco": 1755.1,  "Netherlands": 1753.57,  "Belgium": 1742.24,
+    "Germany": 1735.77,  "Croatia": 1714.87,  "Colombia": 1698.35,
+    "Mexico": 1687.48,  "Senegal": 1684.07,  "Uruguay": 1673.07,
+    "USA": 1671.23,  "Japan": 1661.58,  "Switzerland": 1650.06,
+    "Iran": 1619.58,  "Turkey": 1605.73,  "Ecuador": 1598.52,
+    "Austria": 1597.4,  "S. Korea": 1591.63,  "Australia": 1579.34,
+    "Algeria": 1571.03,  "Egypt": 1562.37,  "Canada": 1559.48,
+    "Norway": 1557.44,  "Ivory Coast": 1540.87,  "Panama": 1539.16,
+    "Sweden": 1509.79,  "Czechia": 1505.74,  "Paraguay": 1505.35,
+    "Scotland": 1503.34,  "Tunisia": 1476.41,  "DR Congo": 1474.43,
+    "Uzbekistan": 1458.73,  "Qatar": 1450.31,  "Iraq": 1446.28,
+    "S. Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
+    "Bosnia": 1387.22,  "Cape Verde": 1371.11,  "Ghana": 1346.88,
+    "Curacao": 1294.77,  "Haiti": 1293.1,  "New Zealand": 1275.58,
 }
 
 # ── Elo fallback (June 15 2026, from trueline.online/eloratings.net) ─────────
@@ -199,6 +202,20 @@ WC_RESULTS = [
     {"home":"Belgium",   "away":"Egypt",       "result":0.5},  # 1-1 Jun 15
     # Group H — MD1 (additional)
     {"home":"Saudi Arabia","away":"Uruguay",   "result":0.5},  # 1-1 Jun 15
+    # Group K — MD1
+    {"home":"Portugal",    "away":"DR Congo",    "result":0.5},  # 1-1 Jun 17
+    {"home":"Colombia",    "away":"Uzbekistan",  "result":1.0},  # 3-1 Jun 17
+    # Group L — MD1
+    {"home":"England",     "away":"Croatia",     "result":1.0},  # 4-2 Jun 17
+    {"home":"Ghana",       "away":"Panama",      "result":1.0},  # 1-0 Jun 17
+    # Group G — MD1 (additional)
+    {"home":"Iran",        "away":"Egypt",       "result":0.5},  # 1-1 Jun 15 (corrected)
+    # Group A — MD2
+    {"home":"Czechia",     "away":"South Africa","result":0.5},  # 1-1 Jun 18
+    {"home":"Mexico",      "away":"South Korea", "result":1.0},  # 1-0 Jun 18/19
+    # Group B — MD2
+    {"home":"Switzerland", "away":"Bosnia",      "result":1.0},  # 4-1 Jun 18
+    {"home":"Canada",      "away":"Qatar",       "result":1.0},  # 6-0 Jun 18
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 
@@ -213,7 +230,7 @@ def compute_fifa_points():
     result using the FIFA Elo formula. Returns updated points for all teams.
     """
     pts = {k: v for k, v in FIFA_POINTS_JUNE_11_2026.items()}
-    I = 40  # World Cup finals importance factor
+    I = 50  # World Cup group stage importance factor (verified against FIFA live rankings)
 
     for match in WC_RESULTS:
         h, a, w = match["home"], match["away"], match["result"]
@@ -332,9 +349,9 @@ def patch_html(elo_data, fifa_data, poly_data):
             fi = td.find("fifaPts:", ti)
             if 0 < fi < ti + 300:
                 c   = td.find(",", fi + 8)
-                old = int(td[fi+8:c].strip())
-                nf  = int(round(new_fifa))
-                if abs(old - nf) > 5:          # only update if diff > 5 pts
+                old = float(td[fi+8:c].strip())
+                nf  = round(new_fifa, 2)
+                if abs(old - nf) > 0.1:        # update if any meaningful change
                     td = td[:fi+8] + str(nf) + td[c:]
                     fifa_upd.append(f"{our}:{old}→{nf}")
 

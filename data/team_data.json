@@ -2,7 +2,7 @@
   "Spain": {
     "group": "H",
     "elo": 2172,
-    "fifaPts": 1877.0,
+    "fifaPts": 1856.03,
     "form": 0.66,
     "squadDepth": 92,
     "exp": 10,
@@ -15,8 +15,8 @@
   "Argentina": {
     "group": "J",
     "elo": 2113,
-    "fifaPts": 1875.0,
-    "form": 0.999,
+    "fifaPts": 1889.07,
+    "form": 1.0,
     "squadDepth": 90,
     "exp": 10,
     "keyPlayer": "L. Messi",
@@ -25,8 +25,8 @@
   "France": {
     "group": "I",
     "elo": 2062,
-    "fifaPts": 1871.0,
-    "form": 0.999,
+    "fifaPts": 1887.11,
+    "form": 1.0,
     "squadDepth": 93,
     "exp": 10,
     "keyPlayer": "K. Mbappe",
@@ -35,8 +35,8 @@
   "England": {
     "group": "L",
     "elo": 2042,
-    "fifaPts": 1826.0,
-    "form": 0.999,
+    "fifaPts": 1847.68,
+    "form": 1.0,
     "squadDepth": 90,
     "exp": 10,
     "keyPlayer": "H. Kane",
@@ -45,7 +45,7 @@
   "Brazil": {
     "group": "C",
     "elo": 1978,
-    "fifaPts": 1761.0,
+    "fifaPts": 1765.34,
     "form": 0.644,
     "squadDepth": 91,
     "exp": 10,
@@ -58,7 +58,7 @@
   "Portugal": {
     "group": "K",
     "elo": 1976,
-    "fifaPts": 1764.0,
+    "fifaPts": 1755.09,
     "form": 0.68,
     "squadDepth": 88,
     "exp": 10,
@@ -71,7 +71,7 @@
   "Colombia": {
     "group": "K",
     "elo": 1998,
-    "fifaPts": 1693.0,
+    "fifaPts": 1712.6,
     "form": 0.889,
     "squadDepth": 83,
     "exp": 5,
@@ -84,7 +84,7 @@
   "Netherlands": {
     "group": "F",
     "elo": 1959,
-    "fifaPts": 1758.0,
+    "fifaPts": 1749.2,
     "form": 0.62,
     "squadDepth": 87,
     "exp": 10,
@@ -96,8 +96,8 @@
   },
   "Croatia": {
     "group": "L",
-    "elo": 1932,
-    "fifaPts": 1717.0,
+    "elo": 1912,
+    "fifaPts": 1695.21,
     "form": 0.24,
     "squadDepth": 82,
     "exp": 8,
@@ -110,7 +110,7 @@
   "Norway": {
     "group": "I",
     "elo": 1922,
-    "fifaPts": 1600.0,
+    "fifaPts": 1577.19,
     "form": 0.3,
     "squadDepth": 78,
     "exp": 1,
@@ -122,9 +122,9 @@
   },
   "Germany": {
     "group": "E",
-    "elo": 1910,
-    "fifaPts": 1730.0,
-    "form": 0.999,
+    "elo": 1939,
+    "fifaPts": 1743.54,
+    "form": 1.0,
     "squadDepth": 87,
     "exp": 10,
     "keyPlayer": "J. Musiala",
@@ -133,8 +133,8 @@
   "Switzerland": {
     "group": "B",
     "elo": 1897,
-    "fifaPts": 1649.0,
-    "form": 0.751,
+    "fifaPts": 1654.93,
+    "form": 0.75,
     "squadDepth": 78,
     "exp": 6,
     "keyPlayer": "G. Xhaka",
@@ -143,7 +143,7 @@
   "Ecuador": {
     "group": "E",
     "elo": 1933,
-    "fifaPts": 1560.0,
+    "fifaPts": 1570.77,
     "form": 0.211,
     "squadDepth": 72,
     "exp": 4,
@@ -156,7 +156,7 @@
   "Uruguay": {
     "group": "H",
     "elo": 1890,
-    "fifaPts": 1673.0,
+    "fifaPts": 1661.95,
     "form": 0.556,
     "squadDepth": 76,
     "exp": 8,
@@ -169,7 +169,7 @@
   "Turkey": {
     "group": "D",
     "elo": 1880,
-    "fifaPts": 1578.0,
+    "fifaPts": 1579.47,
     "form": 0.28,
     "squadDepth": 77,
     "exp": 5,
@@ -181,8 +181,8 @@
   },
   "Japan": {
     "group": "F",
-    "elo": 1878,
-    "fifaPts": 1660.0,
+    "elo": 1910,
+    "fifaPts": 1665.95,
     "form": 0.65,
     "squadDepth": 74,
     "exp": 8,
@@ -195,7 +195,7 @@
   "Senegal": {
     "group": "I",
     "elo": 1869,
-    "fifaPts": 1689.0,
+    "fifaPts": 1667.66,
     "form": 0.275,
     "squadDepth": 74,
     "exp": 4,
@@ -208,7 +208,7 @@
   "Belgium": {
     "group": "G",
     "elo": 1850,
-    "fifaPts": 1735.0,
+    "fifaPts": 1733.94,
     "form": 0.62,
     "squadDepth": 84,
     "exp": 8,
@@ -221,7 +221,7 @@
   "Morocco": {
     "group": "C",
     "elo": 1806,
-    "fifaPts": 1756.0,
+    "fifaPts": 1755.62,
     "form": 0.625,
     "squadDepth": 72,
     "exp": 6,
@@ -234,8 +234,8 @@
   "USA": {
     "group": "D",
     "elo": 1747,
-    "fifaPts": 1673.0,
-    "form": 0.999,
+    "fifaPts": 1688.53,
+    "form": 1.0,
     "squadDepth": 73,
     "exp": 5,
     "keyPlayer": "C. Pulisic",
@@ -244,8 +244,8 @@
   "Mexico": {
     "group": "A",
     "elo": 1857,
-    "fifaPts": 1681.0,
-    "form": 0.999,
+    "fifaPts": 1687.48,
+    "form": 1.0,
     "squadDepth": 71,
     "exp": 10,
     "keyPlayer": "R. Jimenez",
@@ -254,8 +254,8 @@
   "Sweden": {
     "group": "F",
     "elo": 1660,
-    "fifaPts": 1580.0,
-    "form": 0.998,
+    "fifaPts": 1533.19,
+    "form": 1.0,
     "squadDepth": 76,
     "exp": 7,
     "keyPlayer": "A. Isak",
@@ -274,7 +274,7 @@
   "Algeria": {
     "group": "J",
     "elo": 1728,
-    "fifaPts": 1550.0,
+    "fifaPts": 1559.23,
     "form": 0.25,
     "squadDepth": 68,
     "exp": 4,
@@ -287,7 +287,7 @@
   "Austria": {
     "group": "J",
     "elo": 1818,
-    "fifaPts": 1540.0,
+    "fifaPts": 1612.85,
     "form": 0.9,
     "squadDepth": 74,
     "exp": 4,
@@ -300,8 +300,8 @@
   "Ivory Coast": {
     "group": "E",
     "elo": 1650,
-    "fifaPts": 1530.0,
-    "form": 0.998,
+    "fifaPts": 1568.62,
+    "form": 1.0,
     "squadDepth": 72,
     "exp": 4,
     "keyPlayer": "S. Diomande",
@@ -310,7 +310,7 @@
   "Scotland": {
     "group": "C",
     "elo": 1645,
-    "fifaPts": 1480.0,
+    "fifaPts": 1518.77,
     "form": 0.88,
     "squadDepth": 65,
     "exp": 1,
@@ -323,8 +323,8 @@
   "Australia": {
     "group": "D",
     "elo": 1774,
-    "fifaPts": 1460.0,
-    "form": 0.998,
+    "fifaPts": 1605.6,
+    "form": 1.0,
     "squadDepth": 63,
     "exp": 5,
     "keyPlayer": "M. Leckie",
@@ -333,8 +333,8 @@
   "Canada": {
     "group": "B",
     "elo": 1805,
-    "fifaPts": 1445.0,
-    "form": 0.751,
+    "fifaPts": 1572.13,
+    "form": 0.75,
     "squadDepth": 65,
     "exp": 2,
     "keyPlayer": "A. Davies",
@@ -343,7 +343,7 @@
   "Iran": {
     "group": "G",
     "elo": 1755,
-    "fifaPts": 1480.0,
+    "fifaPts": 1603.47,
     "form": 0.6,
     "squadDepth": 59,
     "exp": 6,
@@ -356,7 +356,7 @@
   "Saudi Arabia": {
     "group": "H",
     "elo": 1635,
-    "fifaPts": 1460.0,
+    "fifaPts": 1435.0,
     "form": 0.6,
     "squadDepth": 57,
     "exp": 6,
@@ -370,7 +370,7 @@
     "group": "A",
     "elo": 1500,
     "fifaPts": 1380.0,
-    "form": 0.256,
+    "form": 0.25,
     "squadDepth": 50,
     "exp": 3,
     "keyPlayer": "P. Tau",
@@ -379,8 +379,8 @@
   "Czechia": {
     "group": "A",
     "elo": 1731,
-    "fifaPts": 1520.0,
-    "form": 0.254,
+    "fifaPts": 1505.74,
+    "form": 0.25,
     "squadDepth": 70,
     "exp": 6,
     "keyPlayer": "T. Soucek",
@@ -389,7 +389,7 @@
   "Qatar": {
     "group": "B",
     "elo": 1550,
-    "fifaPts": 1400.0,
+    "fifaPts": 1438.82,
     "form": 0.425,
     "squadDepth": 52,
     "exp": 2,
@@ -402,7 +402,7 @@
   "Bosnia": {
     "group": "B",
     "elo": 1580,
-    "fifaPts": 1510.0,
+    "fifaPts": 1381.19,
     "form": 0.39,
     "squadDepth": 67,
     "exp": 1,
@@ -415,7 +415,7 @@
   "Haiti": {
     "group": "C",
     "elo": 1550,
-    "fifaPts": 1300.0,
+    "fifaPts": 1277.67,
     "form": 0.244,
     "squadDepth": 42,
     "exp": 1,
@@ -428,7 +428,7 @@
   "Paraguay": {
     "group": "D",
     "elo": 1833,
-    "fifaPts": 1450.0,
+    "fifaPts": 1488.05,
     "form": 0.233,
     "squadDepth": 55,
     "exp": 7,
@@ -441,7 +441,7 @@
   "Curacao": {
     "group": "E",
     "elo": 1500,
-    "fifaPts": 1250.0,
+    "fifaPts": 1287.0,
     "form": 0.2,
     "squadDepth": 38,
     "exp": 1,
@@ -454,7 +454,7 @@
   "Tunisia": {
     "group": "F",
     "elo": 1630,
-    "fifaPts": 1455.0,
+    "fifaPts": 1453.01,
     "form": 0.225,
     "squadDepth": 56,
     "exp": 6,
@@ -467,7 +467,7 @@
   "Egypt": {
     "group": "G",
     "elo": 1659,
-    "fifaPts": 1490.0,
+    "fifaPts": 1572.32,
     "form": 0.55,
     "squadDepth": 61,
     "exp": 4,
@@ -480,7 +480,7 @@
   "New Zealand": {
     "group": "G",
     "elo": 1500,
-    "fifaPts": 1320.0,
+    "fifaPts": 1290.04,
     "form": 0.533,
     "squadDepth": 44,
     "exp": 4,
@@ -493,7 +493,7 @@
   "Cape Verde": {
     "group": "H",
     "elo": 1500,
-    "fifaPts": 1420.0,
+    "fifaPts": 1389.79,
     "form": 0.525,
     "squadDepth": 46,
     "exp": 2,
@@ -506,7 +506,7 @@
   "Iraq": {
     "group": "I",
     "elo": 1600,
-    "fifaPts": 1390.0,
+    "fifaPts": 1426.53,
     "form": 0.85,
     "squadDepth": 48,
     "exp": 4,
@@ -519,7 +519,7 @@
   "Jordan": {
     "group": "J",
     "elo": 1689,
-    "fifaPts": 1370.0,
+    "fifaPts": 1372.29,
     "form": 0.225,
     "squadDepth": 43,
     "exp": 1,
@@ -532,7 +532,7 @@
   "Uzbekistan": {
     "group": "K",
     "elo": 1728,
-    "fifaPts": 1430.0,
+    "fifaPts": 1444.48,
     "form": 0.25,
     "squadDepth": 47,
     "exp": 1,
@@ -545,7 +545,7 @@
   "DR Congo": {
     "group": "K",
     "elo": 1550,
-    "fifaPts": 1410.0,
+    "fifaPts": 1487.19,
     "form": 0.55,
     "squadDepth": 50,
     "exp": 2,
@@ -558,7 +558,7 @@
   "Panama": {
     "group": "L",
     "elo": 1733,
-    "fifaPts": 1360.0,
+    "fifaPts": 1505.33,
     "form": 0.26,
     "squadDepth": 42,
     "exp": 2,
@@ -571,7 +571,7 @@
   "Ghana": {
     "group": "L",
     "elo": 1620,
-    "fifaPts": 1440.0,
+    "fifaPts": 1380.71,
     "form": 0.85,
     "squadDepth": 58,
     "exp": 5,
