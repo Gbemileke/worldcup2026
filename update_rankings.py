@@ -230,17 +230,36 @@ def _expected(pa, pb):
 def compute_fifa_points():
     """
     Start from June 11 2026 baseline and apply every concluded WC match
-    result using the FIFA Elo formula. Returns updated points for all teams.
+    result using the FIFA Elo formula.
+    Returns:
+      pts        — current points for all teams
+      pre_pts    — points BEFORE each team's last WC match (for delta display)
+      pre_rank   — rank BEFORE each team's last WC match
     """
     pts = {k: v for k, v in FIFA_POINTS_JUNE_11_2026.items()}
     I = 50  # World Cup group stage importance factor (verified against FIFA live rankings)
 
-    for match in WC_RESULTS:
+    # Track the last match each team played
+    last_match_idx = {}
+    for i, match in enumerate(WC_RESULTS):
+        last_match_idx[match["home"]] = i
+        last_match_idx[match["away"]] = i
+
+    # pre_pts[team] = pts snapshot just BEFORE that team's last match
+    pre_pts = {}
+
+    for i, match in enumerate(WC_RESULTS):
         h, a, w = match["home"], match["away"], match["result"]
         ph = pts.get(h)
         pa = pts.get(a)
         if ph is None or pa is None:
-            continue  # team not in our data
+            continue
+
+        # Snapshot pts before this match if it's the team's last one
+        if last_match_idx.get(h) == i:
+            pre_pts[h] = round(ph, 2)
+        if last_match_idx.get(a) == i:
+            pre_pts[a] = round(pa, 2)
 
         we_h = _expected(ph, pa)
         we_a = 1.0 - we_h
@@ -249,14 +268,28 @@ def compute_fifa_points():
         pts[h] = round(ph + I * (w   - we_h), 2)
         pts[a] = round(pa + I * (w_a - we_a), 2)
 
-    return pts
+    # Compute pre-match global ranks using pre_pts merged into full pts snapshot
+    # For teams with no WC match yet, pre_pts = baseline
+    def _global_rank(team_pts_dict, name):
+        my_pts = team_pts_dict.get(name, 0)
+        return sum(1 for p in team_pts_dict.values() if p > my_pts) + 1
+
+    # Build pre-match pts dict: replace each team's pts with their pre-match snapshot
+    pre_rank = {}
+    for team, pp in pre_pts.items():
+        # Build a snapshot: current pts for everyone EXCEPT this team uses pre_pts
+        snap = dict(pts)
+        snap[team] = pp
+        pre_rank[team] = _global_rank(snap, team)
+
+    return pts, pre_pts, pre_rank
 
 # ── 2. FIFA points — use hardcoded June 11 values ────────────────────────────
 def get_fifa_points():
-    pts = compute_fifa_points()
+    pts, pre_pts, pre_rank = compute_fifa_points()
     concluded = len(WC_RESULTS)
     print(f"FIFA points: computed from {concluded} concluded WC matches")
-    print(f"  (Baseline: June 11 2026 | Formula: P_new = P + 40×(W−We))")
+    print(f"  (Baseline: June 11 2026 | Formula: P_new = P + 50×(W−We))")
     # Show top 5 for verification
     top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
     for name, p in top5:
@@ -264,7 +297,7 @@ def get_fifa_points():
         diff = round(p - baseline, 2)
         sign = "+" if diff >= 0 else ""
         print(f"  {name}: {p} ({sign}{diff} from baseline)")
-    return pts
+    return pts, pre_pts, pre_rank
 
 
 # ── 3. Polymarket — live from gamma API ──────────────────────────────────────
@@ -315,7 +348,7 @@ def fetch_polymarket():
 
 
 # ── 4. Patch index.html ───────────────────────────────────────────────────────
-def patch_html(elo_data, fifa_data, poly_data):
+def patch_html(elo_data, fifa_data, poly_data, pre_pts_data=None, pre_rank_data=None):
     with open(HTML_FILE, "r", encoding="utf-8") as f:
         html = f.read()
 
@@ -357,6 +390,26 @@ def patch_html(elo_data, fifa_data, poly_data):
                 if abs(old - nf) > 0.1:        # update if any meaningful change
                     td = td[:fi+8] + str(nf) + td[c:]
                     fifa_upd.append(f"{our}:{old}→{nf}")
+
+        # ── FIFA pts delta (change since last WC match) ──
+        if pre_pts_data and pre_rank_data:
+            pp = pre_pts_data.get(our)
+            pr = pre_rank_data.get(our)
+            if pp is not None and new_fifa is not None:
+                pts_delta  = round(new_fifa - pp, 2)
+                # Current global rank
+                cur_rank   = sum(1 for v in fifa_data.values() if v > new_fifa) + 1
+                rank_delta = (pr - cur_rank) if pr else 0  # positive = moved up
+                # Write fifaPtsDelta
+                di = td.find("fifaPtsDelta:", ti)
+                if 0 < di < ti + 400:
+                    dc = td.find(",", di + 13)
+                    td = td[:di+13] + str(pts_delta) + td[dc:]
+                # Write fifaRankDelta
+                ri = td.find("fifaRankDelta:", ti)
+                if 0 < ri < ri + 400:
+                    rc = td.find(",", ri + 14)
+                    td = td[:ri+14] + str(rank_delta) + td[rc:]
 
         # ── Polymarket ──
         new_poly = poly_data.get(our)
@@ -421,11 +474,11 @@ if __name__ == "__main__":
 
     elo_data  = fetch_elo()
     time.sleep(1)
-    fifa_data = get_fifa_points()   # no network call needed
+    fifa_data, pre_pts_data, pre_rank_data = get_fifa_points()   # no network call needed
     time.sleep(1)
     poly_data = fetch_polymarket()
 
     print(f"\nPatching index.html ...")
-    patch_html(elo_data, fifa_data, poly_data)
+    patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data)
     print("\nDone ✓")
 
