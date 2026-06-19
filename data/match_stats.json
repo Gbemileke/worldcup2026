@@ -1576,5 +1576,64 @@
         1
       ]
     ]
+  },
+  "m28": {
+    "home": "Mexico",
+    "away": "S. Korea",
+    "score": "1-0",
+    "date": "Jun 19 - Estadio Akron, Guadalajara",
+    "poss": [
+      52,
+      48
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        9,
+        8
+      ],
+      [
+        "Shots on Goal",
+        2,
+        3
+      ],
+      [
+        "Corner Kicks",
+        4,
+        5
+      ],
+      [
+        "Fouls",
+        12,
+        10
+      ],
+      [
+        "Saves",
+        3,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.48,
+        0.67
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
   }
 }

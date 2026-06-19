@@ -1054,5 +1054,17 @@
     "phase": "Group B",
     "score": "6-0",
     "desc": "David completes his hat trick with a beautiful left-footed shot \u2014 Canada's first ever World Cup win in historic fashion"
+  },
+  {
+    "id": 127,
+    "matchId": "m28",
+    "home": "Mexico",
+    "away": "S. Korea",
+    "scorer": "L. Romo",
+    "minute": 50,
+    "type": "open-play",
+    "phase": "Group A",
+    "score": "1-0",
+    "desc": "Romo pounces on Kim Seung-Gyu's error to slot home \u2014 Mexico book their place in the round of 32"
   }
 ]

@@ -191,7 +191,7 @@
     "date": "Jun 16",
     "home": "Norway",
     "away": "Iraq",
-    "score": "4-1",
+    "score": "1-4",
     "group": "Group I",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report",
@@ -295,5 +295,16 @@
     "ytId": "",
     "espnId": "760437",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-qatar-highlights-match-report"
+  },
+  {
+    "id": "m28",
+    "date": "Jun 19",
+    "home": "Mexico",
+    "away": "S. Korea",
+    "score": "1-0",
+    "group": "Group A",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-korea-highlights-match-report",
+    "espnId": "760441"
   }
 ]
