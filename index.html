@@ -1385,14 +1385,15 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 19, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">82</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.15 per match · 26 matches played</div></div>
-            <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
-            <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">4</div><div class="stat-label">Own Goals</div><div class="stat-sub"><span class="has-tip" data-tip="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria" title="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria">in 4 matches</span></div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">27 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">63 open play · 14 headers · 6 penalties · 5 OGs</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">88</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.26 per match · 27 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">6</div><div class="stat-label">Penalties Scored</div><div class="stat-sub"><span class="has-tip" data-tip="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia" title="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia">in 6 matches</span></div></div>
-            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi · Argentina</div></div>
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">26 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">58 open play · 14 headers · 6 penalties · 4 OGs</div></div>
-
-            <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>          </div>
+            <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">5</div><div class="stat-label">Own Goals</div><div class="stat-sub"><span class="has-tip" data-tip="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada" title="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada">in 5 matches</span></div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">6</div><div class="stat-label">Red Cards</div><div class="stat-sub">in 3 matches</div></div>
+            <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
+            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">3</div><div class="stat-label">Joint Top Scorers (2)</div><div class="stat-sub">Messi · Argentina, David · Canada</div></div>
+            <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
+                      </div>
         </div>
         <div class="analytics-3col">
           <div class="chart-card">
@@ -1758,7 +1759,8 @@ var MATCHES = [
   {id:'m23', date:'Jun 17', home:'Ghana', away:'Panama', hf:'', af:'', score:'1-0', group:'Group L', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report'},
   {id:'m24', date:'Jun 17', home:'Uzbekistan', away:'Colombia', hf:'', af:'', score:'1-3', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report'},
   {id:'m25', date:'Jun 18', home:'Czechia', away:'S. Africa', hf:'', af:'', score:'1-1', group:'Group A', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-south-africa-highlights-match-report'},
-  {id:'m26', date:'Jun 18', home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', group:'Group B', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report'}
+  {id:'m26', date:'Jun 18', home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', group:'Group B', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report'},
+  {id:'m27', date:'Jun 18', home:'Canada', away:'Qatar', hf:'', af:'', score:'6-0', group:'Group B', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-qatar-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -1843,8 +1845,16 @@ var GOALS = [
   {id:117, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'R. Vargas', flag:'', minute:79, type:'open-play', phase:'Group B', score:'2-0', desc:'Vargas adds a second moments later — Bosnia down to 10 men after Muharemovic\'s red card, Switzerland take full control'},
   {id:118, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'J. Manzambi', flag:'', minute:83, type:'open-play', phase:'Group B', score:'3-0', desc:'Manzambi grabs his brace after neat work by Vargas — a stunning cameo from the substitute'},
   {id:119, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'A. Memic', flag:'', minute:87, type:'open-play', phase:'Group B', score:'3-1', desc:'Memic grabs a late consolation for Bosnia — a small reward for their spirited defensive display'},
-  {id:120, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'G. Xhaka', flag:'', minute:90, type:'penalty', phase:'Group B', score:'4-1', desc:'Xhaka converts deep in injury time — Switzerland run out emphatic winners and move top of Group B'}
+  {id:120, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'G. Xhaka', flag:'', minute:90, type:'penalty', phase:'Group B', score:'4-1', desc:'Xhaka converts deep in injury time — Switzerland run out emphatic winners and move top of Group B'},
+  {id:121, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'C. Larin', flag:'', minute:16, type:'open-play', phase:'Group B', score:'1-0', desc:'Larin volleys home from close range — Canada open the scoring at BC Place in front of a raucous home crowd'},
+  {id:122, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:29, type:'open-play', phase:'Group B', score:'2-0', desc:'David slots home his first with a composed finish — Canada doubling their lead before half time'},
+  {id:123, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:57, type:'open-play', phase:'Group B', score:'3-0', desc:'David with his brace — Canada dominant as Qatar down to ten men after red card'},
+  {id:124, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'N. Saliba', flag:'', minute:68, type:'open-play', phase:'Group B', score:'4-0', desc:'Saliba scores his first international goal — Canada ruthless against nine-man Qatar'},
+  {id:125, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'M. Manai OG', flag:'', minute:75, type:'own-goal', phase:'Group B', score:'5-0', desc:'Manai turns the ball into his own net — Qatar\'s miserable night complete'},
+  {id:126, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:90, type:'open-play', phase:'Group B', score:'6-0', desc:'David completes his hat trick with a beautiful left-footed shot — Canada\'s first ever World Cup win in historic fashion'}
 ];
+
+
 
 
 
@@ -1943,7 +1953,6 @@ var UPCOMING_FIXTURES = [
   {date:'Jun 29', home:'Colombia', away:'DR Congo', time:'11AM CST', group:'K'},
   {date:'Jun 29', home:'Uzbekistan', away:'Portugal', time:'11AM CST', group:'K'},
   {date:'Jun 30', home:'Mexico', away:'S. Korea', time:'11AM CST', group:'A'},
-  {date:'Jun 30', home:'Canada', away:'Qatar', time:'3PM CST', group:'B'},
   {date:'Jul 1', home:'Morocco', away:'Scotland', time:'11AM CST', group:'C'},
   {date:'Jul 1', home:'Haiti', away:'Brazil', time:'11AM CST', group:'C'},
   {date:'Jul 2', home:'Germany', away:'Ecuador', time:'11AM CST', group:'E'},
@@ -1962,7 +1971,7 @@ var UPCOMING_FIXTURES = [
 
 // ── Match statistics ─────────────────────────────────
 var MATCH_STATS = {
-  m1: {home:'Mexico', away:'S. Africa', hf:'', af:'', score:'2-0', date:'Jun 11 - SoFi Stadium, Los Angeles', poss:[62, 38], stats:[["Shot Attempts", 14, 5], ["Shots on Goal", 6, 2], ["Corner Kicks", 7, 2], ["Fouls", 10, 13], ["Saves", 2, 6]], xtra:[["xG", 2.38, 0.81], ["Yellow Cards", 1, 2], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m1: {home:'Mexico', away:'S. Africa', hf:'', af:'', score:'2-0', date:'Jun 11 - SoFi Stadium, Los Angeles', poss:[62, 38], stats:[["Shot Attempts", 14, 5], ["Shots on Goal", 6, 2], ["Corner Kicks", 7, 2], ["Fouls", 10, 13], ["Saves", 2, 6]], xtra:[["xG", 2.1, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 1, 2], ["Offsides", 2, 1]]},
   m2: {home:'S. Korea', away:'Czechia', hf:'', af:'', score:'2-1', date:'Jun 11', poss:[54, 46], stats:[["Shot Attempts", 9, 5], ["Shots on Goal", 4, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 2]], xtra:[["xG", 1.57, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
   m3: {home:'Canada', away:'Bosnia', hf:'', af:'', score:'1-1', date:'Jun 12', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
   m4: {home:'USA', away:'Paraguay', hf:'', af:'', score:'2-0', date:'Jun 12 - MetLife Stadium, New Jersey', poss:[58, 42], stats:[["Shot Attempts", 16, 8], ["Shots on Goal", 7, 3], ["Corner Kicks", 8, 3], ["Fouls", 11, 14], ["Saves", 3, 7]], xtra:[["xG", 2.76, 1.24], ["Yellow Cards", 1, 1], ["Offsides", 3, 2], ["Red Cards", 0, 0]]},
@@ -1987,7 +1996,8 @@ var MATCH_STATS = {
   m23: {home:'Ghana', away:'Panama', hf:'', af:'', score:'1-0', date:'Jun 17 - BMO Field, Toronto', poss:[38, 62], stats:[["Shot Attempts", 8, 11], ["Shots on Goal", 2, 4], ["Corner Kicks", 4, 5], ["Fouls", 9, 11], ["Saves", 4, 2]], xtra:[["xG", 1.31, 0.73], ["Yellow Cards", 2, 1], ["Offsides", 1, 2], ["Red Cards", 0, 0]]},
   m24: {home:'Uzbekistan', away:'Colombia', hf:'', af:'', score:'1-3', date:'Jun 17 - Estadio Azteca, Mexico City', poss:[38, 62], stats:[["Shot Attempts", 9, 17], ["Shots on Goal", 3, 7], ["Corner Kicks", 3, 7], ["Fouls", 13, 11], ["Saves", 4, 2]], xtra:[["xG", 1.29, 2.81], ["Yellow Cards", 2, 1], ["Offsides", 1, 3], ["Red Cards", 0, 0]]},
   m25: {home:'Czechia', away:'S. Africa', hf:'', af:'', score:'1-1', date:'Jun 18 - Mercedes-Benz Stadium, Atlanta', poss:[55, 45], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 3], ["Corner Kicks", 6, 3], ["Fouls", 11, 13], ["Saves", 2, 4]], xtra:[["xG", 2.1, 1.29], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0]]},
-  m26: {home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', date:'Jun 18 - SoFi Stadium, Los Angeles', poss:[58, 42], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 7, 2], ["Corner Kicks", 9, 3], ["Fouls", 10, 14], ["Saves", 1, 6]], xtra:[["xG", 2.96, 0.96], ["Yellow Cards", 2, 3], ["Red Cards", 0, 1]]}
+  m26: {home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', date:'Jun 18 - SoFi Stadium, Los Angeles', poss:[58, 42], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 7, 2], ["Corner Kicks", 9, 3], ["Fouls", 10, 14], ["Saves", 1, 6]], xtra:[["xG", 2.96, 0.96], ["Yellow Cards", 2, 3], ["Red Cards", 0, 1]]},
+  m27: {home:'Canada', away:'Qatar', hf:'', af:'', score:'6-0', date:'Jun 18 - BC Place, Vancouver', poss:[72, 28], stats:[["Shot Attempts", 33, 2], ["Shots on Goal", 12, 0], ["Corner Kicks", 14, 1], ["Fouls", 10, 18], ["Saves", 0, 11]], xtra:[["xG", 4.54, 0.18], ["Yellow Cards", 2, 3], ["Red Cards", 0, 2], ["Offsides", 2, 1]]}
 };
 
 // ── Simulation state ─────────────────────────────────────
@@ -2024,12 +2034,12 @@ var TEAM_DATA = {
   'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1530, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:1.0, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.48},
   'Scotland':    {flag:'gb-sct', group:'C', elo:1645, fifaPts:1480, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:1.0, squadDepth:65, exp:1, keyPlayer:'J. McGinn', marketPct:0.58},
   'Australia':   {flag:'au', group:'D', elo:1774, fifaPts:1460, qualW:4,qualD:2,qualL:2,qualGF:16,qualGA:9, form:1.0, squadDepth:63, exp:5,  keyPlayer:'M. Leckie',    marketPct:1.25},
-  'Canada':      {flag:'ca', group:'B', elo:1805, fifaPts:1445, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:3, form:0.5, squadDepth:65, exp:2,  keyPlayer:'A. Davies',    marketPct:0.43},
+  'Canada':      {flag:'ca', group:'B', elo:1805, fifaPts:1445, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:3, form:0.65, squadDepth:65, exp:2,  keyPlayer:'A. Davies',    marketPct:0.43},
   'Iran':        {flag:'ir', group:'G', elo:1755, fifaPts:1480, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:7, form:0.5, squadDepth:59, exp:6,  keyPlayer:'M. Taremi',    marketPct:0.19},
   'Saudi Arabia':{flag:'sa', group:'H', elo:1635, fifaPts:1460, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.5, squadDepth:57, exp:6,  keyPlayer:'S. Al-Dawsari',marketPct:0.1},
   'South Africa': {flag:'za', group:'A', elo:1500, fifaPts:1380, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:11,form:0.25, squadDepth:50, exp:3,  keyPlayer:'P. Tau',       marketPct:0.06},
   'Czechia':      {flag:'cz', group:'A', elo:1731, fifaPts:1520, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:9, form:0.25, squadDepth:70, exp:6,  keyPlayer:'T. Soucek',    marketPct:0.14},
-  'Qatar':        {flag:'qa', group:'B', elo:1550, fifaPts:1400, qualW:3,qualD:1,qualL:4,qualGF:12,qualGA:14,form:0.5, squadDepth:52, exp:2,  keyPlayer:'A. Afif',      marketPct:0.04},
+  'Qatar':        {flag:'qa', group:'B', elo:1550, fifaPts:1400, qualW:3,qualD:1,qualL:4,qualGF:12,qualGA:14,form:0.35, squadDepth:52, exp:2,  keyPlayer:'A. Afif',      marketPct:0.04},
   'Bosnia':       {flag:'ba', group:'B', elo:1580, fifaPts:1510, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.25, squadDepth:67, exp:1,  keyPlayer:'E. Dzeko',     marketPct:0.19},
   'Haiti':        {flag:'ht', group:'C', elo:1550, fifaPts:1300, qualW:2,qualD:2,qualL:4,qualGF:8, qualGA:14,form:0.1, squadDepth:42, exp:1,  keyPlayer:'N. Geffrard',  marketPct:0.02},
   'Paraguay':     {flag:'py', group:'D', elo:1833, fifaPts:1450, qualW:4,qualD:3,qualL:11,qualGF:15,qualGA:32,form:0.1, squadDepth:55, exp:7,  keyPlayer:'M. Almiron',   marketPct:0.05},
@@ -3162,6 +3172,31 @@ function buildSnapshotStats() {
       }
       return { num: klose, lbl: 'All-Time WC Record Scorer', sub: sub };
     })(),
+    'stat-discipline': (function() {
+      var f=0,y=0,r=0, redTip=[], redMatchCount=0;
+      Object.keys(MATCH_STATS).forEach(function(mid){
+        var s=MATCH_STATS[mid];
+        (s.stats||[]).forEach(function(x){if(x[0]==='Fouls'){f+=x[1]+x[2];}});
+        var redRow=null, hasRed=false;
+        (s.xtra||[]).forEach(function(x){
+          if(x[0]==='Yellow Cards') y+=x[1]+x[2];
+          if(x[0]==='Red Cards'){
+            r+=x[1]+x[2];
+            redRow=x;
+            if(x[1]+x[2]>0) hasRed=true;
+          }
+        });
+        if(hasRed && redRow){
+          if(redMatchCount===0) redMatchCount=0;
+          redMatchCount++;
+          if(redRow[1]>0) redTip.push(s.home+' ('+redRow[1]+') vs '+s.away);
+          if(redRow[2]>0) redTip.push(s.away+' ('+redRow[2]+') vs '+s.home);
+        }
+      });
+      var tip = redTip.join(' | ');
+      var subText = '<span class="has-tip" data-tip="'+tip+'" title="'+tip+'">in '+redMatchCount+' match'+(redMatchCount!==1?'es':'')+'</span>';
+      return {num:r, lbl:'Red Cards', sub:subText};
+    })(),
   };
 
   Object.keys(cards).forEach(function(id) {
@@ -3770,6 +3805,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 

@@ -284,5 +284,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report",
     "espnId": "760438"
+  },
+  {
+    "id": "m27",
+    "date": "Jun 18",
+    "home": "Canada",
+    "away": "Qatar",
+    "score": "6-0",
+    "group": "Group B",
+    "ytId": "",
+    "espnId": "760437",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-qatar-highlights-match-report"
   }
 ]

@@ -982,5 +982,77 @@
     "phase": "Group B",
     "score": "4-1",
     "desc": "Xhaka converts deep in injury time \u2014 Switzerland run out emphatic winners and move top of Group B"
+  },
+  {
+    "id": 121,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "C. Larin",
+    "minute": 16,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "1-0",
+    "desc": "Larin volleys home from close range \u2014 Canada open the scoring at BC Place in front of a raucous home crowd"
+  },
+  {
+    "id": 122,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "J. David",
+    "minute": 29,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "2-0",
+    "desc": "David slots home his first with a composed finish \u2014 Canada doubling their lead before half time"
+  },
+  {
+    "id": 123,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "J. David",
+    "minute": 57,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "3-0",
+    "desc": "David with his brace \u2014 Canada dominant as Qatar down to ten men after red card"
+  },
+  {
+    "id": 124,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "N. Saliba",
+    "minute": 68,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "4-0",
+    "desc": "Saliba scores his first international goal \u2014 Canada ruthless against nine-man Qatar"
+  },
+  {
+    "id": 125,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "M. Manai OG",
+    "minute": 75,
+    "type": "own-goal",
+    "phase": "Group B",
+    "score": "5-0",
+    "desc": "Manai turns the ball into his own net \u2014 Qatar's miserable night complete"
+  },
+  {
+    "id": 126,
+    "matchId": "m27",
+    "home": "Canada",
+    "away": "Qatar",
+    "scorer": "J. David",
+    "minute": 90,
+    "type": "open-play",
+    "phase": "Group B",
+    "score": "6-0",
+    "desc": "David completes his hat trick with a beautiful left-footed shot \u2014 Canada's first ever World Cup win in historic fashion"
   }
 ]

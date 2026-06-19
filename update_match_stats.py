@@ -335,6 +335,7 @@ def run():
             try: h_fin,a_fin = int(parts[0]),int(parts[1])
             except: continue
             h_run = a_run = 0
+            match_goals = []
             for gd in sorted(parsed['goals'], key=lambda x: x['minute']):
                 is_og = gd['type']=='own-goal'
                 team  = gd.get('team','')
@@ -344,14 +345,21 @@ def run():
                 else:
                     if team==home: h_run+=1
                     else: a_run+=1
-                goals.append({
+                match_goals.append({
                     'id':next_goal_id,'matchId':mid,'home':home,'away':away,
                     'scorer':gd['scorer'],'minute':gd['minute'],'type':gd['type'],
                     'phase':f"Group {parsed['group']}",'score':f"{h_run}-{a_run}",'desc':'',
                 })
-                next_goal_id+=1; goals_added+=1
-            existing_goal_ms.add(mid)
-            print(f"  Goals: {mid} — {goals_added} total new")
+                next_goal_id+=1
+            # Validate: final running score must match ESPN final score
+            if h_run == h_fin and a_run == a_fin:
+                goals.extend(match_goals)
+                goals_added += len(match_goals)
+                existing_goal_ms.add(mid)
+                print(f"  Goals: {mid} — {len(match_goals)} goals added ({h_run}-{a_run} ✓)")
+            else:
+                print(f"  Goals: {mid} — SKIPPED (running {h_run}-{a_run} != final {h_fin}-{a_fin})")
+                next_goal_id -= len(match_goals)
 
         # ── Stats via ESPN summary endpoint ───────────────────────────────────
         espn_id = parsed['espn_id'] or (existing.get('espnId','') if existing else '')

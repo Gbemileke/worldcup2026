@@ -363,6 +363,11 @@ def update_snapshot():
     if len(top_scorers) > 6:
         top_sub += f' +{len(top_scorers)-6} more'
 
+    # Discipline totals from match stats
+    total_fouls  = sum(r[1]+r[2] for s in stats_data.values() for r in s.get('stats',[]) if r[0]=='Fouls')
+    total_yellow = sum(r[1]+r[2] for s in stats_data.values() for r in s.get('xtra',[])  if r[0]=='Yellow Cards')
+    total_red    = sum(r[1]+r[2] for s in stats_data.values() for r in s.get('xtra',[])  if r[0]=='Red Cards')
+
     # OG sub-text: "in N matches" with tooltip details
     def og_country(g):
         # OG scorer plays for the team whose score DIDN'T increase
@@ -419,6 +424,8 @@ def update_snapshot():
         'stat-matches':     (f'{match_count} of 104', 'Matches Played', breakdown),
         'stat-alltime':     (16, 'All-Time WC Record Scorer',
                              'Miroslav Klose, GER (2002\u20132014) \u2014 Mbapp\u00E9 on 14'),
+        'stat-discipline':  (total_red,  'Red Cards',
+                             f'in 3 matches'),
     }
 
     import re
