@@ -46,15 +46,17 @@ FIFA_POINTS_JUNE_11_2026 = {
     "Mexico": 1687.48,  "Senegal": 1684.07,  "Uruguay": 1673.07,
     "USA": 1671.23,  "Japan": 1661.58,  "Switzerland": 1650.06,
     "Iran": 1619.58,  "Turkey": 1605.73,  "Ecuador": 1598.52,
-    "Austria": 1597.4,  "S. Korea": 1591.63,  "Australia": 1579.34,
+    "Austria": 1597.4,  "South Korea": 1591.63,  "Australia": 1579.34,
     "Algeria": 1571.03,  "Egypt": 1562.37,  "Canada": 1559.48,
     "Norway": 1557.44,  "Ivory Coast": 1540.87,  "Panama": 1539.16,
     "Sweden": 1509.79,  "Czechia": 1505.74,  "Paraguay": 1505.35,
     "Scotland": 1503.34,  "Tunisia": 1476.41,  "DR Congo": 1474.43,
     "Uzbekistan": 1458.73,  "Qatar": 1450.31,  "Iraq": 1446.28,
-    "S. Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
+    "South Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
     "Bosnia": 1387.22,  "Cape Verde": 1371.11,  "Ghana": 1346.88,
     "Curacao": 1294.77,  "Haiti": 1293.1,  "New Zealand": 1275.58,
+    # Non-WC teams kept as ranking anchors
+    "Italy": 1704.73,  "Denmark": 1619.47,  "Nigeria": 1585.02,
 }
 
 # ── Elo fallback (June 15 2026, from trueline.online/eloratings.net) ─────────
@@ -209,7 +211,7 @@ WC_RESULTS = [
     {"home":"England",     "away":"Croatia",     "result":1.0},  # 4-2 Jun 17
     {"home":"Ghana",       "away":"Panama",      "result":1.0},  # 1-0 Jun 17
     # Group G — MD1 (additional)
-    {"home":"Iran",        "away":"Egypt",       "result":0.5},  # 1-1 Jun 15 (corrected)
+    # Iran vs Egypt — Jun 20 (not yet played)
     # Group A — MD2
     {"home":"Czechia",     "away":"South Africa","result":0.5},  # 1-1 Jun 18
     {"home":"Mexico",      "away":"South Korea", "result":1.0},  # 1-0 Jun 18/19
