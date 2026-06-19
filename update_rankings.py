@@ -218,6 +218,7 @@ WC_RESULTS = [
     # Group B — MD2
     {"home":"Switzerland", "away":"Bosnia",      "result":1.0},  # 4-1 Jun 18
     {"home":"Canada",      "away":"Qatar",       "result":1.0},  # 6-0 Jun 18
+    {"home":"USA",          "away":"Australia",    "result":1.0},  # 2-0 Jun 19
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 
