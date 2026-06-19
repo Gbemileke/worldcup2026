@@ -341,7 +341,25 @@ def update_snapshot():
     top_count   = scorer_counts.most_common(1)[0][1] if scorer_counts else 0
     top_scorers = [s for s,n in scorer_counts.items() if n == top_count]
     top_label   = f"Joint Top Scorers ({len(top_scorers)})" if len(top_scorers) > 1 else "Top Scorer"
-    top_sub     = ', '.join(s.split('.')[-1].strip() for s in top_scorers[:6])
+    def scorer_country(name, goals_data):
+        """Find which country a scorer plays for from goals data."""
+        for g in goals_data:
+            if g.get('scorer') == name and g.get('type') != 'own-goal':
+                # Determine team from score direction
+                match_goals = [x for x in goals_data
+                               if x.get('matchId') == g['matchId'] and x.get('minute',0) < g.get('minute',0)]
+                prev = match_goals[-1]['score'] if match_goals else '0-0'
+                ph  = int(prev.split('-')[0] or 0)
+                ph2 = int(g.get('score','0-0').split('-')[0] or 0)
+                return g['home'] if ph2 > ph else g['away']
+        return ''
+
+    def fmt_scorer(name, goals_data):
+        last = name.split('.')[-1].strip()
+        country = scorer_country(name, goals_data)
+        return f"{last} · {country}" if country else last
+
+    top_sub = ', '.join(fmt_scorer(s, goals_data) for s in top_scorers[:6])
     if len(top_scorers) > 6:
         top_sub += f' +{len(top_scorers)-6} more'
 
@@ -399,7 +417,7 @@ def update_snapshot():
         'stat-penalties':   (len(penalties),  'Penalties Scored', pen_names, pen_tip),
         'stat-top-team':    (top_count,       top_label,       top_sub),
         'stat-matches':     (f'{match_count} of 104', 'Matches Played', breakdown),
-        'stat-alltime':     (16, 'All-Time WC Record',
+        'stat-alltime':     (16, 'All-Time WC Record Scorer',
                              'Miroslav Klose, GER (2002\u20132014) \u2014 Mbapp\u00E9 on 14'),
     }
 
