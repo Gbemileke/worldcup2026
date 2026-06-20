@@ -2,17 +2,19 @@
 """
 update_match_stats.py  —  WC 2026 automated data updater
 ═══════════════════════════════════════════════════════════
-FIXES vs previous version:
-  1. ESPN goals: now tries BOTH scoreboard details AND summary scoringPlays
-  2. Goal re-fetch: if goals missing for old matches, retry sources every run
-  3. Red cards: read from ESPN summary event details (not hardcoded 0)
-  4. Stats re-fetch: retry ESPN summary for matches missing stats
-  5. Goal validation: relaxed — allow +1 stoppage minute tolerance
-  6. Score update: also re-opens goal fetch when score changes
-  7. WC_RESULTS auto-update: writes new results to update_rankings.py
-  8. group field: populated from ESPN notes on every match add/update
-  9. FOX Sports: improved URL patterns + multiple date formats tried
- 10. Fotmob fallback: added as 4th source (public API, no auth needed)
+PRIMARY goal source : AllSportsAPI (allsportsapi.com)
+  - Set ALLSPORTSAPI_KEY in GitHub secrets
+  - Free tier: 100 req/day — enough for 3-hourly updates
+  - Returns goalscorers with minute, type, running score
+
+SECONDARY goal source : ESPN (scores + stats only, no goal details from Actions IPs)
+
+Pipeline per run:
+  1. AllSportsAPI → fetch all WC finished matches with goalscorers
+  2. ESPN scoreboard → cross-check scores, pick up espnId
+  3. ESPN summary  → match stats (possession, shots, xG, cards)
+  4. Sync completed matches out of upcoming_fixtures.json
+  5. Auto-patch WC_RESULTS in update_rankings.py
 """
 
 import os, json, re, time, datetime, requests
@@ -21,9 +23,15 @@ DATA_DIR  = 'data'
 ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world'
 API_BASE  = 'https://api.football-data.org/v4'
 
-HEADERS   = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-             'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-             'Accept': 'application/json, text/html, */*'}
+# AllSportsAPI
+ASA_BASE    = 'https://allsportsapi.com/api/football/'
+WC_LEAGUE   = '1369'   # FIFA World Cup 2026 league ID on AllSportsAPI
+
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'Accept': 'application/json',
+}
 
 # ── Name normalisation ────────────────────────────────────────────────────────
 SHORT = {
@@ -33,21 +41,22 @@ SHORT = {
     'Curaçao':'Curacao', 'Curacao':'Curacao',
     'United States':'USA', 'United States of America':'USA', 'USMNT':'USA',
     'IR Iran':'Iran', 'Türkiye':'Turkey', 'Turkey':'Turkey',
-    'Cape Verde Islands':'Cape Verde', 'Cabo Verde':'Cape Verde', 'Cape Verde':'Cape Verde',
-    'Congo DR':'DR Congo', 'Democratic Republic of Congo':'DR Congo', 'DR Congo':'DR Congo',
-    'New Zealand':'New Zealand', 'Paraguay':'Paraguay',
+    'Cape Verde Islands':'Cape Verde', 'Cabo Verde':'Cape Verde',
+    'Congo DR':'DR Congo', 'Democratic Republic of Congo':'DR Congo',
+    'New Zealand':'New Zealand',
 }
+
 FIFA_NAME_MAP = {
-    'S. Korea':'south-korea','Bosnia':'bosnia-herzegovina','Turkey':'turkey',
-    'Cape Verde':'cabo-verde','DR Congo':'democratic-republic-of-congo',
-    'Ivory Coast':'cote-divoire','USA':'united-states','S. Africa':'south-africa',
-    'Curacao':'curacao',
+    'S. Korea':'south-korea', 'Bosnia':'bosnia-herzegovina',
+    'Turkey':'turkey', 'Cape Verde':'cabo-verde',
+    'DR Congo':'democratic-republic-of-congo', 'Ivory Coast':'cote-divoire',
+    'USA':'united-states', 'S. Africa':'south-africa', 'Curacao':'curacao',
 }
 FIFA_BASE_URL = 'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/'
-FIFA_SWAP = {('Qatar','Switzerland'), ('Norway','Iraq')}
+FIFA_SWAP     = {('Qatar','Switzerland'), ('Norway','Iraq')}
 
 def sn(n):
-    return SHORT.get(n, n)
+    return SHORT.get(n, n) if n else ''
 
 def load(f):
     p = os.path.join(DATA_DIR, f)
@@ -68,23 +77,103 @@ def fifa_url(home, away):
     h = FIFA_NAME_MAP.get(home, home.lower().replace(' ','-').replace("'",'').replace('.',''))
     a = FIFA_NAME_MAP.get(away, away.lower().replace(' ','-').replace("'",'').replace('.',''))
     return (f"{FIFA_BASE_URL}{a}-v-{h}-highlights-match-report"
-            if (home, away) in FIFA_SWAP
+            if (home,away) in FIFA_SWAP
             else f"{FIFA_BASE_URL}{h}-v-{a}-highlights-match-report")
 
-def get_stat(stats_list, *names):
-    """Extract numeric value from ESPN stats list by name."""
-    for s in stats_list:
+def get_stat(stats, *names):
+    for s in stats:
         for field in ('name','abbreviation','label'):
             if s.get(field,'').lower() in [n.lower() for n in names]:
                 try:
-                    val = str(s.get('displayValue','0')).replace('%','').strip()
-                    return round(float(val), 2) if '.' in val else int(val)
-                except:
-                    pass
+                    v = str(s.get('displayValue','0')).replace('%','').strip()
+                    return round(float(v),2) if '.' in v else int(v)
+                except: pass
     return None
 
+def scorer_fmt(raw):
+    """Format 'Firstname Lastname' → 'F. Lastname'"""
+    if not raw: return ''
+    parts = raw.strip().split()
+    return f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw.strip()
+
 # ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 1 — ESPN scoreboard
+# SOURCE 1 — AllSportsAPI  (PRIMARY goal source)
+# ══════════════════════════════════════════════════════════════════════════════
+def fetch_allsports(asa_key, date_from, date_to):
+    """
+    Fetch all WC finished matches with goalscorers from AllSportsAPI.
+    Returns list of match dicts with goalscorers embedded.
+    """
+    if not asa_key:
+        print("  AllSportsAPI: no key set (ALLSPORTSAPI_KEY)")
+        return []
+    try:
+        url = (f"{ASA_BASE}?met=Fixtures&APIkey={asa_key}"
+               f"&from={date_from}&to={date_to}&leagueId={WC_LEAGUE}")
+        r = requests.get(url, headers=HEADERS, timeout=20)
+        if r.status_code != 200:
+            print(f"  AllSportsAPI: HTTP {r.status_code}")
+            return []
+        data = r.json()
+        if not data.get('success'):
+            print(f"  AllSportsAPI: {data.get('error','unknown error')}")
+            return []
+        results = data.get('result') or []
+        finished = [m for m in results if m.get('event_status','') in
+                    ('Finished','FT','finished','ft','Match Finished')]
+        print(f"  AllSportsAPI: {len(results)} fixtures, {len(finished)} finished")
+        return finished
+    except Exception as e:
+        print(f"  AllSportsAPI error: {e}")
+        return []
+
+def parse_allsports_goals(event, home, away):
+    """
+    Parse goalscorers from AllSportsAPI event dict.
+    Returns list of {scorer, minute, type, team} dicts.
+    """
+    raw_goals = event.get('goalscorers') or []
+    goals = []
+    for g in raw_goals:
+        info   = (g.get('info') or '').lower().strip()
+        time_s = str(g.get('time') or g.get('minute') or '').replace("'",'').strip()
+        # Stoppage time: "45+2" → 46
+        try:
+            if '+' in time_s:
+                parts = time_s.split('+')
+                minute = int(parts[0]) + (1 if int(parts[1]) > 0 else 0)
+            else:
+                minute = int(time_s) if time_s else 90
+        except:
+            minute = 90
+
+        home_scorer = (g.get('home_scorer') or '').strip()
+        away_scorer = (g.get('away_scorer') or '').strip()
+
+        if home_scorer:
+            raw    = home_scorer
+            team   = home
+            gtype  = ('penalty'  if 'penalty'  in info else
+                      'own-goal' if 'own' in info else 'open-play')
+        elif away_scorer:
+            raw    = away_scorer
+            team   = away
+            gtype  = ('penalty'  if 'penalty'  in info else
+                      'own-goal' if 'own' in info else 'open-play')
+        else:
+            continue   # skip empty rows
+
+        scorer = scorer_fmt(raw)
+        if not scorer:
+            continue
+
+        goals.append({'scorer': scorer, 'minute': minute,
+                      'type': gtype, 'team': team})
+
+    return goals
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SOURCE 2 — ESPN scoreboard  (scores + espnId only)
 # ══════════════════════════════════════════════════════════════════════════════
 def fetch_espn_scoreboard():
     url = f"{ESPN_BASE}/scoreboard?dates=20260601-20260720&limit=200"
@@ -92,31 +181,29 @@ def fetch_espn_scoreboard():
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
             if r.status_code == 200:
-                events = r.json().get("events", [])
+                events = r.json().get('events', [])
                 print(f"  ESPN scoreboard: {len(events)} events")
                 return events
             print(f"  ESPN scoreboard: HTTP {r.status_code} (attempt {attempt+1}/3)")
-            if r.status_code == 403:
-                time.sleep(5 * (attempt + 1))  # 5s, 10s, 15s backoff
+            time.sleep(5 * (attempt + 1))
         except Exception as e:
             print(f"  ESPN scoreboard error: {e}")
         time.sleep(2)
     return []
 
 def parse_espn_event(event):
-    """Parse completed event into standardised dict."""
-    state = event.get('status',{}).get('type',{}).get('state','')
-    if state != 'post':
+    """Extract score, teams, espnId, group from ESPN event."""
+    if event.get('status',{}).get('type',{}).get('state','') != 'post':
         return None
-    comp = (event.get('competitions') or [{}])[0]
+    comp        = (event.get('competitions') or [{}])[0]
     competitors = comp.get('competitors', [])
     if len(competitors) < 2:
         return None
 
-    home_c = next((c for c in competitors if c.get('homeAway') == 'home'), competitors[0])
-    away_c = next((c for c in competitors if c.get('homeAway') == 'away'), competitors[1])
-    home = sn(home_c.get('team',{}).get('displayName',''))
-    away = sn(away_c.get('team',{}).get('displayName',''))
+    home_c = next((c for c in competitors if c.get('homeAway')=='home'), competitors[0])
+    away_c = next((c for c in competitors if c.get('homeAway')=='away'), competitors[1])
+    home   = sn(home_c.get('team',{}).get('displayName',''))
+    away   = sn(away_c.get('team',{}).get('displayName',''))
     if not home or not away:
         return None
 
@@ -125,57 +212,27 @@ def parse_espn_event(event):
 
     group = ''
     for n in comp.get('notes', []):
-        hd = n.get('headline', '')
-        if 'Group' in hd or 'GROUP' in hd:
-            g = re.search(r'Group\s+([A-Z])', hd, re.I)
-            if g: group = g.group(1)
-
-    # Parse goals from scoreboard details
-    goals = _parse_espn_details(comp.get('details', []))
+        g = re.search(r'Group\s+([A-Z])', n.get('headline',''), re.I)
+        if g:
+            group = g.group(1)
+            break
 
     return {
         'home': home, 'away': away,
         'score': f"{h_score}-{a_score}",
-        'date': fmt_date(event.get('date', '')),
+        'date': fmt_date(event.get('date','')),
         'group': group,
-        'goals': goals,
-        'espn_id': event.get('id', ''),
-        'venue': comp.get('venue', {}).get('fullName', ''),
+        'espn_id': event.get('id',''),
+        'venue': comp.get('venue',{}).get('fullName',''),
     }
 
-def _parse_espn_details(details):
-    """Extract goals from ESPN competition details array."""
-    goals = []
-    for d in details:
-        dtype = d.get('type', {}).get('text', '').lower()
-        if 'goal' not in dtype and 'score' not in dtype:
-            continue
-        athletes = d.get('athletesInvolved', [])
-        if not athletes:
-            continue
-        raw = athletes[0].get('displayName', '')
-        parts = raw.split()
-        scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-        try:
-            clock = str(d.get('clock', {}).get('displayValue', '90'))
-            base  = int(clock.split('+')[0].replace("'", ''))
-            extra = int(clock.split('+')[1]) if '+' in clock else 0
-            minute = base + (1 if extra else 0)   # add 1 for any stoppage time
-        except:
-            minute = 90
-        gtype = ('penalty'  if 'penalty' in dtype else
-                 'own-goal' if 'own'     in dtype else 'open-play')
-        team = sn(d.get('team', {}).get('displayName', ''))
-        goals.append({'scorer': scorer, 'minute': minute, 'type': gtype, 'team': team})
-    return goals
-
 # ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 2 — ESPN summary (per-match, stats + scoringPlays fallback)
+# SOURCE 3 — ESPN summary  (match stats only)
 # ══════════════════════════════════════════════════════════════════════════════
 def fetch_espn_summary(espn_id):
-    url = f"{ESPN_BASE}/summary?event={espn_id}"
     try:
-        r = requests.get(url, headers=HEADERS, timeout=15)
+        r = requests.get(f"{ESPN_BASE}/summary?event={espn_id}",
+                         headers=HEADERS, timeout=15)
         if r.status_code == 200:
             return r.json()
         print(f"    ESPN summary HTTP {r.status_code}")
@@ -183,79 +240,27 @@ def fetch_espn_summary(espn_id):
         print(f"    ESPN summary error: {e}")
     return {}
 
-def espn_summary_goals(summary):
-    """Try to extract goals from ESPN summary scoringPlays."""
-    plays = summary.get('scoringPlays', [])
-    if not plays:
-        # Try nested gamepackageJSON
-        plays = summary.get('gamepackageJSON', {}).get('scoringPlays', [])
-    goals = []
-    for p in plays:
-        dtype = p.get('type', {}).get('text', '').lower()
-        if 'goal' not in dtype and 'score' not in dtype:
-            continue
-        athletes = p.get('athletesInvolved', p.get('participants', []))
-        if not athletes:
-            continue
-        raw = athletes[0].get('displayName', athletes[0].get('athlete', {}).get('displayName', ''))
-        parts = raw.split()
-        scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-        try:
-            clock  = str(p.get('clock', {}).get('displayValue', '90'))
-            base   = int(clock.split('+')[0].replace("'", ''))
-            extra  = int(clock.split('+')[1]) if '+' in clock else 0
-            minute = base + (1 if extra else 0)
-        except:
-            minute = 90
-        gtype = ('penalty'  if 'penalty' in dtype else
-                 'own-goal' if 'own'     in dtype else 'open-play')
-        team = sn(p.get('team', {}).get('displayName', ''))
-        goals.append({'scorer': scorer, 'minute': minute, 'type': gtype, 'team': team})
-    return goals
-
 def parse_espn_stats(summary):
-    """Extract match stats from ESPN summary."""
-    bs     = summary.get('boxscore', {})
-    teams  = bs.get('teams', [])
-    if not teams:
-        teams = summary.get('gamepackageJSON', {}).get('boxscore', {}).get('teams', [])
+    bs    = summary.get('boxscore', {})
+    teams = bs.get('teams', [])
     if not teams:
         return None
-
-    by_side = {}
-    for td in teams:
-        by_side[td.get('homeAway', '')] = td.get('statistics', [])
-
+    by_side = {td.get('homeAway',''): td.get('statistics',[]) for td in teams}
     h = by_side.get('home', [])
     a = by_side.get('away', [])
 
-    poss_h = get_stat(h, 'possessionPct', 'possession') or 50
-    poss_a = get_stat(a, 'possessionPct', 'possession') or 50
+    poss_h = get_stat(h,'possessionPct','possession') or 50
+    poss_a = get_stat(a,'possessionPct','possession') or 50
     pt = poss_h + poss_a
     if pt and pt != 100:
-        poss_h = round(poss_h / pt * 100)
-        poss_a = 100 - poss_h
+        poss_h = round(poss_h/pt*100); poss_a = 100-poss_h
 
-    sot_h   = get_stat(h, 'shotsOnGoal', 'shotsOnTarget', 'ongoal') or 0
-    sot_a   = get_stat(a, 'shotsOnGoal', 'shotsOnTarget', 'ongoal') or 0
-    shots_h = get_stat(h, 'shotAttempts', 'totalShots', 'shots') or sot_h
-    shots_a = get_stat(a, 'shotAttempts', 'totalShots', 'shots') or sot_a
-    xg_h    = get_stat(h, 'expectedGoals', 'xg') or round(sot_h * 0.33 + max(0, shots_h - sot_h) * 0.05, 2)
-    xg_a    = get_stat(a, 'expectedGoals', 'xg') or round(sot_a * 0.33 + max(0, shots_a - sot_a) * 0.05, 2)
-
-    # Red cards from ESPN summary event details
-    red_h = red_a = 0
-    for comp in summary.get('header', {}).get('competitions', []):
-        for detail in comp.get('details', []):
-            dtype = detail.get('type', {}).get('text', '').lower()
-            if 'red' in dtype or 'ejection' in dtype:
-                team = sn(detail.get('team', {}).get('displayName', ''))
-                # We'll fill home/away red cards later in context
-                red_h += 1  # placeholder — corrected below
-
-    # Better: parse from summary competitions
-    red_h = get_stat(h, 'redCards') or 0
-    red_a = get_stat(a, 'redCards') or 0
+    sot_h   = get_stat(h,'shotsOnGoal','shotsOnTarget','ongoal') or 0
+    sot_a   = get_stat(a,'shotsOnGoal','shotsOnTarget','ongoal') or 0
+    shots_h = get_stat(h,'shotAttempts','totalShots','shots') or sot_h
+    shots_a = get_stat(a,'shotAttempts','totalShots','shots') or sot_a
+    xg_h    = get_stat(h,'expectedGoals','xg') or round(sot_h*0.33+max(0,shots_h-sot_h)*0.05,2)
+    xg_a    = get_stat(a,'expectedGoals','xg') or round(sot_a*0.33+max(0,shots_a-sot_a)*0.05,2)
 
     return {
         'poss': [poss_h, poss_a],
@@ -264,246 +269,46 @@ def parse_espn_stats(summary):
             ['Shots on Goal', sot_h,   sot_a],
             ['Corner Kicks',  get_stat(h,'cornerKicks','corners') or 0,
                               get_stat(a,'cornerKicks','corners') or 0],
-            ['Fouls',         get_stat(h,'fouls','foulcommitted') or 0,
-                              get_stat(a,'fouls','foulcommitted') or 0],
-            ['Saves',         get_stat(h,'saves') or 0,
-                              get_stat(a,'saves') or 0],
+            ['Fouls',         get_stat(h,'fouls') or 0, get_stat(a,'fouls') or 0],
+            ['Saves',         get_stat(h,'saves') or 0, get_stat(a,'saves') or 0],
         ],
         'xtra': [
-            ['xG',           xg_h, xg_a],
+            ['xG',           xg_h,  xg_a],
             ['Yellow Cards', get_stat(h,'yellowCards') or 0, get_stat(a,'yellowCards') or 0],
-            ['Red Cards',    red_h, red_a],
-            ['Offsides',     get_stat(h,'offsides') or 0, get_stat(a,'offsides') or 0],
+            ['Red Cards',    get_stat(h,'redCards') or 0,    get_stat(a,'redCards') or 0],
+            ['Offsides',     get_stat(h,'offsides') or 0,    get_stat(a,'offsides') or 0],
         ]
     }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 3 — FOX Sports scraper
+# Goal assignment
 # ══════════════════════════════════════════════════════════════════════════════
-def fetch_fox_goals(home, away, date_str):
-    h = home.lower().replace(' ', '-').replace('.', '').replace("'", '')
-    a = away.lower().replace(' ', '-').replace('.', '').replace("'", '')
-    try:
-        day = int(date_str.replace('Jun ', '').replace('Jul ', ''))
-        mon = 'jun' if 'Jun' in date_str else 'jul'
-    except:
-        return []
-    urls = [
-        f"https://www.foxsports.com/soccer/fifa-world-cup-men-{h}-vs-{a}-{mon}-{day}-2026-game-boxscore",
-        f"https://www.foxsports.com/soccer/fifa-world-cup-{h}-vs-{a}-{mon}-{day}-2026-game-boxscore",
-    ]
-    for url in urls:
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=12)
-            if r.status_code == 200:
-                goals = _parse_fox(r.text)
-                if goals:
-                    print(f"    FOX Sports: {len(goals)} goals")
-                    return goals
-        except Exception as e:
-            print(f"    FOX error: {e}")
-    return []
-
-def _parse_fox(html):
-    m = re.search(r'__NEXT_DATA__\s*=\s*(\{.+?\})\s*</script>', html, re.DOTALL)
-    if not m:
-        return []
-    try:
-        data     = json.loads(m.group(1))
-        props    = data.get('props', {}).get('pageProps', {})
-        event    = props.get('event', props.get('initialData', {}))
-        plays    = event.get('scoringPlays', event.get('scoring', []))
-        goals    = []
-        for p in plays:
-            dtype = p.get('type', {}).get('text', '').lower()
-            if 'goal' not in dtype:
-                continue
-            athletes = p.get('athletesInvolved', [])
-            if not athletes:
-                continue
-            raw   = athletes[0].get('displayName', '')
-            parts = raw.split()
-            scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-            try:
-                clock  = str(p.get('clock', {}).get('displayValue', '90'))
-                base   = int(clock.split('+')[0].replace("'", ''))
-                extra  = int(clock.split('+')[1]) if '+' in clock else 0
-                minute = base + (1 if extra else 0)
-            except:
-                minute = 90
-            gtype = ('penalty'  if 'penalty' in dtype else
-                     'own-goal' if 'own'     in dtype else 'open-play')
-            team  = sn(p.get('team', {}).get('displayName', ''))
-            goals.append({'scorer': scorer, 'minute': minute, 'type': gtype, 'team': team})
-        return goals
-    except Exception as e:
-        print(f"    FOX parse error: {e}")
-    return []
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 4 — Fotmob (public, no auth required)
-# ══════════════════════════════════════════════════════════════════════════════
-def fetch_fotmob_goals(home, away, date_str):
-    """Fotmob public search API — no key required."""
-    try:
-        # Build search query
-        query = f"{home} {away}"
-        url   = f"https://www.fotmob.com/api/matches?date={_fotmob_date(date_str)}"
-        r     = requests.get(url, headers=HEADERS, timeout=12)
-        if r.status_code != 200:
-            return []
-        data  = r.json()
-        leagues = data.get('leagues', [])
-        for lg in leagues:
-            if 'world' not in lg.get('name','').lower() and 'cup' not in lg.get('name','').lower():
-                continue
-            for match in lg.get('matches', []):
-                h = sn(match.get('home', {}).get('name', ''))
-                a = sn(match.get('away', {}).get('name', ''))
-                if h == home and a == away:
-                    mid = match.get('id')
-                    return _fotmob_match_goals(mid)
-    except Exception as e:
-        print(f"    Fotmob search error: {e}")
-    return []
-
-def _fotmob_date(date_str):
-    try:
-        day = int(date_str.replace('Jun ','').replace('Jul ',''))
-        mon = '06' if 'Jun' in date_str else '07'
-        return f"2026{mon}{day:02d}"
-    except:
-        return ''
-
-def _fotmob_match_goals(match_id):
-    try:
-        r = requests.get(f"https://www.fotmob.com/api/matchDetails?matchId={match_id}",
-                         headers=HEADERS, timeout=12)
-        if r.status_code != 200:
-            return []
-        data   = r.json()
-        events = data.get('content', {}).get('matchFacts', {}).get('events', {}).get('events', [])
-        goals  = []
-        for ev in events:
-            etype = ev.get('type', '').lower()
-            if 'goal' not in etype:
-                continue
-            player = ev.get('player', {})
-            raw    = player.get('name', '')
-            parts  = raw.split()
-            scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-            minute = ev.get('time', 90)
-            gtype  = ('penalty'  if 'penalty' in etype else
-                      'own-goal' if 'own'     in etype else 'open-play')
-            team   = sn(ev.get('teamId', ''))  # may be ID not name — handle gracefully
-            goals.append({'scorer': scorer, 'minute': minute, 'type': gtype, 'team': team})
-        if goals:
-            print(f"    Fotmob: {len(goals)} goals")
-        return goals
-    except Exception as e:
-        print(f"    Fotmob match error: {e}")
-    return []
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 5 — football-data.org (reliable, has scorer data on paid/free tier)
-# ══════════════════════════════════════════════════════════════════════════════
-def fetch_football_data_goals(home, away, token):
-    """Use football-data.org v4 API for goal scorers (requires token)."""
-    if not token:
-        return []
-    try:
-        r = requests.get(f"{API_BASE}/competitions/WC/matches",
-                         headers={"X-Auth-Token": token}, timeout=15)
-        if r.status_code != 200:
-            return []
-        for m in r.json().get("matches", []):
-            h = sn(m.get("homeTeam", {}).get("name", ""))
-            a = sn(m.get("awayTeam", {}).get("name", ""))
-            if h != home or a != away:
-                continue
-            goals = []
-            for sc in m.get("goals", []):
-                raw    = sc.get("scorer", {}).get("name", "")
-                parts  = raw.split()
-                scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-                minute = sc.get("minute", 90)
-                detail = sc.get("type", "NORMAL").upper()
-                gtype  = ("penalty"  if detail == "PENALTY"   else
-                          "own-goal" if detail == "OWN_GOAL"  else "open-play")
-                team   = sn(sc.get("team", {}).get("name", ""))
-                goals.append({"scorer": scorer, "minute": minute,
-                              "type": gtype, "team": team})
-            if goals:
-                print(f"    football-data.org: {len(goals)} goals")
-            return goals
-    except Exception as e:
-        print(f"    football-data.org error: {e}")
-    return []
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SOURCE 6 — API-Football via RapidAPI (optional)
-# ══════════════════════════════════════════════════════════════════════════════
-def fetch_api_football_goals(home, away, key):
-    if not key:
-        return []
-    try:
-        hdrs = {'X-RapidAPI-Key': key, 'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'}
-        r    = requests.get('https://api-football-v1.p.rapidapi.com/v3/fixtures',
-                            headers=hdrs, params={'league':'1','season':'2026'}, timeout=15)
-        if r.status_code != 200:
-            return []
-        for fx in r.json().get('response', []):
-            h = sn(fx.get('teams',{}).get('home',{}).get('name',''))
-            a = sn(fx.get('teams',{}).get('away',{}).get('name',''))
-            if h == home and a == away:
-                goals = []
-                for ev in fx.get('events', []):
-                    if ev.get('type') != 'Goal':
-                        continue
-                    raw   = ev.get('player',{}).get('name','')
-                    parts = raw.split()
-                    scorer = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts) > 1 else raw
-                    detail = ev.get('detail','').lower()
-                    gtype  = ('penalty'  if 'penalty' in detail else
-                              'own-goal' if 'own'     in detail else 'open-play')
-                    goals.append({'scorer':scorer,'minute':ev.get('time',{}).get('elapsed',90),
-                                  'type':gtype,'team':sn(ev.get('team',{}).get('name',''))})
-                if goals:
-                    print(f"    API-Football: {len(goals)} goals")
-                return goals
-    except Exception as e:
-        print(f"    API-Football error: {e}")
-    return []
-
-# ══════════════════════════════════════════════════════════════════════════════
-# Goal assignment helper
-# ══════════════════════════════════════════════════════════════════════════════
-def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_goal_id):
+def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
     """
-    Convert raw goal list to match goal objects with running score.
-    Returns (match_goals, next_id) or ([], next_id) if validation fails.
+    Build goal objects with running score. Validates final score matches.
+    Returns (goals_list, next_id) or ([], next_id_unchanged) on failure.
     """
     h_run = a_run = 0
-    match_goals = []
+    built = []
 
     for gd in sorted(goal_list, key=lambda x: x.get('minute', 90)):
         is_og = gd['type'] == 'own-goal'
-        team  = gd.get('team', '')
+        team  = gd.get('team','')
 
-        # Determine which side scored
         if is_og:
-            if team == home or team == '':
-                a_run += 1   # OG by home player → away scores
-            else:
-                h_run += 1   # OG by away player → home scores
-        else:
-            if team == away:
+            # OG by home player → away scores; OG by away player → home scores
+            if team == home:
                 a_run += 1
             else:
-                h_run += 1   # default: home team (catches '' or unknown)
+                h_run += 1
+        else:
+            if team == home:
+                h_run += 1
+            else:
+                a_run += 1
 
-        match_goals.append({
-            'id':      next_goal_id,
+        built.append({
+            'id':      next_id,
             'matchId': mid,
             'home':    home,
             'away':    away,
@@ -514,40 +319,37 @@ def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_goal_id):
             'score':   f"{h_run}-{a_run}",
             'desc':    '',
         })
-        next_goal_id += 1
+        next_id += 1
 
-    # Validate — allow ±0 exact match only
     if h_run == h_fin and a_run == a_fin:
-        return match_goals, next_goal_id
+        return built, next_id
     else:
-        print(f"    Validation FAIL: built {h_run}-{a_run} ≠ final {h_fin}-{a_fin}")
-        # Rollback id counter
-        return [], next_goal_id - len(match_goals)
+        print(f"    ✗ Validation: built {h_run}-{a_run} ≠ final {h_fin}-{a_fin}")
+        return [], next_id - len(built)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # WC_RESULTS auto-patch
 # ══════════════════════════════════════════════════════════════════════════════
-def patch_wc_results(home, away, h_score, a_score):
-    """Add match result to update_rankings.py WC_RESULTS if not already there."""
-    rankings_file = 'update_rankings.py'
-    if not os.path.exists(rankings_file):
+def patch_wc_results(home, away, h, a):
+    path = 'update_rankings.py'
+    if not os.path.exists(path):
         return
     try:
-        with open(rankings_file) as f:
+        with open(path) as f:
             content = f.read()
-        # Check if already present
-        if f'\"home\":\"{home}\"' in content and f'\"away\":\"{away}\"' in content:
+        # Check if already present (both orders)
+        if (f'"home":"{home}"' in content and f'"away":"{away}"' in content):
             return
-        result = 1.0 if h_score > a_score else 0.5 if h_score == a_score else 0.0
-        line   = f'    {{"home":"{home}", "away":"{away}", "result":{result}}},  # {h_score}-{a_score}\n'
+        result = 1.0 if h > a else 0.5 if h == a else 0.0
+        line   = f'    {{"home":"{home}", "away":"{away}", "result":{result}}},  # {h}-{a}\n'
         marker = '    # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:\n'
         if marker in content:
             content = content.replace(marker, line + marker, 1)
-            with open(rankings_file, 'w') as f:
+            with open(path,'w') as f:
                 f.write(content)
-            print(f"    WC_RESULTS: added {home} {h_score}-{a_score} {away}")
+            print(f"    WC_RESULTS: ✓ added {home} {h}-{a} {away}")
     except Exception as e:
-        print(f"    WC_RESULTS patch error: {e}")
+        print(f"    WC_RESULTS error: {e}")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Upcoming fixtures
@@ -562,30 +364,30 @@ def fetch_upcoming(token, played_keys):
             return
         upcoming = []
         for m in r.json().get('matches', [])[:48]:
-            # Skip fixtures with TBD/null teams (knockout rounds not yet determined)
+            # Skip TBD knockout fixtures
             if not m.get('homeTeam') or not m.get('awayTeam'): continue
-            if not m['homeTeam'].get('name') or not m['awayTeam'].get('name'): continue
-            home = sn(m['homeTeam']['name'])
-            away = sn(m['awayTeam']['name'])
+            hn = m['homeTeam'].get('name',''); an = m['awayTeam'].get('name','')
+            if not hn or not an: continue
+            home = sn(hn); away = sn(an)
             if not home or not away: continue
             if f"{home}|{away}" in played_keys or f"{away}|{home}" in played_keys:
-                continue  # already played — skip
+                continue
             try:
                 dt    = datetime.datetime.fromisoformat(m['utcDate'].replace('Z','+00:00'))
                 cst   = dt - datetime.timedelta(hours=6)
-                date_s = f"Jun {cst.day}" if cst.month == 6 else f"Jul {cst.day}"
-                h12   = cst.hour % 12 or 12
-                ampm  = 'AM' if cst.hour < 12 else 'PM'
+                date_s = f"Jun {cst.day}" if cst.month==6 else f"Jul {cst.day}"
+                h12   = cst.hour%12 or 12
+                ampm  = 'AM' if cst.hour<12 else 'PM'
                 mn    = f":{cst.minute:02d}" if cst.minute else ''
                 time_s = f"{h12}{mn}{ampm} CST"
             except:
-                date_s = m['utcDate'][:10]; time_s = '?? CST'
-            gr  = m.get('stage', '')
+                date_s = m['utcDate'][:10]; time_s='?? CST'
+            gr  = m.get('stage','')
             grp = gr.replace('GROUP_','') if 'GROUP_' in gr else ''
             upcoming.append({'date':date_s,'home':home,'away':away,'time':time_s,'group':grp})
         if upcoming:
             save('upcoming_fixtures.json', upcoming)
-            print(f"  Upcoming: {len(upcoming)} fixtures")
+            print(f"  Upcoming: {len(upcoming)} fixtures updated")
     except Exception as e:
         print(f"  Upcoming error: {e}")
 
@@ -593,14 +395,14 @@ def fetch_upcoming(token, played_keys):
 # Main
 # ══════════════════════════════════════════════════════════════════════════════
 def run():
-    token       = os.environ.get('FOOTBALL_DATA_TOKEN', '').strip()
-    rapidapi_key= os.environ.get('RAPIDAPI_KEY', '').strip()
+    asa_key  = os.environ.get('ALLSPORTSAPI_KEY','').strip()
+    fd_token = os.environ.get('FOOTBALL_DATA_TOKEN','').strip()
 
     matches  = load('matches.json')     or []
     stats    = load('match_stats.json') or {}
     goals    = load('goals.json')       or []
 
-    # Build lookup
+    # Build lookups
     match_lookup = {}
     for m in matches:
         m['home'] = sn(m['home']); m['away'] = sn(m['away'])
@@ -608,165 +410,181 @@ def run():
         match_lookup[f"{m['away']}|{m['home']}"] = m['id']
 
     existing_nums = [int(m['id'].replace('m','')) for m in matches]
-    next_num      = max(existing_nums) + 1 if existing_nums else 1
-    next_goal_id  = max((g['id'] for g in goals), default=0) + 1
+    next_num      = max(existing_nums)+1 if existing_nums else 1
+    next_goal_id  = max((g['id'] for g in goals), default=0)+1
 
-    # Track which matches already have goals (by matchId)
     goals_by_mid  = {}
     for g in goals:
-        goals_by_mid.setdefault(g['matchId'], []).append(g)
+        goals_by_mid.setdefault(g['matchId'],[]).append(g)
 
     played_keys   = set(match_lookup.keys())
-    matches_added = stats_added = goals_added = stats_fixed = 0
+    matches_added = stats_added = goals_added = goals_fixed = 0
 
-    print("\nFetching ESPN scoreboard...")
-    events = fetch_espn_scoreboard()
+    # ── STEP 1: AllSportsAPI — get ALL WC matches with goalscorers ────────────
+    print("\nStep 1: Fetching AllSportsAPI fixtures with goalscorers...")
+    date_from = '2026-06-01'
+    date_to   = datetime.date.today().strftime('%Y-%m-%d')
+    asa_matches = fetch_allsports(asa_key, date_from, date_to)
 
-    for event in events:
-        parsed = parse_espn_event(event)
-        if not parsed:
+    # Build ASA lookup: (home_short, away_short) → event
+    asa_lookup = {}
+    for evt in asa_matches:
+        h = sn(evt.get('event_home_team',''))
+        a = sn(evt.get('event_away_team',''))
+        if h and a:
+            asa_lookup[f"{h}|{a}"] = evt
+            asa_lookup[f"{a}|{h}"] = evt
+
+    # ── STEP 2: ESPN scoreboard — scores + espnId ─────────────────────────────
+    print("\nStep 2: Fetching ESPN scoreboard for scores...")
+    espn_events = fetch_espn_scoreboard()
+    espn_parsed = {}
+    for ev in espn_events:
+        p = parse_espn_event(ev)
+        if p:
+            espn_parsed[f"{p['home']}|{p['away']}"] = p
+
+    # ── STEP 3: Process each finished match ───────────────────────────────────
+    print("\nStep 3: Processing matches...\n")
+
+    # Combine keys from both sources
+    all_keys = set(list(asa_lookup.keys()) + list(espn_parsed.keys()))
+    processed = set()
+
+    for key in all_keys:
+        if '|' not in key: continue
+        home, away = key.split('|',1)
+        canonical  = f"{home}|{away}"
+        reverse    = f"{away}|{home}"
+
+        # Avoid processing same match twice
+        if canonical in processed or reverse in processed:
+            continue
+        processed.add(canonical)
+
+        # Get score — prefer ESPN (more reliable for final score)
+        espn_p  = espn_parsed.get(canonical) or espn_parsed.get(reverse)
+        asa_evt = asa_lookup.get(canonical)  or asa_lookup.get(reverse)
+
+        if not espn_p and not asa_evt:
             continue
 
-        home  = parsed['home']
-        away  = parsed['away']
-        score = parsed['score']
-        if not home or not away:
-            continue
+        # Determine final score
+        if espn_p:
+            score = espn_p['score']
+        else:
+            score = (asa_evt.get('event_final_result') or '').strip()
+            if not score or '?' in score:
+                continue
 
         try:
             h_fin, a_fin = map(int, score.split('-'))
         except:
             continue
 
-        key = f"{home}|{away}"
-        mid = match_lookup.get(key)
+        date    = (espn_p or {}).get('date','') or fmt_date(asa_evt.get('event_date','') if asa_evt else '')
+        group   = (espn_p or {}).get('group','') or ''
+        espn_id = (espn_p or {}).get('espn_id','') or ''
+        venue   = (espn_p or {}).get('venue','')   or ''
 
-        # ── Add new match ──────────────────────────────────────────────────
+        mid = match_lookup.get(canonical) or match_lookup.get(reverse)
+
+        # Add new match if not seen before
         if not mid:
             mid = f"m{next_num}"; next_num += 1
-            match_lookup[key]              = mid
-            match_lookup[f"{away}|{home}"] = mid
+            match_lookup[canonical] = mid
+            match_lookup[reverse]   = mid
+            played_keys.update([canonical, reverse])
             matches.append({
-                'id': mid, 'date': parsed['date'],
-                'home': home, 'away': away, 'score': score,
-                'group': parsed['group'], 'ytId': '',
-                'fifaUrl': fifa_url(home, away), 'espnId': parsed['espn_id'],
+                'id':mid, 'date':date, 'home':home, 'away':away,
+                'score':score, 'group':group, 'ytId':'',
+                'fifaUrl':fifa_url(home,away), 'espnId':espn_id,
             })
             matches.sort(key=lambda m: int(m['id'].replace('m','')))
-            played_keys.update([key, f"{away}|{home}"])
             matches_added += 1
-            print(f"  ✚ Match: {mid} {home} {score} {away}")
-            # Auto-patch WC_RESULTS
+            print(f"  ✚ {mid} {home} {score} {away}")
             patch_wc_results(home, away, h_fin, a_fin)
         else:
-            existing = next(m for m in matches if m['id'] == mid)
-            if existing.get('score') != score:
-                print(f"  ↺ Score: {mid} {existing['score']} → {score}")
-                existing['score'] = score
-                # Score changed → re-fetch goals
+            ex = next(m for m in matches if m['id']==mid)
+            if ex.get('score') != score:
+                print(f"  ↺ Score {mid}: {ex['score']} → {score}")
+                ex['score'] = score
+                # Clear goals for re-fetch if score changed
                 if mid in goals_by_mid:
-                    print(f"    Score changed — clearing old goals for re-fetch")
-                    goals = [g for g in goals if g['matchId'] != mid]
+                    goals = [g for g in goals if g['matchId']!=mid]
                     del goals_by_mid[mid]
+                    next_goal_id = max((g['id'] for g in goals), default=0)+1
                 patch_wc_results(home, away, h_fin, a_fin)
-            if not existing.get('espnId') and parsed['espn_id']:
-                existing['espnId'] = parsed['espn_id']
-            if not existing.get('group') and parsed['group']:
-                existing['group'] = parsed['group']
+            if espn_id and not ex.get('espnId'):
+                ex['espnId'] = espn_id
+            if group and not ex.get('group'):
+                ex['group'] = group
 
-        # ── Goals ─────────────────────────────────────────────────────────
-        existing_g = goals_by_mid.get(mid, [])
-        goal_count = len(existing_g)
-        needs_goals = goal_count != (h_fin + a_fin)
+        # ── Goals ─────────────────────────────────────────────────────────────
+        existing_g  = goals_by_mid.get(mid,[])
+        needs_goals = len(existing_g) != (h_fin + a_fin)
 
         if needs_goals:
-            print(f"  → Goals {mid} ({home} {score} {away}): have {goal_count}, need {h_fin+a_fin}")
+            total_needed = h_fin + a_fin
+            have         = len(existing_g)
+            print(f"  → Goals {mid} ({home} {score} {away}): have {have}, need {total_needed}")
 
-            # Clear existing partial goals if any
+            # Clear partial goals
             if existing_g:
-                goals = [g for g in goals if g['matchId'] != mid]
-                next_goal_id = max((g['id'] for g in goals), default=0) + 1
+                goals = [g for g in goals if g['matchId']!=mid]
+                next_goal_id = max((g['id'] for g in goals), default=0)+1
 
-            espn_id = parsed['espn_id'] or (next(m for m in matches if m['id']==mid).get('espnId',''))
-            goal_list = parsed['goals']   # Source 1: scoreboard details
-
-            # Source 1b: ESPN summary scoringPlays
-            if not goal_list and espn_id:
-                print(f"    Trying ESPN summary scoringPlays...")
-                summary = fetch_espn_summary(espn_id)
-                goal_list = espn_summary_goals(summary)
-                time.sleep(0.3)
-
-            # Source 3: FOX Sports
-            if not goal_list:
-                print(f"    Trying FOX Sports...")
-                goal_list = fetch_fox_goals(home, away, parsed['date'])
-                time.sleep(0.3)
-
-            # Source 4: Fotmob
-            if not goal_list:
-                print(f"    Trying Fotmob...")
-                goal_list = fetch_fotmob_goals(home, away, parsed['date'])
-                time.sleep(0.3)
-
-            # Source 5: football-data.org (reliable free source)
-            if not goal_list and token:
-                print(f"    Trying football-data.org...")
-                goal_list = fetch_football_data_goals(home, away, token)
-                time.sleep(0.3)
-
-            # Source 6: API-Football
-            if not goal_list and rapidapi_key:
-                print(f"    Trying API-Football...")
-                goal_list = fetch_api_football_goals(home, away, rapidapi_key)
-                time.sleep(0.3)
+            # PRIMARY: AllSportsAPI
+            goal_list = []
+            if asa_evt:
+                goal_list = parse_allsports_goals(asa_evt, home, away)
+                if goal_list:
+                    print(f"    AllSportsAPI: {len(goal_list)} goals found")
 
             if goal_list:
                 new_goals, next_goal_id = assign_goals(
-                    goal_list, home, away, h_fin, a_fin, mid,
-                    parsed['group'], next_goal_id
-                )
+                    goal_list, home, away, h_fin, a_fin, mid, group, next_goal_id)
                 if new_goals:
                     goals.extend(new_goals)
                     goals_by_mid[mid] = new_goals
-                    goals_added += len(new_goals)
-                    print(f"    ✓ {len(new_goals)} goals added")
+                    if have == 0:
+                        goals_added += len(new_goals)
+                    else:
+                        goals_fixed += len(new_goals)
+                    print(f"    ✓ {len(new_goals)} goals saved for {mid}")
                 else:
-                    print(f"    ⚠ Validation failed — will retry next run")
+                    print(f"    ✗ Validation failed for {mid} — will retry next run")
             else:
-                print(f"    ⚠ ALL SOURCES EMPTY — will retry next run")
+                print(f"    ⚠ No goal data from AllSportsAPI for {mid}")
+                print(f"      → Add ALLSPORTSAPI_KEY to GitHub secrets if not set")
 
-        # ── Match stats ────────────────────────────────────────────────────
-        espn_id = parsed['espn_id'] or next((m['espnId'] for m in matches if m['id']==mid and m.get('espnId')), '')
-        missing_stats = mid not in stats
-        stale_stats   = mid in stats and stats[mid].get('score') != score
-
-        if (missing_stats or stale_stats) and espn_id:
+        # ── Stats ──────────────────────────────────────────────────────────────
+        ex_match = next((m for m in matches if m['id']==mid), {})
+        eid      = espn_id or ex_match.get('espnId','')
+        if eid and (mid not in stats or stats[mid].get('score') != score):
             print(f"  → Stats {mid}...", end=' ', flush=True)
-            summary  = fetch_espn_summary(espn_id)
+            summary = fetch_espn_summary(eid)
             time.sleep(0.3)
             s = parse_espn_stats(summary) if summary else None
             if s:
-                venue = parsed.get('venue','')
                 stats[mid] = {
-                    'home': home, 'away': away, 'score': score,
-                    'date': f"{parsed['date']}{' - '+venue if venue else ''}",
-                    'poss': s['poss'], 'stats': s['stats'], 'xtra': s['xtra'],
+                    'home':home, 'away':away, 'score':score,
+                    'date':f"{date}{' - '+venue if venue else ''}",
+                    'poss':s['poss'], 'stats':s['stats'], 'xtra':s['xtra'],
                 }
-                if missing_stats: stats_added += 1
-                else:             stats_fixed += 1
-                print(f"done (poss {s['poss'][0]}-{s['poss'][1]}%)")
+                stats_added += 1
+                print(f"done")
             else:
-                print("no stats")
+                print(f"no stats")
 
-    # ── Upcoming fixtures ──────────────────────────────────────────────────
-    if token:
-        print("\nFetching upcoming fixtures...")
-        fetch_upcoming(token, played_keys)
+    # ── Upcoming fixtures ──────────────────────────────────────────────────────
+    if fd_token:
+        print("\nStep 4: Fetching upcoming fixtures...")
+        fetch_upcoming(fd_token, played_keys)
 
-    # ── Save all ───────────────────────────────────────────────────────────
-    goals.sort(key=lambda g: (int(g['matchId'].replace('m','')), g['minute']))
-    save('matches.json',    matches)
+    # ── Save ───────────────────────────────────────────────────────────────────
+    goals.sort(key=lambda g:(int(g['matchId'].replace('m','')), g['minute']))
+    save('matches.json',     matches)
     save('match_stats.json', stats)
     save('goals.json',       goals)
 
@@ -774,19 +592,22 @@ def run():
     balanced  = len(goals) == score_sum
 
     print(f"""
-=== SUMMARY ===
-  Matches : {len(matches)} (+{matches_added} new)
-  Stats   : {len(stats)}  (+{stats_added} new, {stats_fixed} updated)
-  Goals   : {len(goals)}  (+{goals_added} new)
-  Balance : {len(goals)} goals = {score_sum} from scores {'✓' if balanced else '✗ MISMATCH'}
-""")
+═══════════════════════════════
+SUMMARY
+  Matches : {len(matches)}  (+{matches_added} new)
+  Stats   : {len(stats)}
+  Goals   : {len(goals)}  (+{goals_added} new, {goals_fixed} fixed)
+  Balance : {len(goals)} = {score_sum} from scores {'✓' if balanced else '✗ MISMATCH'}
+═══════════════════════════════""")
+
     if not balanced:
+        print("  Missing goals:")
         for m in matches:
-            g = goals_by_mid.get(m['id'], [])
-            h, a = map(int, m['score'].split('-'))
-            if len(g) != h + a:
+            g  = goals_by_mid.get(m['id'],[])
+            h,a = map(int, m['score'].split('-'))
+            if len(g) != h+a:
                 print(f"  ⚠ {m['id']} {m['home']} {m['score']} {m['away']}  "
-                      f"feed={len(g)} expect={h+a}")
+                      f"have={len(g)} need={h+a}")
 
 if __name__ == '__main__':
     print(f"=== Match Stats Updater — {datetime.date.today()} ===")

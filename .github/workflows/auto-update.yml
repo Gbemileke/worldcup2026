@@ -24,19 +24,19 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Step 1 — Fetch match data (scores, goals, stats)
+      - name: Step 1 — Fetch match data (AllSportsAPI primary + ESPN fallback)
         env:
+          ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: python update_match_stats.py
 
       - name: Step 2 — Update FIFA rankings + deltas
         run: python update_rankings.py
 
-      - name: Step 3 — Update team form from WC results
+      - name: Step 3 — Update team form
         run: python update_site.py --section form
 
-      - name: Step 4 — Full rebuild of index.html
+      - name: Step 4 — Full site rebuild
         run: python update_site.py
 
       - name: Step 5 — Patch FIFA rank deltas into TEAM_DATA
@@ -50,43 +50,39 @@ jobs:
           js_start = c.find('<script>') + 8
           js_end   = c.find('</script>', js_start)
           js       = c[js_start:js_end]
-
           td_start = js.find('var TEAM_DATA = {')
           td_end   = js.find('\n};', td_start) + 3
           td       = js[td_start:td_end]
 
           for name, data in teams.items():
               if data.get('group','') == '': continue
-              pd = data.get('fifaPtsDelta', 0)
-              rd = data.get('fifaRankDelta', 0)
-              pt = data.get('fifaPts', 0)
-              escaped = re.escape(name)
-              # Update fifaPts
-              td = re.sub(rf"('{escaped}'[^}}]*?fifaPts:)([\d.]+)",
-                          lambda m,p=pt: m.group(1)+str(p), td, count=1)
-              # Update or insert delta fields
-              if re.search(rf"'{escaped}'[^}}]*fifaPtsDelta", td):
-                  td = re.sub(rf"('{escaped}'[^}}]*fifaPtsDelta:)([-\d.]+)",
+              pd  = data.get('fifaPtsDelta', 0)
+              rd  = data.get('fifaRankDelta', 0)
+              pt  = data.get('fifaPts', 0)
+              esc = re.escape(name)
+              td  = re.sub(rf"('{esc}'[^}}]*?fifaPts:)([\d.]+)",
+                           lambda m,p=pt: m.group(1)+str(p), td, count=1)
+              if re.search(rf"'{esc}'[^}}]*fifaPtsDelta", td):
+                  td = re.sub(rf"('{esc}'[^}}]*fifaPtsDelta:)([-\d.]+)",
                               lambda m,p=pd: m.group(1)+str(p), td, count=1)
-                  td = re.sub(rf"('{escaped}'[^}}]*fifaRankDelta:)([-\d]+)",
+                  td = re.sub(rf"('{esc}'[^}}]*fifaRankDelta:)([-\d]+)",
                               lambda m,r=rd: m.group(1)+str(r), td, count=1)
               else:
-                  td = re.sub(
-                      rf"('{escaped}'[^}}]*?fifaPts:[\d.]+)(,)",
+                  td = re.sub(rf"('{esc}'[^}}]*?fifaPts:[\d.]+)(,)",
                       lambda m,p=pd,r=rd: m.group(1)+f', fifaPtsDelta:{p}, fifaRankDelta:{r}'+m.group(2),
                       td, count=1)
 
           js = js[:td_start] + td + js[td_end:]
           c  = c[:js_start] + js + c[js_end:]
           with open('index.html','w') as f: f.write(c)
-          print("✓ FIFA rank deltas patched into TEAM_DATA")
+          print("✓ FIFA rank deltas patched")
           EOF
 
-      - name: Commit and push if anything changed
+      - name: Commit and push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html data/ update_rankings.py
           git diff --staged --quiet \
-            && echo "No changes — already up to date" \
+            && echo "No changes" \
             || (git commit -m "auto: $(date -u +'%Y-%m-%d %H:%M UTC')" && git push)
