@@ -1150,5 +1150,77 @@
     "phase": "Group ",
     "score": "0-1",
     "desc": "M. Galarza opens the scoring with a clinical finish \u2014 Turkey 0-1 Paraguay"
+  },
+  {
+    "id": 135,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "B. Brobbey",
+    "minute": 5,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "1-0",
+    "desc": "Brobbey finishes a wonderful Gakpo cross to put the Dutch in front inside 5 minutes"
+  },
+  {
+    "id": 136,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "B. Brobbey",
+    "minute": 17,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "2-0",
+    "desc": "Brobbey doubles his tally \u2014 another clinical finish as Netherlands dominate"
+  },
+  {
+    "id": 137,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Gakpo",
+    "minute": 47,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "3-0",
+    "desc": "Gakpo taps in after a wonderful assist from Dumfries \u2014 Netherlands electric in the second half"
+  },
+  {
+    "id": 138,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Gakpo",
+    "minute": 54,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "4-0",
+    "desc": "Gakpo drills home a second after nice work from Summerville"
+  },
+  {
+    "id": 139,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "A. Elanga",
+    "minute": 59,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "4-1",
+    "desc": "Elanga pulls one back for Sweden on the counter \u2014 a moment of quality from the Newcastle man"
+  },
+  {
+    "id": 140,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Summerville",
+    "minute": 89,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "5-1",
+    "desc": "Summerville rounds out the win with an excellent finish \u2014 Netherlands cruise to the top of Group F"
   }
 ]
