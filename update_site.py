@@ -277,6 +277,7 @@ def sync_upcoming():
     # Build set of completed match pairs
     completed = set()
     for mid, m in stats.items():
+        if not m.get('home') or not m.get('away'): continue
         h = m['home'].lower().strip()
         a = m['away'].lower().strip()
         completed.add((h, a))
@@ -285,7 +286,7 @@ def sync_upcoming():
     before = len(upcoming)
     upcoming = [
         f for f in upcoming
-        if (f['home'].lower().strip(), f['away'].lower().strip()) not in completed
+        if f.get('home') and f.get('away') and (f['home'].lower().strip(), f['away'].lower().strip()) not in completed
     ]
     removed = before - len(upcoming)
 

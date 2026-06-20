@@ -562,8 +562,12 @@ def fetch_upcoming(token, played_keys):
             return
         upcoming = []
         for m in r.json().get('matches', [])[:48]:
+            # Skip fixtures with TBD/null teams (knockout rounds not yet determined)
+            if not m.get('homeTeam') or not m.get('awayTeam'): continue
+            if not m['homeTeam'].get('name') or not m['awayTeam'].get('name'): continue
             home = sn(m['homeTeam']['name'])
             away = sn(m['awayTeam']['name'])
+            if not home or not away: continue
             if f"{home}|{away}" in played_keys or f"{away}|{home}" in played_keys:
                 continue  # already played — skip
             try:
