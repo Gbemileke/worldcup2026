@@ -24,7 +24,31 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Step 1 — Fetch match data (AllSportsAPI primary + ESPN fallback)
+      - name: Step 1a — Discover AllSportsAPI league ID
+        env:
+          ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
+        run: |
+          python - << 'EOF'
+          import os, requests, json
+          key = os.environ.get('ALLSPORTSAPI_KEY','')
+          if not key:
+              print("ALLSPORTSAPI_KEY not set")
+              exit(0)
+          # Fetch leagues to find WC 2026
+          r = requests.get(f"https://allsportsapi.com/api/football/?met=Leagues&APIkey={key}&countryId=6",
+                           timeout=15)
+          print(f"Leagues status: {r.status_code}")
+          if r.status_code == 200:
+              data = r.json()
+              leagues = data.get('result') or []
+              print(f"International leagues: {len(leagues)}")
+              for lg in leagues:
+                  name = str(lg.get('league_name','')).lower()
+                  if 'world' in name or 'cup' in name or 'wc' in name:
+                      print(f"  FOUND: {lg}")
+          EOF
+
+      - name: Step 1b — Fetch match data (AllSportsAPI primary + ESPN fallback)
         env:
           ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}

@@ -25,7 +25,7 @@ API_BASE  = 'https://api.football-data.org/v4'
 
 # AllSportsAPI
 ASA_BASE    = 'https://allsportsapi.com/api/football/'
-WC_LEAGUE   = '1369'   # FIFA World Cup 2026 league ID on AllSportsAPI
+WC_LEAGUE   = '1369'   # starting ID, auto-updated if wrong
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
@@ -99,33 +99,107 @@ def scorer_fmt(raw):
 # ══════════════════════════════════════════════════════════════════════════════
 # SOURCE 1 — AllSportsAPI  (PRIMARY goal source)
 # ══════════════════════════════════════════════════════════════════════════════
+# Known WC 2026 league IDs to try on AllSportsAPI
+WC_LEAGUE_IDS = ['1369', '1165', '28', '36', '1388', '1390']
+
 def fetch_allsports(asa_key, date_from, date_to):
     """
     Fetch all WC finished matches with goalscorers from AllSportsAPI.
-    Returns list of match dicts with goalscorers embedded.
+    Tries multiple strategies to find the correct league.
     """
     if not asa_key:
         print("  AllSportsAPI: no key set (ALLSPORTSAPI_KEY)")
         return []
+
+    # Strategy 1: No leagueId — get ALL fixtures for date range, filter WC ones
+    print("  AllSportsAPI: trying without leagueId (all fixtures)...")
+    results = _asa_fetch(asa_key, date_from, date_to, league_id=None)
+    wc = _filter_wc(results)
+    if wc:
+        print(f"  AllSportsAPI: {len(wc)} WC matches found (no leagueId)")
+        return wc
+
+    # Strategy 2: Try known WC league IDs
+    for lid in WC_LEAGUE_IDS:
+        print(f"  AllSportsAPI: trying leagueId={lid}...")
+        results = _asa_fetch(asa_key, date_from, date_to, league_id=lid)
+        wc = _filter_wc(results)
+        if wc:
+            print(f"  AllSportsAPI: {len(wc)} WC matches found (leagueId={lid})")
+            global WC_LEAGUE
+            WC_LEAGUE = lid  # cache the working ID
+            return wc
+        time.sleep(0.5)
+
+    # Strategy 3: met=Livescore (no date filter needed)
+    print("  AllSportsAPI: trying Livescore endpoint...")
     try:
-        url = (f"{ASA_BASE}?met=Fixtures&APIkey={asa_key}"
-               f"&from={date_from}&to={date_to}&leagueId={WC_LEAGUE}")
-        r = requests.get(url, headers=HEADERS, timeout=20)
-        if r.status_code != 200:
-            print(f"  AllSportsAPI: HTTP {r.status_code}")
-            return []
-        data = r.json()
-        if not data.get('success'):
-            print(f"  AllSportsAPI: {data.get('error','unknown error')}")
-            return []
-        results = data.get('result') or []
-        finished = [m for m in results if m.get('event_status','') in
-                    ('Finished','FT','finished','ft','Match Finished')]
-        print(f"  AllSportsAPI: {len(results)} fixtures, {len(finished)} finished")
-        return finished
+        r = requests.get(f"{ASA_BASE}?met=Livescore&APIkey={asa_key}",
+                         headers=HEADERS, timeout=20)
+        if r.status_code == 200:
+            data = r.json()
+            results = data.get('result') or []
+            wc = _filter_wc(results)
+            if wc:
+                print(f"  AllSportsAPI: {len(wc)} WC live matches")
+                return wc
     except Exception as e:
-        print(f"  AllSportsAPI error: {e}")
+        print(f"  AllSportsAPI Livescore error: {e}")
+
+    print("  AllSportsAPI: no WC matches found — check ALLSPORTSAPI_KEY and league ID")
+    return []
+
+def _asa_fetch(asa_key, date_from, date_to, league_id=None):
+    """Single AllSportsAPI request, returns raw result list."""
+    try:
+        url = f"{ASA_BASE}?met=Fixtures&APIkey={asa_key}&from={date_from}&to={date_to}"
+        if league_id:
+            url += f"&leagueId={league_id}"
+        r = requests.get(url, headers=HEADERS, timeout=20)
+        if r.status_code == 200:
+            data = r.json()
+            if data.get('success'):
+                return data.get('result') or []
+            print(f"    API error: {data.get('error','')}")
+        else:
+            print(f"    HTTP {r.status_code}")
+    except Exception as e:
+        print(f"    fetch error: {e}")
+    return []
+
+def _filter_wc(results):
+    """Filter results to World Cup matches only."""
+    if not results:
         return []
+    WC_KEYWORDS = ['world cup', 'fifa world', 'wc 2026', 'world cup 2026', 'mondial']
+    finished_statuses = {'Finished','FT','finished','ft','Match Finished','Full Time'}
+    wc = []
+    for m in results:
+        league = (m.get('league_name','') or m.get('event_league_title','') or '').lower()
+        status = m.get('event_status','') or m.get('event_final_result','')
+        is_wc  = any(kw in league for kw in WC_KEYWORDS)
+        is_done = status in finished_statuses or (
+            m.get('event_final_result','?') not in ('?','','0-0') and
+            m.get('event_status','') in ('Finished','FT','Match Finished')
+        )
+        if is_wc or (is_done and _is_wc_teams(m)):
+            wc.append(m)
+    return wc
+
+def _is_wc_teams(m):
+    """Check if both teams are WC 2026 participants."""
+    WC_TEAMS = {
+        'argentina','france','spain','england','brazil','portugal','netherlands',
+        'germany','belgium','croatia','colombia','mexico','usa','senegal','uruguay',
+        'japan','switzerland','iran','turkey','ecuador','austria','south korea',
+        'australia','algeria','egypt','canada','norway','ivory coast','sweden',
+        'czechia','paraguay','scotland','ghana','panama','morocco','saudi arabia',
+        'qatar','iraq','south africa','jordan','bosnia','cape verde','dr congo',
+        'uzbekistan','new zealand','curacao','haiti','tunisia'
+    }
+    h = (m.get('event_home_team','') or '').lower()
+    a = (m.get('event_away_team','') or '').lower()
+    return any(t in h for t in WC_TEAMS) and any(t in a for t in WC_TEAMS)
 
 def parse_allsports_goals(event, home, away):
     """
