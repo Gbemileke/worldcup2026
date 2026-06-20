@@ -219,6 +219,10 @@ WC_RESULTS = [
     {"home":"Switzerland", "away":"Bosnia",      "result":1.0},  # 4-1 Jun 18
     {"home":"Canada",      "away":"Qatar",       "result":1.0},  # 6-0 Jun 18
     {"home":"USA",          "away":"Australia",    "result":1.0},  # 2-0 Jun 19
+    # MD2 remaining
+    {"home":"Scotland",    "away":"Morocco",    "result":0.0},  # 0-1 Jun 19
+    {"home":"Brazil",      "away":"Haiti",      "result":1.0},  # 3-0 Jun 20
+    {"home":"Turkey",      "away":"Paraguay",   "result":0.0},  # 0-1 Jun 20 (Paraguay won)
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 
