@@ -1341,6 +1341,7 @@
         <div class="filter-chip" onclick="filterGoals('penalty',this)">Penalty</div>
         <div class="filter-chip" onclick="filterGoals('header',this)">Header</div>
         <div class="filter-chip" onclick="filterGoals('own-goal',this)">Own Goal</div>
+        <div class="filter-chip" onclick="filterGoals('free-kick',this)">Free Kick</div>
       </div>
     </div>
     <div class="goals-list" id="goalsList"></div>
@@ -1385,7 +1386,7 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 20, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">33 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">76 open play · 14 headers · 6 penalties · 6 OGs</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">33 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">75 open play · 14 headers · 6 penalties · 6 OGs · 1 free kicks</div></div>
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">102</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.09 per match · 33 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">6</div><div class="stat-label">Penalties Scored</div><div class="stat-sub"><span class="has-tip" data-tip="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia" title="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia">in 6 matches</span></div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">6</div><div class="stat-label">Own Goals</div><div class="stat-sub"><span class="has-tip" data-tip="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA" title="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Iraq (Hussein) vs Norway | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA">in 6 matches</span></div></div>
@@ -1855,7 +1856,7 @@ var GOALS = [
   {id:121, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'C. Larin', flag:'', minute:16, type:'open-play', phase:'Group B', score:'1-0', desc:'Larin volleys home from close range — Canada open the scoring at BC Place in front of a raucous home crowd'},
   {id:122, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:29, type:'open-play', phase:'Group B', score:'2-0', desc:'David slots home his first with a composed finish — Canada doubling their lead before half time'},
   {id:123, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:57, type:'open-play', phase:'Group B', score:'3-0', desc:'David with his brace — Canada dominant as Qatar down to ten men after red card'},
-  {id:124, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'N. Saliba', flag:'', minute:68, type:'open-play', phase:'Group B', score:'4-0', desc:'Saliba scores his first international goal — Canada ruthless against nine-man Qatar'},
+  {id:124, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'N. Saliba', flag:'', minute:68, type:'free-kick', phase:'Group B', score:'4-0', desc:'Saliba scores his first international goal — Canada ruthless against nine-man Qatar'},
   {id:125, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'M. Manai OG', flag:'', minute:75, type:'own-goal', phase:'Group B', score:'5-0', desc:'Manai turns the ball into his own net — Qatar\'s miserable night complete'},
   {id:126, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:90, type:'open-play', phase:'Group B', score:'6-0', desc:'David completes his hat trick with a beautiful left-footed shot — Canada\'s first ever World Cup win in historic fashion'},
   {id:127, matchId:'m28', home:'Mexico', away:'S. Korea', hf:'', af:'', scorer:'L. Romo', flag:'', minute:50, type:'open-play', phase:'Group A', score:'1-0', desc:'Romo pounces on Kim Seung-Gyu\'s error to slot home — Mexico book their place in the round of 32'},
@@ -1873,6 +1874,10 @@ var GOALS = [
   {id:136, matchId:'m33', home:'Netherlands', away:'Sweden', hf:'', af:'', scorer:'A. Elanga', flag:'', minute:59, type:'open-play', phase:'Group F', score:'4-1', desc:'Elanga pulls one back for Sweden on the counter'},
   {id:137, matchId:'m33', home:'Netherlands', away:'Sweden', hf:'', af:'', scorer:'C. Summerville', flag:'', minute:89, type:'open-play', phase:'Group F', score:'5-1', desc:'Summerville rounds out the win with an excellent finish'}
 ];
+
+
+
+
 
 
 
@@ -2391,13 +2396,22 @@ function buildDonut() {
     else counts['open-play']++;
   });
   var total = GOALS.length || 1;
-  var data = [
-    {label:'Open Play', pct:Math.round((counts['open-play']/total)*100), color:'#4cde7e'},
-    {label:'Header',    pct:Math.round((counts['header']/total)*100),    color:'#8ab4f8'},
-    {label:'Own Goal',  pct:Math.round((counts['own-goal']/total)*100),  color:'#aaa'},
-    {label:'Penalty',   pct:Math.round((counts['penalty']/total)*100),   color:'#ff6b81'},
-    {label:'Free Kick', pct:Math.round((counts['free-kick']/total)*100), color:'var(--gold)'}
-  ];
+  // Largest remainder method so percentages sum to 100
+  var rawData = [
+    {label:'Open Play', raw:(counts['open-play']/total)*100, color:'#4cde7e'},
+    {label:'Header',    raw:(counts['header']/total)*100,    color:'#8ab4f8'},
+    {label:'Own Goal',  raw:(counts['own-goal']/total)*100,  color:'#aaa'},
+    {label:'Penalty',   raw:(counts['penalty']/total)*100,   color:'#ff6b81'},
+    {label:'Free Kick', raw:(counts['free-kick']/total)*100, color:'var(--gold)'}
+  ].filter(function(d){ return d.raw > 0; });
+  rawData.forEach(function(d){ d.pct = Math.floor(d.raw); d.rem = d.raw - d.pct; });
+  var deficit = 100 - rawData.reduce(function(s,d){ return s+d.pct; },0);
+  rawData.sort(function(a,b){ return b.rem-a.rem; });
+  for(var i=0;i<deficit;i++) rawData[i].pct++;
+  rawData.sort(function(a,b){ return b.raw-a.raw; });
+  // Show "<1%" for anything that rounds to 0 but exists
+  rawData.forEach(function(d){ if(d.pct===0&&d.raw>0) d.pct=0.5; });
+  var data = rawData;
   var r=45, cx=65, cy=65, circ=2*Math.PI*r;
   var offset = 0;
   var paths = data.map(function(d) {
@@ -2414,7 +2428,7 @@ function buildDonut() {
     return '<div class="legend-item">' +
       '<div class="legend-dot" style="background:' + d.color + '"></div>' +
       '<div class="legend-label">' + d.label + '</div>' +
-      '<div class="legend-pct" style="color:' + d.color + '">' + d.pct + '%</div>' +
+      '<div class="legend-pct" style="color:' + d.color + '">' + (d.raw < 1 ? '<1' : Math.round(d.pct)) + '%</div>' +
     '</div>';
   }).join('');
 }
@@ -4017,6 +4031,10 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
+
+
 
 
 
