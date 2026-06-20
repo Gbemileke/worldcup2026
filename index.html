@@ -1353,9 +1353,9 @@
           <div class="hero-teams" id="heroTeams"></div>
           <div class="hero-details">
             <div class="detail-box"><div class="detail-label">Scorer</div><div class="detail-value dv-gold" id="heroScorer"></div></div>
+            <div class="detail-box"><div class="detail-label">Team</div><div class="detail-value dv-blue" id="heroTeam"></div></div>
             <div class="detail-box"><div class="detail-label">Minute</div><div class="detail-value" id="heroMinute"></div></div>
             <div class="detail-box"><div class="detail-label">Type</div><div class="detail-value dv-green" id="heroType"></div></div>
-            <div class="detail-box"><div class="detail-label">Group</div><div class="detail-value" id="heroPhase"></div></div>
           </div>
           <div class="desc-box" id="descBox"></div>
         </div>
@@ -1961,6 +1961,8 @@ var GOALS = [
 
 
 
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2276,6 +2278,17 @@ function selectGoal(id) {
   pendingVideoId = m.ytId;
   document.getElementById('heroTeams').innerHTML = g.hf + ' ' + g.home + ' <span class="hero-score">' + g.score + '</span> ' + g.away + ' ' + g.af;
   document.getElementById('heroScorer').textContent = g.scorer;
+  // Determine which team the scorer belongs to
+  var prevGoals2 = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
+  var ps2  = prevGoals2.length ? prevGoals2[prevGoals2.length-1].score : '0-0';
+  var ph_  = parseInt(ps2.split('-')[0]||0);
+  var pa_  = parseInt(ps2.split('-')[1]||0);
+  var ph2_ = parseInt(g.score.split('-')[0]||0);
+  var pa2_ = parseInt(g.score.split('-')[1]||0);
+  var scorerTeam = g.type === 'own-goal'
+    ? (ph2_ > ph_ ? g.away : g.home)   // OG: home score up → away player scored OG
+    : (ph2_ > ph_ ? g.home : g.away);  // Regular: home score up → home scored
+  document.getElementById('heroTeam').textContent = scorerTeam;
   document.getElementById('heroMinute').textContent = g.minute + "'";
   document.getElementById('heroType').textContent = g.type.replace('-', ' ').toUpperCase();
   document.getElementById('heroPhase').textContent = g.phase + ' - ' + m.date;
@@ -2387,7 +2400,17 @@ function buildScorers() {
     var name = (g.scorer || '').replace(/ OG$/, '').trim();
     // Filter out placeholder entries added when API returned no goals
     if (!name || name === 'See FIFA.com' || name === 'Unknown') return;
-    if (!counts[name]) counts[name] = {goals:0, team: g.home};
+    if (!counts[name]) {
+      // Determine which team the scorer belongs to
+      var _prev = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
+      var _ps   = _prev.length ? _prev[_prev.length-1].score : '0-0';
+      var _ph   = parseInt(_ps.split('-')[0]||0);
+      var _pa   = parseInt(_ps.split('-')[1]||0);
+      var _ph2  = parseInt(g.score.split('-')[0]||0);
+      var _pa2  = parseInt(g.score.split('-')[1]||0);
+      var _team = _ph2 > _ph ? g.home : g.away;
+      counts[name] = {goals:0, team: _team};
+    }
     counts[name].goals++;
   });
 
@@ -3178,8 +3201,12 @@ function buildSnapshotStats() {
     var name = g.scorer.replace(/ OG$/,'').split('.').pop().trim();
     var prevGoals = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
     var prevScore = prevGoals.length ? prevGoals[prevGoals.length-1].score : '0-0';
-    var ph = parseInt(prevScore.split('-')[0]||0);
+    var ph  = parseInt(prevScore.split('-')[0]||0);
+    var pa  = parseInt(prevScore.split('-')[1]||0);
     var ph2 = parseInt(g.score.split('-')[0]||0);
+    var pa2 = parseInt(g.score.split('-')[1]||0);
+    // OG: home score up → AWAY player scored OG (their own goal helped home)
+    //      away score up → HOME player scored OG (their own goal helped away)
     var scorerIsAway = ph2 > ph;
     var country  = scorerIsAway ? g.away : g.home;
     var opponent = scorerIsAway ? g.home : g.away;
@@ -3237,8 +3264,10 @@ function buildSnapshotStats() {
         var prev = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
         var ps   = prev.length ? prev[prev.length-1].score : '0-0';
         var ph   = parseInt(ps.split('-')[0]||0);
+        var pa   = parseInt(ps.split('-')[1]||0);
         var ph2  = parseInt(g.score.split('-')[0]||0);
-        return ph2 > ph ? g.home : g.away;
+        var pa2  = parseInt(g.score.split('-')[1]||0);
+        return ph2 > ph ? g.home : g.away;  // home score up → home scored; else away
       }
     }
     return '';
@@ -3961,6 +3990,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
