@@ -306,5 +306,60 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-korea-highlights-match-report",
     "espnId": "760441"
+  },
+  {
+    "id": "m29",
+    "date": "Jun 19",
+    "home": "USA",
+    "away": "Australia",
+    "score": "2-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/united-states-v-australia-highlights-match-report",
+    "espnId": "760442"
+  },
+  {
+    "id": "m30",
+    "date": "Jun 19",
+    "home": "Scotland",
+    "away": "Morocco",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/scotland-v-morocco-highlights-match-report",
+    "espnId": "760445"
+  },
+  {
+    "id": "m31",
+    "date": "Jun 19",
+    "home": "Turkey",
+    "away": "Paraguay",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/turkey-v-paraguay-highlights-match-report",
+    "espnId": "760443"
+  },
+  {
+    "id": "m32",
+    "date": "Jun 20",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "score": "5-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-sweden-highlights-match-report",
+    "espnId": "760447"
+  },
+  {
+    "id": "m35",
+    "date": "Jun 20",
+    "home": "Brazil",
+    "away": "Haiti",
+    "score": "3-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-haiti-highlights-match-report",
+    "espnId": "760444"
   }
 ]

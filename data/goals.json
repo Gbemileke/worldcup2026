@@ -1104,44 +1104,8 @@
     "desc": "I. Saibari breaks the deadlock \u2014 Scotland lead 0-1"
   },
   {
-    "id": 132,
-    "matchId": "m31",
-    "home": "Brazil",
-    "away": "Haiti",
-    "scorer": "M. Cunha",
-    "minute": 23,
-    "type": "open-play",
-    "phase": "Group C",
-    "score": "1-0",
-    "desc": "Cunha drifts inside and curls a brilliant finish into the far corner"
-  },
-  {
-    "id": 133,
-    "matchId": "m31",
-    "home": "Brazil",
-    "away": "Haiti",
-    "scorer": "M. Cunha",
-    "minute": 36,
-    "type": "open-play",
-    "phase": "Group C",
-    "score": "2-0",
-    "desc": "Cunha doubles his tally \u2014 a clinical finish from the edge of the box"
-  },
-  {
-    "id": 134,
-    "matchId": "m31",
-    "home": "Brazil",
-    "away": "Haiti",
-    "scorer": "Vinicius Jr.",
-    "minute": 45,
-    "type": "open-play",
-    "phase": "Group C",
-    "score": "3-0",
-    "desc": "Vinicius Jr. latches onto a through ball and finishes coolly in stoppage time"
-  },
-  {
     "id": 129,
-    "matchId": "m32",
+    "matchId": "m31",
     "home": "Turkey",
     "away": "Paraguay",
     "scorer": "M. Galarza",
@@ -1152,8 +1116,8 @@
     "desc": "M. Galarza opens the scoring with a clinical finish \u2014 Turkey 0-1 Paraguay"
   },
   {
-    "id": 135,
-    "matchId": "m33",
+    "id": 132,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "B. Brobbey",
@@ -1161,11 +1125,11 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "1-0",
-    "desc": "Brobbey finishes a wonderful Gakpo cross to put the Dutch in front inside 5 minutes"
+    "desc": "Brobbey finishes a Gakpo cross to put Dutch ahead inside 5 minutes"
   },
   {
-    "id": 136,
-    "matchId": "m33",
+    "id": 133,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "B. Brobbey",
@@ -1173,11 +1137,11 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "2-0",
-    "desc": "Brobbey doubles his tally \u2014 another clinical finish as Netherlands dominate"
+    "desc": "Brobbey doubles his tally with another clinical finish"
   },
   {
-    "id": 137,
-    "matchId": "m33",
+    "id": 134,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "C. Gakpo",
@@ -1185,11 +1149,11 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "3-0",
-    "desc": "Gakpo taps in after a wonderful assist from Dumfries \u2014 Netherlands electric in the second half"
+    "desc": "Gakpo taps in after a wonderful assist from Dumfries"
   },
   {
-    "id": 138,
-    "matchId": "m33",
+    "id": 135,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "C. Gakpo",
@@ -1200,8 +1164,8 @@
     "desc": "Gakpo drills home a second after nice work from Summerville"
   },
   {
-    "id": 139,
-    "matchId": "m33",
+    "id": 136,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "A. Elanga",
@@ -1209,11 +1173,11 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "4-1",
-    "desc": "Elanga pulls one back for Sweden on the counter \u2014 a moment of quality from the Newcastle man"
+    "desc": "Elanga pulls one back for Sweden on the counter"
   },
   {
-    "id": 140,
-    "matchId": "m33",
+    "id": 137,
+    "matchId": "m32",
     "home": "Netherlands",
     "away": "Sweden",
     "scorer": "C. Summerville",
@@ -1221,6 +1185,42 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "5-1",
-    "desc": "Summerville rounds out the win with an excellent finish \u2014 Netherlands cruise to the top of Group F"
+    "desc": "Summerville rounds out the win with an excellent finish"
+  },
+  {
+    "id": 138,
+    "matchId": "m35",
+    "home": "Brazil",
+    "away": "Haiti",
+    "scorer": "M. Cunha",
+    "minute": 23,
+    "type": "open-play",
+    "phase": "Group C",
+    "score": "1-0",
+    "desc": "Cunha curls a brilliant finish into the far corner"
+  },
+  {
+    "id": 139,
+    "matchId": "m35",
+    "home": "Brazil",
+    "away": "Haiti",
+    "scorer": "M. Cunha",
+    "minute": 36,
+    "type": "open-play",
+    "phase": "Group C",
+    "score": "2-0",
+    "desc": "Cunha doubles his tally with a clinical finish from the edge of the box"
+  },
+  {
+    "id": 140,
+    "matchId": "m35",
+    "home": "Brazil",
+    "away": "Haiti",
+    "scorer": "Vinicius Jr.",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group C",
+    "score": "3-0",
+    "desc": "Vinicius Jr finishes coolly in stoppage time to complete the rout"
   }
 ]
