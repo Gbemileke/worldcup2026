@@ -353,124 +353,6 @@
       ]
     ]
   },
-  "m10": {
-    "home": "Ivory Coast",
-    "away": "Ecuador",
-    "score": "1-0",
-    "date": "Jun 14",
-    "poss": [
-      54,
-      46
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        8,
-        5
-      ],
-      [
-        "Shots on Goal",
-        3,
-        1
-      ],
-      [
-        "Corner Kicks",
-        5,
-        4
-      ],
-      [
-        "Fouls",
-        12,
-        12
-      ],
-      [
-        "Saves",
-        1,
-        1
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.24,
-        0.53
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ]
-    ]
-  },
-  "m11": {
-    "home": "Netherlands",
-    "away": "Japan",
-    "score": "2-2",
-    "date": "Jun 14",
-    "poss": [
-      50,
-      50
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        8,
-        5
-      ],
-      [
-        "Shots on Goal",
-        3,
-        3
-      ],
-      [
-        "Corner Kicks",
-        5,
-        4
-      ],
-      [
-        "Fouls",
-        12,
-        12
-      ],
-      [
-        "Saves",
-        2,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.24,
-        1.09
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ]
-    ]
-  },
   "m13": {
     "home": "Spain",
     "away": "Cape Verde",
@@ -828,59 +710,59 @@
   "m4": {
     "home": "USA",
     "away": "Paraguay",
-    "score": "2-0",
-    "date": "Jun 12 - MetLife Stadium, New Jersey",
+    "score": "4-1",
+    "date": "Jun 13 - SoFi Stadium",
     "poss": [
-      58,
-      42
+      65.3,
+      34.7
     ],
     "stats": [
       [
         "Shot Attempts",
         16,
-        8
+        9
       ],
       [
         "Shots on Goal",
-        7,
-        3
+        6,
+        1
       ],
       [
         "Corner Kicks",
-        8,
-        3
+        0,
+        0
       ],
       [
         "Fouls",
-        11,
-        14
+        13,
+        17
       ],
       [
         "Saves",
-        3,
-        7
+        1,
+        3
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.76,
-        1.24
+        2.48,
+        0.73
       ],
       [
         "Yellow Cards",
         1,
-        1
-      ],
-      [
-        "Offsides",
-        3,
-        2
+        5
       ],
       [
         "Red Cards",
         0,
         0
+      ],
+      [
+        "Offsides",
+        2,
+        1
       ]
     ]
   },
@@ -1065,57 +947,57 @@
     "home": "Norway",
     "away": "Iraq",
     "score": "4-1",
-    "date": "Jun 16 - Arrowhead Stadium, Kansas City",
+    "date": "Jun 16 - Gillette Stadium",
     "poss": [
-      54,
-      46
+      38.7,
+      61.3
     ],
     "stats": [
       [
         "Shot Attempts",
-        15,
-        8
-      ],
-      [
-        "Shots on Goal",
-        7,
-        3
-      ],
-      [
-        "Corner Kicks",
-        6,
-        3
-      ],
-      [
-        "Fouls",
         11,
         12
       ],
       [
+        "Shots on Goal",
+        1,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        12,
+        13
+      ],
+      [
         "Saves",
         2,
-        4
+        0
       ]
     ],
     "xtra": [
       [
         "xG",
-        2.71,
-        1.24
+        0.83,
+        2.0
       ],
       [
         "Yellow Cards",
         1,
-        1
-      ],
-      [
-        "Offsides",
-        1,
-        2
+        0
       ],
       [
         "Red Cards",
         0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
         0
       ]
     ]
@@ -1352,9 +1234,9 @@
     ]
   },
   "m24": {
-    "home": "Uzbekistan",
-    "away": "Colombia",
-    "score": "1-3",
+    "home": "Colombia",
+    "away": "Uzbekistan",
+    "score": "3-1",
     "date": "Jun 17 - Estadio Azteca, Mexico City",
     "poss": [
       38,
@@ -1754,25 +1636,25 @@
       ]
     ]
   },
-  "m31": {
-    "home": "Brazil",
-    "away": "Haiti",
-    "score": "3-0",
-    "date": "Jun 20 - Lincoln Financial Field",
+  "m33": {
+    "home": "Netherlands",
+    "away": "Sweden",
+    "score": "5-1",
+    "date": "Jun 20 - NRG Stadium",
     "poss": [
-      56.7,
-      43.3
+      50.9,
+      49.1
     ],
     "stats": [
       [
         "Shot Attempts",
-        8,
-        7
+        10,
+        16
       ],
       [
         "Shots on Goal",
-        5,
-        3
+        7,
+        8
       ],
       [
         "Corner Kicks",
@@ -1781,24 +1663,24 @@
       ],
       [
         "Fouls",
-        13,
-        14
+        9,
+        12
       ],
       [
         "Saves",
-        3,
+        7,
         2
       ]
     ],
     "xtra": [
       [
         "xG",
-        1.8,
-        1.19
+        2.46,
+        3.04
       ],
       [
         "Yellow Cards",
-        1,
+        0,
         3
       ],
       [
@@ -1808,8 +1690,8 @@
       ],
       [
         "Offsides",
-        8,
-        4
+        3,
+        3
       ]
     ]
   },
@@ -1869,6 +1751,183 @@
         "Offsides",
         2,
         3
+      ]
+    ]
+  },
+  "m31": {
+    "home": "Brazil",
+    "away": "Haiti",
+    "score": "3-0",
+    "date": "Jun 20 - Lincoln Financial Field",
+    "poss": [
+      56.7,
+      43.3
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        7
+      ],
+      [
+        "Shots on Goal",
+        5,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        14
+      ],
+      [
+        "Saves",
+        3,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.8,
+        1.19
+      ],
+      [
+        "Yellow Cards",
+        1,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        8,
+        4
+      ]
+    ]
+  },
+  "m11": {
+    "home": "Ivory Coast",
+    "away": "Ecuador",
+    "score": "1-0",
+    "date": "Jun 14",
+    "poss": [
+      54,
+      46
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        5
+      ],
+      [
+        "Shots on Goal",
+        3,
+        1
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        0.53
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
+  "m10": {
+    "home": "Netherlands",
+    "away": "Japan",
+    "score": "2-2",
+    "date": "Jun 14",
+    "poss": [
+      50,
+      50
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        5
+      ],
+      [
+        "Shots on Goal",
+        3,
+        3
+      ],
+      [
+        "Corner Kicks",
+        5,
+        4
+      ],
+      [
+        "Fouls",
+        12,
+        12
+      ],
+      [
+        "Saves",
+        2,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        1.09
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
       ]
     ]
   }

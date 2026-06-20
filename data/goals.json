@@ -324,20 +324,8 @@
     "desc": "Havertz brace seals a statement 7-1 - biggest win of the tournament so far"
   },
   {
-    "id": 28,
-    "matchId": "m10",
-    "home": "Ivory Coast",
-    "away": "Ecuador",
-    "scorer": "A. Diallo",
-    "minute": 90,
-    "type": "open-play",
-    "phase": "Group E",
-    "score": "1-0",
-    "desc": "Amad Diallo comes off the bench and sidefoots home Singo's square pass in the 90th minute \u2014 a dramatic late winner for Ivory Coast"
-  },
-  {
     "id": 29,
-    "matchId": "m11",
+    "matchId": "m10",
     "home": "Netherlands",
     "away": "Japan",
     "scorer": "C. Gakpo",
@@ -349,7 +337,7 @@
   },
   {
     "id": 30,
-    "matchId": "m11",
+    "matchId": "m10",
     "home": "Netherlands",
     "away": "Japan",
     "scorer": "D. Kamada",
@@ -361,7 +349,7 @@
   },
   {
     "id": 31,
-    "matchId": "m11",
+    "matchId": "m10",
     "home": "Netherlands",
     "away": "Japan",
     "scorer": "V. van Dijk",
@@ -373,7 +361,7 @@
   },
   {
     "id": 32,
-    "matchId": "m11",
+    "matchId": "m10",
     "home": "Netherlands",
     "away": "Japan",
     "scorer": "K. Ogawa",
@@ -382,6 +370,18 @@
     "phase": "Group F",
     "score": "2-2",
     "desc": "Ogawa outjumped Van Dijk; header deflected off Kamada - dramatic Japan equalizer"
+  },
+  {
+    "id": 28,
+    "matchId": "m11",
+    "home": "Ivory Coast",
+    "away": "Ecuador",
+    "scorer": "A. Diallo",
+    "minute": 90,
+    "type": "open-play",
+    "phase": "Group E",
+    "score": "1-0",
+    "desc": "Amad Diallo comes off the bench and sidefoots home Singo's square pass in the 90th minute \u2014 a dramatic late winner for Ivory Coast"
   },
   {
     "id": 108,
@@ -618,7 +618,7 @@
     "away": "Iraq",
     "scorer": "A. Hussein",
     "minute": 39,
-    "type": "header",
+    "type": "open-play",
     "phase": "Group I",
     "score": "1-1",
     "desc": "Hussein heads Iraq level \u2014 only their second ever World Cup goal, 40 years after their debut in 1986"
@@ -854,20 +854,20 @@
   {
     "id": 104,
     "matchId": "m24",
-    "home": "Uzbekistan",
-    "away": "Colombia",
+    "home": "Colombia",
+    "away": "Uzbekistan",
     "scorer": "D. Munoz",
     "minute": 40,
     "type": "open-play",
     "phase": "Group K",
-    "score": "0-1",
+    "score": "1-0",
     "desc": "Munoz gets on the end of a delightful team move \u2014 Luis Diaz the architect of a deserved Colombia lead"
   },
   {
     "id": 105,
     "matchId": "m24",
-    "home": "Uzbekistan",
-    "away": "Colombia",
+    "home": "Colombia",
+    "away": "Uzbekistan",
     "scorer": "A. Fayzullaev",
     "minute": 60,
     "type": "open-play",
@@ -878,25 +878,25 @@
   {
     "id": 106,
     "matchId": "m24",
-    "home": "Uzbekistan",
-    "away": "Colombia",
+    "home": "Colombia",
+    "away": "Uzbekistan",
     "scorer": "L. Diaz",
     "minute": 65,
     "type": "open-play",
     "phase": "Group K",
-    "score": "1-2",
+    "score": "2-1",
     "desc": "Diaz fires Colombia back in front \u2014 a weak shot that slips through the goalkeeper's hands"
   },
   {
     "id": 107,
     "matchId": "m24",
-    "home": "Uzbekistan",
-    "away": "Colombia",
+    "home": "Colombia",
+    "away": "Uzbekistan",
     "scorer": "J. Campaz",
     "minute": 99,
     "type": "header",
     "phase": "Group K",
-    "score": "1-3",
+    "score": "3-1",
     "desc": "Campaz heads home in stoppage time \u2014 Colombia seal the win at the Azteca"
   },
   {
@@ -1104,92 +1104,8 @@
     "desc": "I. Saibari breaks the deadlock \u2014 Scotland lead 0-1"
   },
   {
-    "id": 129,
-    "matchId": "m31",
-    "home": "Turkey",
-    "away": "Paraguay",
-    "scorer": "M. Galarza",
-    "minute": 2,
-    "type": "open-play",
-    "phase": "Group ",
-    "score": "0-1",
-    "desc": "M. Galarza opens the scoring with a clinical finish \u2014 Turkey 0-1 Paraguay"
-  },
-  {
-    "id": 132,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "B. Brobbey",
-    "minute": 5,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "1-0",
-    "desc": "Brobbey finishes a Gakpo cross to put Dutch ahead inside 5 minutes"
-  },
-  {
-    "id": 133,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "B. Brobbey",
-    "minute": 17,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "2-0",
-    "desc": "Brobbey doubles his tally with another clinical finish"
-  },
-  {
-    "id": 134,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "C. Gakpo",
-    "minute": 47,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "3-0",
-    "desc": "Gakpo taps in after a wonderful assist from Dumfries"
-  },
-  {
-    "id": 135,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "C. Gakpo",
-    "minute": 54,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "4-0",
-    "desc": "Gakpo drills home a second after nice work from Summerville"
-  },
-  {
-    "id": 136,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "A. Elanga",
-    "minute": 59,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "4-1",
-    "desc": "Elanga pulls one back for Sweden on the counter"
-  },
-  {
-    "id": 137,
-    "matchId": "m32",
-    "home": "Netherlands",
-    "away": "Sweden",
-    "scorer": "C. Summerville",
-    "minute": 89,
-    "type": "open-play",
-    "phase": "Group F",
-    "score": "5-1",
-    "desc": "Summerville rounds out the win with an excellent finish"
-  },
-  {
     "id": 138,
-    "matchId": "m35",
+    "matchId": "m31",
     "home": "Brazil",
     "away": "Haiti",
     "scorer": "M. Cunha",
@@ -1201,7 +1117,7 @@
   },
   {
     "id": 139,
-    "matchId": "m35",
+    "matchId": "m31",
     "home": "Brazil",
     "away": "Haiti",
     "scorer": "M. Cunha",
@@ -1213,7 +1129,7 @@
   },
   {
     "id": 140,
-    "matchId": "m35",
+    "matchId": "m31",
     "home": "Brazil",
     "away": "Haiti",
     "scorer": "Vinicius Jr.",
@@ -1222,5 +1138,89 @@
     "phase": "Group C",
     "score": "3-0",
     "desc": "Vinicius Jr finishes coolly in stoppage time to complete the rout"
+  },
+  {
+    "id": 129,
+    "matchId": "m32",
+    "home": "Turkey",
+    "away": "Paraguay",
+    "scorer": "M. Galarza",
+    "minute": 2,
+    "type": "open-play",
+    "phase": "Group ",
+    "score": "0-1",
+    "desc": "M. Galarza opens the scoring with a clinical finish \u2014 Turkey 0-1 Paraguay"
+  },
+  {
+    "id": 132,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "B. Brobbey",
+    "minute": 5,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "1-0",
+    "desc": "Brobbey finishes a Gakpo cross to put Dutch ahead inside 5 minutes"
+  },
+  {
+    "id": 133,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "B. Brobbey",
+    "minute": 17,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "2-0",
+    "desc": "Brobbey doubles his tally with another clinical finish"
+  },
+  {
+    "id": 134,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Gakpo",
+    "minute": 47,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "3-0",
+    "desc": "Gakpo taps in after a wonderful assist from Dumfries"
+  },
+  {
+    "id": 135,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Gakpo",
+    "minute": 54,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "4-0",
+    "desc": "Gakpo drills home a second after nice work from Summerville"
+  },
+  {
+    "id": 136,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "A. Elanga",
+    "minute": 59,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "4-1",
+    "desc": "Elanga pulls one back for Sweden on the counter"
+  },
+  {
+    "id": 137,
+    "matchId": "m33",
+    "home": "Netherlands",
+    "away": "Sweden",
+    "scorer": "C. Summerville",
+    "minute": 89,
+    "type": "open-play",
+    "phase": "Group F",
+    "score": "5-1",
+    "desc": "Summerville rounds out the win with an excellent finish"
   }
 ]
