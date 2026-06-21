@@ -1723,12 +1723,25 @@ var LIVE_CONFIG = {
 };
 var LIVE_MATCHES = [];
 
-function renderFlag(val, emSize) {
-  return ''; // flags removed
+function flagImg(code, w, h) {
+  if (!code) return '';
+  w = w || 20; h = h || Math.round(w * 0.75);
+  return '<img src="https://flagcdn.com/' + w + 'x' + h + '/' + code + '.png"' +
+    ' srcset="https://flagcdn.com/' + (w*2) + 'x' + (h*2) + '/' + code + '.png 2x,' +
+    ' https://flagcdn.com/' + (w*3) + 'x' + (h*3) + '/' + code + '.png 3x"' +
+    ' width="' + w + '" height="' + h + '"' +
+    ' style="border-radius:2px;display:inline-block;vertical-align:middle"' +
+    ' onerror="this.style.display=&#39;none&#39;">';
 }
-
+function renderFlag(val) { return val ? flagImg(val, 20, 15) : ''; }
 function getFlag(name) {
-  return ''; // flags removed
+  var aliases = {
+    'S. Africa':'South Africa','S. Korea':'South Korea',
+    'DR Congo':'DR Congo','Bosnia':'Bosnia'
+  };
+  var lookup = aliases[name] || name;
+  var t = (typeof TEAM_DATA !== 'undefined' && TEAM_DATA[lookup]) ? TEAM_DATA[lookup] : null;
+  return (t && t.flag) ? t.flag : '';
 }
 
 
@@ -2285,11 +2298,23 @@ function renderGoalsList() {
     var sel = selectedGoalId === g.id ? 'selected' : '';
     return '<div class="goal-card ' + sel + '" onclick="selectGoal(' + g.id + ')">' +
       '<div class="goal-meta">' +
-        '<div class="match-teams">' + g.home + ' <span style="color:var(--text);font-weight:700">' + g.score + '</span> ' + g.away + '</div>' +
+        (function(){
+    var hf=getFlag(g.home),af=getFlag(g.away);
+    var hi=hf?flagImg(hf,16,12)+' ':'';
+    var ai=af?' '+flagImg(af,16,12):'';
+    return '<div class="match-teams">'+hi+g.home+' <span style="color:var(--text);font-weight:700">'+g.score+'</span> '+g.away+ai+'</div>';
+  })() +
         '<div class="goal-minute">' + g.minute + "'</div>" +
       '</div>' +
       '<div class="scorer-row-s">' +
-        '<div class="scorer-flag">' + renderFlag(g.flag,'16px') + '</div>' +
+        '<div class="scorer-flag">' + (function(){
+      var pG=GOALS.filter(function(x){return x.matchId===g.matchId&&x.minute<g.minute;});
+      var ps=pG.length?pG[pG.length-1].score:'0-0';
+      var ph_=parseInt(ps.split('-')[0]||0);
+      var ph2_=parseInt(g.score.split('-')[0]||0);
+      var team=(g.type==='own-goal')?(ph2_>ph_?g.away:g.home):(ph2_>ph_?g.home:g.away);
+      return flagImg(getFlag(team),16,12);
+    })() + '</div>' +
         '<div class="scorer-info">' +
           '<div class="scorer-name">' + g.scorer + '</div>' +
           '<div class="scorer-type">' +
@@ -2328,7 +2353,12 @@ function selectGoal(id) {
   document.getElementById('videoPlaceholder').style.display = 'flex';
   document.getElementById('placeholderLabel').textContent = g.home + ' ' + g.score + ' ' + g.away + ' ' + g.minute + "'";
   pendingVideoId = m.ytId;
-  document.getElementById('heroTeams').innerHTML = g.hf + ' ' + g.home + ' <span class="hero-score">' + g.score + '</span> ' + g.away + ' ' + g.af;
+  document.getElementById('heroTeams').innerHTML = (function(){
+  var hf=getFlag(g.home),af=getFlag(g.away);
+  var hi=hf?flagImg(hf,28,21)+' ':'';
+  var ai=af?' '+flagImg(af,28,21):'';
+  return hi+g.home+' <span class="hero-score">'+g.score+'</span> '+g.away+ai;
+})();
   document.getElementById('heroScorer').textContent = g.scorer;
   // Determine which team the scorer belongs to
   var prevGoals2 = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
@@ -2360,9 +2390,14 @@ function buildMatchVideoGrid() {
       '<div class="match-card-score">' +
         '<div class="match-card-date">' + m.date + ' &middot; ' + m.group + '</div>' +
         '<div class="match-card-teams">' +
-          '<div class="mc-team"><span style="font-size:18px">' + m.hf + '</span><span>' + m.home + '</span></div>' +
-          '<div class="mc-score">' + m.score + '</div>' +
-          '<div class="mc-team-r"><span style="font-size:18px">' + m.af + '</span><span>' + m.away + '</span></div>' +
+          (function(){
+          var hf=getFlag(m.home),af=getFlag(m.away);
+          var hi=hf?'<img src="https://flagcdn.com/32x24/'+hf+'.png" srcset="https://flagcdn.com/64x48/'+hf+'.png 2x" width="32" height="24" style="border-radius:3px;display:block;margin:0 auto 4px" onerror="this.style.display=&#39;none&#39;">':'';
+          var ai=af?'<img src="https://flagcdn.com/32x24/'+af+'.png" srcset="https://flagcdn.com/64x48/'+af+'.png 2x" width="32" height="24" style="border-radius:3px;display:block;margin:0 auto 4px" onerror="this.style.display=&#39;none&#39;">':'';
+          return '<div class="mc-team">'+hi+'<span>'+m.home+'</span></div>'+
+                 '<div class="mc-score">'+m.score+'</div>'+
+                 '<div class="mc-team-r">'+ai+'<span>'+m.away+'</span></div>';
+        })() +
         '</div>' +
         '<div class="mc-group">&#9654; Click to watch on FIFA.com</div>' +
       '</div>' +
@@ -2583,9 +2618,14 @@ function buildMatchSelector() {
     out += '<div class="ms-card" id="ms-' + id + '" onclick="showMatchStats(\'' + id + '\')">' +
       '<div class="ms-date">' + m.date.split(' - ')[0] + '</div>' +
       '<div class="ms-teams">' +
-        '<div class="ms-teamL">' + m.home + '</div>' +
-        '<div class="ms-score">' + m.score + '</div>' +
-        '<div class="ms-teamR">' + m.away + '</div>' +
+        (function(){
+        var hf=getFlag(m.home),af=getFlag(m.away);
+        var hi=hf?flagImg(hf,20,15)+' ':'';
+        var ai=af?' '+flagImg(af,20,15):'';
+        return '<div class="ms-teamL">'+hi+m.home+'</div>'+
+               '<div class="ms-score">'+m.score+'</div>'+
+               '<div class="ms-teamR">'+m.away+ai+'</div>';
+      })() +
       '</div>' +
     '</div>';
   }
@@ -2611,7 +2651,11 @@ function showMatchStats(id) {
     'background:var(--header-bg);border-radius:var(--radius);padding:18px 24px;margin-bottom:16px;color:#fff">' +
       '<div style="text-align:center;flex:1">' +
         '<div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">HOME</div>' +
-        '<div style="font-family:Bebas Neue,sans-serif;font-size:22px;letter-spacing:1px;color:#fff">' + m.home + '</div>' +
+        (function(){
+        var hf=getFlag(m.home);
+        return (hf?'<img src="https://flagcdn.com/32x24/'+hf+'.png" srcset="https://flagcdn.com/64x48/'+hf+'.png 2x" width="32" height="24" style="border-radius:3px;display:block;margin:0 auto 4px" onerror="this.style.display=&#39;none&#39;">':'')+
+               '<div style="font-family:Bebas Neue,sans-serif;font-size:22px;letter-spacing:1px;color:#fff">'+m.home+'</div>';
+      })() +
       '</div>' +
       '<div style="text-align:center;padding:0 20px">' +
         '<div style="font-family:Bebas Neue,sans-serif;font-size:40px;color:var(--gold);letter-spacing:4px;line-height:1">' + m.score + '</div>' +
@@ -2619,7 +2663,11 @@ function showMatchStats(id) {
       '</div>' +
       '<div style="text-align:center;flex:1">' +
         '<div style="font-size:11px;color:rgba(255,255,255,.5);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">AWAY</div>' +
-        '<div style="font-family:Bebas Neue,sans-serif;font-size:22px;letter-spacing:1px;color:#fff">' + m.away + '</div>' +
+        (function(){
+        var af=getFlag(m.away);
+        return (af?'<img src="https://flagcdn.com/32x24/'+af+'.png" srcset="https://flagcdn.com/64x48/'+af+'.png 2x" width="32" height="24" style="border-radius:3px;display:block;margin:0 auto 4px" onerror="this.style.display=&#39;none&#39;">':'')+
+               '<div style="font-family:Bebas Neue,sans-serif;font-size:22px;letter-spacing:1px;color:#fff">'+m.away+'</div>';
+      })() +
       '</div>' +
     '</div>';
 
@@ -2958,7 +3006,7 @@ function buildTeamGrid() {
     return '<div class="team-card">' +
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">' +
         '<div>' +
-          '<div class="team-card-name">' + name + '</div>' +
+          (t.flag ? flagImg(t.flag, 24, 18) : '') + '<div class="team-card-name">' + name + '</div>' +
           '<div class="team-card-rank">Group ' + t.group + '</div>' +
         '</div>' +
         '<div style="text-align:right">' +
@@ -3067,7 +3115,7 @@ function buildGroupsGrid() {
 
         html += '<div class="group-team-row">';
         html += '<div class="gtr-top">';
-        html += '<div class="gtr-name">' + team.name;
+        html += '<div class="gtr-name">'+(function(){var gf=getFlag(team.name);return gf?flagImg(gf,16,12)+' ':'';})()+ team.name;
         if (t && t.elo) html += ' <span style="font-size:9px;color:var(--muted)">Elo ' + t.elo + '</span>';
         html += '</div>';
         html += '<span class="gtr-predict ' + badgeClass + '">' + badgeText + '</span>';
@@ -3490,11 +3538,12 @@ function buildTicker() {
     recentKeys.forEach(function(k) {
       var m = MATCH_STATS[k];
       items.push(
-        '<div class="ticker-item">' +
-          '&#9917; ' + m.home +
-          ' <span style="font-size:13px;font-weight:900;margin:0 3px"> ' + m.score + ' </span>' +
-          m.away +
-        '</div>'
+        (function(){
+        var hf=getFlag(m.home),af=getFlag(m.away);
+        var hi=hf?'<img src="https://flagcdn.com/16x12/'+hf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-right:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        var ai=af?'<img src="https://flagcdn.com/16x12/'+af+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-left:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        return '<div class="ticker-item">'+hi+m.home+' <span style="font-size:13px;font-weight:900;margin:0 3px"> '+m.score+' </span>'+m.away+ai+'</div>';
+      })()
       );
     });
   } // end if MATCH_STATS
@@ -3507,13 +3556,12 @@ function buildTicker() {
     }
     UPCOMING_FIXTURES.forEach(function(f) {
       items.push(
-        '<div class="ticker-item">' +
-          '<span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">GRP ' + f.group + '</span>' +
-          f.home +
-          '<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>' +
-          f.away +
-          '<span style="font-size:10px;margin-left:7px;opacity:.7">' + f.date + ' ' + f.time + '</span>' +
-        '</div>'
+        (function(){
+        var hf=getFlag(f.home),af=getFlag(f.away);
+        var hi=hf?'<img src="https://flagcdn.com/16x12/'+hf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-right:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        var ai=af?'<img src="https://flagcdn.com/16x12/'+af+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-left:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        return '<div class="ticker-item"><span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">GRP '+f.group+'</span>'+hi+f.home+'<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>'+f.away+ai+'<span style="font-size:10px;margin-left:7px;opacity:.7">'+f.date+' '+f.time+'</span></div>';
+      })()
       );
     });
   }
@@ -3646,7 +3694,7 @@ function buildTop4() {
     return '<div class="top4-card ' + r.cls + '">' +
       '<div class="top4-badge">' + r.badge + '</div>' +
       '<div style="margin-bottom:8px;padding-right:70px">' +
-        '<div class="top4-name">' + entry.name + '</div>' +
+        (t.flag?flagImg(t.flag,28,21):'')+'<div class="top4-name">' + entry.name + '</div>' +
         '<div class="top4-elo">Group ' + t.group + '</div>' +
       '</div>' +
       '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">' +
