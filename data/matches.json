@@ -361,5 +361,60 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-sweden-highlights-match-report",
     "espnId": "760447"
+  },
+  {
+    "id": "m34",
+    "date": "Jun 20",
+    "home": "Germany",
+    "away": "Ivory Coast",
+    "score": "2-1",
+    "group": "E",
+    "ytId": "",
+    "espnId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-ivory-coast-highlights-match-report"
+  },
+  {
+    "id": "m35",
+    "date": "Jun 20",
+    "home": "Ecuador",
+    "away": "Curacao",
+    "score": "0-0",
+    "group": "E",
+    "ytId": "",
+    "espnId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-curacao-highlights-match-report"
+  },
+  {
+    "id": "m36",
+    "date": "Jun 20",
+    "home": "Tunisia",
+    "away": "Japan",
+    "score": "0-4",
+    "group": "F",
+    "ytId": "",
+    "espnId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/tunisia-v-japan-highlights-match-report"
+  },
+  {
+    "id": "m37",
+    "date": "Jun 21",
+    "home": "Spain",
+    "away": "Saudi Arabia",
+    "score": "4-0",
+    "group": "H",
+    "ytId": "",
+    "espnId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-saudi-arabia-highlights-match-report"
+  },
+  {
+    "id": "m38",
+    "date": "Jun 21",
+    "home": "Belgium",
+    "away": "Iran",
+    "score": "0-0",
+    "group": "G",
+    "ytId": "",
+    "espnId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-iran-highlights-match-report"
   }
 ]

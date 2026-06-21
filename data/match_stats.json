@@ -1930,5 +1930,300 @@
         0
       ]
     ]
+  },
+  "m34": {
+    "home": "Germany",
+    "away": "Ivory Coast",
+    "score": "2-1",
+    "date": "Jun 20 - BMO Field, Toronto",
+    "poss": [
+      58,
+      42
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        9
+      ],
+      [
+        "Shots on Goal",
+        4,
+        3
+      ],
+      [
+        "Corner Kicks",
+        6,
+        3
+      ],
+      [
+        "Fouls",
+        11,
+        14
+      ],
+      [
+        "Saves",
+        2,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.83,
+        1.23
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
+  },
+  "m35": {
+    "home": "Ecuador",
+    "away": "Curacao",
+    "score": "0-0",
+    "date": "Jun 20 - GEHA Field, Kansas City",
+    "poss": [
+      68,
+      32
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        22,
+        6
+      ],
+      [
+        "Shots on Goal",
+        15,
+        0
+      ],
+      [
+        "Corner Kicks",
+        8,
+        1
+      ],
+      [
+        "Fouls",
+        9,
+        13
+      ],
+      [
+        "Saves",
+        0,
+        15
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.41,
+        0.12
+      ],
+      [
+        "Yellow Cards",
+        1,
+        5
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        0
+      ]
+    ]
+  },
+  "m36": {
+    "home": "Tunisia",
+    "away": "Japan",
+    "score": "0-4",
+    "date": "Jun 20 - Estadio BBVA, Monterrey",
+    "poss": [
+      41,
+      59
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        16
+      ],
+      [
+        "Shots on Goal",
+        2,
+        8
+      ],
+      [
+        "Corner Kicks",
+        3,
+        7
+      ],
+      [
+        "Fouls",
+        14,
+        9
+      ],
+      [
+        "Saves",
+        4,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.54,
+        2.87
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        3
+      ]
+    ]
+  },
+  "m37": {
+    "home": "Spain",
+    "away": "Saudi Arabia",
+    "score": "4-0",
+    "date": "Jun 21 - Mercedes-Benz Stadium, Atlanta",
+    "poss": [
+      65,
+      35
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        18,
+        5
+      ],
+      [
+        "Shots on Goal",
+        8,
+        1
+      ],
+      [
+        "Corner Kicks",
+        7,
+        2
+      ],
+      [
+        "Fouls",
+        10,
+        14
+      ],
+      [
+        "Saves",
+        1,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.21,
+        0.43
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        2
+      ]
+    ]
+  },
+  "m38": {
+    "home": "Belgium",
+    "away": "Iran",
+    "score": "0-0",
+    "date": "Jun 21 - SoFi Stadium, Inglewood",
+    "poss": [
+      70,
+      30
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        21,
+        7
+      ],
+      [
+        "Shots on Goal",
+        7,
+        3
+      ],
+      [
+        "Corner Kicks",
+        9,
+        2
+      ],
+      [
+        "Fouls",
+        8,
+        12
+      ],
+      [
+        "Saves",
+        3,
+        7
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.68,
+        0.53
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        1,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
   }
 }

@@ -224,6 +224,10 @@ WC_RESULTS = [
     {"home":"Brazil",      "away":"Haiti",      "result":1.0},  # 3-0 Jun 20
     {"home":"Turkey",      "away":"Paraguay",   "result":0.0},  # 0-1 Jun 20 (Paraguay won)
     {"home":"Netherlands", "away":"Sweden",    "result":1.0},  # 5-1 Jun 20
+    {"home":"Germany", "away":"Ivory Coast", "result":1.0},  # 2-1
+    {"home":"Tunisia", "away":"Japan", "result":0.0},  # 0-4
+    {"home":"Spain", "away":"Saudi Arabia", "result":1.0},  # 4-0
+    {"home":"Belgium", "away":"Iran", "result":0.5},  # 0-0
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 
