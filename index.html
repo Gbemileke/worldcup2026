@@ -657,7 +657,7 @@
     margin-bottom: 24px;
   }
 
-  .champion-flag { display: none; }
+  .champion-flag { display:flex; align-items:center; justify-content:center; margin-bottom:6px; }
   .champion-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; }
   .champion-name { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 3px; color: #fff; margin: 4px 0; }
   .champion-trophy { font-size: 32px; margin-bottom: 8px; }
@@ -672,7 +672,7 @@
     flex: 1;
     max-width: 200px;
   }
-  .finalist-flag  { display: none; }
+  .finalist-flag  { display:flex; align-items:center; justify-content:center; margin-bottom:4px; }
   .finalist-label { font-size: 9px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
   .finalist-name  { font-size: 16px; font-weight: 800; color: #fff; margin-top: 4px; }
 
@@ -1725,10 +1725,12 @@ var LIVE_MATCHES = [];
 
 function flagImg(code, w, h) {
   if (!code) return '';
-  w = w || 20; h = h || Math.round(w * 0.75);
+  var VALID = [16,20,24,32,40,48,64,80,96,128,160];
+  w = w || 20;
+  w = VALID.reduce(function(a,b){ return Math.abs(b-w)<Math.abs(a-w)?b:a; });
+  h = Math.round(w * 0.75);
   return '<img src="https://flagcdn.com/' + w + 'x' + h + '/' + code + '.png"' +
-    ' srcset="https://flagcdn.com/' + (w*2) + 'x' + (h*2) + '/' + code + '.png 2x,' +
-    ' https://flagcdn.com/' + (w*3) + 'x' + (h*3) + '/' + code + '.png 3x"' +
+    ' srcset="https://flagcdn.com/' + (w*2) + 'x' + (h*2) + '/' + code + '.png 2x"' +
     ' width="' + w + '" height="' + h + '"' +
     ' style="border-radius:2px;display:inline-block;vertical-align:middle"' +
     ' onerror="this.style.display=&#39;none&#39;">';
