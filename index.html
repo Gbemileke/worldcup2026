@@ -1733,7 +1733,11 @@ function flagImg(code, w, h) {
     ' style="border-radius:2px;display:inline-block;vertical-align:middle"' +
     ' onerror="this.style.display=&#39;none&#39;">';
 }
-function renderFlag(val) { return val ? flagImg(val, 20, 15) : ''; }
+function renderFlag(val, size) {
+  if (!val) return '';
+  var w = size ? (parseInt(size) || 20) : 20;
+  return flagImg(val, w, Math.round(w * 0.75));
+}
 function getFlag(name) {
   var aliases = {
     'S. Africa':'South Africa','S. Korea':'South Korea',
@@ -2551,7 +2555,7 @@ function buildScorers() {
         '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div style="font-size:13px;font-weight:' + (isLeader ? '500' : '400') + ';color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
-          '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+          (function(){var tf=getFlag(s.team);return '<div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">'+(tf?'<img src="https://flagcdn.com/16x12/'+tf+'.png" srcset="https://flagcdn.com/32x24/'+tf+'.png 2x" width="16" height="12" style="border-radius:1px;vertical-align:middle" onerror="this.style.display=&#39;none&#39;">':'')+s.team+'</div>';})() +
         '</div>' +
         '<div style="font-size:' + (isLeader ? '18' : '14') + 'px;font-weight:500;color:' +
           (isLeader ? '#c8920a' : 'var(--muted)') +
@@ -2579,7 +2583,7 @@ function buildScorers() {
       '<div style="width:22px;height:22px;border-radius:50%;background:#c8920a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0">' + r++ + '</div>' +
       '<div style="flex:1;min-width:0">' +
         '<div style="font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
-        '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+        (function(){var tf=getFlag(s.team);return '<div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">'+(tf?'<img src="https://flagcdn.com/16x12/'+tf+'.png" srcset="https://flagcdn.com/32x24/'+tf+'.png 2x" width="16" height="12" style="border-radius:1px;vertical-align:middle" onerror="this.style.display=&#39;none&#39;">':'')+s.team+'</div>';})() +
       '</div>' +
       '<div style="font-size:18px;font-weight:500;color:#c8920a;min-width:16px;text-align:right">' + topGoals + '</div>' +
     '</div>';
@@ -2593,7 +2597,7 @@ function buildScorers() {
         '<div style="width:22px;height:22px;flex-shrink:0"></div>' +
         '<div style="flex:1;min-width:0">' +
           '<div style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</div>' +
-          '<div style="font-size:11px;color:var(--muted)">' + s.team + '</div>' +
+          (function(){var tf=getFlag(s.team);return '<div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">'+(tf?'<img src="https://flagcdn.com/16x12/'+tf+'.png" srcset="https://flagcdn.com/32x24/'+tf+'.png 2x" width="16" height="12" style="border-radius:1px;vertical-align:middle" onerror="this.style.display=&#39;none&#39;">':'')+s.team+'</div>';})() +
         '</div>' +
         '<div style="font-size:14px;color:var(--muted);min-width:16px;text-align:right">' + cnt + '</div>' +
       '</div>';
@@ -2887,9 +2891,8 @@ function renderMatchupCard(m, label) {
 
     // Home team row
     '<div class="mu-team' + (hWin ? ' mu-winner' : '') + '">' +
-      '<div class="mu-flag">' + renderFlag(tH.flag,'18px') + '</div>' +
       '<div style="flex:1">' +
-        '<div class="mu-name">' + m.home + '</div>' +
+        '<div class="mu-name" style="display:flex;align-items:center;gap:6px">' + renderFlag(tH.flag,'18px') + m.home + '</div>' +
         '<div style="font-size:8px;color:var(--muted);margin-top:1px">Elo ' + tH.elo + ' &middot; ' + tH.keyPlayer + '</div>' +
         '<div class="mu-prob-bar" style="margin-top:4px"><div class="mu-prob-fill" style="width:' + ph + '%"></div></div>' +
         '<div style="display:flex;gap:8px;margin-top:3px">' +
@@ -2902,9 +2905,8 @@ function renderMatchupCard(m, label) {
 
     // Away team row
     '<div class="mu-team' + (!hWin ? ' mu-winner' : '') + '">' +
-      '<div class="mu-flag">' + renderFlag(tA.flag,'18px') + '</div>' +
       '<div style="flex:1">' +
-        '<div class="mu-name">' + m.away + '</div>' +
+        '<div class="mu-name" style="display:flex;align-items:center;gap:6px">' + renderFlag(tA.flag,'18px') + m.away + '</div>' +
         '<div style="font-size:8px;color:var(--muted);margin-top:1px">Elo ' + tA.elo + ' &middot; ' + tA.keyPlayer + '</div>' +
         '<div class="mu-prob-bar" style="margin-top:4px"><div class="mu-prob-fill" style="width:' + pa + '%;background:#4cde7e"></div></div>' +
         '<div style="display:flex;gap:8px;margin-top:3px">' +
@@ -4038,9 +4040,9 @@ function renderPrediction(fix) {
       +'<div style="width:48%;padding:14px 16px;border-right:1px solid var(--border)">'
         +'<div style="font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Model inputs &middot; form-heavy</div>'
         +'<div style="display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;margin-bottom:6px">'
-          +'<div style="font-size:11px;font-weight:500;color:'+cGold+'">'+nameA+'</div>'
+          +'<div style="font-size:11px;font-weight:500;color:'+cGold+';display:flex;align-items:center;gap:5px">'+(function(){var fa=getFlag(nameA);return fa?'<img src="https://flagcdn.com/16x12/'+fa+'.png" width="16" height="12" style="border-radius:1px" onerror="this.style.display=&#39;none&#39;">':'';})()+nameA+'</div>'
           +'<div></div>'
-          +'<div style="font-size:11px;font-weight:500;text-align:right;color:'+cBlue+'">'+nameB+'</div>'
+          +'<div style="font-size:11px;font-weight:500;text-align:right;color:'+cBlue+';display:flex;align-items:center;justify-content:flex-end;gap:5px">'+(function(){var fb=getFlag(nameB);return fb?'<img src="https://flagcdn.com/16x12/'+fb+'.png" width="16" height="12" style="border-radius:1px" onerror="this.style.display=&#39;none&#39;">':'';})()+nameB+'</div>'
         +'</div>'
         +factorRows
       +'</div>'
@@ -4050,12 +4052,12 @@ function renderPrediction(fix) {
         +'<div>'
           +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'
             +'<div style="text-align:center;flex:1">'
-              +'<div style="font-size:13px;font-weight:500;color:'+cGold+'">'+nameA+'</div>'
+              +'<div style="font-size:13px;font-weight:500;color:'+cGold+';display:flex;align-items:center;justify-content:center;gap:6px">'+(function(){var fa=getFlag(nameA);return fa?'<img src="https://flagcdn.com/20x15/'+fa+'.png" width="20" height="15" style="border-radius:2px" onerror="this.style.display=&#39;none&#39;">':'';})()+nameA+'</div>'
               +'<div style="font-size:9px;color:var(--muted);margin-top:2px">Form '+fA+'% &middot; '+getFifaRank(nameA)+'</div>'
             +'</div>'
             +'<div style="font-size:11px;color:var(--muted);padding:0 6px">vs</div>'
             +'<div style="text-align:center;flex:1">'
-              +'<div style="font-size:13px;font-weight:500;color:'+cBlue+'">'+nameB+'</div>'
+              +'<div style="font-size:13px;font-weight:500;color:'+cBlue+';display:flex;align-items:center;justify-content:center;gap:6px">'+(function(){var fb=getFlag(nameB);return fb?'<img src="https://flagcdn.com/20x15/'+fb+'.png" width="20" height="15" style="border-radius:2px" onerror="this.style.display=&#39;none&#39;">':'';})()+nameB+'</div>'
               +'<div style="font-size:9px;color:var(--muted);margin-top:2px">Form '+fB+'% &middot; '+getFifaRank(nameB)+'</div>'
             +'</div>'
           +'</div>'
