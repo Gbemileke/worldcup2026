@@ -154,7 +154,14 @@ def _parse_details(details, home, away):
         gtype  = ('penalty'  if 'penalty' in dtype else
                   'own-goal' if 'own'     in dtype else 'open-play')
         team   = sn(d.get('team',{}).get('displayName',''))
-        goals.append({'scorer':scorer,'minute':minute,'type':gtype,'team':team})
+        # ESPN details often carry the running score — use it for exact attribution
+        hs = d.get('homeScore', d.get('homeScoreValue'))
+        as_ = d.get('awayScore', d.get('awayScoreValue'))
+        g = {'scorer':scorer,'minute':minute,'type':gtype,'team':team}
+        if isinstance(hs,int) and isinstance(as_,int):
+            g['home_score'] = hs
+            g['away_score'] = as_
+        goals.append(g)
     return goals
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -334,9 +341,26 @@ def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
     h_run = a_run = 0
     built = []
 
+    # Normalize home/away once for robust comparison
+    def _norm(s):
+        return ''.join(ch for ch in str(s).lower() if ch.isalnum())
+    home_n, away_n = _norm(home), _norm(away)
+
+    def _resolve_team(raw_team):
+        """Map a (possibly blank/mismatched) ESPN team name to home or away."""
+        if not raw_team:
+            return None
+        rn = _norm(raw_team)
+        if rn == home_n: return home
+        if rn == away_n: return away
+        # Substring / partial match (handles 'Korea Republic' vs 'S. Korea', etc.)
+        if rn and (rn in home_n or home_n in rn): return home
+        if rn and (rn in away_n or away_n in rn): return away
+        return None
+
     for gd in sorted(goal_list, key=lambda x: x.get('minute',90)):
         is_og = gd['type'] == 'own-goal'
-        team  = gd.get('team','')
+        team  = _resolve_team(gd.get('team',''))
 
         # If ESPN provided running scores, use them to determine team
         hs = gd.get('home_score')
@@ -349,6 +373,15 @@ def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
             elif as_ > a_run and is_og:     team = home   # OG by home → away scores
             h_run = hs; a_run = as_
         else:
+            # If team still unknown, infer from remaining capacity in the final score
+            if team not in (home, away):
+                h_need = h_fin - h_run
+                a_need = a_fin - a_run
+                if is_og:
+                    # OG credits the OTHER team; assign to whichever side still needs goals
+                    team = away if h_need >= a_need else home
+                else:
+                    team = home if h_need >= a_need else away
             # Calculate running score
             if is_og:
                 if team == home: a_run += 1
