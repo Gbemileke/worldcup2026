@@ -1298,7 +1298,173 @@
   #stat-total-goals, #stat-biggest-win { min-width: 200px; width: 200px; }
   /* Last 2 cards — 240px */
   #stat-matches, #stat-alltime { min-width: 240px; width: 240px; }
-</style>
+
+  /* ══ BRACKET SIMULATOR ══════════════════════════════════════════ */
+  .bsim-wrap{padding:14px 16px}
+  .bsim-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .bsim-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font-size:11px;
+    font-weight:700;letter-spacing:.4px;border:1px solid var(--border);border-radius:6px;
+    background:var(--card);color:var(--text);cursor:pointer;white-space:nowrap}
+  .bsim-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .bsim-btn.ai{background:var(--gold);border-color:var(--gold);color:#fff}
+  .bsim-btn.ai:hover{background:#a57808}
+  .bsim-btn.pdf{background:var(--blue);border-color:var(--blue);color:#fff}
+  .bsim-prog-bar{flex:1;height:4px;background:var(--surface2,#eee);border-radius:4px;overflow:hidden;max-width:280px}
+  .bsim-prog-fill{height:100%;background:var(--gold);width:0%;transition:width .3s}
+  .bsim-col{display:flex;flex-direction:column;min-width:140px;max-width:160px;flex:1}
+  .bsim-col-hd{font-size:9px;font-weight:700;letter-spacing:.6px;color:#fff;
+    background:var(--header-bg,#1a1a2e);text-align:center;padding:6px 4px;text-transform:uppercase;white-space:nowrap}
+  .bsim-matches{display:flex;flex-direction:column;flex:1}
+  .bsim-slot{background:var(--card);border:1px solid var(--border);border-radius:7px;
+    margin:2px 4px;overflow:hidden;transition:border-color .15s;position:relative}
+  .bsim-slot.clickable{cursor:pointer}
+  .bsim-slot.clickable:hover{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,146,10,.12)}
+  .bsim-slot.has-pick{border-color:rgba(200,146,10,.45)}
+  .bsim-slot-hd{font-size:8px;color:var(--muted);padding:2px 5px;
+    background:var(--surface2,#f5f5f5);border-bottom:1px solid var(--border)}
+  .bsim-team{display:flex;align-items:center;gap:4px;padding:4px 5px;font-size:11px;
+    border-bottom:1px solid var(--border);min-height:25px;position:relative;cursor:pointer}
+  .bsim-team:last-child{border-bottom:none}
+  .bsim-team .tn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)}
+  .bsim-team.tbd .tn{color:var(--muted);font-style:italic;font-size:10px}
+  .bsim-team.winner{background:rgba(200,146,10,.07)}
+  .bsim-team.winner .tn{color:var(--text);font-weight:700}
+  .bsim-team.loser .tn{text-decoration:line-through;opacity:.4}
+  .bsim-team .chk{position:absolute;right:4px;color:var(--gold);font-size:9px;font-weight:900}
+  .bsim-final-col{display:flex;flex-direction:column;min-width:155px;max-width:170px;flex-shrink:0}
+  .bsim-final-hd{font-size:9px;font-weight:700;letter-spacing:.5px;color:#fff;
+    background:var(--gold);text-align:center;padding:6px 4px;text-transform:uppercase}
+  .bsim-final-slot{border:2px solid var(--gold);border-radius:9px;margin:4px 4px 0;overflow:hidden}
+  .bsim-final-slot .bsim-team{min-height:30px}
+  .bsim-champ-box{border:2px solid var(--gold);border-radius:9px;margin:6px 4px 0;overflow:hidden}
+  .bsim-champ-lbl{background:var(--gold);color:#fff;font-size:9px;font-weight:700;text-align:center;padding:4px;letter-spacing:.5px}
+  .bsim-champ-name{display:flex;align-items:center;gap:7px;padding:10px;font-size:13px;font-weight:700;color:var(--text);justify-content:center}
+  #bsimTip{position:fixed;background:#111827;color:#f9fafb;font-size:10px;
+    padding:7px 10px;border-radius:7px;max-width:260px;line-height:1.5;z-index:1000;
+    display:none;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+  #bsimModal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;
+    display:none;align-items:center;justify-content:center}
+  #bsimModalBox{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:20px 22px;width:290px;max-width:92vw;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .bsim-pick-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;
+    border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:7px;transition:all .15s}
+  .bsim-pick-opt:hover{border-color:var(--gold);background:rgba(200,146,10,.06)}
+  .bsim-pick-opt.chosen{border-color:var(--gold);background:rgba(200,146,10,.1)}
+  .bsim-pick-cancel{font-size:11px;color:var(--muted);text-align:center;cursor:pointer;margin-top:8px;padding:4px}
+  .bsim-ai-note{font-size:10px;color:var(--muted);background:var(--surface2,#f5f5f5);border-radius:6px;padding:7px 9px;margin-top:10px;line-height:1.5}
+  #bsimToast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#111827;
+    color:#fff;padding:8px 20px;border-radius:20px;font-size:12px;opacity:0;transition:opacity .35s;
+    z-index:600;pointer-events:none;white-space:nowrap}
+  @media print{
+    body>*:not(#tab-sim){display:none!important}
+    #tab-sim{display:block!important}
+    .bsim-toolbar,.bsim-prog-bar{display:none!important}
+  }
+  
+  /* bracket tree connectors via CSS */
+  .bsim-tree{display:flex;align-items:stretch;min-width:1100px}
+  .bsim-half{display:flex;flex:1}
+  .bsim-half.right{flex-direction:row-reverse}
+  .bsim-matches{display:flex;flex-direction:column;flex:1}
+  .bsim-cell{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .bsim-cell-pad{flex:1}
+  .bsim-cell-mid{position:relative}
+  /* LEFT side: line exits right edge toward next round */
+  .bsim-conn-l .bsim-slot{position:relative}
+  .bsim-conn-l::after{content:'';position:absolute;right:-8px;top:50%;width:8px;height:1px;background:var(--border)}
+  /* RIGHT side: line exits left edge toward center */
+  .bsim-conn-r::after{content:'';position:absolute;left:-8px;top:50%;width:8px;height:1px;background:var(--border)}
+  /* vertical joiners — top cell connects down, bottom cell connects up */
+  .bsim-conn-l.bsim-conn-top::before{content:'';position:absolute;right:-8px;top:50%;width:1px;height:50%;background:var(--border)}
+  .bsim-conn-l.bsim-conn-bot::before{content:'';position:absolute;right:-8px;bottom:50%;width:1px;height:50%;background:var(--border)}
+  .bsim-conn-r.bsim-conn-top::before{content:'';position:absolute;left:-8px;top:50%;width:1px;height:50%;background:var(--border)}
+  .bsim-conn-r.bsim-conn-bot::before{content:'';position:absolute;left:-8px;bottom:50%;width:1px;height:50%;background:var(--border)}
+  .bsim-col{display:flex;flex-direction:column;min-width:142px;max-width:165px;flex:1;padding:0 8px}
+  .bsim-final-body{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:8px 6px}
+  .bsim-final-slot{border:2px solid var(--gold);border-radius:9px;overflow:hidden;width:100%}
+
+  
+  .bsim-mode-btn{padding:5px 11px;font-size:11px;font-weight:700;letter-spacing:.3px;border:0;
+    background:var(--card);color:var(--muted);cursor:pointer;white-space:nowrap}
+  .bsim-mode-btn.active{background:var(--gold);color:#fff}
+  .bsim-mode-btn:not(.active):hover{background:var(--surface2,#f0f0f0);color:var(--text)}
+  /* straight connector lines from SF into the Final */
+  .bsim-final-connected{position:relative}
+  .bsim-final-connected::before{content:'';position:absolute;left:-8px;top:50%;width:8px;height:1px;background:var(--border)}
+  .bsim-final-connected::after{content:'';position:absolute;right:-8px;top:50%;width:8px;height:1px;background:var(--border)}
+
+  
+  #bsimShareModal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:550;display:none;align-items:center;justify-content:center}
+  #bsimShareBox{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;width:340px;max-width:92vw;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .bsim-share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .bsim-share-opt{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;border:1px solid var(--border);border-radius:9px;background:var(--card);cursor:pointer;transition:all .15s}
+  .bsim-share-opt:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .bsim-share-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700}
+  /* ── Landscape PDF print ──────────────────────────── */
+  @media print {
+    /* Reset page */
+    html, body.bsim-printing { margin:0!important; padding:0!important; height:auto!important; background:#fff!important; }
+    /* Hide direct children of body (goal-flash, header, div.app) */
+    body.bsim-printing > * { display:none!important; }
+    /* Re-show ONLY the ancestor chain leading to the bracket */
+    body.bsim-printing > .app { display:block!important; }
+    body.bsim-printing .app > * { display:none!important; }
+    body.bsim-printing .app > .main-panel { display:block!important; }
+    body.bsim-printing .main-panel > * { display:none!important; }
+    body.bsim-printing .main-panel > #tab-sim { display:block!important; }
+    body.bsim-printing #tab-sim > * { display:none!important; }
+    body.bsim-printing #tab-sim > .bsim-wrap { display:block!important; }
+    body.bsim-printing .bsim-wrap > * { display:none!important; }
+    body.bsim-printing .bsim-wrap > #bsimPrintRoot { display:block!important; }
+    /* Flatten ancestor spacing/positioning */
+    body.bsim-printing .app,
+    body.bsim-printing .main-panel,
+    body.bsim-printing #tab-sim,
+    body.bsim-printing .bsim-wrap,
+    body.bsim-printing #bsimPrintRoot {
+      position:static!important; margin:0!important; padding:0!important;
+      width:100%!important; max-width:100%!important; overflow:visible!important;
+      box-shadow:none!important; border:0!important; background:#fff!important; height:auto!important;
+    }
+    /* Breathing room around the printed bracket */
+    body.bsim-printing #bsimPrintRoot { padding:10mm 12mm 14mm!important; box-sizing:border-box!important; }
+    body.bsim-printing #bsimPrintTitle { margin-bottom:10px!important; }
+    body.bsim-printing #bsimBracket{overflow:visible!important;width:100%!important}
+    body.bsim-printing .bsim-tree{min-width:0!important;width:100%!important}
+    body.bsim-printing .bsim-slot{break-inside:avoid}
+    body.bsim-printing .bsim-col{min-width:0!important;padding:0 4px!important}
+    body.bsim-printing .bsim-team{font-size:9px!important;min-height:0!important;padding:3px 4px!important}
+    body.bsim-printing .bsim-slot-hd{font-size:7px!important}
+    body.bsim-printing .bsim-final-col{min-width:120px!important}
+
+  }
+
+  
+  /* Third-place match — centered below the bracket */
+  .bsim-third{display:flex;justify-content:center;margin:20px auto 8px;max-width:420px}
+  .bsim-third>div:first-child,.bsim-third .bsim-third-hd{width:100%}
+  .bsim-third{flex-direction:column;align-items:center}
+  .bsim-third-hd{background:var(--header-bg,#1a1a2e);color:#fff;font-size:10px;font-weight:700;
+    letter-spacing:.4px;text-transform:uppercase;text-align:center;padding:8px 14px;
+    border-radius:9px 9px 0 0;width:100%;box-sizing:border-box}
+  .bsim-third-body{width:100%}
+  .bsim-third-body .bsim-slot{margin:0;border-radius:0 0 9px 9px;border-top:0}
+  .bsim-third-body .bsim-slot-hd{display:none}
+  .bsim-third-body .bsim-team{min-height:34px;font-size:12px}
+
+  </style>
+  <!-- Social share preview -->
+  <meta property="og:title" content="World Cup 2026 Bracket Simulator">
+  <meta property="og:description" content="Predict every match from Round of 32 to the Final. Build your bracket, get AI predictions, and share with friends!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://gbemileke.github.io/worldcup2026/preview.png">
+  <meta property="og:url" content="https://gbemileke.github.io/worldcup2026/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="World Cup 2026 Bracket Simulator">
+  <meta name="twitter:description" content="Predict every match from R32 to the Final. Build your bracket and share!">
+  <meta name="twitter:image" content="https://gbemileke.github.io/worldcup2026/preview.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="goal-flash" id="goalFlash"></div>
@@ -1322,8 +1488,9 @@
     <button class="tab-btn" onclick="switchTab('videos',this)">Videos</button>
     <button class="tab-btn active" onclick="switchTab('analytics',this)">Analytics</button>
     
-    <button class="tab-btn" onclick="switchTab('bracket',this)">&#127942; Bracket</button>
+    <button class="tab-btn" onclick="switchTab('bracket',this)">&#127942; Simulator</button>
     <button class="tab-btn" onclick="switchTab('groups',this)">&#127967; Groups</button>
+    <button class="tab-btn" onclick="switchTab('sim',this)">&#127919; Bracket</button>
   </div>
   <div class="live-badge">
     <div class="live-dot" id="liveDot"></div>
@@ -1655,6 +1822,30 @@
         </div>
       </div>
 
+    </div>
+
+    
+    <!-- ══ BRACKET SIMULATOR ══ -->
+    <div id="tab-sim" style="display:none">
+      <div class="bsim-wrap">
+        <div class="bsim-toolbar">
+          <div style="display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-right:4px">
+            <button class="bsim-mode-btn active" id="bsimModePrefill" onclick="bsimSetMode('prefill')">&#129302; AI Prefill</button>
+            <button class="bsim-mode-btn" id="bsimModeBlank" onclick="bsimSetMode('blank')">&#9999; Pick My Own</button>
+          </div>
+          <button class="bsim-btn ai" onclick="bsimAiFill()">&#129302; AI Fill</button>
+          <button class="bsim-btn" onclick="bsimReset()">&#8634; Reset</button>
+          <button class="bsim-btn" onclick="bsimShare()">&#128279; Share</button>
+          <button class="bsim-btn pdf" onclick="bsimPdf()">&#8595; Download PDF</button>
+          <div class="bsim-prog-bar"><div class="bsim-prog-fill" id="bsimProg"></div></div>
+          <span id="bsimProgLbl" style="font-size:10px;color:var(--muted);font-weight:700;white-space:nowrap">0/31 picks</span>
+        </div>
+        <div id="bsimPrintRoot"><div style="overflow-x:auto"><div id="bsimBracket"></div></div></div>
+        <div style="margin-top:8px;font-size:10px;color:var(--muted)">
+          &#128161; Slots show FIFA seeding (e.g. "1st A", "3rd A/B/C/D/F") until the group stage sets the teams &nbsp;&middot;&nbsp;
+          Then click any match to pick a winner, or use AI Fill to auto-predict all 31
+        </div>
+      </div>
     </div>
 
     <div id="tab-groups" style="display:none">
@@ -2830,7 +3021,7 @@ function switchTab(tab, btn) {
   var btns = document.querySelectorAll('.tab-btn');
   for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
   btn.classList.add('active');
-  var tabs = ['highlights', 'videos', 'analytics', 'bracket', 'groups'];
+  var tabs = ['highlights', 'videos', 'analytics', 'bracket', 'groups', 'sim'];
   for (var j = 0; j < tabs.length; j++) {
     var el = document.getElementById('tab-' + tabs[j]);
     if (el) el.style.display = tabs[j] === tab ? 'block' : 'none';
@@ -2838,6 +3029,7 @@ function switchTab(tab, btn) {
   // Rebuild on-demand so content is always fresh when tab is shown
   if (tab === 'groups')  { buildGroupsGrid(); buildMatchPredictor(); }
   if (tab === 'bracket')   { buildTeamGrid(); runSimulation(); buildTop4(); }
+  if (tab === 'sim')     { buildBracketSim(); }
   if (tab === 'analytics') { buildSnapshotStats(); buildMinuteChart(); buildDonut(); }
 }
 
@@ -4354,6 +4546,792 @@ var PREVIEW_MATCHUPS = R32_MATCHUPS.slice(0, 8).map(function(m) {
 
 
 
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BRACKET SIMULATOR — FIFA WC 2026 official bracket structure
+// Left:  M49-M56(R32) → M57-M60(R16) → M61-M62(QF) → M63(SF)
+// Right: M64-M71(R32) → M72-M75(R16) → M76-M77(QF) → M78(SF)
+// Final: M79
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Official FIFA WC 2026 R32 match schedule
+// ══════════════════════════════════════════════════════════════════════════════
+// OFFICIAL FIFA WORLD CUP 2026 KNOCKOUT BRACKET
+// Match numbers, dates, times, and qualification-path seeds match FIFA's draw
+// ══════════════════════════════════════════════════════════════════════════════
+
+// LEFT half R32 — index 0-7 (top→bottom in left column)
+// RIGHT half R32 — index 8-15 (top→bottom in right column)
+// seedH / seedA = the group-placement label shown before teams qualify
+var BSIM_SCHEDULE = [
+  // ─ LEFT R32 (bracket order, top to bottom) ─
+  {id:'M74', date:'Jun 29', time:'16:30 ET', venue:'Gillette Stadium, Foxborough', seedH:'1st E', seedA:'3rd A/B/C/D/F'},
+  {id:'M77', date:'Jun 30', time:'17:00 ET', venue:'MetLife Stadium, East Rutherford', seedH:'1st I', seedA:'3rd C/D/F/G/H'},
+  {id:'M73', date:'Jun 28', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'2nd A', seedA:'2nd B'},
+  {id:'M75', date:'Jun 29', time:'21:00 ET', venue:'Estadio BBVA, Monterrey', seedH:'1st F', seedA:'2nd C'},
+  {id:'M83', date:'Jul 2', time:'19:00 ET', venue:'BMO Field, Toronto', seedH:'2nd K', seedA:'2nd L'},
+  {id:'M84', date:'Jul 2', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'1st H', seedA:'2nd J'},
+  {id:'M81', date:'Jul 1', time:'20:00 ET', venue:'Levi\'s Stadium, Santa Clara', seedH:'1st D', seedA:'3rd B/E/F/I/J'},
+  {id:'M82', date:'Jul 1', time:'16:00 ET', venue:'Lumen Field, Seattle', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
+  // ─ RIGHT R32 (bracket order, top to bottom) ─
+  {id:'M76', date:'Jun 29', time:'13:00 ET', venue:'NRG Stadium, Houston', seedH:'1st C', seedA:'2nd F'},
+  {id:'M78', date:'Jun 30', time:'13:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd E', seedA:'2nd I'},
+  {id:'M79', date:'Jun 30', time:'21:00 ET', venue:'Estadio Azteca, Mexico City', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
+  {id:'M80', date:'Jul 1', time:'12:00 ET', venue:'Mercedes-Benz Stadium, Atlanta', seedH:'1st L', seedA:'3rd E/H/I/J/K'},
+  {id:'M86', date:'Jul 3', time:'18:00 ET', venue:'Hard Rock Stadium, Miami', seedH:'1st J', seedA:'2nd H'},
+  {id:'M88', date:'Jul 3', time:'14:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd D', seedA:'2nd G'},
+  {id:'M85', date:'Jul 2', time:'23:00 ET', venue:'BC Place, Vancouver', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
+  {id:'M87', date:'Jul 3', time:'21:30 ET', venue:'GEHA Field, Kansas City', seedH:'1st K', seedA:'3rd D/E/I/J/L'},
+];
+
+// R16 — index 0-3 left, 4-7 right; feeders are winners of R32
+var BSIM_R16 = [
+  {id:'M89', date:'Jul 4',  time:'17:00 ET', venue:'Los Angeles', fH:'W74', fA:'W77'},
+  {id:'M90', date:'Jul 4',  time:'13:00 ET', venue:'Houston',     fH:'W73', fA:'W75'},
+  {id:'M93', date:'Jul 6',  time:'15:00 ET', venue:'Dallas',      fH:'W83', fA:'W84'},
+  {id:'M94', date:'Jul 6',  time:'20:00 ET', venue:'Seattle',     fH:'W81', fA:'W82'},
+  {id:'M91', date:'Jul 5',  time:'16:00 ET', venue:'Atlanta',     fH:'W76', fA:'W78'},
+  {id:'M92', date:'Jul 5',  time:'20:00 ET', venue:'Vancouver',   fH:'W79', fA:'W80'},
+  {id:'M95', date:'Jul 7',  time:'12:00 ET', venue:'Philadelphia',fH:'W86', fA:'W88'},
+  {id:'M96', date:'Jul 7',  time:'16:00 ET', venue:'Miami',       fH:'W85', fA:'W87'},
+];
+
+// QF — index 0-1 left, 2-3 right
+var BSIM_QF = [
+  {id:'M97',  date:'Jul 9',  time:'16:00 ET', venue:'Boston',     fH:'W89', fA:'W90'},
+  {id:'M98',  date:'Jul 10', time:'15:00 ET', venue:'Los Angeles',fH:'W93', fA:'W94'},
+  {id:'M99',  date:'Jul 11', time:'17:00 ET', venue:'Kansas City',fH:'W91', fA:'W92'},
+  {id:'M100', date:'Jul 11', time:'21:00 ET', venue:'Miami',      fH:'W95', fA:'W96'},
+];
+
+// SF — index 0 left, 1 right
+var BSIM_SF = [
+  {id:'M101', date:'Jul 14', time:'15:00 ET', venue:'Dallas',     fH:'W97', fA:'W98'},
+  {id:'M102', date:'Jul 15', time:'15:00 ET', venue:'Atlanta',    fH:'W99', fA:'W100'},
+];
+
+// Third-place + Final
+var BSIM_THIRD = {id:'M103', date:'Jul 18', time:'17:00 ET', venue:'Miami',         fH:'L101', fA:'L102'};
+var BSIM_FINAL = [{id:'M104', date:'Jul 19', time:'15:00 ET', venue:'MetLife, NJ',  fH:'W101', fA:'W102'}];
+
+var BSIM = { picks:{}, slots:{} };
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+var BSIM_MODE = 'prefill'; // 'prefill' = R32 seeded from model | 'blank' = user picks all
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SEED RESOLVER — projects FIFA seed labels to teams using the model
+// '1st A' → projected winner of Group A, '2nd B' → projected runner-up, etc.
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Rank a group's teams by model score (best first)
+function bsimRankGroup(groupKey) {
+  if (typeof GROUPS === 'undefined' || !GROUPS[groupKey]) return [];
+  return GROUPS[groupKey].teams.slice().sort(function(a, b) {
+    var sa = typeof computeFullModelScore==='function' ? computeFullModelScore(a.name) : (getT(a.name).elo||1700);
+    var sb = typeof computeFullModelScore==='function' ? computeFullModelScore(b.name) : (getT(b.name).elo||1700);
+    return sb - sa;
+  }).map(function(t){ return t.name; });
+}
+
+// Cache of projected group standings
+var BSIM_GROUP_PROJ = null;
+function bsimProjectGroups() {
+  BSIM_GROUP_PROJ = {};
+  'ABCDEFGHIJKL'.split('').forEach(function(g) {
+    BSIM_GROUP_PROJ[g] = bsimRankGroup(g);  // [1st, 2nd, 3rd, 4th]
+  });
+  // Build list of 3rd-place teams ranked best→worst for the "3rd X/Y/Z" slots
+  var thirds = [];
+  'ABCDEFGHIJKL'.split('').forEach(function(g){
+    var arr = BSIM_GROUP_PROJ[g];
+    if (arr[2]) thirds.push({group:g, name:arr[2],
+      score: typeof computeFullModelScore==='function'?computeFullModelScore(arr[2]):(getT(arr[2]).elo||1700)});
+  });
+  thirds.sort(function(a,b){ return b.score - a.score; });
+  BSIM_GROUP_PROJ._thirds = thirds;  // best 8 advance
+}
+
+// Resolve a seed label like '1st A', '2nd B', '3rd A/B/C/D/F' → a team name
+function bsimResolveSeed(seed) {
+  if (!seed || !BSIM_GROUP_PROJ) return '';
+  // "1st A" or "2nd B"
+  var m = seed.match(/^(1st|2nd)\s+([A-L])$/);
+  if (m) {
+    var pos = m[1]==='1st' ? 0 : 1;
+    var arr = BSIM_GROUP_PROJ[m[2]];
+    return (arr && arr[pos]) ? arr[pos] : '';
+  }
+  // "3rd A/B/C/D/F" — pick the best-ranked projected 3rd-place team from those groups
+  var m3 = seed.match(/^3rd\s+([A-L/]+)$/);
+  if (m3) {
+    var groups = m3[1].split('/');
+    var best = null, bestScore = -1;
+    BSIM_GROUP_PROJ._thirds.forEach(function(t) {
+      if (groups.indexOf(t.group) >= 0 && t.score > bestScore && !bsimSeedUsed(t.name)) {
+        best = t.name; bestScore = t.score;
+      }
+    });
+    if (best) { bsimMarkSeedUsed(best); return best; }
+    // fallback: first matching group's 3rd
+    for (var i=0;i<groups.length;i++){ var a=BSIM_GROUP_PROJ[groups[i]]; if(a&&a[2]) return a[2]; }
+  }
+  return '';
+}
+
+// Track used 3rd-place teams so two slots don't grab the same one
+var BSIM_SEED_USED = {};
+function bsimSeedUsed(name){ return !!BSIM_SEED_USED[name]; }
+function bsimMarkSeedUsed(name){ BSIM_SEED_USED[name] = true; }
+
+// Populate R32 slots with projected teams from the seed labels
+function bsimPopulateFromSeeds() {
+  bsimProjectGroups();
+  BSIM_SEED_USED = {};
+  BSIM_SCHEDULE.forEach(function(m, i) {
+    var h = bsimResolveSeed(m.seedH);
+    var a = bsimResolveSeed(m.seedA);
+    if (h) BSIM.slots['R32-'+i+'-h'] = h;
+    if (a) BSIM.slots['R32-'+i+'-a'] = a;
+  });
+}
+
+
+function bsimInit() {
+  BSIM.picks = {}; BSIM.slots = {};
+  // Seed R32 teams from the FIFA schedule (each match slot has its correct teams)
+  BSIM_SCHEDULE.forEach(function(m, i) {
+    BSIM.slots['R32-'+i+'-h'] = m.home || '';
+    BSIM.slots['R32-'+i+'-a'] = m.away || '';
+  });
+}
+
+function bsimSetMode(mode) {
+  BSIM_MODE = mode;
+  bsimInit();
+  // Both modes resolve seed labels → projected teams from group model
+  bsimPopulateFromSeeds();
+  if (mode === 'prefill') {
+    bsimAiFillSilent();  // also pre-pick every match; user can edit any pick
+    bsimToast('AI bracket filled \u2014 click any match to change a pick');
+  } else {
+    bsimToast('Teams projected \u2014 now pick every winner yourself');
+  }
+  bsimRender();
+  bsimUpdateProg();
+  var pb = document.getElementById('bsimModePrefill');
+  var bb = document.getElementById('bsimModeBlank');
+  if (pb && bb) {
+    pb.classList.toggle('active', mode==='prefill');
+    bb.classList.toggle('active', mode==='blank');
+  }
+}
+
+// AI fill without re-init (used by prefill mode)
+function bsimAiFillSilent() {
+  ['R32','R16','QF','SF','FINAL'].forEach(function(round) {
+    for (var i = 0; i < BSIM_COUNT[round]; i++) {
+      var h = bsimGet(round,i,'h'), a = bsimGet(round,i,'a');
+      if (!h || !a) continue;
+      var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+      var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+      var winner = sH >= sA ? h : a;
+      BSIM.picks[round+'-'+i] = winner;
+      BSIM.picks[round+'-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+      var nr = BSIM_NEXT[round];
+      if (nr) { var ni=Math.floor(i/2),ns=(i%2===0)?'h':'a'; BSIM.slots[nr+'-'+ni+'-'+ns]=winner; }
+      // feed SF losers to third place
+      if (round==='SF') { var loser=(winner===h)?a:h; BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=loser; }
+    }
+  });
+  // predict third-place winner
+  bsimPredictThird();
+}
+
+function bsimPredictThird() {
+  var h = bsimGet('THIRD',0,'h'), a = bsimGet('THIRD',0,'a');
+  if (!h || !a) return;
+  var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+  var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+  var winner = sH >= sA ? h : a;
+  BSIM.picks['THIRD-0'] = winner;
+  BSIM.picks['THIRD-0:r'] = bsimReason(h,a,sH,sA,winner);
+}
+
+function bsimGet(round, idx, side) {
+  return BSIM.slots[round+'-'+idx+'-'+side] || '';
+}
+
+// ── Pick & cascade ────────────────────────────────────────────────────────────
+var BSIM_NEXT = {R32:'R16', R16:'QF', QF:'SF', SF:'FINAL'};
+var BSIM_COUNT = {R32:16, R16:8, QF:4, SF:2, FINAL:1};
+
+function bsimPick(round, idx, winner) {
+  BSIM.picks[round+'-'+idx] = winner;
+  var nr = BSIM_NEXT[round];
+  if (nr) {
+    var ni = Math.floor(idx/2), ns = (idx%2===0)?'h':'a';
+    var old = BSIM.slots[nr+'-'+ni+'-'+ns];
+    BSIM.slots[nr+'-'+ni+'-'+ns] = winner;
+    if (old && old !== winner) bsimClearFrom(nr, ni);
+  }
+  // SF losers feed the third-place match
+  if (round === 'SF') {
+    var h = bsimGet('SF', idx, 'h'), a = bsimGet('SF', idx, 'a');
+    var loser = (winner === h) ? a : h;
+    BSIM.slots['THIRD-0-' + (idx===0?'h':'a')] = loser;
+    delete BSIM.picks['THIRD-0'];  // reset third pick when SF changes
+  }
+  bsimRender(); bsimUpdateProg(); bsimCloseModal();
+}
+
+function bsimClearFrom(round, idx) {
+  delete BSIM.picks[round+'-'+idx];
+  delete BSIM.picks[round+'-'+idx+':r'];
+  var nr = BSIM_NEXT[round];
+  if (!nr) return;
+  var ni = Math.floor(idx/2), ns = (idx%2===0)?'h':'a';
+  BSIM.slots[nr+'-'+ni+'-'+ns] = '';
+  bsimClearFrom(nr, ni);
+}
+
+// ── AI fill ───────────────────────────────────────────────────────────────────
+function bsimAiFill() {
+  bsimInit();
+  bsimPopulateFromSeeds();  // project teams from group model if not yet known
+  ['R32','R16','QF','SF','FINAL'].forEach(function(round) {
+    for (var i = 0; i < BSIM_COUNT[round]; i++) {
+      var h = bsimGet(round,i,'h'), a = bsimGet(round,i,'a');
+      if (!h || !a) continue;
+      var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+      var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+      var winner = sH >= sA ? h : a;
+      BSIM.picks[round+'-'+i] = winner;
+      BSIM.picks[round+'-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+      var nr = BSIM_NEXT[round];
+      if (nr) { var ni=Math.floor(i/2),ns=(i%2===0)?'h':'a'; BSIM.slots[nr+'-'+ni+'-'+ns]=winner; }
+      if (round==='SF') { var loser=(winner===h)?a:h; BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=loser; }
+    }
+  });
+  bsimPredictThird();
+  bsimRender(); bsimUpdateProg();
+}
+
+function bsimReason(h,a,sH,sA,winner) {
+  var wT=winner===h?getT(h):getT(a), lT=winner===h?getT(a):getT(h);
+  var bits=[];
+  if(wT.elo&&lT.elo) bits.push('Elo '+wT.elo+' vs '+lT.elo);
+  if(wT.form&&lT.form) bits.push('Form '+Math.round(wT.form*100)+'% vs '+Math.round(lT.form*100)+'%');
+  if(wT.fifaPts&&lT.fifaPts) bits.push('FIFA '+Math.round(wT.fifaPts)+' vs '+Math.round(lT.fifaPts)+'pts');
+  return winner+': '+bits.join(' · ');
+}
+
+function bsimReset() { bsimInit(); bsimRender(); bsimUpdateProg(); }
+
+// ── Progress ──────────────────────────────────────────────────────────────────
+function bsimUpdateProg() {
+  var made=0;
+  Object.keys(BSIM.picks).forEach(function(k){ if(k.indexOf(':')<0) made++; });
+  var pf=document.getElementById('bsimProg'), pl=document.getElementById('bsimProgLbl');
+  if(pf) pf.style.width=Math.round(made/31*100)+'%';
+  if(pl) pl.textContent=made+'/31 picks';
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+
+function bsimLoadUrl() {
+  try {
+    var p=new URLSearchParams(location.search).get('bs');
+    if(!p) return;
+    var d=JSON.parse(atob(decodeURIComponent(p)));
+    bsimInit();
+    ['R32','R16','QF','SF','FINAL'].forEach(function(r){
+      for(var i=0;i<BSIM_COUNT[r];i++){ if(d[r+'-'+i]) bsimPick(r,i,d[r+'-'+i]); }
+    });
+    bsimToast('Bracket loaded!');
+  } catch(e){}
+}
+
+
+
+function bsimToast(msg) {
+  var t=document.getElementById('bsimToast');
+  if(!t) return;
+  t.textContent=msg; t.style.opacity='1';
+  setTimeout(function(){ t.style.opacity='0'; },2400);
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+function bsimShowTip(e,text) {
+  var tip=document.getElementById('bsimTip');
+  if(!tip||!text) return;
+  tip.textContent=text; tip.style.display='block';
+  tip.style.left=Math.min(e.clientX+12,window.innerWidth-270)+'px';
+  tip.style.top=(e.clientY+14)+'px';
+}
+function bsimHideTip() {
+  var t=document.getElementById('bsimTip');
+  if(t) t.style.display='none';
+}
+
+// ── Flag ─────────────────────────────────────────────────────────────────────
+function bsimFlag(name,w) {
+  var f=getFlag(name); if(!f) return '';
+  var V=[16,20,24,32,40,48,64,80];
+  var sw=V.reduce(function(a,b){ return Math.abs(b-w)<Math.abs(a-w)?b:a; });
+  var sh=Math.round(sw*0.75);
+  return '<img crossorigin="anonymous" src="https://flagcdn.com/'+sw+'x'+sh+'/'+f+'.png" width="'+sw+'" height="'+sh+'" style="border-radius:1px;vertical-align:middle;flex-shrink:0">';
+}
+
+// ── Pick modal ────────────────────────────────────────────────────────────────
+
+// ── Edit a team in an R32 slot (Pick My Own mode) ─────────────────────────────
+function bsimSetTeam(round, idx, side, teamName) {
+  BSIM.slots[round+'-'+idx+'-'+side] = teamName;
+  // changing a team invalidates this match's pick and everything downstream
+  bsimClearFrom(round, idx);
+  delete BSIM.picks[round+'-'+idx];
+  delete BSIM.picks[round+'-'+idx+':r'];
+  bsimRender();
+  bsimUpdateProg();
+  bsimOpenModal(round, idx);  // reopen to show the change
+}
+
+// Build a <select> of all WC teams for swapping
+// Teams eligible for a given seed label, e.g. '1st A' → all of Group A,
+// '3rd A/B/C/D/F' → all teams from groups A,B,C,D,F
+function bsimEligibleTeams(seed) {
+  var names = [];
+  if (typeof GROUPS === 'undefined') return names;
+  function addGroup(g){ if(GROUPS[g]) GROUPS[g].teams.forEach(function(t){ if(names.indexOf(t.name)<0) names.push(t.name); }); }
+  if (!seed) { 'ABCDEFGHIJKL'.split('').forEach(addGroup); return names; }
+  // '1st A' / '2nd B'
+  var m = seed.match(/^(?:1st|2nd)\s+([A-L])$/);
+  if (m) { addGroup(m[1]); return names; }
+  // '3rd A/B/C/D/F'
+  var m3 = seed.match(/^3rd\s+([A-L/]+)$/);
+  if (m3) { m3[1].split('/').forEach(addGroup); return names; }
+  // fallback: all teams
+  'ABCDEFGHIJKL'.split('').forEach(addGroup);
+  return names;
+}
+
+function bsimTeamOptions(current, seed) {
+  var names = bsimEligibleTeams(seed);
+  names.sort();
+  // Always include the current team even if somehow outside the eligible set
+  if (current && names.indexOf(current) < 0) names.unshift(current);
+  return names.map(function(n){
+    return '<option value="'+n.replace(/"/g,'&quot;')+'"'+(n===current?' selected':'')+'>'+n+'</option>';
+  }).join('');
+}
+
+function bsimOpenModal(round,idx) {
+  var h=bsimGet(round,idx,'h'), a=bsimGet(round,idx,'a');
+  // R32 can be opened even with empty slots (to add teams); other rounds need both teams
+  if(round!=='R32' && (!h||!a)) return;
+  if(round==='R32' && !h && !a) {
+    // both empty — still allow editor, use placeholders
+    h = h || ''; a = a || '';
+  }
+  var tH=h?getT(h):{elo:0}, tA=a?getT(a):{elo:0};
+  var sH=h?(typeof computeFullModelScore==='function'?computeFullModelScore(h):tH.elo||1700):0;
+  var sA=a?(typeof computeFullModelScore==='function'?computeFullModelScore(a):tA.elo||1700):0;
+  var tot=sH+sA||1;
+  var pH=Math.round(sH/tot*100), pA=100-pH;
+  var cur=BSIM.picks[round+'-'+idx]||'';
+  var reason=BSIM.picks[round+'-'+idx+':r']||'';
+  var RL={R32:'Round of 32',R16:'Round of 16',QF:'Quarterfinal',SF:'Semifinal',FINAL:'Grand Final'};
+  var SCHED=[BSIM_SCHEDULE,null,BSIM_R16,BSIM_QF,BSIM_SF,BSIM_FINAL];
+  // get match ID
+  var allRounds=['R32','R16','QF','SF','FINAL'];
+  var rIdx=allRounds.indexOf(round);
+  var schedArr=[BSIM_SCHEDULE,BSIM_R16,BSIM_QF,BSIM_SF,BSIM_FINAL][rIdx];
+  var sched=schedArr&&schedArr[idx]?schedArr[idx]:{id:'',date:'',venue:''};
+
+  function opt(name,pct,t) {
+    var chosen=cur===name;
+    var esc=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<div class="bsim-pick-opt'+(chosen?' chosen':'')+'" onclick="bsimPick(\''+round+'\','+idx+',\''+esc+'\')">'+
+      bsimFlag(name,28)+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:4px">'+name+(chosen?' <span style="color:var(--gold);font-size:10px">✓ picked</span>':'')+'</div>'+
+        '<div style="font-size:10px;color:var(--muted)">Elo '+t.elo+' · '+(typeof getFifaRank==='function'?getFifaRank(name):'')+'</div>'+
+      '</div>'+
+      '<div style="font-size:15px;font-weight:700;color:'+(pct>=50?'var(--gold)':'var(--muted)')+'">'+pct+'%</div>'+
+    '</div>';
+  }
+
+  // R32 matches allow editing which teams are in the slot
+  var editor = '';
+  if (round === 'R32') {
+    editor =
+      '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">'+
+        '<div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;margin-bottom:8px">Edit teams in this match</div>'+
+        '<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">'+
+          bsimFlag(h,18)+
+          '<select onchange="bsimSetTeam(\''+round+'\','+idx+',\'h\',this.value)" style="flex:1;font-size:11px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)">'+
+            bsimTeamOptions(h, sched.seedH)+
+          '</select>'+
+        '</div>'+
+        '<div style="font-size:9px;color:var(--muted);margin:2px 0 6px 26px">'+(sched.seedH||'')+'</div>'+
+        '<div style="display:flex;gap:8px;align-items:center">'+
+          bsimFlag(a,18)+
+          '<select onchange="bsimSetTeam(\''+round+'\','+idx+',\'a\',this.value)" style="flex:1;font-size:11px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--text)">'+
+            bsimTeamOptions(a, sched.seedA)+
+          '</select>'+
+        '</div>'+
+        '<div style="font-size:9px;color:var(--muted);margin:2px 0 0 26px">'+(sched.seedA||'')+'</div>'+
+      '</div>';
+  }
+
+  var box=document.getElementById('bsimModalBox');
+  box.innerHTML=
+    '<div style="font-size:10px;color:var(--muted);margin-bottom:3px;letter-spacing:.3px">'+sched.id+' · '+sched.date+'</div>'+
+    '<div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:12px">'+RL[round]+' — Pick the winner</div>'+
+    (h?opt(h,pH,tH):'')+(a?opt(a,pA,tA):'')+
+    (cur?'<div style="font-size:10px;color:var(--muted);text-align:center;margin-top:4px">Click to change your pick</div>':'')+
+    (reason?'<div class="bsim-ai-note"><span style="color:var(--blue);font-weight:700">AI</span> '+reason+'</div>':'')+
+    editor+
+    '<div class="bsim-pick-cancel" onclick="bsimCloseModal()">Cancel</div>';
+  document.getElementById('bsimModal').style.display='flex';
+}
+function bsimCloseModal() {
+  var m=document.getElementById('bsimModal'); if(m) m.style.display='none';
+}
+
+// ── Slot HTML ─────────────────────────────────────────────────────────────────
+function bsimSlot(round,idx,matchId,phH,phA) {
+  var h=bsimGet(round,idx,'h'), a=bsimGet(round,idx,'a');
+  var pick=BSIM.picks[round+'-'+idx]||'';
+  var reason=BSIM.picks[round+'-'+idx+':r']||'';
+  // R32 always clickable (edit teams + pick); other rounds need both teams
+  var canClick = (round==='R32') ? true : !!(h&&a);
+  var tipAttr=(pick&&reason)?' onmouseenter="bsimShowTip(event,\''+reason.replace(/'/g,"\\'")+'\');event.stopPropagation()" onmouseleave="bsimHideTip()"':'';
+
+  function row(name, placeholder) {
+    if(!name) {
+      // Show the FIFA seed label (e.g. '1st A') or winner ref (e.g. 'W74') greyed out
+      return '<div class="bsim-team tbd"><span class="tn">'+(placeholder||'TBD')+'</span></div>';
+    }
+    var won=pick&&pick===name, lost=pick&&pick!==name;
+    return '<div class="bsim-team'+(won?' winner':lost?' loser':'')+'" onclick="event.stopPropagation();bsimOpenModal(\''+round+'\','+idx+')">'+
+      bsimFlag(name,16)+'<span class="tn">'+name+'</span>'+(won?'<span class="chk">✓</span>':'')+
+    '</div>';
+  }
+
+  return '<div class="bsim-slot'+(canClick?' clickable':'')+(pick?' has-pick':'')+'"'+
+    (canClick?' onclick="bsimOpenModal(\''+round+'\','+idx+')"':'')+tipAttr+'>'+
+    '<div class="bsim-slot-hd">'+matchId+'</div>'+
+    row(h,phH)+row(a,phA)+
+  '</div>';
+}
+
+// ── CSS-based bracket: flex spacers align rounds, borders draw connectors ─────
+
+// Column of matches with proper spacing. Each match wrapped so flex distributes evenly.
+// `lead` = empty space units before first match (to push it down for alignment)
+function bsimColumn(label, slotsArr, side) {
+  var inner = '';
+  slotsArr.forEach(function(slot, i) {
+    inner +=
+      '<div class="bsim-cell">' +
+        '<div class="bsim-cell-pad"></div>' +
+        '<div class="bsim-cell-mid bsim-conn-' + side + (i % 2 === 0 ? ' bsim-conn-top' : ' bsim-conn-bot') + '">' +
+          slot +
+        '</div>' +
+        '<div class="bsim-cell-pad"></div>' +
+      '</div>';
+  });
+  return '<div class="bsim-col"><div class="bsim-col-hd">' + label + '</div>' +
+    '<div class="bsim-matches">' + inner + '</div></div>';
+}
+
+function bsimRender() {
+  var el = document.getElementById('bsimBracket');
+  if (!el) return;
+
+  // Match ID label = 'M74 · Jun 29'
+  function lbl(m){ return m.id + ' · ' + m.date; }
+  var R32 = BSIM_SCHEDULE.map(lbl);
+  var R16 = BSIM_R16.map(lbl);
+  var QF  = BSIM_QF.map(lbl);
+  var SF  = BSIM_SF.map(lbl);
+  var FIN = lbl(BSIM_FINAL[0]);
+
+  // Placeholder for an empty slot: FIFA seed label (R32) or winner ref (later rounds)
+  function phR32(i, side){ return BSIM_SCHEDULE[i] ? (side==='h'?BSIM_SCHEDULE[i].seedH:BSIM_SCHEDULE[i].seedA) : ''; }
+  function phRef(arr, i, side){ return arr[i] ? (side==='h'?arr[i].fH:arr[i].fA) : ''; }
+
+  // slot with placeholders
+  function s32(i){ return bsimSlot('R32', i, R32[i], phR32(i,'h'), phR32(i,'a')); }
+  function s16(i){ return bsimSlot('R16', i, R16[i], phRef(BSIM_R16,i,'h'), phRef(BSIM_R16,i,'a')); }
+  function sQF(i){ return bsimSlot('QF',  i, QF[i],  phRef(BSIM_QF,i,'h'),  phRef(BSIM_QF,i,'a')); }
+  function sSF(i){ return bsimSlot('SF',  i, SF[i],  phRef(BSIM_SF,i,'h'),  phRef(BSIM_SF,i,'a')); }
+
+  // LEFT half: R32 0-7, R16 0-3, QF 0-1, SF 0
+  var leftHalf =
+    bsimColumn('Round of 32', [s32(0),s32(1),s32(2),s32(3),s32(4),s32(5),s32(6),s32(7)], 'l') +
+    bsimColumn('Round of 16', [s16(0),s16(1),s16(2),s16(3)], 'l') +
+    bsimColumn('Quarterfinals',[sQF(0),sQF(1)], 'l') +
+    bsimColumn('Semifinals',  [sSF(0)], 'l');
+
+  // RIGHT half: R32 8-15, R16 4-7, QF 2-3, SF 1
+  var rightHalf =
+    bsimColumn('Round of 32', [s32(8),s32(9),s32(10),s32(11),s32(12),s32(13),s32(14),s32(15)], 'r') +
+    bsimColumn('Round of 16', [s16(4),s16(5),s16(6),s16(7)], 'r') +
+    bsimColumn('Quarterfinals',[sQF(2),sQF(3)], 'r') +
+    bsimColumn('Semifinals',  [sSF(1)], 'r');
+
+  // CENTER: Final + third-place underneath
+  var champ = BSIM.picks['FINAL-0'] || '';
+  var centerSlot = bsimSlot('FINAL', 0, FIN, BSIM_FINAL[0].fH, BSIM_FINAL[0].fA);
+  var champHtml = champ ?
+    '<div class="bsim-champ-box"><div class="bsim-champ-lbl">&#127942; CHAMPION</div>' +
+    '<div class="bsim-champ-name">'+bsimFlag(champ,32)+' '+champ+'</div></div>' : '';
+  var center =
+    '<div class="bsim-final-col">' +
+      '<div class="bsim-final-hd">&#127942; Final · '+BSIM_FINAL[0].date+'</div>' +
+      '<div class="bsim-final-body bsim-final-connected">' +
+        '<div style="font-size:28px;color:var(--gold);text-align:center;margin-bottom:6px">&#127942;</div>' +
+        '<div class="bsim-final-slot">'+centerSlot+'</div>' +
+        champHtml +
+      '</div>' +
+    '</div>';
+
+  // THIRD-PLACE match (below the bracket, centered)
+  var thirdSlot = bsimSlot('THIRD', 0, BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time, BSIM_THIRD.fH, BSIM_THIRD.fA);
+  var thirdHtml =
+    '<div class="bsim-third">' +
+      '<div class="bsim-third-hd">&#129353; Third-place match &nbsp;·&nbsp; '+BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time+'</div>' +
+      '<div class="bsim-third-body">'+thirdSlot+'</div>' +
+    '</div>';
+
+  el.innerHTML =
+    '<div class="bsim-tree">' +
+      '<div class="bsim-half">'+leftHalf+'</div>' +
+      center +
+      '<div class="bsim-half right">'+rightHalf+'</div>' +
+    '</div>' +
+    thirdHtml;
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SHARE + PDF EXPORT
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Build share URL with encoded picks
+function bsimBuildUrl() {
+  var d = {};
+  Object.keys(BSIM.picks).forEach(function(k){ if(k.indexOf(':')<0) d[k]=BSIM.picks[k]; });
+  return location.href.split('?')[0] + '?bs=' + encodeURIComponent(btoa(JSON.stringify(d)));
+}
+
+// Share text summary
+function bsimShareText() {
+  var champ = BSIM.picks['FINAL-0'] || '';
+  var made = 0;
+  Object.keys(BSIM.picks).forEach(function(k){ if(k.indexOf(':')<0) made++; });
+  if (champ) return 'My 2026 World Cup bracket: ' + champ + ' to win it all! \u{1F3C6} Build yours:';
+  if (made > 0) return 'Check out my 2026 World Cup bracket prediction! \u26BD Build yours:';
+  return 'Build your 2026 World Cup bracket prediction! \u26BD';
+}
+
+// Open the share modal with all platform options
+function bsimShare() {
+  var url  = bsimBuildUrl();
+  var text = bsimShareText();
+  var eUrl = encodeURIComponent(url);
+  var eTxt = encodeURIComponent(text);
+
+  var platforms = [
+    {name:'Native Share', icon:'\u{1F4F1}', color:'#6366f1', action:"bsimNativeShare()"},
+    {name:'WhatsApp',     icon:'\u{1F4AC}', color:'#25D366', url:'https://wa.me/?text='+eTxt+'%20'+eUrl},
+    {name:'X / Twitter',  icon:'\u{1D54F}', color:'#000000', url:'https://twitter.com/intent/tweet?text='+eTxt+'&url='+eUrl},
+    {name:'Facebook',     icon:'f',         color:'#1877F2', url:'https://www.facebook.com/sharer/sharer.php?u='+eUrl},
+    {name:'Telegram',     icon:'\u2708',     color:'#0088cc', url:'https://t.me/share/url?url='+eUrl+'&text='+eTxt},
+    {name:'Reddit',       icon:'\u{1F47D}', color:'#FF4500', url:'https://reddit.com/submit?url='+eUrl+'&title='+eTxt},
+    {name:'LinkedIn',     icon:'in',        color:'#0A66C2', url:'https://www.linkedin.com/sharing/share-offsite/?url='+eUrl},
+    {name:'Email',        icon:'\u2709',     color:'#EA4335', url:'mailto:?subject='+encodeURIComponent('My World Cup 2026 Bracket')+'&body='+eTxt+'%20'+eUrl},
+  ];
+
+  var champ = BSIM.picks['FINAL-0'] || '';
+  var champLine = champ
+    ? '<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(200,146,10,.1);border-radius:8px;margin-bottom:14px">'+
+      bsimFlag(champ,24)+'<span style="font-size:13px;font-weight:700;color:var(--text)">'+champ+' \u2014 your champion \u{1F3C6}</span></div>'
+    : '<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:14px">Make some picks first to share your full bracket!</div>';
+
+  var grid = platforms.map(function(p) {
+    var onclick = p.action
+      ? p.action
+      : "window.open('"+p.url+"','_blank','noopener,width=600,height=500')";
+    return '<button class="bsim-share-opt" onclick="'+onclick+'">'+
+      '<span class="bsim-share-icon" style="background:'+p.color+'">'+p.icon+'</span>'+
+      '<span style="font-size:11px;color:var(--text)">'+p.name+'</span>'+
+    '</button>';
+  }).join('');
+
+  var box = document.getElementById('bsimShareBox');
+  box.innerHTML =
+    '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Share your bracket</div>'+
+    '<div style="font-size:10px;color:var(--muted);margin-bottom:14px">Send a live link \u2014 anyone who opens it sees your exact picks</div>'+
+    champLine +
+    '<div class="bsim-share-grid">'+grid+'</div>'+
+    '<div style="display:flex;gap:6px;margin-top:14px">'+
+      '<input id="bsimShareUrl" value="'+url+'" readonly style="flex:1;font-size:10px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface2,#f5f5f5);color:var(--text2);overflow:hidden;text-overflow:ellipsis">'+
+      '<button class="bsim-btn" onclick="bsimCopyUrl()" style="white-space:nowrap">Copy</button>'+
+    '</div>'+
+    '<div class="bsim-pick-cancel" onclick="bsimCloseShare()">Close</div>';
+  document.getElementById('bsimShareModal').style.display = 'flex';
+}
+
+function bsimNativeShare() {
+  var url = bsimBuildUrl();
+  var text = bsimShareText();
+  if (navigator.share) {
+    navigator.share({ title:'My World Cup 2026 Bracket', text:text, url:url })
+      .then(function(){ bsimCloseShare(); })
+      .catch(function(){});
+  } else {
+    bsimCopyUrl();
+    bsimToast('Link copied \u2014 native share not supported here');
+  }
+}
+
+function bsimCopyUrl() {
+  var inp = document.getElementById('bsimShareUrl');
+  var url = inp ? inp.value : bsimBuildUrl();
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(function(){ bsimToast('Link copied!'); });
+  else { if(inp){inp.select();document.execCommand('copy');} bsimToast('Link copied!'); }
+}
+
+function bsimCloseShare() {
+  var m = document.getElementById('bsimShareModal');
+  if (m) m.style.display = 'none';
+}
+
+// ── PDF: landscape print of the completed bracket ─────────────────────────────
+function bsimPdf() {
+  var made = 0;
+  Object.keys(BSIM.picks).forEach(function(k){ if(k.indexOf(':')<0) made++; });
+  if (made === 0) {
+    bsimToast('Make picks or use AI Fill first!');
+    return;
+  }
+
+  // Ensure the simulator tab is visible and bracket is freshly rendered
+  var simTab = document.getElementById('tab-sim');
+  var wasHidden = simTab && simTab.style.display === 'none';
+  if (simTab) simTab.style.display = 'block';
+  bsimRender();
+
+  // Verify the PDF libraries loaded
+  if (typeof html2canvas === 'undefined' || !window.jspdf) {
+    bsimToast('PDF library still loading \u2014 try again in a moment');
+    if (wasHidden && simTab) simTab.style.display = 'none';
+    return;
+  }
+
+  var target = document.getElementById('bsimPrintRoot');
+  if (!target) { bsimToast('Nothing to export'); return; }
+
+  bsimToast('Generating PDF\u2026');
+
+  // Build a clean off-screen clone so the toolbar/scrollbars don't appear
+  var champ = BSIM.picks['FINAL-0'] || '';
+  var clone = target.cloneNode(true);
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;left:-99999px;top:0;background:#fff;padding:24px;width:1600px;';
+  // Title
+  var title = document.createElement('div');
+  title.style.cssText = 'text-align:center;font-weight:700;font-size:22px;color:#111;margin-bottom:6px;font-family:sans-serif';
+  title.textContent = 'FIFA World Cup 2026 \u2014 My Bracket Prediction';
+  var sub = document.createElement('div');
+  sub.style.cssText = 'text-align:center;font-size:13px;color:#666;margin-bottom:18px;font-family:sans-serif';
+  sub.textContent = champ ? ('Champion: ' + champ) : 'Predicted bracket';
+  wrap.appendChild(title);
+  wrap.appendChild(sub);
+  // make the bracket fill the clone width
+  var inner = clone.querySelector('#bsimBracket') || clone;
+  wrap.appendChild(clone);
+  document.body.appendChild(wrap);
+
+  // Remove any leftover transform/overflow that hides content
+  var tree = wrap.querySelector('.bsim-tree');
+  if (tree) { tree.style.minWidth = '0'; tree.style.width = '100%'; }
+  var scroll = wrap.querySelectorAll('[style*="overflow"]');
+  scroll.forEach(function(el){ el.style.overflow = 'visible'; });
+
+  function cleanup() {
+    if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    if (wasHidden && simTab) simTab.style.display = 'none';
+  }
+
+  html2canvas(wrap, {
+    scale: 2,
+    backgroundColor: '#ffffff',
+    useCORS: true,
+    logging: false,
+    windowWidth: 1600
+  }).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var jsPDF = window.jspdf.jsPDF;
+    // Landscape A3 for plenty of room
+    var pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a3' });
+    var pageW = pdf.internal.pageSize.getWidth();
+    var pageH = pdf.internal.pageSize.getHeight();
+    var margin = 8;
+    var availW = pageW - margin*2;
+    var availH = pageH - margin*2;
+    // scale image to fit
+    var imgW = availW;
+    var imgH = canvas.height * (imgW / canvas.width);
+    if (imgH > availH) { imgH = availH; imgW = canvas.width * (imgH / canvas.height); }
+    var x = (pageW - imgW) / 2;
+    var y = margin;
+    pdf.addImage(imgData, 'PNG', x, y, imgW, imgH);
+    pdf.save('worldcup-2026-bracket.pdf');
+    bsimToast('PDF downloaded!');
+    cleanup();
+  }).catch(function(err) {
+    bsimToast('PDF generation failed \u2014 please try again');
+    cleanup();
+  });
+}
+
+
+// ── Entry point ───────────────────────────────────────────────────────────────
+function buildBracketSim() {
+  var el=document.getElementById('bsimBracket'); if(!el) return;
+  if(!el.dataset.built) {
+    el.dataset.built='1';
+    bsimInit();
+    var hadUrl = false;
+    try { hadUrl = !!new URLSearchParams(location.search).get('bs'); } catch(e){}
+    if (hadUrl) {
+      bsimPopulateFromSeeds();  // resolve teams so shared picks render with names
+      bsimLoadUrl();
+    } else {
+      // Default to AI Prefill: project teams from group model + predict every match
+      bsimPopulateFromSeeds();
+      bsimAiFillSilent();
+      var pb = document.getElementById('bsimModePrefill');
+      if (pb) pb.classList.add('active');
+    }
+  }
+  bsimRender(); bsimUpdateProg();
+}
+
+// Returns true once R32 teams are populated (group stage finished)
+function bsimTeamsKnown() {
+  // teams known if schedule has them OR seeds can be resolved from group model
+  return BSIM_SCHEDULE.some(function(m){ return m.home && m.away; }) ||
+         (typeof GROUPS !== 'undefined');
+}
+
+
 </script>
 <div id="tip-popup" style="position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--text);line-height:1.9;box-shadow:0 4px 20px rgba(0,0,0,.15);pointer-events:none;z-index:9999;max-width:260px;display:none"></div>
 <script>
@@ -4382,5 +5360,15 @@ var PREVIEW_MATCHUPS = R32_MATCHUPS.slice(0, 8).map(function(m) {
   });
 })();
 </script>
+
+  
+  <div id="bsimShareModal" onclick="if(event.target===this)bsimCloseShare()">
+    <div id="bsimShareBox"></div>
+  </div>
+  <div id="bsimModal" onclick="if(event.target===this)bsimCloseModal()">
+    <div id="bsimModalBox"></div>
+  </div>
+  <div id="bsimTip"></div>
+  <div id="bsimToast"></div>
 </body>
 </html>
