@@ -1,282 +1,226 @@
 [
   {
-    "home": "Scotland",
-    "away": "Morocco",
-    "date": "Jun 19",
-    "time": "5PM CST",
-    "group": "C"
-  },
-  {
-    "home": "USA",
-    "away": "Australia",
-    "date": "Jun 19",
-    "time": "2PM CST",
-    "group": "D"
-  },
-  {
-    "home": "Brazil",
-    "away": "Haiti",
-    "date": "Jun 19",
-    "time": "8PM CST",
-    "group": "C"
-  },
-  {
-    "home": "Turkey",
-    "away": "Paraguay",
-    "date": "Jun 19",
-    "time": "11PM CST",
-    "group": "D"
-  },
-  {
-    "home": "Netherlands",
-    "away": "Sweden",
-    "date": "Jun 20",
-    "time": "12PM CST",
-    "group": "F"
-  },
-  {
-    "home": "Germany",
-    "away": "Ivory Coast",
-    "date": "Jun 20",
-    "time": "3PM CST",
-    "group": "E"
-  },
-  {
-    "home": "Ecuador",
-    "away": "Curacao",
-    "date": "Jun 20",
-    "time": "7PM CST",
-    "group": "E"
-  },
-  {
-    "home": "Tunisia",
-    "away": "Japan",
-    "date": "Jun 20",
-    "time": "11PM CST",
-    "group": "F"
-  },
-  {
-    "home": "Spain",
-    "away": "Saudi Arabia",
-    "date": "Jun 21",
-    "time": "11AM CST",
-    "group": "H"
-  },
-  {
-    "home": "Belgium",
-    "away": "Iran",
-    "date": "Jun 21",
-    "time": "2PM CST",
-    "group": "G"
-  },
-  {
-    "home": "Uruguay",
-    "away": "Cape Verde",
-    "date": "Jun 21",
-    "time": "5PM CST",
-    "group": "H"
-  },
-  {
-    "home": "New Zealand",
-    "away": "Egypt",
-    "date": "Jun 21",
-    "time": "8PM CST",
-    "group": "G"
-  },
-  {
+    "date": "Jun 22",
     "home": "Argentina",
     "away": "Austria",
-    "date": "Jun 22",
-    "time": "12PM CST",
-    "group": "J"
+    "time": "11AM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 22",
     "home": "France",
     "away": "Iraq",
-    "date": "Jun 22",
-    "time": "4PM CST",
-    "group": "I"
+    "time": "3PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 22",
     "home": "Norway",
     "away": "Senegal",
-    "date": "Jun 22",
-    "time": "7PM CST",
-    "group": "I"
+    "time": "6PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 22",
     "home": "Jordan",
     "away": "Algeria",
-    "date": "Jun 22",
-    "time": "10PM CST",
-    "group": "J"
+    "time": "9PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 23",
     "home": "Portugal",
     "away": "Uzbekistan",
-    "date": "Jun 23",
-    "time": "12PM CST",
-    "group": "K"
+    "time": "11AM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 23",
     "home": "England",
     "away": "Ghana",
-    "date": "Jun 23",
-    "time": "3PM CST",
-    "group": "L"
+    "time": "2PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 23",
     "home": "Panama",
     "away": "Croatia",
-    "date": "Jun 23",
-    "time": "6PM CST",
-    "group": "L"
+    "time": "5PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 23",
     "home": "Colombia",
     "away": "DR Congo",
-    "date": "Jun 23",
-    "time": "9PM CST",
-    "group": "K"
+    "time": "8PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 24",
     "home": "Switzerland",
     "away": "Canada",
-    "date": "Jun 24",
-    "time": "2PM CST",
-    "group": "B"
+    "time": "1PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 24",
     "home": "Bosnia",
     "away": "Qatar",
-    "date": "Jun 24",
-    "time": "2PM CST",
-    "group": "B"
+    "time": "1PM CST",
+    "group": "STAGE"
   },
   {
-    "home": "Scotland",
-    "away": "Brazil",
     "date": "Jun 24",
-    "time": "5PM CST",
-    "group": "C"
-  },
-  {
     "home": "Morocco",
     "away": "Haiti",
-    "date": "Jun 24",
-    "time": "5PM CST",
-    "group": "C"
+    "time": "4PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 24",
+    "home": "Scotland",
+    "away": "Brazil",
+    "time": "4PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 24",
     "home": "Czechia",
     "away": "Mexico",
-    "date": "Jun 24",
-    "time": "8PM CST",
-    "group": "A"
+    "time": "7PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 24",
     "home": "S. Africa",
     "away": "S. Korea",
-    "date": "Jun 24",
-    "time": "8PM CST",
-    "group": "A"
+    "time": "7PM CST",
+    "group": "STAGE"
   },
   {
-    "home": "Germany",
-    "away": "Ecuador",
     "date": "Jun 25",
+    "home": "Ecuador",
+    "away": "Germany",
+    "time": "2PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "time": "2PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Tunisia",
+    "away": "Netherlands",
     "time": "5PM CST",
-    "group": "E"
+    "group": "STAGE"
   },
   {
-    "home": "Ivory Coast",
-    "away": "Curacao",
     "date": "Jun 25",
-    "time": "8PM CST",
-    "group": "E"
+    "home": "Japan",
+    "away": "Sweden",
+    "time": "5PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 25",
+    "home": "Turkey",
+    "away": "USA",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Paraguay",
+    "away": "Australia",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 26",
     "home": "Norway",
     "away": "France",
-    "date": "Jun 26",
-    "time": "2PM CST",
-    "group": "I"
+    "time": "1PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 26",
     "home": "Senegal",
     "away": "Iraq",
-    "date": "Jun 26",
-    "time": "2PM CST",
-    "group": "I"
+    "time": "1PM CST",
+    "group": "STAGE"
   },
   {
-    "home": "Cape Verde",
-    "away": "Saudi Arabia",
     "date": "Jun 26",
-    "time": "7PM CST",
-    "group": "H"
-  },
-  {
     "home": "Uruguay",
     "away": "Spain",
-    "date": "Jun 26",
-    "time": "7PM CST",
-    "group": "H"
+    "time": "6PM CST",
+    "group": "STAGE"
   },
   {
-    "home": "Egypt",
-    "away": "Iran",
     "date": "Jun 26",
-    "time": "10PM CST",
-    "group": "G"
+    "home": "Cape Verde",
+    "away": "Saudi Arabia",
+    "time": "6PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 26",
     "home": "New Zealand",
     "away": "Belgium",
-    "date": "Jun 26",
-    "time": "10PM CST",
-    "group": "G"
+    "time": "9PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 26",
+    "home": "Egypt",
+    "away": "Iran",
+    "time": "9PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
     "home": "Panama",
     "away": "England",
-    "date": "Jun 27",
-    "time": "4PM CST",
-    "group": "L"
+    "time": "3PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 27",
     "home": "Croatia",
     "away": "Ghana",
-    "date": "Jun 27",
-    "time": "4PM CST",
-    "group": "L"
+    "time": "3PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 27",
     "home": "Colombia",
     "away": "Portugal",
-    "date": "Jun 27",
-    "time": "6:30PM CST",
-    "group": "K"
+    "time": "5:30PM CST",
+    "group": "STAGE"
   },
   {
+    "date": "Jun 27",
     "home": "DR Congo",
     "away": "Uzbekistan",
-    "date": "Jun 27",
-    "time": "6:30PM CST",
-    "group": "K"
+    "time": "5:30PM CST",
+    "group": "STAGE"
   },
   {
-    "home": "Algeria",
-    "away": "Austria",
     "date": "Jun 27",
-    "time": "9PM CST",
-    "group": "J"
-  },
-  {
     "home": "Jordan",
     "away": "Argentina",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
     "date": "Jun 27",
-    "time": "9PM CST",
-    "group": "J"
+    "home": "Algeria",
+    "away": "Austria",
+    "time": "8PM CST",
+    "group": "STAGE"
   }
 ]

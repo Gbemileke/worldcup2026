@@ -191,7 +191,7 @@
     "date": "Jun 16",
     "home": "Norway",
     "away": "Iraq",
-    "score": "4-1",
+    "score": "1-4",
     "group": "Group I",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report",
@@ -257,7 +257,7 @@
     "date": "Jun 17",
     "home": "Colombia",
     "away": "Uzbekistan",
-    "score": "3-1",
+    "score": "1-3",
     "group": "Group K",
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report",
@@ -370,7 +370,7 @@
     "score": "2-1",
     "group": "E",
     "ytId": "",
-    "espnId": "",
+    "espnId": "760448",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-ivory-coast-highlights-match-report"
   },
   {
@@ -381,7 +381,7 @@
     "score": "0-0",
     "group": "E",
     "ytId": "",
-    "espnId": "",
+    "espnId": "760446",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-curacao-highlights-match-report"
   },
   {
@@ -392,7 +392,7 @@
     "score": "0-4",
     "group": "F",
     "ytId": "",
-    "espnId": "",
+    "espnId": "760449",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/tunisia-v-japan-highlights-match-report"
   },
   {
@@ -403,7 +403,7 @@
     "score": "4-0",
     "group": "H",
     "ytId": "",
-    "espnId": "",
+    "espnId": "760453",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-saudi-arabia-highlights-match-report"
   },
   {
@@ -414,7 +414,29 @@
     "score": "0-0",
     "group": "G",
     "ytId": "",
-    "espnId": "",
+    "espnId": "760451",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-iran-highlights-match-report"
+  },
+  {
+    "id": "m39",
+    "date": "Jun 21",
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "score": "2-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-cabo-verde-highlights-match-report",
+    "espnId": "760450"
+  },
+  {
+    "id": "m40",
+    "date": "Jun 22",
+    "home": "New Zealand",
+    "away": "Egypt",
+    "score": "1-3",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/new-zealand-v-egypt-highlights-match-report",
+    "espnId": "760452"
   }
 ]
