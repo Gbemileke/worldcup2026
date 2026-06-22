@@ -574,6 +574,27 @@ SECTIONS = {
     'form':     update_form,
 }
 
+def update_build_stamp():
+    """Refresh the build timestamp + cache-control so browsers always load fresh HTML."""
+    from datetime import datetime, timezone
+    import re as _re
+    c = read_html()
+    ts = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    # Refresh/insert build comment after DOCTYPE
+    c = _re.sub(r'<!-- build: [^>]*? -->\n?', '', c)
+    if '<!DOCTYPE html>' in c:
+        c = c.replace('<!DOCTYPE html>', f'<!DOCTYPE html>\n<!-- build: {ts} -->', 1)
+    # Ensure cache-control meta tags are present
+    if 'http-equiv="Cache-Control"' not in c:
+        cache_meta = ('<meta charset="UTF-8">\n'
+                      '<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">\n'
+                      '<meta http-equiv="Pragma" content="no-cache">\n'
+                      '<meta http-equiv="Expires" content="0">')
+        c = c.replace('<meta charset="UTF-8">', cache_meta, 1)
+    write_html(c)
+    print(f"  → Build stamp: {ts}")
+
+
 if __name__ == '__main__':
     import sys
     section = None
@@ -592,4 +613,6 @@ if __name__ == '__main__':
         for name, fn in SECTIONS.items():
             print(f"\n[{name}]")
             fn()
+        print("\n[build-stamp]")
+        update_build_stamp()
         print("\n✅ All sections updated.")
