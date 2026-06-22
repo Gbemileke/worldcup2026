@@ -539,6 +539,12 @@ def run():
             need = h_fin+a_fin
             print(f"  → Goals {mid} ({home} {score} {away}): have {have}, need {need}")
 
+            # Preserve manually-classified types (free-kick, header) by scorer+minute
+            preserved_types = {}
+            for eg in existing_g:
+                if eg.get('type') in ('free-kick', 'header'):
+                    preserved_types[(eg.get('scorer',''), eg.get('minute'))] = eg['type']
+
             # Clear partial
             if existing_g:
                 goals=[g for g in goals if g['matchId']!=mid]
@@ -574,6 +580,11 @@ def run():
                 new_goals, next_goal_id = assign_goals(
                     goal_list, home, away, h_fin, a_fin, mid, parsed['group'], next_goal_id)
                 if new_goals:
+                    # Restore manually-classified free-kick/header types
+                    for ng in new_goals:
+                        key = (ng.get('scorer',''), ng.get('minute'))
+                        if key in preserved_types and ng.get('type') == 'open-play':
+                            ng['type'] = preserved_types[key]
                     goals.extend(new_goals)
                     goals_by_mid[mid]=new_goals
                     goals_added += len(new_goals) if have==0 else 0
