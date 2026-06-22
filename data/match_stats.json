@@ -2343,5 +2343,64 @@
         0
       ]
     ]
+  },
+  "m41": {
+    "home": "Argentina",
+    "away": "Austria",
+    "score": "2-0",
+    "date": "Jun 22 - AT&T Stadium",
+    "poss": [
+      53.6,
+      46.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        12,
+        6
+      ],
+      [
+        "Shots on Goal",
+        5,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        13
+      ],
+      [
+        "Saves",
+        1,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.0,
+        0.58
+      ],
+      [
+        "Yellow Cards",
+        2,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        0
+      ]
+    ]
   }
 }

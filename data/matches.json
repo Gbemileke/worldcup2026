@@ -438,5 +438,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/new-zealand-v-egypt-highlights-match-report",
     "espnId": "760452"
+  },
+  {
+    "id": "m41",
+    "date": "Jun 22",
+    "home": "Argentina",
+    "away": "Austria",
+    "score": "2-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-austria-highlights-match-report",
+    "espnId": "760456"
   }
 ]
