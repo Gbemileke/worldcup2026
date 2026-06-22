@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-06-22 04:27 UTC -->
+<!-- build: 2026-06-22 04:38 UTC -->
 
 <html lang="en">
 <head>
@@ -1602,8 +1602,8 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 22, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">40 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">83 open play · 12 headers · 6 penalties · 7 OGs · 1 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">109</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.73 per match · 40 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">40 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">95 open play · 12 headers · 6 penalties · 7 OGs · 1 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">121</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.02 per match · 40 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">6</div><div class="stat-label">Penalties Scored</div><div class="stat-sub"><span class="has-tip" data-tip="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia" title="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia">in 6 matches</span></div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">7</div><div class="stat-label">Own Goals</div><div class="stat-sub"><span class="has-tip" data-tip="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Norway (Hussein) vs Iraq | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA | Saudi Arabia (Al-Tambakti) vs Spain" title="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Norway (Hussein) vs Iraq | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA | Saudi Arabia (Al-Tambakti) vs Spain">in 7 matches</span></div></div>
             <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">8</div><div class="stat-label">Red Cards</div><div class="stat-sub">in 3 matches</div></div>
@@ -2108,6 +2108,10 @@ var GOALS = [
   {id:97, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:47, type:'open-play', phase:'Group L', score:'3-2', desc:'Bellingham immediately restores England\'s lead seconds after half time — a brilliant solo run and finish'},
   {id:98, matchId:'m22', home:'England', away:'Croatia', hf:'', af:'', scorer:'M. Rashford', flag:'', minute:85, type:'open-play', phase:'Group L', score:'4-2', desc:'Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four'},
   {id:103, matchId:'m23', home:'Ghana', away:'Panama', hf:'', af:'', scorer:'C. Yirenkyi', flag:'', minute:95, type:'open-play', phase:'Group L', score:'1-0', desc:'Yirenkyi taps in Thomas-Asante\'s cross in the 95th minute — Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point'},
+  {id:157, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'D. Muñoz', flag:'', minute:40, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
+  {id:158, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'A. Fayzullaev', flag:'', minute:60, type:'open-play', phase:'Group Stage', score:'0-2', desc:''},
+  {id:159, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'L. Díaz', flag:'', minute:65, type:'open-play', phase:'Group Stage', score:'1-2', desc:''},
+  {id:160, matchId:'m24', home:'Uzbekistan', away:'Colombia', hf:'', af:'', scorer:'J. Campaz', flag:'', minute:91, type:'open-play', phase:'Group Stage', score:'1-3', desc:''},
   {id:114, matchId:'m25', home:'Czechia', away:'S. Africa', hf:'', af:'', scorer:'P. Schick', flag:'', minute:24, type:'open-play', phase:'Group A', score:'1-0', desc:'Schick opens for Czechia with a clinical finish — the Bayer Leverkusen striker shows his class'},
   {id:115, matchId:'m25', home:'Czechia', away:'S. Africa', hf:'', af:'', scorer:'T. Mokoena', flag:'', minute:83, type:'penalty', phase:'Group A', score:'1-1', desc:'Mokoena steps up and slots the penalty — South Africa rescue a vital point to keep their knockout hopes alive'},
   {id:116, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'J. Manzambi', flag:'', minute:74, type:'open-play', phase:'Group B', score:'1-0', desc:'Manzambi comes off the bench and immediately breaks the deadlock with a sumptuous finish — the Swiss sub changes the game'},
@@ -2145,8 +2149,18 @@ var GOALS = [
   {id:148, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'L. Yamal', flag:'', minute:10, type:'open-play', phase:'Group H', score:'1-0', desc:''},
   {id:149, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:21, type:'open-play', phase:'Group H', score:'2-0', desc:''},
   {id:150, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:24, type:'open-play', phase:'Group H', score:'3-0', desc:''},
-  {id:151, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'H. Al-Tambakti', flag:'', minute:49, type:'own-goal', phase:'Group H', score:'4-0', desc:''}
+  {id:151, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'H. Al-Tambakti', flag:'', minute:49, type:'own-goal', phase:'Group H', score:'4-0', desc:''},
+  {id:161, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'K. Pina', flag:'', minute:21, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
+  {id:162, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'M. Araújo', flag:'', minute:44, type:'open-play', phase:'Group Stage', score:'1-1', desc:''},
+  {id:163, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'A. Canobbio', flag:'', minute:46, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
+  {id:164, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'H. Varela', flag:'', minute:61, type:'open-play', phase:'Group Stage', score:'2-2', desc:''},
+  {id:165, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'F. Surman', flag:'', minute:15, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
+  {id:166, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'M. Zico', flag:'', minute:58, type:'open-play', phase:'Group Stage', score:'0-2', desc:''},
+  {id:167, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'M. Salah', flag:'', minute:67, type:'open-play', phase:'Group Stage', score:'1-2', desc:''},
+  {id:168, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'Trézéguet', flag:'', minute:82, type:'open-play', phase:'Group Stage', score:'1-3', desc:''}
 ];
+
+
 
 
 
@@ -2389,14 +2403,14 @@ var TEAM_DATA = {
   'Japan':       {flag:'jp', group:'F', elo:1910, fifaPts:1681.27, fifaPtsDelta:4.37, fifaRankDelta:1, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.8, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:2.25},
   'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1667.66, fifaPtsDelta:-16.41, fifaRankDelta:0, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.275, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.55},
   'Belgium':     {flag:'be', group:'G', elo:1850, fifaPts:1727.88, fifaPtsDelta:-8.3, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.62, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:1.05},
-  'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1769.98, fifaPtsDelta:14.36, fifaRankDelta:0, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.775, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.25},
+  'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1769.98, fifaPtsDelta:14.36, fifaRankDelta:0, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.775, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.15},
   'USA':         {flag:'us', group:'D', elo:1747, fifaPts:1709.59, fifaPtsDelta:21.06, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:1.0, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:3.36},
   'Mexico':      {flag:'mx', group:'A', elo:1857, fifaPts:1721.78, fifaPtsDelta:20.8, fifaRankDelta:3, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:1.25},
-  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:23.4, fifaRankDelta:1, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.502, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.25},
+  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:23.4, fifaRankDelta:1, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.25},
   'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1591.75, fifaPtsDelta:-20.8, fifaRankDelta:-1, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.5, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.25},
   'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1559.23, fifaPtsDelta:-11.8, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.25, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.05},
   'Austria':     {flag:'at', group:'J', elo:1818, fifaPts:1612.85, fifaPtsDelta:15.45, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:4, form:0.9, squadDepth:74, exp:4,  keyPlayer:'M. Sabitzer',  marketPct:0.35},
-  'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1551.71, fifaPtsDelta:27.75, fifaRankDelta:2, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.502, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.45},
+  'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1551.71, fifaPtsDelta:27.75, fifaRankDelta:2, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.45},
   'Scotland':    {flag:'gb-sct', group:'C', elo:1645, fifaPts:1504.41, fifaPtsDelta:-14.36, fifaRankDelta:-2, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.58, squadDepth:65, exp:1, keyPlayer:'J. McGinn', marketPct:0.15},
   'Australia':   {flag:'au', group:'D', elo:1774, fifaPts:1584.54, fifaPtsDelta:-21.06, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:16,qualGA:9, form:0.5, squadDepth:63, exp:5,  keyPlayer:'M. Leckie',    marketPct:0.25},
   'Canada':      {flag:'ca', group:'B', elo:1805, fifaPts:1572.13, fifaPtsDelta:20.63, fifaRankDelta:4, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:3, form:0.75, squadDepth:65, exp:2,  keyPlayer:'A. Davies',    marketPct:0.35},
@@ -4354,6 +4368,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 

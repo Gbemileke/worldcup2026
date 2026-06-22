@@ -852,6 +852,54 @@
     "desc": "Yirenkyi taps in Thomas-Asante's cross in the 95th minute \u2014 Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point"
   },
   {
+    "id": 157,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "D. Mu\u00f1oz",
+    "minute": 40,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 158,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "A. Fayzullaev",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 159,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "L. D\u00edaz",
+    "minute": 65,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-2",
+    "desc": ""
+  },
+  {
+    "id": 160,
+    "matchId": "m24",
+    "home": "Uzbekistan",
+    "away": "Colombia",
+    "scorer": "J. Campaz",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-3",
+    "desc": ""
+  },
+  {
     "id": 114,
     "matchId": "m25",
     "home": "Czechia",
@@ -1305,6 +1353,102 @@
     "type": "own-goal",
     "phase": "Group H",
     "score": "4-0",
+    "desc": ""
+  },
+  {
+    "id": 161,
+    "matchId": "m39",
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "scorer": "K. Pina",
+    "minute": 21,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 162,
+    "matchId": "m39",
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "scorer": "M. Ara\u00fajo",
+    "minute": 44,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 163,
+    "matchId": "m39",
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "scorer": "A. Canobbio",
+    "minute": 46,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
+    "id": 164,
+    "matchId": "m39",
+    "home": "Uruguay",
+    "away": "Cape Verde",
+    "scorer": "H. Varela",
+    "minute": 61,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-2",
+    "desc": ""
+  },
+  {
+    "id": 165,
+    "matchId": "m40",
+    "home": "New Zealand",
+    "away": "Egypt",
+    "scorer": "F. Surman",
+    "minute": 15,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 166,
+    "matchId": "m40",
+    "home": "New Zealand",
+    "away": "Egypt",
+    "scorer": "M. Zico",
+    "minute": 58,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 167,
+    "matchId": "m40",
+    "home": "New Zealand",
+    "away": "Egypt",
+    "scorer": "M. Salah",
+    "minute": 67,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-2",
+    "desc": ""
+  },
+  {
+    "id": 168,
+    "matchId": "m40",
+    "home": "New Zealand",
+    "away": "Egypt",
+    "scorer": "Tr\u00e9z\u00e9guet",
+    "minute": 82,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-3",
     "desc": ""
   }
 ]
