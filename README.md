@@ -1,6 +1,6 @@
 # 2026 FIFA World Cup Analytics Dashboard
 
-Live analytics dashboard for the 2026 FIFA World Cup (USA · Canada · Mexico).
+Live analytics dashboard and interactive bracket simulator for the 2026 FIFA World Cup (USA · Canada · Mexico).
 
 🌐 **Live site:** https://gbemileke.github.io/worldcup2026/
 📁 **Repo:** https://github.com/gbemileke/worldcup2026
@@ -9,15 +9,45 @@ Live analytics dashboard for the 2026 FIFA World Cup (USA · Canada · Mexico).
 
 ## What it does
 
-A single-page analytics app with five tabs:
+A single-page app with six tabs:
 
 | Tab | Content |
 |---|---|
-| **Analytics** | 8 snapshot cards · Goals by period chart · Goal type donut · Top scorers · Match stats selector |
 | **Highlights** | Live goal feed with filters · Goal hero panel with scorer/minute/type/group detail cards · FIFA.com links |
 | **Videos** | Match video cards linking to FIFA highlight pages |
-| **Bracket** | R32 bracket simulation · Top 4 predictions · Model weight settings · Quick presets |
+| **Analytics** | 8 snapshot cards · Goals by period chart · Goal type donut · Top scorers · Match stats selector |
+| **Simulator** | Model-driven R32→Final prediction · Top 4 favourites · Adjustable model weights · Quick presets |
 | **Groups** | Match predictor · 12 group tables · Model vs Polymarket comparison |
+| **Bracket** | **Interactive knockout bracket simulator** — pick every match, AI-fill, share, export PDF |
+
+---
+
+## ⭐ Interactive Bracket Simulator (Bracket tab)
+
+The flagship feature: a full FIFA-accurate knockout bracket you can fill out yourself.
+
+### Structure
+- Mirrors the official FIFA bracket exactly: **R32 (M73–M88) → R16 (M89–M96) → QF (M97–M100) → SF (M101–M102) → Final (M104)**, plus the **third-place match (M103)**
+- Each slot shows the real **match number, date, time, and venue**
+- Empty R32 slots display **FIFA seed labels** ("1st A", "2nd B", "3rd A/B/C/D/F") until the group stage decides who qualifies
+
+### Two modes
+| Mode | Behaviour |
+|---|---|
+| **🤖 AI Prefill** (default) | Projects each group's standings from the model, resolves all seed labels to teams, and predicts every match. Click any match to override a pick. |
+| **✏️ Pick My Own** | Projects the teams into R32 but leaves all winners blank — you pick every match yourself. |
+
+### Interactions
+- **Click any match** → modal to pick the winner, showing both teams with flags, Elo, FIFA rank, and model win %
+- **Edit R32 teams** → each R32 slot has dropdowns to swap teams, **constrained to the eligible group(s)** for that seed ("1st A" → Group A's 4 teams only; "3rd A/B/C/D/F" → the 20 teams from those 5 groups)
+- **AI reasoning tooltips** → hover any AI-picked match to see why ("Elo 2062 vs 1680 · Form 89% vs 54%")
+- Changing a pick **cascades** — downstream picks auto-clear to keep the bracket consistent
+- Third-place match auto-populates from the two semifinal losers
+
+### Share & export
+- **Share** → preview-card modal with a one-click "Copy link to share anywhere" button
+- Picks are encoded into an **ultra-compact ~15-character URL** (`?b=1z141z3_1bcqpbe`) using base36-packed bits — paste into any app and Open Graph meta tags render a rich preview
+- **Download PDF** → landscape A3 PDF of the completed bracket via jsPDF + html2canvas
 
 ---
 
@@ -25,19 +55,20 @@ A single-page analytics app with five tabs:
 
 ```
 worldcup2026/
-├── index.html                    ← Entire app (~210KB single HTML file)
+├── index.html                    ← Entire app (~300KB single HTML file)
 ├── data/
-│   ├── matches.json              ← 28 matches + scores + espnId + FIFA links
-│   ├── goals.json                ← 89 goals + scorers + minute + type + descriptions
+│   ├── matches.json              ← Matches + scores + espnId + FIFA links
+│   ├── goals.json                ← Goals + scorers + minute + type + descriptions
 │   ├── match_stats.json          ← Possession / shots / xG / cards per match (ESPN)
-│   ├── team_data.json            ← 48 teams: Elo, FIFA pts, form, qual record, squad depth
+│   ├── team_data.json            ← Teams: Elo, FIFA pts, form, qual record, squad depth
 │   ├── groups.json               ← 12 groups + Polymarket odds
-│   └── upcoming_fixtures.json    ← 42 remaining fixtures with CST kick-off times
+│   └── upcoming_fixtures.json    ← Remaining fixtures with ET kick-off times
 ├── update_site.py                ← Master rebuild: reads all JSON → writes index.html
 ├── update_match_stats.py         ← Fetches ESPN scoreboard + summary endpoints
 ├── update_rankings.py            ← Updates Elo / FIFA rankings daily
 ├── update_odds.py                ← Updates Polymarket group odds (manual)
 ├── add_match.py                  ← Manually add a completed match
+├── generate_descriptions.py      ← Goal description text helper
 └── .github/workflows/
     ├── auto-update.yml           ← Every 3 hours: ESPN match data + form + rebuild
     ├── daily-rankings.yml        ← Daily 6am UTC: Elo + FIFA rankings
@@ -55,14 +86,9 @@ Step 1: update_match_stats.py
   ├── ESPN scoreboard  → new match scores, goals, espnId per match
   └── ESPN summary     → possession, shots, SOT, corners, fouls, saves (Opta data)
         Goal validation: running score must match final before saving
-        (prevents wrong attribution if ESPN homeAway is incorrect)
 
 Step 2: update_site.py --section form
-  └── Recomputes team form:
-        base_form = (qualW + 0.5×qualD) / (qualW + qualD + qualL)
-        new_form  = base_form × 0.40 + wc_avg × 0.60
-        floor = 10% — no team ever shows 0%
-        Idempotent: runs same result every time
+  └── Recomputes team form (idempotent — see Form model below)
 
 Step 3: update_site.py (full rebuild)
   ├── matches    → goal feed, video cards, ticker
@@ -72,7 +98,8 @@ Step 3: update_site.py (full rebuild)
   ├── upcoming   → ticker + predictor dropdown
   ├── sync       → removes completed games from upcoming
   ├── snapshot   → 8 cards with tooltips
-  └── form       → team form in bracket / predictor
+  ├── form       → team form in bracket / predictor
+  └── build-stamp → refreshes cache-busting timestamp (forces fresh load)
 
 Step 4: git commit + push → GitHub Pages live in ~2 minutes
 ```
@@ -89,42 +116,17 @@ update_odds.py → Polymarket group odds → groups.json + index.html
 
 ---
 
-## Features
+## Goal attribution & validation
 
-### 8 Snapshot Cards (Analytics tab)
-Cards scroll horizontally. Order:
+`update_match_stats.py` validates that the running goal tally matches the ESPN final score before saving any goals for a match.
 
-| # | Card | Size | Notes |
-|---|---|---|---|
-| 1 | Matches Played | 200px | `27 of 104` with goal type breakdown sub-text |
-| 2 | Total Goals | 200px | Per-match average |
-| 3 | Penalties | 200px | `in N matches` — hover: `Switzerland (Embolo) vs Qatar` |
-| 4 | Own Goals | 200px | `in N matches` — hover: `Paraguay (Bobadilla) vs USA` |
-| 5 | Red Cards | 200px | `in N matches` — hover: `Mexico (1) vs S. Africa` etc |
-| 6 | Biggest Win | 200px | Germany 8-1 Curaçao |
-| 7 | Top Scorer | 200px | Single: `L. Messi - Argentina` · Tied: hover tooltip |
-| 8 | All-Time WC Record Scorer | 240px | **NEW RECORD!** flashing gold when broken |
+**Robust team resolution** (added after m24/m39/m40 attribution bug):
+- Normalizes and fuzzy-matches ESPN team names against home/away (handles "Korea Republic" vs "S. Korea", blank names, etc.)
+- Extracts per-goal `homeScore`/`awayScore` from ESPN `details[]` for exact attribution when available
+- Falls back to capacity-based assignment (fills toward the known final score) when the team genuinely can't be determined
+- If the tally still can't be reconciled, goals are **skipped and retried next run** rather than saved with wrong attribution
 
-Last 2 cards (Matches Played override + All-Time Record) are 240px wide.
-
-### Match Predictor (Groups tab)
-- Dropdown of all remaining group stage fixtures
-- **Left panel:** 6 model input factors with weights (form-heavy)
-- **Right panel:** Model vs Polymarket win probabilities (Team A / Draw / Team B)
-- **Favourite bar:** 3-segment green|gray|blue with % labels
-- Fixed weights: Form 35% · Elo 20% · Squad 15% · FIFA pts 15% · Qual GD 10% · Exp 5%
-
-### Highlights tab
-- Goal feed with ALL / OPEN PLAY / HEADER / PENALTY / OWN GOAL filters
-- Hero panel: match on one line (`Mexico 1-0 S. Africa`) · Scorer · Minute · Type · Group (4 detail cards)
-- Description text first, then video placeholder below
-- FIFA.com highlight link per match
-
-### Tooltip system
-- JS tooltip (not CSS) — appends to `#tip-popup` div, avoids overflow clipping
-- `mouseover` with `closest('.has-tip')` — follows cursor
-- Mobile: disabled via `maxTouchPoints` check
-- Format: `Country (Player) vs Opponent`
+This fixed matches that previously recorded e.g. `0-4` instead of the real `1-3`, leaving goals unsaved.
 
 ---
 
@@ -140,33 +142,7 @@ loss → wc_result = 0.0
 floor = 0.10 (no team ever shows 0%)
 ```
 
-This is **idempotent** — the qualifying record never changes, so running `update_form` multiple times always gives the same result. Previously the function used the *current stored form* as the baseline, causing form to decay toward 50% on every Action run.
-
-### Sample values after MD2 (Jun 19, 2026)
-
-| Team | Qual record | WC results | Form |
-|---|---|---|---|
-| Argentina | CONMEBOL 1st | W | 100% |
-| England | UEFA 10W-0D-0L | W | 100% |
-| Mexico | CONCACAF 1st | W, W | 100% |
-| Brazil | CONMEBOL 14W-3D-1L | D | 64% |
-| Spain | UEFA 8W-2D-0L | D | 66% |
-| Portugal | UEFA 9W-1D-0L | D | 68% |
-| Morocco | CAF 6W-1D-1L | D | 63% |
-| Croatia | UEFA 5W-2D-3L | L | 29% |
-
----
-
-## Match statistics
-
-- **Source:** ESPN summary endpoint — `site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event={espnId}`
-- **Labels match ESPN exactly:** Shot Attempts · Shots on Goal · Corner Kicks · Fouls · Saves
-- **Extra stats:** xG · Yellow Cards · Red Cards · Offsides
-- **xG:** Real ESPN/Opta data where available; calculated from SOT for others
-- **espnId** stored per match in `matches.json` for re-fetching
-
-### Goal attribution safety
-`update_match_stats.py` validates that the running goal tally matches the ESPN final score before saving. If ESPN returns wrong `homeAway` values (as happened with Canada vs Qatar), goals are **skipped entirely** rather than saved with wrong attribution. Manual add via `add_match.py` is then used.
+**Idempotent** — the qualifying record never changes, so running `update_form` repeatedly always gives the same result.
 
 ---
 
@@ -182,15 +158,21 @@ P(win) = 1 / (1 + e^(−8 × (score_A − score_B)))
 draw%  = max(0.12, 0.30 − eloGap/2800)
 ```
 
-### Bracket simulator (Bracket tab) — adjustable weights
+### Bracket simulator — `computeFullModelScore`
 
-| Preset | Elo | Form | Qual | Squad | FIFA | Exp |
-|---|---|---|---|---|---|---|
-| Default | 30% | 20% | 10% | 20% | 15% | 5% |
-| Elo pure | 70% | 20% | 10% | 0% | 0% | 0% |
-| Form heavy | 30% | 40% | 20% | 5% | 0% | 5% |
-| Squad heavy | 30% | 20% | 5% | 35% | 5% | 5% |
-| Equal | 17% | 17% | 17% | 17% | 16% | 16% |
+The interactive bracket and the Simulator tab use the same full model score to project group standings, resolve seeds, and predict knockout matches. Seed resolution:
+- **`1st X` / `2nd X`** → projected winner / runner-up of Group X (ranked by model score)
+- **`3rd X/Y/Z…`** → best-ranked projected 3rd-place team among those groups (deduplicated so no two slots claim the same team)
+
+---
+
+## Match statistics
+
+- **Source:** ESPN summary endpoint — `site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event={espnId}`
+- **Labels match ESPN exactly:** Shot Attempts · Shots on Goal · Corner Kicks · Fouls · Saves
+- **Extra stats:** xG · Yellow Cards · Red Cards · Offsides
+- **xG:** Real ESPN/Opta data where available; calculated from SOT for others
+- **espnId** stored per match in `matches.json` for re-fetching
 
 ---
 
@@ -208,9 +190,25 @@ draw%  = max(0.12, 0.30 − eloGap/2800)
 
 ---
 
+## Caching & deployment
+
+- `index.html` carries `Cache-Control: no-cache` meta tags and an auto-refreshing `<!-- build: ... -->` timestamp so browsers always load the latest data.
+- After an update, check the build stamp in **View Source** (`Ctrl+U`) to confirm you're seeing the current deploy.
+- If you still see stale data, hard-refresh: `Ctrl+Shift+R` (Windows) / `Cmd+Shift+R` (Mac).
+
+### Note on pushes
+Both you and the GitHub Action commit to `main`, so manual pushes are often rejected with "fetch first" / "non-fast-forward". Before pushing:
+```bash
+git pull origin main --no-rebase   # then resolve any conflict, keeping the Action's fresh data
+git push origin main
+```
+Tip: `git config pull.rebase false` makes pulls merge automatically.
+
+---
+
 ## GitHub secrets required
 
-Go to **Settings → Secrets → Actions**:
+**Settings → Secrets → Actions:**
 
 | Secret | Used by | Get it at |
 |---|---|---|
@@ -218,25 +216,10 @@ Go to **Settings → Secrets → Actions**:
 
 ---
 
-## Tournament snapshot (Jun 19, 2026)
-
-- **28 matches** played · MD1 complete · MD2 complete
-- **89 goals** · 3.18 per match · 64 open play · 14 headers · 6 penalties · 5 OGs
-- **Joint Top Scorers:** L. Messi (Argentina) & J. David (Canada) — 3 goals each
-- **Red cards:** 6 total across 3 matches
-  - Mexico 1 · S. Africa 2 (opener)
-  - Bosnia 1 vs Switzerland
-  - Qatar 2 vs Canada (nine-man finish)
-- **Biggest win:** Canada 6-0 Qatar — J. David hat trick · xG 4.54-0.18
-- **Mexico first R32:** First team to book knockout spot after 2 wins
-- **42 remaining fixtures** through Jul 2
-
----
-
 ## update_site.py — section reference
 
 ```bash
-python update_site.py                      # rebuild everything
+python update_site.py                      # rebuild everything (+ build stamp)
 python update_site.py --section matches    # matches array only
 python update_site.py --section goals      # goals feed only
 python update_site.py --section stats      # match stats panel only
@@ -253,23 +236,16 @@ python update_site.py --section form       # team form from qual record + WC res
 
 ```javascript
 console.table({
-  matches:    MATCHES.length,        // expect 28+
-  goals:      GOALS.length,          // expect 89+
+  matches:    MATCHES.length,
+  goals:      GOALS.length,
   matchStats: Object.keys(MATCH_STATS).length,
-  teams:      Object.keys(TEAM_DATA).length,  // expect 48
+  teams:      Object.keys(TEAM_DATA).length,
   groups:     Object.keys(GROUPS).length,     // expect 12
   upcoming:   UPCOMING_FIXTURES.length,
   predictor:  typeof buildMatchPredictor,     // 'function'
+  bracketSim: typeof buildBracketSim,         // 'function'
 })
 ```
-
----
-
-## Known issues / watchlist
-
-- **ESPN goal details:** ESPN `details[]` array sometimes returns empty for scorer info. When this happens, goal validation skips the match — manual add required via `add_match.py`. Affected: m28 Mexico vs S. Korea (L. Romo 50').
-- **Yellow card totals:** Partially estimated for matches where ESPN summary didn't return card data. Red card totals are fully verified.
-- **xG:** Verified from Opta for m12 (Sweden 1.51-0.30) and m23 (Ghana 1.31-0.73). All other matches use SOT-based estimate until ESPN summary returns real xG.
 
 ---
 
@@ -283,3 +259,5 @@ console.table({
 | Automation | GitHub Actions (free tier, 3-hour schedule) |
 | Match API | ESPN (no auth) + football-data.org (free tier) |
 | Charts | Pure SVG/HTML — no chart library |
+| Flags | flagcdn.com (size-snapped to valid widths) |
+| PDF export | jsPDF + html2canvas (CDN, deferred load) |
