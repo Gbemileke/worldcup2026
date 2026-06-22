@@ -124,17 +124,16 @@ def update_goals():
     new_goals = 'var GOALS = [\n' + ',\n'.join(entries) + '\n];'
 
     old_start = js.find('var GOALS = [')
-    # Find the closing ]; of GOALS
-    bracket_depth = 0; i = old_start
-    while i < len(js):
-        if js[i] == '[': bracket_depth += 1
-        elif js[i] == ']':
-            bracket_depth -= 1
-            if bracket_depth == 0:
-                old_end = i + 1
-                while old_end < len(js) and js[old_end] in ' \t;': old_end += 1
-                break
-        i += 1
+    if old_start == -1:
+        print("  ⚠ var GOALS not found — skipping goals update")
+        return
+    # GOALS entries are single-line objects with no nested arrays, so the
+    # first '\n];' after the start reliably marks the end of the array.
+    old_end = js.find('\n];', old_start)
+    if old_end == -1:
+        print("  ⚠ end of GOALS array not found — skipping goals update")
+        return
+    old_end += 3  # include the '\n];'
     js = js[:old_start] + new_goals + '\n\n' + js[old_end:]
 
     c = c[:js_start] + js + c[js_end:]
@@ -172,9 +171,13 @@ def update_match_stats():
     new_ms = 'var MATCH_STATS = {\n' + ',\n'.join(entries) + '\n};'
     
     old_start = js.find('var MATCH_STATS = {')
-    # Find the closing }; of MATCH_STATS (not everything until next function)
+    if old_start == -1:
+        print("  ⚠ var MATCH_STATS not found — skipping match stats update")
+        return
+    # Find the closing }; of MATCH_STATS via brace-depth (it contains nested {})
     depth = 0
     i = old_start
+    old_end = None
     while i < len(js):
         if js[i] == '{': depth += 1
         elif js[i] == '}':
@@ -186,6 +189,9 @@ def update_match_stats():
                     old_end += 1
                 break
         i += 1
+    if old_end is None:
+        print("  ⚠ end of MATCH_STATS not found — skipping match stats update")
+        return
     js = js[:old_start] + new_ms + '\n\n' + js[old_end:]
 
     c = c[:js_start] + js + c[js_end:]

@@ -1595,7 +1595,7 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 21, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 22, 2026</div>
           <div class="analytics-grid">
             <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">38 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">85 open play · 14 headers · 6 penalties · 7 OGs · 1 free kicks</div></div>
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">113</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.97 per match · 38 matches played</div></div>
@@ -2269,6 +2269,10 @@ var GOALS = [
 
 
 
+
+
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2377,7 +2381,7 @@ var TEAM_DATA = {
   'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1769.98, fifaPtsDelta:14.36, fifaRankDelta:2, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.775, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.65},
   'USA':         {flag:'us', group:'D', elo:1747, fifaPts:1709.59, fifaPtsDelta:21.06, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:1.0, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:3.36},
   'Mexico':      {flag:'mx', group:'A', elo:1857, fifaPts:1721.78, fifaPtsDelta:20.8, fifaRankDelta:3, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:1.25},
-  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:-15.19, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.45},
+  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:-15.19, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.58, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.45},
   'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1591.75, fifaPtsDelta:-20.8, fifaRankDelta:-1, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.5, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.35},
   'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1559.23, fifaPtsDelta:-11.8, fifaRankDelta:-2, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.25, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.05},
   'Austria':     {flag:'at', group:'J', elo:1818, fifaPts:1612.85, fifaPtsDelta:15.45, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:4, form:0.9, squadDepth:74, exp:4,  keyPlayer:'M. Sabitzer',  marketPct:0.45},
@@ -4339,6 +4343,10 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
+
+
 
 
 
