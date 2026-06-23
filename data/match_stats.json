@@ -2402,5 +2402,123 @@
         0
       ]
     ]
+  },
+  "m42": {
+    "home": "France",
+    "away": "Iraq",
+    "score": "3-0",
+    "date": "Jun 22 - Lincoln Financial Field",
+    "poss": [
+      55.6,
+      44.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        4
+      ],
+      [
+        "Shots on Goal",
+        5,
+        0
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        8,
+        4
+      ],
+      [
+        "Saves",
+        0,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.35,
+        0.2
+      ],
+      [
+        "Yellow Cards",
+        0,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
+  },
+  "m43": {
+    "home": "Norway",
+    "away": "Senegal",
+    "score": "3-2",
+    "date": "Jun 23 - MetLife Stadium",
+    "poss": [
+      41.7,
+      58.3
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        13,
+        16
+      ],
+      [
+        "Shots on Goal",
+        7,
+        4
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        5
+      ],
+      [
+        "Saves",
+        2,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.61,
+        1.92
+      ],
+      [
+        "Yellow Cards",
+        0,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        4
+      ]
+    ]
   }
 }
