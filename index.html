@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-06-22 20:49 UTC -->
+<!-- build: 2026-06-23 09:40 UTC -->
 
 <html lang="en">
 <head>
@@ -1600,10 +1600,10 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 22, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 23, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">41 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">97 open play · 12 headers · 6 penalties · 7 OGs · 1 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">123</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.00 per match · 41 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">44 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">108 open play · 12 headers · 6 penalties · 7 OGs · 1 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">134</div><div class="stat-label">Total Goals</div><div class="stat-sub">3.05 per match · 44 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">6</div><div class="stat-label">Penalties Scored</div><div class="stat-sub"><span class="has-tip" data-tip="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia" title="Switzerland (Embolo) vs Qatar | Germany (Havertz) vs Curacao | Austria (Arnautovic) vs Jordan | England (Kane) vs Croatia | S. Africa (Mokoena) vs Czechia | Switzerland (Xhaka) vs Bosnia">in 6 matches</span></div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">7</div><div class="stat-label">Own Goals</div><div class="stat-sub"><span class="has-tip" data-tip="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Norway (Hussein) vs Iraq | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA | Saudi Arabia (Al-Tambakti) vs Spain" title="Paraguay (Bobadilla) vs USA | Egypt (Hany) vs Belgium | Norway (Hussein) vs Iraq | Jordan (Al-Arab) vs Austria | Qatar (Manai) vs Canada | Australia (Burgess) vs USA | Saudi Arabia (Al-Tambakti) vs Spain">in 7 matches</span></div></div>
             <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">8</div><div class="stat-label">Red Cards</div><div class="stat-sub">in 3 matches</div></div>
@@ -1980,6 +1980,19 @@ function renderFlag(val, size) {
   var w = size ? (parseInt(size) || 20) : 20;
   return flagImg(val, w, Math.round(w * 0.75));
 }
+// Canonicalize scorer names so accent variants merge (Mbappé = Mbappe, etc.)
+function canonScorer(name) {
+  if (!name) return '';
+  var n = name.replace(/ OG$/, '').trim();
+  n = n.normalize ? n.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : n;
+  var ALIASES = { 'K. Mbappe': 'K. Mbappé' };
+  for (var key in ALIASES) {
+    var kStripped = key.normalize ? key.normalize('NFD').replace(/[\u0300-\u036f]/g,'') : key;
+    if (n === kStripped) return ALIASES[key];
+  }
+  return name.replace(/ OG$/, '').trim();
+}
+
 function getFlag(name) {
   var aliases = {
     'S. Africa':'South Africa','S. Korea':'South Korea',
@@ -2034,7 +2047,10 @@ var MATCHES = [
   {id:'m38', date:'Jun 21', home:'Belgium', away:'Iran', hf:'', af:'', score:'0-0', group:'G', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-iran-highlights-match-report'},
   {id:'m39', date:'Jun 21', home:'Uruguay', away:'Cape Verde', hf:'', af:'', score:'2-2', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-cabo-verde-highlights-match-report'},
   {id:'m40', date:'Jun 22', home:'New Zealand', away:'Egypt', hf:'', af:'', score:'1-3', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/new-zealand-v-egypt-highlights-match-report'},
-  {id:'m41', date:'Jun 22', home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-austria-highlights-match-report'}
+  {id:'m41', date:'Jun 22', home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-austria-highlights-match-report'},
+  {id:'m42', date:'Jun 22', home:'France', away:'Iraq', hf:'', af:'', score:'3-0', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-iraq-highlights-match-report'},
+  {id:'m43', date:'Jun 23', home:'Norway', away:'Senegal', hf:'', af:'', score:'3-2', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/norway-v-senegal-highlights-match-report'},
+  {id:'m44', date:'Jun 23', home:'Jordan', away:'Algeria', hf:'', af:'', score:'1-2', group:'', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-algeria-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -2151,7 +2167,7 @@ var GOALS = [
   {id:149, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:21, type:'open-play', phase:'Group H', score:'2-0', desc:''},
   {id:150, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:24, type:'open-play', phase:'Group H', score:'3-0', desc:''},
   {id:151, matchId:'m37', home:'Spain', away:'Saudi Arabia', hf:'', af:'', scorer:'H. Al-Tambakti', flag:'', minute:49, type:'own-goal', phase:'Group H', score:'4-0', desc:''},
-  {id:161, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'K. Pina', flag:'', minute:21, type:'free-kick', phase:'Group Stage', score:'1-0', desc:''},
+  {id:161, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'K. Pina', flag:'', minute:21, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
   {id:162, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'M. Araújo', flag:'', minute:44, type:'open-play', phase:'Group Stage', score:'1-1', desc:''},
   {id:163, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'A. Canobbio', flag:'', minute:46, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
   {id:164, matchId:'m39', home:'Uruguay', away:'Cape Verde', hf:'', af:'', scorer:'H. Varela', flag:'', minute:61, type:'open-play', phase:'Group Stage', score:'2-2', desc:''},
@@ -2160,8 +2176,25 @@ var GOALS = [
   {id:167, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'M. Salah', flag:'', minute:67, type:'open-play', phase:'Group Stage', score:'1-2', desc:''},
   {id:168, matchId:'m40', home:'New Zealand', away:'Egypt', hf:'', af:'', scorer:'Trézéguet', flag:'', minute:82, type:'open-play', phase:'Group Stage', score:'1-3', desc:''},
   {id:169, matchId:'m41', home:'Argentina', away:'Austria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:38, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
-  {id:170, matchId:'m41', home:'Argentina', away:'Austria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:91, type:'open-play', phase:'Group Stage', score:'2-0', desc:''}
+  {id:170, matchId:'m41', home:'Argentina', away:'Austria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:91, type:'open-play', phase:'Group Stage', score:'2-0', desc:''},
+  {id:171, matchId:'m42', home:'France', away:'Iraq', hf:'', af:'', scorer:'K. Mbappé', flag:'', minute:14, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
+  {id:172, matchId:'m42', home:'France', away:'Iraq', hf:'', af:'', scorer:'K. Mbappé', flag:'', minute:54, type:'open-play', phase:'Group Stage', score:'2-0', desc:''},
+  {id:173, matchId:'m42', home:'France', away:'Iraq', hf:'', af:'', scorer:'O. Dembélé', flag:'', minute:66, type:'open-play', phase:'Group Stage', score:'3-0', desc:''},
+  {id:174, matchId:'m43', home:'Norway', away:'Senegal', hf:'', af:'', scorer:'M. Holmgren Pedersen', flag:'', minute:43, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
+  {id:175, matchId:'m43', home:'Norway', away:'Senegal', hf:'', af:'', scorer:'E. Haaland', flag:'', minute:48, type:'open-play', phase:'Group Stage', score:'2-0', desc:''},
+  {id:176, matchId:'m43', home:'Norway', away:'Senegal', hf:'', af:'', scorer:'I. Sarr', flag:'', minute:53, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
+  {id:177, matchId:'m43', home:'Norway', away:'Senegal', hf:'', af:'', scorer:'E. Haaland', flag:'', minute:58, type:'open-play', phase:'Group Stage', score:'3-1', desc:''},
+  {id:178, matchId:'m43', home:'Norway', away:'Senegal', hf:'', af:'', scorer:'I. Sarr', flag:'', minute:91, type:'open-play', phase:'Group Stage', score:'3-2', desc:''},
+  {id:179, matchId:'m44', home:'Jordan', away:'Algeria', hf:'', af:'', scorer:'N. Al-Rashdan', flag:'', minute:36, type:'open-play', phase:'Group Stage', score:'1-0', desc:'Al-Rashdan opens for Jordan'},
+  {id:180, matchId:'m44', home:'Jordan', away:'Algeria', hf:'', af:'', scorer:'N. Benbouali', flag:'', minute:69, type:'open-play', phase:'Group Stage', score:'1-1', desc:''},
+  {id:181, matchId:'m44', home:'Jordan', away:'Algeria', hf:'', af:'', scorer:'A. Gouiri', flag:'', minute:82, type:'open-play', phase:'Group Stage', score:'1-2', desc:''}
 ];
+
+
+
+
+
+
 
 
 
@@ -2310,9 +2343,6 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jun 22', home:'France', away:'Iraq', time:'3PM CST', group:'STAGE'},
-  {date:'Jun 22', home:'Norway', away:'Senegal', time:'6PM CST', group:'STAGE'},
-  {date:'Jun 22', home:'Jordan', away:'Algeria', time:'9PM CST', group:'STAGE'},
   {date:'Jun 23', home:'Portugal', away:'Uzbekistan', time:'11AM CST', group:'STAGE'},
   {date:'Jun 23', home:'England', away:'Ghana', time:'2PM CST', group:'STAGE'},
   {date:'Jun 23', home:'Panama', away:'Croatia', time:'5PM CST', group:'STAGE'},
@@ -2385,7 +2415,10 @@ var MATCH_STATS = {
   m38: {home:'Belgium', away:'Iran', hf:'', af:'', score:'0-0', date:'Jun 21 - SoFi Stadium, Inglewood', poss:[70, 30], stats:[["Shot Attempts", 21, 7], ["Shots on Goal", 7, 3], ["Corner Kicks", 9, 2], ["Fouls", 8, 12], ["Saves", 3, 7]], xtra:[["xG", 1.68, 0.53], ["Yellow Cards", 1, 1], ["Red Cards", 1, 0], ["Offsides", 1, 0]]},
   m39: {home:'Uruguay', away:'Cape Verde', hf:'', af:'', score:'2-2', date:'Jun 21 - Hard Rock Stadium', poss:[65.2, 34.8], stats:[["Shot Attempts", 17, 12], ["Shots on Goal", 2, 4], ["Corner Kicks", 0, 0], ["Fouls", 11, 4], ["Saves", 2, 0]], xtra:[["xG", 1.41, 1.72], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
   m40: {home:'New Zealand', away:'Egypt', hf:'', af:'', score:'1-3', date:'Jun 22 - BC Place', poss:[44.3, 55.7], stats:[["Shot Attempts", 11, 19], ["Shots on Goal", 5, 7], ["Corner Kicks", 0, 0], ["Fouls", 14, 8], ["Saves", 4, 4]], xtra:[["xG", 1.95, 2.91], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m41: {home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', date:'Jun 22 - AT&T Stadium', poss:[53.6, 46.4], stats:[["Shot Attempts", 12, 6], ["Shots on Goal", 5, 1], ["Corner Kicks", 0, 0], ["Fouls", 13, 13], ["Saves", 1, 2]], xtra:[["xG", 2.0, 0.58], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 0]]}
+  m41: {home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', date:'Jun 22 - AT&T Stadium', poss:[53.6, 46.4], stats:[["Shot Attempts", 12, 6], ["Shots on Goal", 5, 1], ["Corner Kicks", 0, 0], ["Fouls", 13, 13], ["Saves", 1, 2]], xtra:[["xG", 2.0, 0.58], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
+  m42: {home:'France', away:'Iraq', hf:'', af:'', score:'3-0', date:'Jun 22 - Lincoln Financial Field', poss:[55.6, 44.4], stats:[["Shot Attempts", 19, 4], ["Shots on Goal", 5, 0], ["Corner Kicks", 0, 0], ["Fouls", 8, 4], ["Saves", 0, 2]], xtra:[["xG", 2.35, 0.2], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m43: {home:'Norway', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jun 23 - MetLife Stadium', poss:[41.7, 58.3], stats:[["Shot Attempts", 13, 16], ["Shots on Goal", 7, 4], ["Corner Kicks", 0, 0], ["Fouls", 13, 5], ["Saves", 2, 3]], xtra:[["xG", 2.61, 1.92], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
+  m44: {home:'Jordan', away:'Algeria', hf:'', af:'', score:'1-2', date:'Jun 23 - Levi\'s Stadium', poss:[27.9, 72.1], stats:[["Shot Attempts", 8, 17], ["Shots on Goal", 4, 8], ["Corner Kicks", 0, 0], ["Fouls", 11, 6], ["Saves", 6, 3]], xtra:[["xG", 1.52, 3.09], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]}
 };
 
 // ── Simulation state ─────────────────────────────────────
@@ -2394,51 +2427,51 @@ var SIM_COUNT = 0;
 
 // ── Team data ────────────────────────────────────────
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2172, fifaPts:1864.32, fifaPtsDelta:-18.68, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.81, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:13.85},
-  'Argentina':   {flag:'ar', group:'J', elo:2113, fifaPts:1901.94, fifaPtsDelta:11.8, fifaRankDelta:1, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:13.15},
+  'Spain':       {flag:'es', group:'H', elo:2172, fifaPts:1864.32, fifaPtsDelta:8.29, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.81, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:13.85},
+  'Argentina':   {flag:'ar', group:'J', elo:2113, fifaPts:1901.94, fifaPtsDelta:12.87, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:14.35},
   'France':      {flag:'fr', group:'I', elo:2062, fifaPts:1887.11, fifaPtsDelta:16.41, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:19.75},
-  'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1847.68, fifaPtsDelta:19.66, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:1.0, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:12.55},
-  'Brazil':      {flag:'br', group:'C', elo:1978, fifaPts:1772.01, fifaPtsDelta:6.67, fifaRankDelta:1, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.794, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:5.55},
-  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1755.09, fifaPtsDelta:-12.76, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.68, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:6.75},
-  'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1725.76, fifaPtsDelta:14.25, fifaRankDelta:2, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.289, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.55},
-  'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1764.39, fifaPtsDelta:-4.37, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.77, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:5.45},
-  'Croatia':     {flag:'hr', group:'L', elo:1912, fifaPts:1695.21, fifaPtsDelta:-19.66, fifaRankDelta:-3, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.24, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.55},
-  'Norway':      {flag:'no', group:'I', elo:1922, fifaPts:1595.16, fifaPtsDelta:19.75, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.3, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:2.25},
-  'Germany':     {flag:'de', group:'E', elo:1939, fifaPts:1760.45, fifaPtsDelta:7.77, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:1.0, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:5.65},
-  'Switzerland': {flag:'ch', group:'B', elo:1897, fifaPts:1654.93, fifaPtsDelta:14.01, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.75, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.65},
-  'Ecuador':     {flag:'ec', group:'E', elo:1933, fifaPts:1570.77, fifaPtsDelta:-27.75, fifaRankDelta:-5, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.361, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.15},
-  'Uruguay':     {flag:'uy', group:'H', elo:1890, fifaPts:1649.96, fifaPtsDelta:-11.12, fifaRankDelta:-2, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.556, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.15},
-  'Turkey':      {flag:'tr', group:'D', elo:1880, fifaPts:1550.13, fifaPtsDelta:-29.34, fifaRankDelta:-6, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.28, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
-  'Japan':       {flag:'jp', group:'F', elo:1910, fifaPts:1681.27, fifaPtsDelta:4.37, fifaRankDelta:1, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.8, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:2.15},
-  'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1667.66, fifaPtsDelta:-16.41, fifaRankDelta:0, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.275, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.55},
-  'Belgium':     {flag:'be', group:'G', elo:1850, fifaPts:1727.88, fifaPtsDelta:-8.3, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.62, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:1.05},
-  'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1769.98, fifaPtsDelta:14.36, fifaRankDelta:0, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.775, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.05},
+  'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1847.68, fifaPtsDelta:19.66, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:1.0, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:12.35},
+  'Brazil':      {flag:'br', group:'C', elo:1978, fifaPts:1772.01, fifaPtsDelta:6.67, fifaRankDelta:1, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.794, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:5.05},
+  'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1755.09, fifaPtsDelta:-12.76, fifaRankDelta:-2, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.68, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:6.75},
+  'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1725.76, fifaPtsDelta:13.16, fifaRankDelta:1, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.289, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.45},
+  'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1764.39, fifaPtsDelta:15.19, fifaRankDelta:2, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.77, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:4.75},
+  'Croatia':     {flag:'hr', group:'L', elo:1912, fifaPts:1695.21, fifaPtsDelta:-19.66, fifaRankDelta:-2, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.24, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.45},
+  'Norway':      {flag:'no', group:'I', elo:1922, fifaPts:1595.16, fifaPtsDelta:17.97, fifaRankDelta:4, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.6, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:2.85},
+  'Germany':     {flag:'de', group:'E', elo:1939, fifaPts:1760.45, fifaPtsDelta:16.91, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:1.0, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:5.65},
+  'Switzerland': {flag:'ch', group:'B', elo:1897, fifaPts:1654.93, fifaPtsDelta:14.01, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.75, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.65},
+  'Ecuador':     {flag:'ec', group:'E', elo:1933, fifaPts:1570.77, fifaPtsDelta:-27.75, fifaRankDelta:-7, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.361, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.15},
+  'Uruguay':     {flag:'uy', group:'H', elo:1890, fifaPts:1649.96, fifaPtsDelta:-11.99, fifaRankDelta:-1, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.556, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.15},
+  'Turkey':      {flag:'tr', group:'D', elo:1880, fifaPts:1550.13, fifaPtsDelta:-29.34, fifaRankDelta:-4, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.28, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
+  'Japan':       {flag:'jp', group:'F', elo:1910, fifaPts:1681.27, fifaPtsDelta:15.32, fifaRankDelta:1, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.8, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:1.85},
+  'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1667.66, fifaPtsDelta:-16.41, fifaRankDelta:-1, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.275, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.25},
+  'Belgium':     {flag:'be', group:'G', elo:1850, fifaPts:1727.88, fifaPtsDelta:-6.06, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.62, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:1.25},
+  'Morocco':     {flag:'ma', group:'C', elo:1806, fifaPts:1769.98, fifaPtsDelta:14.36, fifaRankDelta:2, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.775, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:1.75},
   'USA':         {flag:'us', group:'D', elo:1747, fifaPts:1709.59, fifaPtsDelta:21.06, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:1.0, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:3.36},
-  'Mexico':      {flag:'mx', group:'A', elo:1857, fifaPts:1721.78, fifaPtsDelta:20.8, fifaRankDelta:3, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:1.25},
-  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:23.4, fifaRankDelta:1, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.25},
-  'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1591.75, fifaPtsDelta:-20.8, fifaRankDelta:-1, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.5, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.25},
-  'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1559.23, fifaPtsDelta:-11.8, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.25, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.05},
-  'Austria':     {flag:'at', group:'J', elo:1818, fifaPts:1599.98, fifaPtsDelta:15.45, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:4, form:0.6, squadDepth:74, exp:4,  keyPlayer:'M. Sabitzer',  marketPct:0.25},
-  'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1551.71, fifaPtsDelta:27.75, fifaRankDelta:2, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.35},
-  'Scotland':    {flag:'gb-sct', group:'C', elo:1645, fifaPts:1504.41, fifaPtsDelta:-14.36, fifaRankDelta:-2, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.58, squadDepth:65, exp:1, keyPlayer:'J. McGinn', marketPct:0.15},
-  'Australia':   {flag:'au', group:'D', elo:1774, fifaPts:1584.54, fifaPtsDelta:-21.06, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:16,qualGA:9, form:0.5, squadDepth:63, exp:5,  keyPlayer:'M. Leckie',    marketPct:0.25},
-  'Canada':      {flag:'ca', group:'B', elo:1805, fifaPts:1572.13, fifaPtsDelta:20.63, fifaRankDelta:4, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:3, form:0.75, squadDepth:65, exp:2,  keyPlayer:'A. Davies',    marketPct:0.35},
-  'Iran':        {flag:'ir', group:'G', elo:1755, fifaPts:1611.18, fifaPtsDelta:-14.46, fifaRankDelta:-2, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:7, form:0.6, squadDepth:59, exp:6,  keyPlayer:'M. Taremi',    marketPct:0.05},
-  'Saudi Arabia':{flag:'sa', group:'H', elo:1635, fifaPts:1426.71, fifaPtsDelta:11.12, fifaRankDelta:1, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.45, squadDepth:57, exp:6,  keyPlayer:'S. Al-Dawsari',marketPct:0.05},
+  'Mexico':      {flag:'mx', group:'A', elo:1857, fifaPts:1721.78, fifaPtsDelta:20.8, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:1.25},
+  'Sweden':      {flag:'se', group:'F', elo:1660, fifaPts:1518.0, fifaPtsDelta:-15.19, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.25},
+  'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1591.75, fifaPtsDelta:-20.8, fifaRankDelta:-3, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.5, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.25},
+  'Algeria':     {flag:'dz', group:'J', elo:1728, fifaPts:1575.63, fifaPtsDelta:16.4, fifaRankDelta:2, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.55, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.05},
+  'Austria':     {flag:'at', group:'J', elo:1818, fifaPts:1599.98, fifaPtsDelta:-12.87, fifaRankDelta:-1, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:4, form:0.6, squadDepth:74, exp:4,  keyPlayer:'M. Sabitzer',  marketPct:0.25},
+  'Ivory Coast': {flag:'ci', group:'E', elo:1650, fifaPts:1551.71, fifaPtsDelta:-16.91, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.5, squadDepth:72, exp:4,  keyPlayer:'S. Diomande',  marketPct:0.35},
+  'Scotland':    {flag:'gb-sct', group:'C', elo:1645, fifaPts:1504.41, fifaPtsDelta:-14.36, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.58, squadDepth:65, exp:1, keyPlayer:'J. McGinn', marketPct:0.15},
+  'Australia':   {flag:'au', group:'D', elo:1774, fifaPts:1584.54, fifaPtsDelta:-21.06, fifaRankDelta:-4, qualW:4,qualD:2,qualL:2,qualGF:16,qualGA:9, form:0.5, squadDepth:63, exp:5,  keyPlayer:'M. Leckie',    marketPct:0.25},
+  'Canada':      {flag:'ca', group:'B', elo:1805, fifaPts:1572.13, fifaPtsDelta:20.63, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:14,qualGA:3, form:0.75, squadDepth:65, exp:2,  keyPlayer:'A. Davies',    marketPct:0.35},
+  'Iran':        {flag:'ir', group:'G', elo:1755, fifaPts:1611.18, fifaPtsDelta:6.06, fifaRankDelta:0, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:7, form:0.6, squadDepth:59, exp:6,  keyPlayer:'M. Taremi',    marketPct:0.05},
+  'Saudi Arabia':{flag:'sa', group:'H', elo:1635, fifaPts:1426.71, fifaPtsDelta:-8.29, fifaRankDelta:-1, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.45, squadDepth:57, exp:6,  keyPlayer:'S. Al-Dawsari',marketPct:0.05},
   'South Africa': {flag:'za', group:'A', elo:1500, fifaPts:1418.22, fifaPtsDelta:3.34, fifaRankDelta:0, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:11,form:0.25, squadDepth:50, exp:3,  keyPlayer:'P. Tau',       marketPct:0.05},
   'Czechia':      {flag:'cz', group:'A', elo:1731, fifaPts:1481.48, fifaPtsDelta:-3.34, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:9, form:0.25, squadDepth:70, exp:6,  keyPlayer:'T. Soucek',    marketPct:0.14},
-  'Qatar':        {flag:'qa', group:'B', elo:1550, fifaPts:1438.82, fifaPtsDelta:-20.63, fifaRankDelta:-2, qualW:3,qualD:1,qualL:4,qualGF:12,qualGA:14,form:0.425, squadDepth:52, exp:2,  keyPlayer:'A. Afif',      marketPct:0.05},
-  'Bosnia':       {flag:'ba', group:'B', elo:1580, fifaPts:1381.19, fifaPtsDelta:-14.01, fifaRankDelta:-1, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.39, squadDepth:67, exp:1,  keyPlayer:'E. Dzeko',     marketPct:0.05},
-  'Haiti':        {flag:'ht', group:'C', elo:1550, fifaPts:1271.0, fifaPtsDelta:-6.67, fifaRankDelta:0, qualW:2,qualD:2,qualL:4,qualGF:8, qualGA:14,form:0.244, squadDepth:42, exp:1,  keyPlayer:'N. Geffrard',  marketPct:0.0},
+  'Qatar':        {flag:'qa', group:'B', elo:1550, fifaPts:1438.82, fifaPtsDelta:-20.63, fifaRankDelta:0, qualW:3,qualD:1,qualL:4,qualGF:12,qualGA:14,form:0.425, squadDepth:52, exp:2,  keyPlayer:'A. Afif',      marketPct:0.05},
+  'Bosnia':       {flag:'ba', group:'B', elo:1580, fifaPts:1381.19, fifaPtsDelta:-14.01, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.39, squadDepth:67, exp:1,  keyPlayer:'E. Dzeko',     marketPct:0.05},
+  'Haiti':        {flag:'ht', group:'C', elo:1550, fifaPts:1271.0, fifaPtsDelta:-6.67, fifaRankDelta:-1, qualW:2,qualD:2,qualL:4,qualGF:8, qualGA:14,form:0.244, squadDepth:42, exp:1,  keyPlayer:'N. Geffrard',  marketPct:0.0},
   'Paraguay':     {flag:'py', group:'D', elo:1833, fifaPts:1517.39, fifaPtsDelta:29.34, fifaRankDelta:2, qualW:4,qualD:3,qualL:11,qualGF:15,qualGA:32,form:0.533, squadDepth:55, exp:7,  keyPlayer:'M. Almiron',   marketPct:0.15},
-  'Curacao':      {flag:'cw', group:'E', elo:1500, fifaPts:1287.0, fifaPtsDelta:-7.77, fifaRankDelta:-1, qualW:2,qualD:1,qualL:5,qualGF:7, qualGA:16,form:0.35, squadDepth:38, exp:1,  keyPlayer:'J. Antonisse', marketPct:0.05},
-  'Tunisia':      {flag:'tn', group:'F', elo:1630, fifaPts:1437.69, fifaPtsDelta:-23.4, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.225, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.0},
-  'Egypt':        {flag:'eg', group:'G', elo:1659, fifaPts:1583.37, fifaPtsDelta:8.3, fifaRankDelta:1, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.7, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.25},
-  'New Zealand':  {flag:'nz', group:'G', elo:1500, fifaPts:1277.34, fifaPtsDelta:14.46, fifaRankDelta:1, qualW:3,qualD:1,qualL:2,qualGF:12,qualGA:8, form:0.383, squadDepth:44, exp:4,  keyPlayer:'C. Wood',      marketPct:0.05},
-  'Cape Verde':   {flag:'cv', group:'H', elo:1500, fifaPts:1401.78, fifaPtsDelta:18.68, fifaRankDelta:3, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.525, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.05},
-  'Iraq':         {flag:'iq', group:'I', elo:1600, fifaPts:1408.56, fifaPtsDelta:-19.75, fifaRankDelta:-3, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.85, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.05},
-  'Jordan':       {flag:'jo', group:'J', elo:1689, fifaPts:1372.29, fifaPtsDelta:-15.45, fifaRankDelta:-2, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.225, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.05},
-  'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1431.32, fifaPtsDelta:-14.25, fifaRankDelta:-1, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.85, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
+  'Curacao':      {flag:'cw', group:'E', elo:1500, fifaPts:1287.0, fifaPtsDelta:-7.77, fifaRankDelta:0, qualW:2,qualD:1,qualL:5,qualGF:7, qualGA:16,form:0.35, squadDepth:38, exp:1,  keyPlayer:'J. Antonisse', marketPct:0.05},
+  'Tunisia':      {flag:'tn', group:'F', elo:1630, fifaPts:1437.69, fifaPtsDelta:-15.32, fifaRankDelta:-1, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.225, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.0},
+  'Egypt':        {flag:'eg', group:'G', elo:1659, fifaPts:1583.37, fifaPtsDelta:12.7, fifaRankDelta:3, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.7, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.25},
+  'New Zealand':  {flag:'nz', group:'G', elo:1500, fifaPts:1277.34, fifaPtsDelta:-12.7, fifaRankDelta:-1, qualW:3,qualD:1,qualL:2,qualGF:12,qualGA:8, form:0.383, squadDepth:44, exp:4,  keyPlayer:'C. Wood',      marketPct:0.05},
+  'Cape Verde':   {flag:'cv', group:'H', elo:1500, fifaPts:1401.78, fifaPtsDelta:11.99, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.525, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.05},
+  'Iraq':         {flag:'iq', group:'I', elo:1600, fifaPts:1408.56, fifaPtsDelta:-17.97, fifaRankDelta:-1, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.55, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.05},
+  'Jordan':       {flag:'jo', group:'J', elo:1689, fifaPts:1355.89, fifaPtsDelta:-16.4, fifaRankDelta:0, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.225, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.0},
+  'Uzbekistan':   {flag:'uz', group:'K', elo:1728, fifaPts:1431.32, fifaPtsDelta:-13.16, fifaRankDelta:-2, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.85, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
   'DR Congo':     {flag:'cd', group:'K', elo:1550, fifaPts:1487.19, fifaPtsDelta:12.76, fifaRankDelta:1, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.55, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.15},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1505.33, fifaPtsDelta:-33.83, fifaRankDelta:-2, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.26, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.05},
   'Ghana':        {flag:'gh', group:'L', elo:1620, fifaPts:1380.71, fifaPtsDelta:33.83, fifaRankDelta:1, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.85, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.15},
@@ -2595,7 +2628,7 @@ function renderGoalsList() {
       return flagImg(getFlag(team),16,12);
     })() + '</div>' +
         '<div class="scorer-info">' +
-          '<div class="scorer-name">' + g.scorer + '</div>' +
+          '<div class="scorer-name">' + canonScorer(g.scorer) + '</div>' +
           '<div class="scorer-type">' +
             '<span class="type-badge ' + g.type + '">' + g.type.replace('-', ' ') + '</span>' +
             '<span style="font-size:9px;color:var(--muted)">' + g.phase + '</span>' +
@@ -2638,7 +2671,7 @@ function selectGoal(id) {
   var ai=af?' '+flagImg(af,28,21):'';
   return hi+g.home+' <span class="hero-score">'+g.score+'</span> '+g.away+ai;
 })();
-  document.getElementById('heroScorer').textContent = g.scorer;
+  document.getElementById('heroScorer').textContent = canonScorer(g.scorer);
   // Determine which team the scorer belongs to
   var prevGoals2 = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
   var ps2  = prevGoals2.length ? prevGoals2[prevGoals2.length-1].score : '0-0';
@@ -2772,7 +2805,7 @@ function buildScorers() {
   var counts = {};
   GOALS.forEach(function(g) {
     if (g.type === 'own-goal') return;
-    var name = (g.scorer || '').replace(/ OG$/, '').trim();
+    var name = canonScorer(g.scorer || '');
     // Filter out placeholder entries added when API returned no goals
     if (!name || name === 'See FIFA.com' || name === 'Unknown') return;
     if (!counts[name]) {
@@ -3585,7 +3618,7 @@ function buildSnapshotStats() {
   // ── Own goals ───────────────────────────────────────────────────────────
   var ownGoals  = GOALS.filter(function(g){ return g.type === 'own-goal'; });
   var ogTip = ownGoals.map(function(g, idx){
-    var name = g.scorer.replace(/ OG$/,'').split('.').pop().trim();
+    var name = canonScorer(g.scorer).split('.').pop().trim();
     var prevGoals = GOALS.filter(function(x){ return x.matchId===g.matchId && x.minute<g.minute; });
     var prevScore = prevGoals.length ? prevGoals[prevGoals.length-1].score : '0-0';
     var ph  = parseInt(prevScore.split('-')[0]||0);
@@ -3605,7 +3638,7 @@ function buildSnapshotStats() {
   // ── Penalties ──────────────────────────────────────────────────────────
   var pens = GOALS.filter(function(g){ return g.type === 'penalty'; });
   var penTip = pens.map(function(g){
-    var name   = g.scorer.split('.').pop().trim();
+    var name   = canonScorer(g.scorer).split('.').pop().trim();
     var parts  = g.score.split('-');
     var h = parseInt(parts[0]||0), a = parseInt(parts[1]||0);
     var country  = h > a ? g.home : g.away;
@@ -3636,7 +3669,7 @@ function buildSnapshotStats() {
   var scorerMap = {};
   GOALS.forEach(function(g) {
     if (g.type === 'own-goal') return;
-    var name = g.scorer.replace(/ OG$/,'').trim();
+    var name = canonScorer(g.scorer);
     scorerMap[name] = (scorerMap[name] || 0) + 1;
   });
   var topCount = 0;
@@ -4380,6 +4413,12 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
+
+
+
+
 
 
 

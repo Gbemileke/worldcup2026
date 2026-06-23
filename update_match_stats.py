@@ -79,10 +79,28 @@ def get_stat(stats, *names):
                 except: pass
     return None
 
+import unicodedata
+
+# Players ESPN spells inconsistently — map any accent variant to ONE canonical form.
+# Add new entries here whenever a player appears split across the top-scorer list.
+SCORER_ALIASES = {
+    'K. Mbappe': 'K. Mbappé',
+}
+
+def _strip_accents(s):
+    return ''.join(ch for ch in unicodedata.normalize('NFD', s)
+                   if unicodedata.category(ch) != 'Mn')
+
 def scorer_fmt(raw):
     if not raw: return ''
     parts = raw.strip().split()
-    return f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts)>1 else raw.strip()
+    name = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts)>1 else raw.strip()
+    # Canonicalize: if the accent-stripped name matches an alias key, use the canonical form
+    stripped = _strip_accents(name)
+    for key, canon in SCORER_ALIASES.items():
+        if stripped == _strip_accents(key):
+            return canon
+    return name
 
 def parse_minute(clock_str):
     s = str(clock_str or '').replace("'",'').strip()
