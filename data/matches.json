@@ -493,5 +493,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-uzbekistan-highlights-match-report",
     "espnId": "760461"
+  },
+  {
+    "id": "m46",
+    "date": "Jun 23",
+    "home": "England",
+    "away": "Ghana",
+    "score": "0-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-ghana-highlights-match-report",
+    "espnId": "760458"
   }
 ]
