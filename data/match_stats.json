@@ -2579,5 +2579,64 @@
         0
       ]
     ]
+  },
+  "m45": {
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "score": "5-0",
+    "date": "Jun 23 - NRG Stadium",
+    "poss": [
+      66,
+      34
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        17,
+        7
+      ],
+      [
+        "Shots on Goal",
+        9,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        15
+      ],
+      [
+        "Saves",
+        2,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.37,
+        0.91
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        2
+      ]
+    ]
   }
 }

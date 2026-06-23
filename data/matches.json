@@ -482,5 +482,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-algeria-highlights-match-report",
     "espnId": "760455"
+  },
+  {
+    "id": "m45",
+    "date": "Jun 23",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "score": "5-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-uzbekistan-highlights-match-report",
+    "espnId": "760461"
   }
 ]

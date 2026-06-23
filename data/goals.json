@@ -1606,5 +1606,65 @@
     "phase": "Group Stage",
     "score": "1-2",
     "desc": ""
+  },
+  {
+    "id": 182,
+    "matchId": "m45",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "scorer": "C. Ronaldo",
+    "minute": 6,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 183,
+    "matchId": "m45",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "scorer": "N. Mendes",
+    "minute": 17,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 184,
+    "matchId": "m45",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "scorer": "C. Ronaldo",
+    "minute": 39,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-0",
+    "desc": ""
+  },
+  {
+    "id": 185,
+    "matchId": "m45",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "scorer": "A. Nematov",
+    "minute": 60,
+    "type": "own-goal",
+    "phase": "Group Stage",
+    "score": "4-0",
+    "desc": ""
+  },
+  {
+    "id": 186,
+    "matchId": "m45",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "scorer": "R. Le\u00e3o",
+    "minute": 87,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "5-0",
+    "desc": ""
   }
 ]
