@@ -471,5 +471,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/norway-v-senegal-highlights-match-report",
     "espnId": "760454"
+  },
+  {
+    "id": "m44",
+    "date": "Jun 23",
+    "home": "Jordan",
+    "away": "Algeria",
+    "score": "1-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-algeria-highlights-match-report",
+    "espnId": "760455"
   }
 ]

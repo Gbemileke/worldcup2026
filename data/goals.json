@@ -1570,5 +1570,41 @@
     "phase": "Group Stage",
     "score": "3-2",
     "desc": ""
+  },
+  {
+    "id": 179,
+    "matchId": "m44",
+    "home": "Jordan",
+    "away": "Algeria",
+    "scorer": "N. Al-Rashdan",
+    "minute": 36,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 180,
+    "matchId": "m44",
+    "home": "Jordan",
+    "away": "Algeria",
+    "scorer": "N. Benbouali",
+    "minute": 69,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 181,
+    "matchId": "m44",
+    "home": "Jordan",
+    "away": "Algeria",
+    "scorer": "A. Gouiri",
+    "minute": 82,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-2",
+    "desc": ""
   }
 ]
