@@ -751,14 +751,14 @@
   .top4-key span  { color:var(--gold); font-weight:700; }
 
   /* ── Groups tab ───────────────────────────────── */
-  .groups-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .groups-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
 
   .group-card {
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border2);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
   }
 
   .group-header {
@@ -776,10 +776,13 @@
   .gtr { padding: 8px 14px; border-bottom: 1px solid var(--border); }
   .gtr:last-child { border-bottom: none; }
 
-  .gtr-top { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+  
   .gtr-flag { display: none; }
-  .gtr-name { font-size:12px; font-weight:700; color:var(--text); flex:1; }
-  .gtr-predict { font-size:10px; font-weight:800; color:var(--gold); }
+  
+  
+  
+  
+  
 
   .comp-bars { display:flex; flex-direction:column; gap:3px; }
   .comp-row  { display:flex; align-items:center; gap:5px; }
@@ -946,10 +949,38 @@
   .finalist-lbl{font-size:9px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 
   /* Group card headings */
-  .group-card-hd{background:var(--header-bg);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+  .group-card-hd{background:var(--header-bg);color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
   .group-card-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px}
   .group-card-sub{font-size:9px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.3px}
-  .group-team-row{padding:8px 14px;border-bottom:1px solid var(--border)}
+  .group-team-row{padding:7px 12px;display:flex;flex-direction:column;gap:4px;border-bottom:1px solid var(--border);position:relative}
+  .group-team-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+  .group-team-row.q1::before{background:var(--gold)}
+  .group-team-row.q2::before{background:var(--blue)}
+  .group-team-row.out::before{background:var(--border2)}
+  .group-team-row:last-child{border-bottom:none}
+  .gtr-line1{display:flex;align-items:center;gap:8px}
+  .gtr-rank{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+  .gtr-rank.q1{background:var(--gold-bg);color:#854F0B}
+  .gtr-rank.q2{background:var(--blue-bg);color:#185FA5}
+  .gtr-rank.out{background:var(--surface2);color:var(--muted)}
+  .gtr-name{font-size:13px;font-weight:700;color:var(--text);flex:1}
+  .gtr-elo{font-size:9px;color:var(--muted);font-weight:400}
+  .gtr-pred{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.3px}
+  .gtr-pred.top{background:var(--green-bg);color:#3B6D11}
+  .gtr-pred.qual{background:var(--blue-bg);color:#185FA5}
+  .gtr-pred.outp{background:var(--red-bg);color:#A32D2D}
+  .gtr-pts{font-size:14px;font-weight:700;color:var(--text);min-width:44px;text-align:right}
+  .gtr-pts span{font-size:9px;color:var(--muted);font-weight:400}
+  .gtr-stats{display:flex;align-items:center;justify-content:space-between;padding-left:23px;gap:8px}
+  .gtr-rec{font-size:10px;color:var(--muted);white-space:nowrap}
+  .gtr-rec b{font-weight:700;color:var(--text)}
+  .gtr-rec b{font-weight:700;color:var(--text)}
+  .gtr-legend{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:4px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}
+  .gtr-leg{display:flex;align-items:center;gap:3px;font-size:8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .gtr-dot{width:6px;height:6px;border-radius:50%}
+  .gtr-probs{display:flex;gap:8px;flex-shrink:0}
+  .gtr-prob{font-size:11px;font-weight:700}
+  
   .group-team-row:last-child{border-bottom:none}
 
   /* Weight/settings bars */
@@ -1020,9 +1051,9 @@
   .gl-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:var(--muted)}
   .gl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
   .groups-source{font-size:10px;color:var(--muted);margin-top:12px;font-style:italic}
-  .gtr-win{color:var(--green);font-weight:700;font-size:10px}
-  .gtr-out{color:var(--red);font-weight:700;font-size:10px}
-  .gtr-qualify{color:var(--blue);font-weight:700;font-size:10px}
+  
+  
+  
   .prob-mid{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
 
   /* Settings panel */
@@ -1065,17 +1096,10 @@
 
   .analytics-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
 
-  .gtr-probs{display:flex;gap:12px;margin-top:5px;padding:5px 0}
-  .gtr-prob-item{display:flex;align-items:center;gap:4px}
-  .gtr-prob-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
-  .gtr-prob-val{font-size:12px;font-weight:800}
-  .gtr-top{display:flex;align-items:center;gap:6px;margin-bottom:2px}
-  .gtr-name{font-size:12px;font-weight:700;color:var(--text);flex:1}
-  .gtr-predict{font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px}
-  .gtr-win{background:var(--gold-bg);color:var(--gold)}
-  .gtr-qualify{background:var(--blue-bg);color:var(--blue)}
-  .gtr-out{background:#f5f5f5;color:var(--muted)}
-  .group-team-row{padding:9px 14px;border-bottom:1px solid var(--border)}
+  
+  
+  
+  
   .group-team-row:last-child{border-bottom:none}
 
   /* ═══════════════════════════════════════════════════════
@@ -1089,7 +1113,10 @@
     border-radius:8px; padding:8px 12px; font-size:11px; color:var(--text); line-height:1.9;
     box-shadow:var(--shadow-lg); pointer-events:none; z-index:9999;
     max-width:260px; display:none; }
-@media (max-width: 1100px) {
+@media (max-width: 1400px) {
+    .groups-grid { grid-template-columns:repeat(3,1fr); }
+  }
+  @media (max-width: 1100px) {
     .top4-grid { grid-template-columns:repeat(2,1fr); }
     .groups-grid { grid-template-columns:repeat(2,1fr); }
     .team-grid          { grid-template-columns: repeat(3, 1fr); }
@@ -1251,8 +1278,6 @@
     .group-team-row   { padding: 6px 10px; }
     .gtr-name         { font-size: 11px; }
     .gtr-probs        { gap: 8px; }
-    .gtr-prob-lbl     { font-size: 9px; }
-    .gtr-prob-val     { font-size: 11px; }
 
     /* Goal feed */
     .goal-card        { padding: 8px 10px; }
@@ -3403,6 +3428,87 @@ function modelGroupWinScore(teamName) {
   );
 }
 
+// ── Group standings from played matches (Total Points + position) ─────────────
+// Returns { teamName: {pts, w, d, l, gf, ga, gd, played} } for one group.
+function computeGroupStandings(groupName) {
+  var table = {};
+  if (typeof MATCHES === 'undefined') return table;
+  // Build the canonical team list for THIS group from GROUPS (the source of truth)
+  var groupTeams = [];
+  if (typeof GROUPS !== 'undefined') {
+    for (var gk in GROUPS) {
+      if (GROUPS[gk] && GROUPS[gk].name === groupName && GROUPS[gk].teams) {
+        groupTeams = GROUPS[gk].teams.map(function(t){ return t.name; });
+        break;
+      }
+    }
+  }
+  // Map a MATCHES team name to its GROUPS canonical name.
+  // Handles abbreviations like 'S. Korea'→'South Korea', 'S. Africa'→'South Africa',
+  // 'U. Arab Emirates'→'United Arab Emirates', etc. — by matching the distinctive word.
+  function canonTeam(n) {
+    if (!n) return n;
+    var manual = {'S. Korea':'South Korea','S. Africa':'South Africa',
+                  'N. Macedonia':'North Macedonia','Bosnia':'Bosnia and Herzegovina',
+                  'U. Arab Emirates':'United Arab Emirates','Rep. Ireland':'Republic of Ireland'};
+    if (manual[n]) { if (groupTeams.indexOf(manual[n]) >= 0) return manual[n]; }
+    // Exact match first
+    if (groupTeams.indexOf(n) >= 0) return n;
+    // Abbreviated form 'X. Word' → find a GROUPS team ending in that Word
+    var mAbbr = n.match(/^[A-Z]\.\s*(.+)$/);
+    if (mAbbr) {
+      var tail = mAbbr[1].toLowerCase();
+      for (var i = 0; i < groupTeams.length; i++) {
+        if (groupTeams[i].toLowerCase().indexOf(tail) >= 0) return groupTeams[i];
+      }
+    }
+    // Last-resort: case-insensitive substring either direction
+    for (var j = 0; j < groupTeams.length; j++) {
+      var g = groupTeams[j].toLowerCase(), nn = n.toLowerCase();
+      if (g === nn || g.indexOf(nn) >= 0 || nn.indexOf(g) >= 0) return groupTeams[j];
+    }
+    return n;
+  }
+  MATCHES.forEach(function(m) {
+    if (m.group !== groupName) return;
+    if (!m.score || m.score.indexOf('-') < 0) return;
+    var parts = m.score.split('-');
+    var hg = parseInt(parts[0], 10), ag = parseInt(parts[1], 10);
+    if (isNaN(hg) || isNaN(ag)) return;
+    var H = canonTeam(m.home), A = canonTeam(m.away);
+    if (!table[H]) table[H] = {pts:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,played:0};
+    if (!table[A]) table[A] = {pts:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,played:0};
+    table[H].played++; table[A].played++;
+    table[H].gf += hg; table[H].ga += ag;
+    table[A].gf += ag; table[A].ga += hg;
+    if (hg > ag)      { table[H].w++; table[H].pts += 3; table[A].l++; }
+    else if (hg < ag) { table[A].w++; table[A].pts += 3; table[H].l++; }
+    else              { table[H].d++; table[A].d++; table[H].pts += 1; table[A].pts += 1; }
+  });
+  Object.keys(table).forEach(function(k){ table[k].gd = table[k].gf - table[k].ga; });
+  return table;
+}
+
+// Rank teams by FIFA tiebreakers: points → GD → GF. Returns name→position (1-based).
+function groupPositions(standings) {
+  var arr = Object.keys(standings).map(function(name){
+    return {name:name, s:standings[name]};
+  });
+  arr.sort(function(a,b){
+    if (b.s.pts !== a.s.pts) return b.s.pts - a.s.pts;
+    if (b.s.gd  !== a.s.gd)  return b.s.gd  - a.s.gd;
+    return b.s.gf - a.s.gf;
+  });
+  var pos = {};
+  arr.forEach(function(x, i){ pos[x.name] = i + 1; });
+  return pos;
+}
+
+function ordinal(n) {
+  var s = ['th','st','nd','rd'], v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
 function buildGroupsGrid() {
   try {
     var el = document.getElementById('groupsGrid');
@@ -3435,9 +3541,18 @@ function buildGroupsGrid() {
         if (modelProbs[wi] > modelProbs[modelWinner]) modelWinner = wi;
       }
 
+      // Current standings from played matches (points + position)
+      var standings = computeGroupStandings(grp.name);
+      var positions = groupPositions(standings);
+
       html += '<div class="group-card">';
       html += '<div class="group-card-hd"><div class="group-card-title">' + grp.name + '</div>';
       html += '<div class="group-card-sub">' + grp.venue + '</div></div>';
+      html += '<div class="gtr-legend">'
+            + '<span class="gtr-leg"><span class="gtr-dot" style="background:var(--gold)"></span>Model</span>'
+            + '<span class="gtr-leg"><span class="gtr-dot" style="background:var(--blue)"></span>Market</span>'
+            + '<span class="gtr-leg"><span class="gtr-dot" style="background:#7c3aed"></span>FanDuel</span>'
+            + '</div>';
 
       for (var ii = 0; ii < grp.teams.length; ii++) {
         var team = grp.teams[ii];
@@ -3446,21 +3561,43 @@ function buildGroupsGrid() {
         var pm = Math.round(pmNorm[ii] * 100);
         var fd = Math.round(fdNorm[ii] * 100);
         var isTop = ii === modelWinner;
-        var badgeClass = isTop ? 'gtr-win' : (ii <= 1 ? 'gtr-qualify' : 'gtr-out');
-        var badgeText  = isTop ? 'TOP' : (ii <= 1 ? 'Q' : 'OUT');
+        var predClass = isTop ? 'top' : (ii <= 1 ? 'qual' : 'outp');
+        var predText  = isTop ? 'TOP' : (ii <= 1 ? 'Q' : 'OUT');
 
-        html += '<div class="group-team-row">';
-        html += '<div class="gtr-top">';
-        html += '<div class="gtr-name">'+(function(){var gf=getFlag(team.name);return gf?flagImg(gf,16,12)+' ':'';})()+ team.name;
-        if (t && t.elo) html += ' <span style="font-size:9px;color:var(--muted)">Elo ' + t.elo + '</span>';
+        // Current standings for this team
+        var st = standings[team.name];
+        var pos = (st && st.played > 0) ? (positions[team.name] || (ii+1)) : (ii+1);
+        // Row qualification accent by current position (1=gold, 2=blue, 3/4=out)
+        var rowQ = pos === 1 ? 'q1' : (pos === 2 ? 'q2' : 'out');
+        var rankQ = pos === 1 ? 'q1' : (pos === 2 ? 'q2' : 'out');
+
+        var ptsHtml = (st && st.played > 0)
+          ? st.pts + '<span> pts</span>'
+          : '<span>\u2014</span>';
+        var recHtml = '';
+        if (st && st.played > 0) {
+          var gdStr = (st.gd > 0 ? '+' : (st.gd < 0 ? '\u2212' : '')) + Math.abs(st.gd);
+          recHtml = 'P<b>' + st.played + '</b> W<b>' + st.w + '</b> D<b>' + st.d + '</b> L<b>' + st.l + '</b> \u00B7 GD<b>' + gdStr + '</b>';
+        } else {
+          recHtml = '<span style="color:var(--muted)">Not played</span>';
+        }
+
+        var flagHtml = (function(){var gf=getFlag(team.name);return gf?flagImg(gf,16,12)+' ':'';})();
+
+        html += '<div class="group-team-row ' + rowQ + '">';
+        html += '<div class="gtr-line1">';
+        html += '<span class="gtr-rank ' + rankQ + '">' + pos + '</span>';
+        html += '<span class="gtr-name">' + flagHtml + team.name + '</span>';
+        html += '<span class="gtr-pred ' + predClass + '">' + predText + '</span>';
+        html += '<span class="gtr-pts">' + ptsHtml + '</span>';
         html += '</div>';
-        html += '<span class="gtr-predict ' + badgeClass + '">' + badgeText + '</span>';
-        html += '</div>';
-        html += '<div class="gtr-probs">';
-        html += '<div class="gtr-prob-item"><span class="gtr-prob-lbl">Model</span><span class="gtr-prob-val" style="color:var(--gold)">' + mp + '%</span></div>';
-        html += '<div class="gtr-prob-item"><span class="gtr-prob-lbl">Market</span><span class="gtr-prob-val" style="color:var(--blue)">' + pm + '%</span></div>';
-        html += '<div class="gtr-prob-item"><span class="gtr-prob-lbl">FanDuel</span><span class="gtr-prob-val" style="color:#7c3aed">' + fd + '%</span></div>';
-        html += '</div></div>';
+        html += '<div class="gtr-stats">';
+        html += '<span class="gtr-rec">' + recHtml + '</span>';
+        html += '<span class="gtr-probs">';
+        html += '<span class="gtr-prob" style="color:var(--gold)">' + mp + '%</span>';
+        html += '<span class="gtr-prob" style="color:var(--blue)">' + pm + '%</span>';
+        html += '<span class="gtr-prob" style="color:#7c3aed">' + fd + '%</span>';
+        html += '</span></div></div>';
       }
       html += '</div>';
     }
@@ -4313,15 +4450,31 @@ function renderPrediction(fix) {
   var pDraw   = Math.round(drawPct*100);
   var pLoss   = 100 - pWin - pDraw;
 
-  var pmA=0, pmB=0;
+  // Market-based match probability (refined)
+  // Both polymarket and fanDuelOdds are GROUP-WINNER odds, not match odds.
+  // Using them raw distorts a single match (e.g. 0% vs 73%). Instead we:
+  //  1. Convert each team's market signals to implied strength
+  //  2. Blend Polymarket crowd odds + FanDuel bookmaker odds
+  //  3. Apply a floor so neither team collapses to 0%
+  //  4. Normalize head-to-head, then carve out the model's draw %
+  var pmA=0, pmB=0, fdA=0, fdB=0;
   if (GROUPS[grpKey]) {
     GROUPS[grpKey].teams.forEach(function(t){
-      if(t.name===nameA) pmA=t.polymarket;
-      if(t.name===nameB) pmB=t.polymarket;
+      if(t.name===nameA){ pmA=t.polymarket||0; fdA=americanToProb(t.fanDuelOdds); }
+      if(t.name===nameB){ pmB=t.polymarket||0; fdB=americanToProb(t.fanDuelOdds); }
     });
   }
-  var pmTotal = pmA+pmB || 1;
-  var pmWin   = Math.round(pmA/pmTotal*(1-drawPct)*100);
+  // Each team's market strength = average of its two group-winner signals (0-1 scale)
+  var mktA = ((pmA/100) + fdA) / 2;
+  var mktB = ((pmB/100) + fdB) / 2;
+  // Floor: a team is never worse than 18% as strong as the other (avoids 0% splits)
+  var FLOOR = 0.18;
+  var mTotal = mktA + mktB;
+  if (mTotal <= 0) { mktA = mktB = 0.5; mTotal = 1; }
+  var shareA = mktA / mTotal;
+  shareA = Math.max(FLOOR, Math.min(1 - FLOOR, shareA));  // clamp to [0.18, 0.82]
+  // Win/Draw/Loss: carve out the same draw % the model uses
+  var pmWin   = Math.round(shareA * (1 - drawPct) * 100);
   var pmDraw  = pDraw;
   var pmLoss  = 100 - pmWin - pmDraw;
 
@@ -4345,6 +4498,17 @@ function renderPrediction(fix) {
   var favPct  = Math.max(pWin,pLoss);
   var cGold='#BA7517', cGreen='#3B6D11', cBlue='#185FA5';
 
+  // Consensus Pick — Model + Market weighted equally (50/50), then normalized
+  var coWinRaw  = (pWin  + pmWin)  / 2;
+  var coDrawRaw = (pDraw + pmDraw) / 2;
+  var coLossRaw = (pLoss + pmLoss) / 2;
+  var coTotal   = coWinRaw + coDrawRaw + coLossRaw || 1;
+  var coWin  = Math.round(coWinRaw  / coTotal * 100);
+  var coDraw = Math.round(coDrawRaw / coTotal * 100);
+  var coLoss = 100 - coWin - coDraw;
+  var coFavName = coWin >= coLoss ? nameA : nameB;
+  var coFavPct  = Math.max(coWin, coLoss);
+
   var factorRows = factors.map(function(f){
     return '<div style="display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;padding:6px 8px;background:var(--surface2);border-radius:5px;margin-bottom:5px">'
       +'<div style="font-size:12px;font-weight:500;color:'+(f.winA?cGreen:'var(--muted)')+'">'+f.vA+'</div>'
@@ -4355,23 +4519,24 @@ function renderPrediction(fix) {
   }).join('');
 
   function probRow(label, color, w, d, l) {
-    return '<div style="margin-bottom:10px">'
-      +'<div style="font-size:10px;font-weight:500;color:'+color+';margin-bottom:5px">'+label+'</div>'
+    return '<div style="margin-bottom:7px">'
+      +'<div style="font-size:9px;font-weight:500;color:'+color+';margin-bottom:3px">'+label+'</div>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">'
-        +'<div style="background:var(--surface2);border-radius:5px;padding:7px 4px;text-align:center">'
-          +'<div style="font-size:8px;color:var(--muted);margin-bottom:2px">'+nameA+'</div>'
-          +'<div style="font-size:18px;font-weight:500;color:'+cGreen+'">'+w+'%</div></div>'
-        +'<div style="background:var(--surface2);border-radius:5px;padding:7px 4px;text-align:center">'
-          +'<div style="font-size:8px;color:var(--muted);margin-bottom:2px">Draw</div>'
-          +'<div style="font-size:18px;font-weight:500;color:var(--muted)">'+d+'%</div></div>'
-        +'<div style="background:var(--surface2);border-radius:5px;padding:7px 4px;text-align:center">'
-          +'<div style="font-size:8px;color:var(--muted);margin-bottom:2px">'+nameB+'</div>'
-          +'<div style="font-size:18px;font-weight:500;color:'+cBlue+'">'+l+'%</div></div>'
+        +'<div style="background:var(--surface2);border-radius:5px;padding:4px 4px;text-align:center">'
+          +'<div style="font-size:8px;color:var(--muted);margin-bottom:1px">'+nameA+'</div>'
+          +'<div style="font-size:14px;font-weight:500;color:'+cGreen+'">'+w+'%</div></div>'
+        +'<div style="background:var(--surface2);border-radius:5px;padding:4px 4px;text-align:center">'
+          +'<div style="font-size:8px;color:var(--muted);margin-bottom:1px">Draw</div>'
+          +'<div style="font-size:14px;font-weight:500;color:var(--muted)">'+d+'%</div></div>'
+        +'<div style="background:var(--surface2);border-radius:5px;padding:4px 4px;text-align:center">'
+          +'<div style="font-size:8px;color:var(--muted);margin-bottom:1px">'+nameB+'</div>'
+          +'<div style="font-size:14px;font-weight:500;color:'+cBlue+'">'+l+'%</div></div>'
       +'</div></div>';
   }
 
+
   panel.innerHTML =
-    '<div style="display:flex">'
+    '<div style="display:flex;align-items:stretch">'
 
       // LEFT: Model inputs
       +'<div style="width:48%;padding:14px 16px;border-right:1px solid var(--border)">'
@@ -4385,9 +4550,9 @@ function renderPrediction(fix) {
       +'</div>'
 
       // RIGHT: Win prediction
-      +'<div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between">'
+      +'<div style="flex:1;padding:14px 16px;display:flex;flex-direction:column">'
         +'<div>'
-          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
             +'<div style="text-align:center;flex:1">'
               +'<div style="font-size:13px;font-weight:500;color:'+cGold+';display:flex;align-items:center;justify-content:center;gap:6px">'+(function(){var fa=getFlag(nameA);return fa?'<img src="https://flagcdn.com/20x15/'+fa+'.png" width="20" height="15" style="border-radius:2px" onerror="this.style.display=&#39;none&#39;">':'';})()+nameA+'</div>'
               +'<div style="font-size:9px;color:var(--muted);margin-top:2px">Form '+fA+'% &middot; '+getFifaRank(nameA)+'</div>'
@@ -4399,24 +4564,42 @@ function renderPrediction(fix) {
             +'</div>'
           +'</div>'
           +probRow('Model', cGold, pWin, pDraw, pLoss)
-          +probRow('Polymarket', 'var(--text)', pmWin, pmDraw, pmLoss)
+          +probRow('Market (Poly+FD)', 'var(--text)', pmWin, pmDraw, pmLoss)
         +'</div>'
 
         // Favourite bar
-        +'<div style="background:var(--surface2);border-radius:6px;padding:10px 12px">'
-          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
+        +'<div style="background:var(--surface2);border-radius:5px;padding:5px 10px;margin-bottom:7px;margin-top:4px">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'
             +'<span style="font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase">Model favourite</span>'
-            +'<span style="font-size:12px;font-weight:500;color:'+cGreen+'">'+favName+' &mdash; '+favPct+'%</span>'
+            +'<span style="font-size:11px;font-weight:500;color:'+cGreen+'">'+favName+' &mdash; '+favPct+'%</span>'
           +'</div>'
-          +'<div style="width:100%;height:8px;border-radius:4px;overflow:hidden;display:flex;margin-bottom:5px">'
+          +'<div style="width:100%;height:7px;border-radius:4px;overflow:hidden;display:flex">'
             +'<div style="width:'+pWin+'%;background:#639922"></div>'
             +'<div style="width:'+pDraw+'%;background:var(--border)"></div>'
             +'<div style="width:'+pLoss+'%;background:#378ADD"></div>'
           +'</div>'
-          +'<div style="display:flex">'
-            +'<div style="width:'+pWin+'%;text-align:center;font-size:10px;font-weight:500;color:'+cGreen+'">'+pWin+'%</div>'
+          +'<div style="display:flex;margin-top:3px">'
+            +'<div style="width:'+pWin+'%;text-align:center;font-size:9px;font-weight:500;color:'+cGreen+'">'+pWin+'%</div>'
             +'<div style="width:'+pDraw+'%;text-align:center;font-size:9px;color:var(--muted)">'+pDraw+'%</div>'
-            +'<div style="width:'+pLoss+'%;text-align:center;font-size:10px;font-weight:500;color:'+cBlue+'">'+pLoss+'%</div>'
+            +'<div style="width:'+pLoss+'%;text-align:center;font-size:9px;font-weight:500;color:'+cBlue+'">'+pLoss+'%</div>'
+          +'</div>'
+        +'</div>'
+
+        // Consensus Pick bar (Model + Market 50/50)
+        +'<div style="background:var(--gold-bg);border:1px solid var(--gold);border-radius:5px;padding:5px 10px">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'
+            +'<span style="font-size:9px;font-weight:700;color:'+cGold+';letter-spacing:.5px;text-transform:uppercase">&#9733; Consensus pick</span>'
+            +'<span style="font-size:11px;font-weight:700;color:'+cGold+'">'+coFavName+' &mdash; '+coFavPct+'%</span>'
+          +'</div>'
+          +'<div style="width:100%;height:7px;border-radius:4px;overflow:hidden;display:flex">'
+            +'<div style="width:'+coWin+'%;background:#639922"></div>'
+            +'<div style="width:'+coDraw+'%;background:var(--border)"></div>'
+            +'<div style="width:'+coLoss+'%;background:#378ADD"></div>'
+          +'</div>'
+          +'<div style="display:flex;margin-top:3px">'
+            +'<div style="width:'+coWin+'%;text-align:center;font-size:9px;font-weight:500;color:'+cGreen+'">'+coWin+'%</div>'
+            +'<div style="width:'+coDraw+'%;text-align:center;font-size:9px;color:var(--muted)">'+coDraw+'%</div>'
+            +'<div style="width:'+coLoss+'%;text-align:center;font-size:9px;font-weight:500;color:'+cBlue+'">'+coLoss+'%</div>'
           +'</div>'
         +'</div>'
       +'</div>'
