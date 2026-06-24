@@ -1362,7 +1362,7 @@
     "away": "Cape Verde",
     "scorer": "K. Pina",
     "minute": 21,
-    "type": "open-play",
+    "type": "free-kick",
     "phase": "Group Stage",
     "score": "1-0",
     "desc": ""
@@ -1626,7 +1626,7 @@
     "away": "Uzbekistan",
     "scorer": "N. Mendes",
     "minute": 17,
-    "type": "open-play",
+    "type": "free-kick",
     "phase": "Group Stage",
     "score": "2-0",
     "desc": ""
