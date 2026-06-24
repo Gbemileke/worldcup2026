@@ -17,7 +17,7 @@ A single-page app with six tabs:
 | **Videos** | Match video cards linking to FIFA highlight pages |
 | **Analytics** | 8 snapshot cards · Goals by period chart · Goal type donut · Top scorers · Match stats selector |
 | **Simulator** | Model-driven R32→Final prediction · Top 4 favourites · Adjustable model weights · Quick presets |
-| **Groups** | Match predictor · 12 group tables · Model vs Polymarket comparison |
+| **Groups** | Match predictor with **Consensus Pick** (Model + Market blend) · 12 redesigned group cards showing **live standings** (points, position, W/D/L/GD) + qualification prediction · Model / Market / FanDuel win-% per team |
 | **Bracket** | **Interactive knockout bracket simulator** — pick every match, AI-fill, share, export PDF |
 
 ---
@@ -51,11 +51,33 @@ The flagship feature: a full FIFA-accurate knockout bracket you can fill out you
 
 ---
 
+## Groups tab features
+
+### Live group standings (per card)
+Each of the 12 group cards shows the **real current standings** computed from played matches, not just predictions:
+- **Position + points** (`1st · 6 pts`) with a colored rank circle and left accent stripe (gold = 1st, blue = 2nd, gray = out)
+- **Record line** — `P2 W2 D0 L0 · GD+3` (played, win/draw/loss, goal difference)
+- **Qualification prediction badge** — `TOP` / `Q` / `OUT` from the model, shown alongside the live position
+- **Three win-% sources** per team — Model (gold) / Market (blue) / FanDuel (purple)
+
+**Robust standings calculation** (`computeGroupStandings`): the group of each match is **inferred from the teams' GROUPS membership**, not the scraped `group` field — which is frequently empty or abbreviated (`''`, `E`) in the ESPN feed. Team names are canonicalized so abbreviated forms (`S. Korea` → `South Korea`, `C. Verde` → `Cape Verde`) always resolve. This makes standings correct regardless of how the scraper tags matches, and guarantees the **final group-stage round will update points correctly**. Tiebreakers follow FIFA order: points → goal difference → goals for.
+
+### Consensus Pick (match predictor)
+The upcoming-match predictor blends the model and market into a single **Consensus Pick** bar (below the Model favourite bar), weighted 50/50:
+```
+consensus = (model_prob + market_prob) / 2   (then normalized)
+```
+
+### Refined market probability
+The "Market" row no longer uses raw Polymarket group-win % (which produced distorted 0% / 73% splits for single matches). It now **blends Polymarket crowd odds + FanDuel bookmaker odds** into a relative match strength, with a **floor clamp [0.18, 0.82]** so neither team ever collapses to 0% in a head-to-head. *(Note: no true per-match betting lines exist in the data — these are group-winner odds repurposed for match estimation.)*
+
+---
+
 ## Repository structure
 
 ```
 worldcup2026/
-├── index.html                    ← Entire app (~300KB single HTML file)
+├── index.html                    ← Entire app (~316KB single HTML file)
 ├── data/
 │   ├── matches.json              ← Matches + scores + espnId + FIFA links
 │   ├── goals.json                ← Goals + scorers + minute + type + descriptions
@@ -127,6 +149,20 @@ update_odds.py → Polymarket group odds → groups.json + index.html
 - If the tally still can't be reconciled, goals are **skipped and retried next run** rather than saved with wrong attribution
 
 This fixed matches that previously recorded e.g. `0-4` instead of the real `1-3`, leaving goals unsaved.
+
+### Goal-type classification (free-kick / header / penalty / own-goal)
+
+ESPN only reliably tags **penalty** and **own-goal** — free-kicks and headers come back as generic "open-play". A 3-layer system keeps goal types correct and persistent:
+
+1. **Auto-detect** (`_classify_goal_type`) — reads ESPN's goal-type text *and* the play description (`text` / `shortText`) for "free kick", "headed", "direct free", etc. so new free-kicks/headers are caught automatically when ESPN describes them.
+2. **Preserve** — existing free-kick/header classifications survive a re-scrape if ESPN's text is silent on a goal it already tagged.
+3. **Override** (`GOAL_TYPE_OVERRIDES`) — a hardcoded `(matchId, scorer, minute): type` map force-applies known free-kicks/headers on every run, so manual classifications never reset. Present in **both** `update_match_stats.py` and `update_site.py`. Penalty/own-goal are never overridden.
+
+To add a new free-kick/header: one line in `GOAL_TYPE_OVERRIDES` in both scripts.
+
+### Scorer name canonicalization (accent merging)
+
+ESPN spells some scorers inconsistently (`K. Mbappe` vs `K. Mbappé`), which would split one player into two top-scorer entries. `canonScorer` (in `index.html`) and `SCORER_ALIASES` + `_strip_accents` (in `update_match_stats.py`) normalize diacritics and merge variants so a player's goals always tally to one entry — applied across the top-scorers list, goal feed, hero panel, and penalty tooltips.
 
 ---
 
@@ -236,15 +272,20 @@ python update_site.py --section form       # team form from qual record + WC res
 
 ```javascript
 console.table({
-  matches:    MATCHES.length,
-  goals:      GOALS.length,
-  matchStats: Object.keys(MATCH_STATS).length,
-  teams:      Object.keys(TEAM_DATA).length,
-  groups:     Object.keys(GROUPS).length,     // expect 12
-  upcoming:   UPCOMING_FIXTURES.length,
-  predictor:  typeof buildMatchPredictor,     // 'function'
-  bracketSim: typeof buildBracketSim,         // 'function'
+  matches:     MATCHES.length,
+  goals:       GOALS.length,
+  matchStats:  Object.keys(MATCH_STATS).length,
+  teams:       Object.keys(TEAM_DATA).length,
+  groups:      Object.keys(GROUPS).length,         // expect 12
+  upcoming:    UPCOMING_FIXTURES.length,
+  predictor:   typeof buildMatchPredictor,         // 'function'
+  bracketSim:  typeof buildBracketSim,             // 'function'
+  standings:   typeof computeGroupStandings,       // 'function'
+  scorerCanon: typeof canonScorer,                 // 'function'
 })
+
+// Check live standings for a group (points should be correct even mid-tournament)
+console.table(computeGroupStandings('Group A'))
 ```
 
 ---
