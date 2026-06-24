@@ -1666,5 +1666,17 @@
     "phase": "Group Stage",
     "score": "5-0",
     "desc": ""
+  },
+  {
+    "id": 187,
+    "matchId": "m47",
+    "home": "Panama",
+    "away": "Croatia",
+    "scorer": "A. Budimir",
+    "minute": 54,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
   }
 ]

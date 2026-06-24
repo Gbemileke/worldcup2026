@@ -504,5 +504,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-ghana-highlights-match-report",
     "espnId": "760458"
+  },
+  {
+    "id": "m47",
+    "date": "Jun 23",
+    "home": "Panama",
+    "away": "Croatia",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-croatia-highlights-match-report",
+    "espnId": "760460"
   }
 ]
