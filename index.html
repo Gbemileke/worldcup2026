@@ -975,9 +975,9 @@
   .gtr-rec{font-size:10px;color:var(--muted);white-space:nowrap}
   .gtr-rec b{font-weight:700;color:var(--text)}
   .gtr-rec b{font-weight:700;color:var(--text)}
-  .gtr-legend{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:4px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}
-  .gtr-leg{display:flex;align-items:center;gap:3px;font-size:8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
-  .gtr-dot{width:6px;height:6px;border-radius:50%}
+  
+  
+  
   .gtr-probs{display:flex;gap:8px;flex-shrink:0}
   .gtr-prob{font-size:11px;font-weight:700}
   
@@ -3553,11 +3553,6 @@ function buildGroupsGrid() {
       html += '<div class="group-card">';
       html += '<div class="group-card-hd"><div class="group-card-title">' + grp.name + '</div>';
       html += '<div class="group-card-sub">' + grp.venue + '</div></div>';
-      html += '<div class="gtr-legend">'
-            + '<span class="gtr-leg"><span class="gtr-dot" style="background:var(--gold)"></span>Model</span>'
-            + '<span class="gtr-leg"><span class="gtr-dot" style="background:var(--blue)"></span>Market</span>'
-            + '<span class="gtr-leg"><span class="gtr-dot" style="background:#7c3aed"></span>FanDuel</span>'
-            + '</div>';
 
       for (var ii = 0; ii < grp.teams.length; ii++) {
         var team = grp.teams[ii];
