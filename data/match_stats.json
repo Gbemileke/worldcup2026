@@ -2756,5 +2756,64 @@
         2
       ]
     ]
+  },
+  "m48": {
+    "home": "Colombia",
+    "away": "DR Congo",
+    "score": "1-0",
+    "date": "Jun 24 - Estadio Akron",
+    "poss": [
+      63.5,
+      36.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        7
+      ],
+      [
+        "Shots on Goal",
+        9,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        12,
+        16
+      ],
+      [
+        "Saves",
+        1,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.52,
+        0.63
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        7,
+        0
+      ]
+    ]
   }
 }

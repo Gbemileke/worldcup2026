@@ -1678,5 +1678,17 @@
     "phase": "Group Stage",
     "score": "0-1",
     "desc": ""
+  },
+  {
+    "id": 188,
+    "matchId": "m48",
+    "home": "Colombia",
+    "away": "DR Congo",
+    "scorer": "D. Mu\u00f1oz",
+    "minute": 76,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
   }
 ]

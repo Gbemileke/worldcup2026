@@ -515,5 +515,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-croatia-highlights-match-report",
     "espnId": "760460"
+  },
+  {
+    "id": "m48",
+    "date": "Jun 24",
+    "home": "Colombia",
+    "away": "DR Congo",
+    "score": "1-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-democratic-republic-of-congo-highlights-match-report",
+    "espnId": "760459"
   }
 ]
