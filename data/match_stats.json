@@ -2579,5 +2579,241 @@
         0
       ]
     ]
+  },
+  "m45": {
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "score": "5-0",
+    "date": "Jun 23 - NRG Stadium",
+    "poss": [
+      66,
+      34
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        17,
+        7
+      ],
+      [
+        "Shots on Goal",
+        9,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        15
+      ],
+      [
+        "Saves",
+        2,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.37,
+        0.91
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        2
+      ]
+    ]
+  },
+  "m46": {
+    "home": "England",
+    "away": "Ghana",
+    "score": "0-0",
+    "date": "Jun 23 - Gillette Stadium",
+    "poss": [
+      78.8,
+      21.2
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        2
+      ],
+      [
+        "Shots on Goal",
+        3,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        24
+      ],
+      [
+        "Saves",
+        0,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.79,
+        0.38
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        2
+      ]
+    ]
+  },
+  "m47": {
+    "home": "Panama",
+    "away": "Croatia",
+    "score": "0-1",
+    "date": "Jun 23 - BMO Field",
+    "poss": [
+      42.1,
+      57.9
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        6
+      ],
+      [
+        "Shots on Goal",
+        1,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        19,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.68,
+        0.86
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        2
+      ]
+    ]
+  },
+  "m48": {
+    "home": "Colombia",
+    "away": "DR Congo",
+    "score": "1-0",
+    "date": "Jun 24 - Estadio Akron",
+    "poss": [
+      63.5,
+      36.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        7
+      ],
+      [
+        "Shots on Goal",
+        9,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        12,
+        16
+      ],
+      [
+        "Saves",
+        1,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.52,
+        0.63
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        7,
+        0
+      ]
+    ]
   }
 }

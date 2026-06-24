@@ -482,5 +482,49 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-algeria-highlights-match-report",
     "espnId": "760455"
+  },
+  {
+    "id": "m45",
+    "date": "Jun 23",
+    "home": "Portugal",
+    "away": "Uzbekistan",
+    "score": "5-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-uzbekistan-highlights-match-report",
+    "espnId": "760461"
+  },
+  {
+    "id": "m46",
+    "date": "Jun 23",
+    "home": "England",
+    "away": "Ghana",
+    "score": "0-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-ghana-highlights-match-report",
+    "espnId": "760458"
+  },
+  {
+    "id": "m47",
+    "date": "Jun 23",
+    "home": "Panama",
+    "away": "Croatia",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-croatia-highlights-match-report",
+    "espnId": "760460"
+  },
+  {
+    "id": "m48",
+    "date": "Jun 24",
+    "home": "Colombia",
+    "away": "DR Congo",
+    "score": "1-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-democratic-republic-of-congo-highlights-match-report",
+    "espnId": "760459"
   }
 ]
