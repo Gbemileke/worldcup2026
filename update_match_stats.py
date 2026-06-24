@@ -87,9 +87,50 @@ SCORER_ALIASES = {
     'K. Mbappe': 'K. Mbappé',
 }
 
+# ── PERMANENT goal-type overrides ─────────────────────────────────────────────
+# ESPN only detects penalty/own-goal; free-kicks and headers always come back as
+# 'open-play'. List them here keyed by (matchId, scorer, minute) and they will be
+# re-applied after EVERY scrape so they never reset. This is the source of truth
+# for manual goal-type classifications.
+# To add one: GOAL_TYPE_OVERRIDES[('m39', 'K. Pina', 21)] = 'free-kick'
+GOAL_TYPE_OVERRIDES = {
+    ('m39', 'K. Pina', 21): 'free-kick',
+    ('m27', 'N. Saliba', 68): 'free-kick',
+    ('m45', 'N. Mendes', 17): 'free-kick',
+}
+
 def _strip_accents(s):
     return ''.join(ch for ch in unicodedata.normalize('NFD', s)
                    if unicodedata.category(ch) != 'Mn')
+
+def _classify_goal_type(text):
+    """Classify a goal from ESPN's type text + play description.
+    ESPN reliably tags penalty/own-goal; free-kick and header appear in the
+    play description text when present. Order matters: penalty/own-goal first."""
+    t = (text or '').lower()
+    if 'penalty' in t or 'penalty kick' in t:
+        return 'penalty'
+    if 'own goal' in t or 'own-goal' in t or ('own' in t and 'goal' in t):
+        return 'own-goal'
+    if 'free kick' in t or 'free-kick' in t or 'freekick' in t or 'direct free' in t:
+        return 'free-kick'
+    if 'header' in t or 'headed' in t or 'heads' in t or 'with the head' in t:
+        return 'header'
+    return 'open-play'
+
+def apply_type_overrides(goals):
+    """Re-apply permanent free-kick/header classifications. Call after every scrape."""
+    applied = 0
+    for g in goals:
+        key = (g.get('matchId'), g.get('scorer'), g.get('minute'))
+        if key in GOAL_TYPE_OVERRIDES and g.get('type') != GOAL_TYPE_OVERRIDES[key]:
+            # Don't override penalty/own-goal (those ESPN detects correctly)
+            if g.get('type') not in ('penalty', 'own-goal'):
+                g['type'] = GOAL_TYPE_OVERRIDES[key]
+                applied += 1
+    if applied:
+        print(f"  → Applied {applied} permanent goal-type override(s)")
+    return goals
 
 def scorer_fmt(raw):
     if not raw: return ''
@@ -169,8 +210,8 @@ def _parse_details(details, home, away):
         scorer = scorer_fmt(raw)
         if not scorer: continue
         minute = parse_minute(d.get('clock',{}).get('displayValue','90'))
-        gtype  = ('penalty'  if 'penalty' in dtype else
-                  'own-goal' if 'own'     in dtype else 'open-play')
+        desc = (d.get('text','') or d.get('shortText','') or '').lower()
+        gtype = _classify_goal_type(dtype + ' ' + desc)
         team   = sn(d.get('team',{}).get('displayName',''))
         # ESPN details often carry the running score — use it for exact attribution
         hs = d.get('homeScore', d.get('homeScoreValue'))
@@ -235,9 +276,11 @@ def parse_espn_scoring_plays(summary, home, away):
                   p.get('periodClock',{}).get('displayValue','90'))
         minute = parse_minute(clock)
 
-        # Goal type
-        gtype  = ('penalty'  if 'penalty'  in dtype else
-                  'own-goal' if 'own'      in dtype else 'open-play')
+        # Goal type — detect penalty, own-goal, free-kick, header from ESPN text
+        # ESPN exposes type.text and a play-description 'text' that often name the method
+        desc = (p.get('text','') or p.get('shortText','') or '').lower()
+        combined = dtype + ' ' + desc
+        gtype = _classify_goal_type(combined)
 
         # Team — use homeScore/awayScore diff to determine who scored
         # This is more reliable than team.displayName which can be wrong
@@ -637,6 +680,7 @@ def run():
         fetch_upcoming(fd_token, played_keys)
 
     goals.sort(key=lambda g:(int(g['matchId'].replace('m','')),g['minute']))
+    goals = apply_type_overrides(goals)  # re-apply permanent free-kick/header types
     save('matches.json',matches); save('match_stats.json',stats); save('goals.json',goals)
 
     score_sum = sum(sum(int(p) for p in m['score'].split('-')) for m in matches)

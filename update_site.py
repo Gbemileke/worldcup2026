@@ -97,6 +97,16 @@ def update_goals():
     data = load('goals.json')
     if not data:
         return
+    # Re-apply permanent free-kick/header types (ESPN reports them as open-play)
+    GOAL_TYPE_OVERRIDES = {
+        ('m39', 'K. Pina', 21): 'free-kick',
+        ('m27', 'N. Saliba', 68): 'free-kick',
+    ('m45', 'N. Mendes', 17): 'free-kick',
+    }
+    for g in data:
+        key = (g.get('matchId'), g.get('scorer'), g.get('minute'))
+        if key in GOAL_TYPE_OVERRIDES and g.get('type') not in ('penalty', 'own-goal'):
+            g['type'] = GOAL_TYPE_OVERRIDES[key]
     c = read_html()
     js_start = c.find('<script>') + len('<script>')
     js_end   = c.find('</script>')
