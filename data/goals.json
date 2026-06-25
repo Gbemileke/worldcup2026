@@ -1882,5 +1882,53 @@
     "phase": "Group Stage",
     "score": "0-3",
     "desc": ""
+  },
+  {
+    "id": 205,
+    "matchId": "m53",
+    "home": "Czechia",
+    "away": "Mexico",
+    "scorer": "M. Ch\u00e1vez",
+    "minute": 55,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 206,
+    "matchId": "m53",
+    "home": "Czechia",
+    "away": "Mexico",
+    "scorer": "J. Qui\u00f1ones",
+    "minute": 61,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 207,
+    "matchId": "m53",
+    "home": "Czechia",
+    "away": "Mexico",
+    "scorer": "\u00c1. Fidalgo",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-3",
+    "desc": ""
+  },
+  {
+    "id": 208,
+    "matchId": "m54",
+    "home": "S. Africa",
+    "away": "S. Korea",
+    "scorer": "T. Maseko",
+    "minute": 63,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
   }
 ]
