@@ -2668,24 +2668,54 @@ var TEAM_DATA = {
 // Source: FIFA official bracket structure + group stage MD1 results;
 
 // ── R32 matchups ─────────────────────────────────────
-var R32_MATCHUPS = [
-  {id:'r32-1',  label:'R32 M1',  home:'France',      away:'Sweden'},
-  {id:'r32-2',  label:'R32 M2',  home:'Germany',     away:'Colombia'},
-  {id:'r32-3',  label:'R32 M3',  home:'Spain',       away:'Saudi Arabia'},
-  {id:'r32-4',  label:'R32 M4',  home:'Netherlands', away:'Morocco'},
-  {id:'r32-5',  label:'R32 M5',  home:'Portugal',    away:'Ivory Coast'},
-  {id:'r32-6',  label:'R32 M6',  home:'England',     away:'Croatia'},
-  {id:'r32-7',  label:'R32 M7',  home:'Argentina',   away:'Algeria'},
-  {id:'r32-8',  label:'R32 M8',  home:'Brazil',      away:'Japan'},
-  {id:'r32-9',  label:'R32 M9',  home:'USA',         away:'Turkey'},
-  {id:'r32-10', label:'R32 M10', home:'Belgium',     away:'South Korea'},
-  {id:'r32-11', label:'R32 M11', home:'Mexico',      away:'Scotland'},
-  {id:'r32-12', label:'R32 M12', home:'Norway',      away:'Ecuador'},
-  {id:'r32-13', label:'R32 M13', home:'Austria',     away:'Canada'},
-  {id:'r32-14', label:'R32 M14', home:'Switzerland', away:'Senegal'},
-  {id:'r32-15', label:'R32 M15', home:'Uruguay',     away:'Iran'},
-  {id:'r32-16', label:'R32 M16', home:'Australia',   away:'Sweden'},
+// Each row maps to its FIFA seed structure (group-winner / runner-up / best-third
+// slot). The actual teams are filled in at runtime by buildR32Matchups() from the
+// model's group projections + actual standings, so this never goes stale or
+// duplicates a team. The home/away names below are placeholders only.
+var R32_SEED_STRUCTURE = [
+  {id:'r32-1',  label:'R32 M1',  seedH:'1st I', seedA:'3rd C/D/F/G/H'},
+  {id:'r32-2',  label:'R32 M2',  seedH:'1st E', seedA:'3rd A/B/C/D/F'},
+  {id:'r32-3',  label:'R32 M3',  seedH:'1st H', seedA:'2nd J'},
+  {id:'r32-4',  label:'R32 M4',  seedH:'1st F', seedA:'2nd C'},
+  {id:'r32-5',  label:'R32 M5',  seedH:'1st K', seedA:'3rd D/E/I/J/L'},
+  {id:'r32-6',  label:'R32 M6',  seedH:'1st L', seedA:'3rd E/H/I/J/K'},
+  {id:'r32-7',  label:'R32 M7',  seedH:'1st J', seedA:'2nd H'},
+  {id:'r32-8',  label:'R32 M8',  seedH:'1st C', seedA:'2nd F'},
+  {id:'r32-9',  label:'R32 M9',  seedH:'1st D', seedA:'3rd B/E/F/I/J'},
+  {id:'r32-10', label:'R32 M10', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
+  {id:'r32-11', label:'R32 M11', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
+  {id:'r32-12', label:'R32 M12', seedH:'2nd E', seedA:'2nd I'},
+  {id:'r32-13', label:'R32 M13', seedH:'2nd K', seedA:'2nd L'},
+  {id:'r32-14', label:'R32 M14', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
+  {id:'r32-15', label:'R32 M15', seedH:'2nd A', seedA:'2nd B'},
+  {id:'r32-16', label:'R32 M16', seedH:'2nd D', seedA:'2nd G'},
 ];
+
+// Populated at runtime by buildR32Matchups(); starts as a copy so early references
+// don't break, but is overwritten with model-driven teams before any render.
+var R32_MATCHUPS = R32_SEED_STRUCTURE.map(function(s){
+  return {id:s.id, label:s.label, home:s.seedH, away:s.seedA};
+});
+
+// Rebuild R32_MATCHUPS from the model's group projection + FIFA fixture constraints.
+// Uses bsimProjectGroups()/bsimAssignThirds() (defined later) when available, so the
+// matchups reflect actual standings and the best-8 thirds, with no duplicates.
+function buildR32Matchups() {
+  if (typeof bsimProjectGroups !== 'function' || typeof bsimResolveSeed !== 'function') return;
+  try {
+    bsimProjectGroups();
+    if (typeof bsimAssignThirds === 'function') bsimAssignThirds();
+  } catch (e) { return; }
+  var seen = {};
+  R32_MATCHUPS = R32_SEED_STRUCTURE.map(function(s) {
+    var h = bsimResolveSeed(s.seedH) || s.seedH;
+    var a = bsimResolveSeed(s.seedA) || s.seedA;
+    // Hard guard: never repeat a country across the R32.
+    if (seen[h]) h = s.seedH; else if (h !== s.seedH) seen[h] = true;
+    if (seen[a]) a = s.seedA; else if (a !== s.seedA) seen[a] = true;
+    return {id:s.id, label:s.label, home:h, away:a};
+  });
+}
 
 
 // ── Goal feed + media functions ─────────────────────────
@@ -3235,6 +3265,7 @@ function switchTab(tab, btn) {
 
 function runSimulation() {
   SIM_COUNT++;
+  if (typeof buildR32Matchups === 'function') buildR32Matchups();  // refresh teams from model/standings
   SIM = {r32:[], r16:[], qf:[], sf:[], final:null, champion:null, runnerUp:null, sf1Loser:'', sf2Loser:''};
   if (R32_MATCHUPS && R32_MATCHUPS.length) {
     SIM.r32 = R32_MATCHUPS.map(function(m) { return simMatch(m.home, m.away); });
@@ -5207,6 +5238,32 @@ function bsimPopulateFromSeeds() {
     if (h) BSIM.slots['R32-'+i+'-h'] = h;
     if (a) BSIM.slots['R32-'+i+'-a'] = a;
   });
+  bsimAssertNoDuplicateR32();  // hard guarantee: 32 distinct teams, never a repeat
+}
+
+// Safety net: the R32 must contain 32 distinct teams. If any team appears in more
+// than one slot (which should be impossible given group-based assignment, but we
+// guard against it absolutely), log it and blank the later duplicate so the bracket
+// never visibly repeats a country. This makes the "team twice" bug structurally
+// impossible regardless of group-ordering edge cases or data-timing.
+function bsimAssertNoDuplicateR32() {
+  var seen = {};
+  for (var i = 0; i < BSIM_SCHEDULE.length; i++) {
+    ['h', 'a'].forEach(function(side) {
+      var key = 'R32-' + i + '-' + side;
+      var team = BSIM.slots[key];
+      if (!team) return;
+      if (seen[team]) {
+        // Duplicate detected — keep the first occurrence, clear this one.
+        if (typeof console !== 'undefined' && console.warn) {
+          console.warn('R32 duplicate prevented: ' + team + ' already placed at ' + seen[team] + ', clearing ' + key);
+        }
+        BSIM.slots[key] = '';
+      } else {
+        seen[team] = key;
+      }
+    });
+  }
 }
 
 
