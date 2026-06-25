@@ -85,6 +85,11 @@ import unicodedata
 # Add new entries here whenever a player appears split across the top-scorer list.
 SCORER_ALIASES = {
     'K. Mbappe': 'K. Mbappé',
+    'V. Júnior': 'Vinicius Jr.',
+    'V. Junior': 'Vinicius Jr.',
+    'Vinícius Júnior': 'Vinicius Jr.',
+    'Vinicius Júnior': 'Vinicius Jr.',
+    'Vinícius Jr.': 'Vinicius Jr.',
 }
 
 # ── PERMANENT goal-type overrides ─────────────────────────────────────────────

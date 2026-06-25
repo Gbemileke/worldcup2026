@@ -2010,7 +2010,14 @@ function canonScorer(name) {
   if (!name) return '';
   var n = name.replace(/ OG$/, '').trim();
   n = n.normalize ? n.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : n;
-  var ALIASES = { 'K. Mbappe': 'K. Mbappé' };
+  var ALIASES = {
+    'K. Mbappe': 'K. Mbappé',
+    'V. Júnior': 'Vinicius Jr.',
+    'V. Junior': 'Vinicius Jr.',
+    'Vinícius Júnior': 'Vinicius Jr.',
+    'Vinicius Júnior': 'Vinicius Jr.',
+    'Vinícius Jr.': 'Vinicius Jr.'
+  };
   for (var key in ALIASES) {
     var kStripped = key.normalize ? key.normalize('NFD').replace(/[\u0300-\u036f]/g,'') : key;
     if (n === kStripped) return ALIASES[key];
@@ -2109,11 +2116,11 @@ var GOALS = [
   {id:24, matchId:'m9', home:'Germany', away:'Curacao', hf:'', af:'', scorer:'J. Musiala', flag:'', minute:47, type:'open-play', phase:'Group E', score:'4-1', desc:'Musiala continued the Germany onslaught immediately after the break'},
   {id:25, matchId:'m9', home:'Germany', away:'Curacao', hf:'', af:'', scorer:'N. Brown', flag:'', minute:68, type:'open-play', phase:'Group E', score:'5-1', desc:'Brown added the fifth as Germany kept their foot on the gas'},
   {id:26, matchId:'m9', home:'Germany', away:'Curacao', hf:'', af:'', scorer:'D. Undav', flag:'', minute:78, type:'open-play', phase:'Group E', score:'6-1', desc:'Undav completed the rout with Germany sixth'},
-  {id:27, matchId:'m9', home:'Germany', away:'Curacao', hf:'', af:'', scorer:'K. Havertz', flag:'', minute:90, type:'open-play', phase:'Group E', score:'7-1', desc:'Havertz brace seals a statement 7-1 - biggest win of the tournament so far'},
-  {id:29, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'C. Gakpo', flag:'', minute:33, type:'open-play', phase:'Group F', score:'1-0', desc:'Gakpo opened scoring for Netherlands in a competitive first half'},
-  {id:30, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'D. Kamada', flag:'', minute:55, type:'open-play', phase:'Group F', score:'1-1', desc:'Japan pulled level through Kamada as momentum shifted dramatically'},
-  {id:31, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'V. van Dijk', flag:'', minute:72, type:'header', phase:'Group F', score:'2-1', desc:'Van Dijk towering header put Netherlands back in the lead'},
-  {id:32, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'K. Ogawa', flag:'', minute:88, type:'header', phase:'Group F', score:'2-2', desc:'Ogawa outjumped Van Dijk; header deflected off Kamada - dramatic Japan equalizer'},
+  {id:27, matchId:'m9', home:'Germany', away:'Curacao', hf:'', af:'', scorer:'K. Havertz', flag:'', minute:88, type:'open-play', phase:'Group E', score:'7-1', desc:'Havertz brace seals a statement 7-1 - biggest win of the tournament so far'},
+  {id:29, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'V. van Dijk', flag:'', minute:51, type:'header', phase:'Group F', score:'1-0', desc:'Van Dijk headed in from a Gravenberch cross to open the scoring'},
+  {id:30, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'K. Nakamura', flag:'', minute:57, type:'open-play', phase:'Group F', score:'1-1', desc:'Nakamura levelled for Japan with a low strike from outside the box'},
+  {id:31, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'C. Summerville', flag:'', minute:64, type:'open-play', phase:'Group F', score:'2-1', desc:'Summerville cut inside and curled a shot in off the post to restore the lead'},
+  {id:32, matchId:'m10', home:'Netherlands', away:'Japan', hf:'', af:'', scorer:'D. Kamada', flag:'', minute:89, type:'header', phase:'Group F', score:'2-2', desc:'Ogawa header from a corner deflected off Kamada for a dramatic late equaliser'},
   {id:28, matchId:'m11', home:'Ivory Coast', away:'Ecuador', hf:'', af:'', scorer:'A. Diallo', flag:'', minute:90, type:'open-play', phase:'Group E', score:'1-0', desc:'Amad Diallo comes off the bench and sidefoots home Singo\'s square pass in the 90th minute — a dramatic late winner for Ivory Coast'},
   {id:108, matchId:'m12', home:'Sweden', away:'Tunisia', hf:'', af:'', scorer:'Y. Ayari', flag:'', minute:7, type:'open-play', phase:'Group F', score:'1-0', desc:'Ayari pounces on the rebound after Gyokeres forces a save — mutes his celebration out of respect for Tunisia, his father\'s homeland'},
   {id:109, matchId:'m12', home:'Sweden', away:'Tunisia', hf:'', af:'', scorer:'A. Isak', flag:'', minute:30, type:'open-play', phase:'Group F', score:'2-0', desc:'Isak drives forward from halfway, cuts onto his right foot and slots into the bottom corner — a crisp solo finish'},
@@ -2129,18 +2136,18 @@ var GOALS = [
   {id:44, matchId:'m16', home:'Iran', away:'New Zealand', hf:'', af:'', scorer:'R. Rezaeian', flag:'', minute:32, type:'open-play', phase:'Group G', score:'1-1', desc:'Rezaeian thunders home to level for Iran after a blistering run down the right'},
   {id:45, matchId:'m16', home:'Iran', away:'New Zealand', hf:'', af:'', scorer:'E. Just', flag:'', minute:54, type:'open-play', phase:'Group G', score:'1-2', desc:'Just strikes again with second Wood assist — New Zealand ahead again'},
   {id:46, matchId:'m16', home:'Iran', away:'New Zealand', hf:'', af:'', scorer:'M. Mohebbi', flag:'', minute:64, type:'open-play', phase:'Group G', score:'2-2', desc:'Mohebbi levels with Rezaeian assist — all four Group G teams level on one point'},
-  {id:47, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'K. Mbappe', flag:'', minute:25, type:'open-play', phase:'Group I', score:'1-0', desc:'Mbappe slots past Mendy after Olise plays him through — France finally break the deadlock'},
-  {id:48, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'K. Mbappe', flag:'', minute:67, type:'open-play', phase:'Group I', score:'2-0', desc:'Mbappe curls into the top corner — his 14th World Cup goal, surpassing Fontaine as France all-time WC top scorer'},
-  {id:49, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'B. Barcola', flag:'', minute:79, type:'open-play', phase:'Group I', score:'3-0', desc:'Substitute Barcola lobs Mendy 131 seconds after coming on — debut World Cup goal for the 23-year-old'},
-  {id:50, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'I. Mbaye', flag:'', minute:85, type:'open-play', phase:'Group I', score:'3-1', desc:'18-year-old Mbaye pulls one back — youngest African scorer in World Cup history at 18 years 143 days'},
+  {id:47, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'K. Mbappé', flag:'', minute:66, type:'open-play', phase:'Group I', score:'1-0', desc:'Mbappé slots past Mendy after Olise plays him through to break the deadlock'},
+  {id:48, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'B. Barcola', flag:'', minute:82, type:'open-play', phase:'Group I', score:'2-0', desc:'Substitute Barcola lifts the ball over Mendy two minutes after coming on'},
+  {id:49, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'I. Mbaye', flag:'', minute:95, type:'open-play', phase:'Group I', score:'2-1', desc:'Mbaye pulls one back for Senegal with a fine individual goal in stoppage time'},
+  {id:50, matchId:'m17', home:'France', away:'Senegal', hf:'', af:'', scorer:'K. Mbappé', flag:'', minute:96, type:'open-play', phase:'Group I', score:'3-1', desc:'Mbappé blasts home from long range to seal it and become France all-time top scorer'},
   {id:152, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'E. Haaland', flag:'', minute:29, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
   {id:153, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'A. Hussein', flag:'', minute:39, type:'open-play', phase:'Group Stage', score:'1-1', desc:''},
   {id:154, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'E. Haaland', flag:'', minute:43, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
   {id:155, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'L. Østigard', flag:'', minute:76, type:'open-play', phase:'Group Stage', score:'3-1', desc:''},
   {id:156, matchId:'m18', home:'Norway', away:'Iraq', hf:'', af:'', scorer:'A. Hussein', flag:'', minute:91, type:'own-goal', phase:'Group Stage', score:'4-1', desc:''},
-  {id:56, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:34, type:'open-play', phase:'Group J', score:'1-0', desc:'Messi opens his 2026 World Cup account with a clinical finish — his 15th World Cup goal'},
-  {id:73, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:71, type:'open-play', phase:'Group J', score:'2-0', desc:'Messi\'s second — Argentina cruise to a 2-0 lead'},
-  {id:74, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:88, type:'open-play', phase:'Group J', score:'3-0', desc:'Messi completes his hat-trick — his 16th World Cup goal equals Klose\'s all-time record. Argentina win 3-0.'},
+  {id:56, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:17, type:'open-play', phase:'Group J', score:'1-0', desc:'Messi opens his 2026 World Cup account with a clinical finish — his 15th World Cup goal'},
+  {id:73, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:60, type:'open-play', phase:'Group J', score:'2-0', desc:'Messi\'s second — Argentina cruise to a 2-0 lead'},
+  {id:74, matchId:'m19', home:'Argentina', away:'Algeria', hf:'', af:'', scorer:'L. Messi', flag:'', minute:76, type:'open-play', phase:'Group J', score:'3-0', desc:'Messi completes his hat-trick — his 16th World Cup goal equals Klose\'s all-time record. Argentina win 3-0.'},
   {id:99, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'R. Schmid', flag:'', minute:21, type:'open-play', phase:'Group J', score:'1-0', desc:'Schmid opens for Austria with a composed finish'},
   {id:100, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'A. Olwan', flag:'', minute:50, type:'open-play', phase:'Group J', score:'1-1', desc:'Olwan equalises for Jordan — a fine finish from the midfielder'},
   {id:101, matchId:'m20', home:'Austria', away:'Jordan', hf:'', af:'', scorer:'Y. Al-Arab OG', flag:'', minute:76, type:'own-goal', phase:'Group J', score:'2-1', desc:'Al-Arab deflects into his own net — Austria regain the lead'},
@@ -2167,8 +2174,8 @@ var GOALS = [
   {id:120, matchId:'m26', home:'Switzerland', away:'Bosnia', hf:'', af:'', scorer:'G. Xhaka', flag:'', minute:90, type:'penalty', phase:'Group B', score:'4-1', desc:'Xhaka converts deep in injury time — Switzerland run out emphatic winners and move top of Group B'},
   {id:121, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'C. Larin', flag:'', minute:16, type:'open-play', phase:'Group B', score:'1-0', desc:'Larin volleys home from close range — Canada open the scoring at BC Place in front of a raucous home crowd'},
   {id:122, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:29, type:'open-play', phase:'Group B', score:'2-0', desc:'David slots home his first with a composed finish — Canada doubling their lead before half time'},
-  {id:123, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:57, type:'open-play', phase:'Group B', score:'3-0', desc:'David with his brace — Canada dominant as Qatar down to ten men after red card'},
-  {id:124, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'N. Saliba', flag:'', minute:68, type:'free-kick', phase:'Group B', score:'4-0', desc:'Saliba scores his first international goal — Canada ruthless against nine-man Qatar'},
+  {id:123, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:45, type:'open-play', phase:'Group B', score:'3-0', desc:'David with his brace — Canada dominant as Qatar down to ten men after red card'},
+  {id:124, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'N. Saliba', flag:'', minute:64, type:'free-kick', phase:'Group B', score:'4-0', desc:'Saliba scores his first international goal — Canada ruthless against nine-man Qatar'},
   {id:125, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'M. Manai OG', flag:'', minute:75, type:'own-goal', phase:'Group B', score:'5-0', desc:'Manai turns the ball into his own net — Qatar\'s miserable night complete'},
   {id:126, matchId:'m27', home:'Canada', away:'Qatar', hf:'', af:'', scorer:'J. David', flag:'', minute:90, type:'open-play', phase:'Group B', score:'6-0', desc:'David completes his hat trick with a beautiful left-footed shot — Canada\'s first ever World Cup win in historic fashion'},
   {id:127, matchId:'m28', home:'Mexico', away:'S. Korea', hf:'', af:'', scorer:'L. Romo', flag:'', minute:50, type:'open-play', phase:'Group A', score:'1-0', desc:'Romo pounces on Kim Seung-Gyu\'s error to slot home — Mexico book their place in the round of 32'},
