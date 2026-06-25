@@ -1774,5 +1774,113 @@
     "phase": "Group Stage",
     "score": "2-1",
     "desc": ""
+  },
+  {
+    "id": 196,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "Y. Bounou",
+    "minute": 10,
+    "type": "own-goal",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 197,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "A. Hakimi",
+    "minute": 39,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 198,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "W. Isidor",
+    "minute": 43,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-0",
+    "desc": ""
+  },
+  {
+    "id": 199,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "I. Saibari",
+    "minute": 46,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-1",
+    "desc": ""
+  },
+  {
+    "id": 200,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "S. Rahimi",
+    "minute": 78,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "4-1",
+    "desc": ""
+  },
+  {
+    "id": 201,
+    "matchId": "m51",
+    "home": "Morocco",
+    "away": "Haiti",
+    "scorer": "G. Yassine",
+    "minute": 89,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "4-2",
+    "desc": ""
+  },
+  {
+    "id": 202,
+    "matchId": "m52",
+    "home": "Scotland",
+    "away": "Brazil",
+    "scorer": "V. J\u00fanior",
+    "minute": 7,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 203,
+    "matchId": "m52",
+    "home": "Scotland",
+    "away": "Brazil",
+    "scorer": "V. J\u00fanior",
+    "minute": 46,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 204,
+    "matchId": "m52",
+    "home": "Scotland",
+    "away": "Brazil",
+    "scorer": "M. Cunha",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-3",
+    "desc": ""
   }
 ]

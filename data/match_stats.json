@@ -2933,5 +2933,123 @@
         3
       ]
     ]
+  },
+  "m51": {
+    "home": "Morocco",
+    "away": "Haiti",
+    "score": "4-2",
+    "date": "Jun 24 - Mercedes-Benz Stadium",
+    "poss": [
+      69,
+      31
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        22,
+        9
+      ],
+      [
+        "Shots on Goal",
+        11,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        18
+      ],
+      [
+        "Saves",
+        1,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        4.18,
+        1.01
+      ],
+      [
+        "Yellow Cards",
+        0,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        5,
+        0
+      ]
+    ]
+  },
+  "m52": {
+    "home": "Scotland",
+    "away": "Brazil",
+    "score": "0-3",
+    "date": "Jun 24 - Hard Rock Stadium",
+    "poss": [
+      45.9,
+      54.1
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        21
+      ],
+      [
+        "Shots on Goal",
+        5,
+        9
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        11
+      ],
+      [
+        "Saves",
+        5,
+        5
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.1,
+        3.57
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        1
+      ]
+    ]
   }
 }
