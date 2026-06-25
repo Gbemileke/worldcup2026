@@ -104,6 +104,29 @@ GOAL_TYPE_OVERRIDES = {
     ('m45', 'N. Mendes', 17): 'free-kick',
 }
 
+# ══════════════════════════════════════════════════════════════════════════════
+# LOCKED MATCHES — finished games whose goal data has been manually verified.
+# The scraper will NOT re-scrape, re-score, or touch the goals for these matches.
+# This protects hand-corrected scorers/minutes/own-goals from being reverted by
+# ESPN feed errors (reversed scores, wrong scorers, scrambled running scores).
+#
+# Behaviour: once a match id is in this set, the scraper treats it as immutable —
+# it only adds NEW matches and leaves locked ones exactly as they are in the JSON.
+#
+# To lock a match after verifying its goals: add its id, e.g. 'm10'.
+# To re-open a match for re-scraping (rare): remove its id.
+LOCKED_MATCHES = {
+    'm9',   # Germany 7-1 Curacao (Havertz minute)
+    'm10',  # Netherlands 2-2 Japan (scorers corrected)
+    'm17',  # France 3-1 Senegal (sequence corrected)
+    'm18',  # Norway 4-1 Iraq (reversed-score fix)
+    'm19',  # Argentina 3-0 Algeria (Messi minutes)
+    'm24',  # Colombia 3-1 Uzbekistan (reversed-score fix)
+    'm27',  # Canada 6-0 Qatar (David/Saliba minutes)
+    'm49',  # Bosnia 3-1 Qatar (running-score fix)
+    'm51',  # Morocco 4-2 Haiti (own-goal running-score fix)
+}
+
 def _strip_accents(s):
     return ''.join(ch for ch in unicodedata.normalize('NFD', s)
                    if unicodedata.category(ch) != 'Mn')
@@ -585,6 +608,11 @@ def run():
             patch_wc_results(home,away,h_fin,a_fin)
         else:
             ex = next(m for m in matches if m['id']==mid)
+            if mid in LOCKED_MATCHES:
+                # Verified match — leave score and goals untouched.
+                if parsed['espn_id'] and not ex.get('espnId'): ex['espnId']=parsed['espn_id']
+                if parsed['group']   and not ex.get('group'):  ex['group']=parsed['group']
+                continue
             if ex.get('score')!=score:
                 print(f"  ↺ {mid} score: {ex['score']} → {score}")
                 ex['score']=score
