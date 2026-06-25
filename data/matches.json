@@ -526,5 +526,49 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-democratic-republic-of-congo-highlights-match-report",
     "espnId": "760459"
+  },
+  {
+    "id": "m49",
+    "date": "Jun 24",
+    "home": "Bosnia",
+    "away": "Qatar",
+    "score": "3-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/bosnia-herzegovina-v-qatar-highlights-match-report",
+    "espnId": "760462"
+  },
+  {
+    "id": "m50",
+    "date": "Jun 24",
+    "home": "Switzerland",
+    "away": "Canada",
+    "score": "2-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-canada-highlights-match-report",
+    "espnId": "760463"
+  },
+  {
+    "id": "m51",
+    "date": "Jun 24",
+    "home": "Morocco",
+    "away": "Haiti",
+    "score": "4-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/morocco-v-haiti-highlights-match-report",
+    "espnId": "760464"
+  },
+  {
+    "id": "m52",
+    "date": "Jun 24",
+    "home": "Scotland",
+    "away": "Brazil",
+    "score": "0-3",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/scotland-v-brazil-highlights-match-report",
+    "espnId": "760465"
   }
 ]
