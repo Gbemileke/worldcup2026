@@ -592,5 +592,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-v-south-korea-highlights-match-report",
     "espnId": "760466"
+  },
+  {
+    "id": "m55",
+    "date": "Jun 25",
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "score": "0-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/curacao-v-cote-divoire-highlights-match-report",
+    "espnId": "760473"
+  },
+  {
+    "id": "m56",
+    "date": "Jun 25",
+    "home": "Ecuador",
+    "away": "Germany",
+    "score": "2-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-germany-highlights-match-report",
+    "espnId": "760468"
   }
 ]

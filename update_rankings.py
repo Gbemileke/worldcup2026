@@ -242,6 +242,8 @@ WC_RESULTS = [
     {"home":"Scotland", "away":"Brazil", "result":0.0},  # 0-3
     {"home":"Czechia", "away":"Mexico", "result":0.0},  # 0-3
     {"home":"S. Africa", "away":"S. Korea", "result":1.0},  # 1-0
+    {"home":"Curacao", "away":"Ivory Coast", "result":0.0},  # 0-2
+    {"home":"Ecuador", "away":"Germany", "result":1.0},  # 2-1
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 

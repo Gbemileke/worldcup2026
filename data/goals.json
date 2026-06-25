@@ -1930,5 +1930,65 @@
     "phase": "Group Stage",
     "score": "1-0",
     "desc": ""
+  },
+  {
+    "id": 209,
+    "matchId": "m55",
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "scorer": "N. P\u00e9p\u00e9",
+    "minute": 7,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 210,
+    "matchId": "m55",
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "scorer": "N. P\u00e9p\u00e9",
+    "minute": 64,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 211,
+    "matchId": "m56",
+    "home": "Ecuador",
+    "away": "Germany",
+    "scorer": "L. San\u00e9",
+    "minute": 2,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 212,
+    "matchId": "m56",
+    "home": "Ecuador",
+    "away": "Germany",
+    "scorer": "N. Angulo",
+    "minute": 9,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 213,
+    "matchId": "m56",
+    "home": "Ecuador",
+    "away": "Germany",
+    "scorer": "G. Plata",
+    "minute": 77,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-1",
+    "desc": ""
   }
 ]

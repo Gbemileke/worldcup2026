@@ -3169,5 +3169,123 @@
         0
       ]
     ]
+  },
+  "m55": {
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "score": "0-2",
+    "date": "Jun 25 - Lincoln Financial Field",
+    "poss": [
+      36.6,
+      63.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        11,
+        7
+      ],
+      [
+        "Shots on Goal",
+        2,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        11,
+        6
+      ],
+      [
+        "Saves",
+        1,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.11,
+        1.19
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
+  },
+  "m56": {
+    "home": "Ecuador",
+    "away": "Germany",
+    "score": "2-1",
+    "date": "Jun 25 - MetLife Stadium",
+    "poss": [
+      38.9,
+      61.1
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        11
+      ],
+      [
+        "Shots on Goal",
+        3,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        15,
+        10
+      ],
+      [
+        "Saves",
+        2,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.19,
+        1.39
+      ],
+      [
+        "Yellow Cards",
+        3,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
   }
 }
