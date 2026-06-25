@@ -5042,6 +5042,30 @@ var BSIM_MODE = 'prefill'; // 'prefill' = R32 seeded from model | 'blank' = user
 // Rank a group's teams by model score (best first)
 function bsimRankGroup(groupKey) {
   if (typeof GROUPS === 'undefined' || !GROUPS[groupKey]) return [];
+  var grpName = GROUPS[groupKey].name;
+
+  // PREFER ACTUAL STANDINGS: once a group has played matches, order teams by their
+  // real finish (points → GD → GF via groupPositions), not the predictive model.
+  // This makes the bracket reflect reality the moment group rankings are final.
+  if (typeof computeGroupStandings === 'function' && typeof groupPositions === 'function') {
+    var standings = computeGroupStandings(grpName);
+    var anyPlayed = Object.keys(standings).some(function(k){ return standings[k].played > 0; });
+    if (anyPlayed) {
+      var positions = groupPositions(standings);           // {team: 1..4}
+      var ranked = GROUPS[groupKey].teams.map(function(t){ return t.name; });
+      ranked.sort(function(a, b) {
+        var pa = positions[a] || 99, pb = positions[b] || 99;
+        if (pa !== pb) return pa - pb;
+        // tie-break unplayed/equal by model score so order stays stable
+        var sa = typeof computeFullModelScore==='function' ? computeFullModelScore(a) : (getT(a).elo||1700);
+        var sb = typeof computeFullModelScore==='function' ? computeFullModelScore(b) : (getT(b).elo||1700);
+        return sb - sa;
+      });
+      return ranked;
+    }
+  }
+
+  // FALLBACK (group not started): order by the predictive model.
   return GROUPS[groupKey].teams.slice().sort(function(a, b) {
     var sa = typeof computeFullModelScore==='function' ? computeFullModelScore(a.name) : (getT(a.name).elo||1700);
     var sb = typeof computeFullModelScore==='function' ? computeFullModelScore(b.name) : (getT(b.name).elo||1700);
@@ -5056,18 +5080,100 @@ function bsimProjectGroups() {
   'ABCDEFGHIJKL'.split('').forEach(function(g) {
     BSIM_GROUP_PROJ[g] = bsimRankGroup(g);  // [1st, 2nd, 3rd, 4th]
   });
-  // Build list of 3rd-place teams ranked best→worst for the "3rd X/Y/Z" slots
+  // Build list of 3rd-place teams ranked best→worst for the "3rd X/Y/Z" slots.
+  // FIFA ranks the 8 best thirds by points → GD → GF. Use ACTUAL standings once
+  // groups are played; fall back to the predictive model before kickoff.
   var thirds = [];
   'ABCDEFGHIJKL'.split('').forEach(function(g){
     var arr = BSIM_GROUP_PROJ[g];
-    if (arr[2]) thirds.push({group:g, name:arr[2],
-      score: typeof computeFullModelScore==='function'?computeFullModelScore(arr[2]):(getT(arr[2]).elo||1700)});
+    if (!arr[2]) return;
+    var teamName = arr[2];
+    var score;
+    var st = (typeof computeGroupStandings === 'function')
+      ? computeGroupStandings(GROUPS[g].name) : null;
+    if (st && st[teamName] && st[teamName].played > 0) {
+      // Real ranking key: points dominate, then GD, then GF (scaled so they nest)
+      var s = st[teamName];
+      score = s.pts * 10000 + (s.gd + 100) * 100 + s.gf;
+    } else {
+      score = typeof computeFullModelScore==='function'
+        ? computeFullModelScore(teamName) : (getT(teamName).elo||1700);
+    }
+    thirds.push({group:g, name:teamName, score:score});
   });
   thirds.sort(function(a,b){ return b.score - a.score; });
   BSIM_GROUP_PROJ._thirds = thirds;  // best 8 advance
 }
 
 // Resolve a seed label like '1st A', '2nd B', '3rd A/B/C/D/F' → a team name
+// ── Third-place slot assignment (FIFA-legal) ──────────────────────────────────
+// The eight "3rd X/Y/Z" R32 slots each accept a third-place team only from a
+// FIXED set of groups. With 12 groups producing thirds but only 8 qualifying,
+// the assignment must (a) use each qualifying group exactly once and (b) respect
+// every slot's eligible-group set. Greedy picking can violate this. We instead
+// solve it as bipartite matching so the result is always schedule-legal.
+//
+// Maps each "3rd ..." seed label → the set of groups it accepts.
+var BSIM_THIRD_SLOTS = {};   // seedLabel -> [groups]
+var BSIM_THIRD_ASSIGN = {};  // seedLabel -> resolved team name (computed once)
+
+function bsimAssignThirds() {
+  BSIM_THIRD_ASSIGN = {};
+  if (!BSIM_GROUP_PROJ || !BSIM_GROUP_PROJ._thirds) return;
+
+  // Collect the distinct "3rd ..." slot labels from the schedule, with their groups.
+  var slotLabels = [];
+  BSIM_THIRD_SLOTS = {};
+  BSIM_SCHEDULE.forEach(function(m) {
+    [m.seedH, m.seedA].forEach(function(seed) {
+      var m3 = seed && seed.match(/^3rd\s+([A-L/]+)$/);
+      if (m3 && !BSIM_THIRD_SLOTS[seed]) {
+        BSIM_THIRD_SLOTS[seed] = m3[1].split('/');
+        slotLabels.push(seed);
+      }
+    });
+  });
+
+  // The 8 best thirds qualify (already ranked by actual standings → model fallback).
+  var qualified = BSIM_GROUP_PROJ._thirds.slice(0, 8);
+  var groupToTeam = {};
+  qualified.forEach(function(t){ groupToTeam[t.group] = t.name; });
+  var qualifiedGroups = qualified.map(function(t){ return t.group; });
+
+  // Bipartite matching: slotLabels ← qualifiedGroups, respecting eligibility.
+  var assign = {};                 // slotLabel -> group
+  function tryAssign(slot, seen) {
+    var elig = BSIM_THIRD_SLOTS[slot];
+    for (var i = 0; i < elig.length; i++) {
+      var g = elig[i];
+      if (qualifiedGroups.indexOf(g) < 0) continue;
+      if (seen[g]) continue;
+      seen[g] = true;
+      var holder = null;
+      for (var s in assign) { if (assign[s] === g) { holder = s; break; } }
+      if (holder === null || tryAssign(holder, seen)) {
+        assign[slot] = g;
+        return true;
+      }
+    }
+    return false;
+  }
+  slotLabels.forEach(function(slot){ tryAssign(slot, {}); });
+
+  // Resolve to team names. (If matching left a slot unfilled — shouldn't happen
+  // for real data — fall back to best eligible unused third so the bracket still fills.)
+  var usedGroups = {};
+  for (var s in assign) usedGroups[assign[s]] = true;
+  slotLabels.forEach(function(slot) {
+    if (assign[slot]) {
+      BSIM_THIRD_ASSIGN[slot] = groupToTeam[assign[slot]];
+    } else {
+      var fb = qualified.find(function(t){ return BSIM_THIRD_SLOTS[slot].indexOf(t.group)>=0 && !usedGroups[t.group]; });
+      if (fb) { BSIM_THIRD_ASSIGN[slot] = fb.name; usedGroups[fb.group] = true; }
+    }
+  });
+}
+
 function bsimResolveSeed(seed) {
   if (!seed || !BSIM_GROUP_PROJ) return '';
   // "1st A" or "2nd B"
@@ -5077,19 +5183,10 @@ function bsimResolveSeed(seed) {
     var arr = BSIM_GROUP_PROJ[m[2]];
     return (arr && arr[pos]) ? arr[pos] : '';
   }
-  // "3rd A/B/C/D/F" — pick the best-ranked projected 3rd-place team from those groups
+  // "3rd A/B/C/D/F" — use the pre-computed FIFA-legal assignment
   var m3 = seed.match(/^3rd\s+([A-L/]+)$/);
   if (m3) {
-    var groups = m3[1].split('/');
-    var best = null, bestScore = -1;
-    BSIM_GROUP_PROJ._thirds.forEach(function(t) {
-      if (groups.indexOf(t.group) >= 0 && t.score > bestScore && !bsimSeedUsed(t.name)) {
-        best = t.name; bestScore = t.score;
-      }
-    });
-    if (best) { bsimMarkSeedUsed(best); return best; }
-    // fallback: first matching group's 3rd
-    for (var i=0;i<groups.length;i++){ var a=BSIM_GROUP_PROJ[groups[i]]; if(a&&a[2]) return a[2]; }
+    return BSIM_THIRD_ASSIGN[seed] || '';
   }
   return '';
 }
@@ -5102,6 +5199,7 @@ function bsimMarkSeedUsed(name){ BSIM_SEED_USED[name] = true; }
 // Populate R32 slots with projected teams from the seed labels
 function bsimPopulateFromSeeds() {
   bsimProjectGroups();
+  bsimAssignThirds();  // FIFA-legal third-place → slot matching (must run before resolve)
   BSIM_SEED_USED = {};
   BSIM_SCHEDULE.forEach(function(m, i) {
     var h = bsimResolveSeed(m.seedH);
