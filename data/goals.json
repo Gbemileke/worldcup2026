@@ -81,7 +81,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "1-1",
-    "desc": "Davies drives forward and equalises for Canada — a crucial away goal for the hosts"
+    "desc": "Davies drives forward and equalises for Canada \u2014 a crucial away goal for the hosts"
   },
   {
     "id": 8,
@@ -381,7 +381,7 @@
     "type": "open-play",
     "phase": "Group E",
     "score": "1-0",
-    "desc": "Amad Diallo comes off the bench and sidefoots home Singo's square pass in the 90th minute — a dramatic late winner for Ivory Coast"
+    "desc": "Amad Diallo comes off the bench and sidefoots home Singo's square pass in the 90th minute \u2014 a dramatic late winner for Ivory Coast"
   },
   {
     "id": 108,
@@ -393,7 +393,7 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "1-0",
-    "desc": "Ayari pounces on the rebound after Gyokeres forces a save — mutes his celebration out of respect for Tunisia, his father's homeland"
+    "desc": "Ayari pounces on the rebound after Gyokeres forces a save \u2014 mutes his celebration out of respect for Tunisia, his father's homeland"
   },
   {
     "id": 109,
@@ -405,7 +405,7 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "2-0",
-    "desc": "Isak drives forward from halfway, cuts onto his right foot and slots into the bottom corner — a crisp solo finish"
+    "desc": "Isak drives forward from halfway, cuts onto his right foot and slots into the bottom corner \u2014 a crisp solo finish"
   },
   {
     "id": 110,
@@ -417,7 +417,7 @@
     "type": "header",
     "phase": "Group F",
     "score": "2-1",
-    "desc": "Rekik meets Mejbri's cross with a glancing header — Tunisia halve the deficit and spark hopes of a comeback"
+    "desc": "Rekik meets Mejbri's cross with a glancing header \u2014 Tunisia halve the deficit and spark hopes of a comeback"
   },
   {
     "id": 111,
@@ -429,7 +429,7 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "3-1",
-    "desc": "Gyokeres sweeps home after Isak turns provider — Sweden restore the two-goal cushion"
+    "desc": "Gyokeres sweeps home after Isak turns provider \u2014 Sweden restore the two-goal cushion"
   },
   {
     "id": 112,
@@ -441,7 +441,7 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "4-1",
-    "desc": "Svanberg scores 18 seconds after coming on — allowed to stand after a VAR review for the fastest sub goal in World Cup history"
+    "desc": "Svanberg scores 18 seconds after coming on \u2014 allowed to stand after a VAR review for the fastest sub goal in World Cup history"
   },
   {
     "id": 113,
@@ -453,7 +453,7 @@
     "type": "open-play",
     "phase": "Group F",
     "score": "5-1",
-    "desc": "Ayari completes his brace with another stunning long-range strike — blasts home from the edge of the box to round off a dominant Swedish display"
+    "desc": "Ayari completes his brace with another stunning long-range strike \u2014 blasts home from the edge of the box to round off a dominant Swedish display"
   },
   {
     "id": 39,
@@ -477,7 +477,7 @@
     "type": "own-goal",
     "phase": "Group G",
     "score": "1-1",
-    "desc": "Hany own goal after Lukaku enters — Belgium equalise"
+    "desc": "Hany own goal after Lukaku enters \u2014 Belgium equalise"
   },
   {
     "id": 41,
@@ -489,7 +489,7 @@
     "type": "open-play",
     "phase": "Group H",
     "score": "1-0",
-    "desc": "Al-Amri fires past Muslera to shock Uruguay — Saudi Arabia lead"
+    "desc": "Al-Amri fires past Muslera to shock Uruguay \u2014 Saudi Arabia lead"
   },
   {
     "id": 42,
@@ -537,7 +537,7 @@
     "type": "open-play",
     "phase": "Group G",
     "score": "1-2",
-    "desc": "Just strikes again with second Wood assist — New Zealand ahead again"
+    "desc": "Just strikes again with second Wood assist \u2014 New Zealand ahead again"
   },
   {
     "id": 46,
@@ -549,19 +549,19 @@
     "type": "open-play",
     "phase": "Group G",
     "score": "2-2",
-    "desc": "Mohebbi levels with Rezaeian assist — all four Group G teams level on one point"
+    "desc": "Mohebbi levels with Rezaeian assist \u2014 all four Group G teams level on one point"
   },
   {
     "id": 47,
     "matchId": "m17",
     "home": "France",
     "away": "Senegal",
-    "scorer": "K. Mbappé",
+    "scorer": "K. Mbapp\u00e9",
     "minute": 66,
     "type": "open-play",
     "phase": "Group I",
     "score": "1-0",
-    "desc": "Mbappé slots past Mendy after Olise plays him through to break the deadlock"
+    "desc": "Mbapp\u00e9 slots past Mendy after Olise plays him through to break the deadlock"
   },
   {
     "id": 48,
@@ -592,12 +592,12 @@
     "matchId": "m17",
     "home": "France",
     "away": "Senegal",
-    "scorer": "K. Mbappé",
+    "scorer": "K. Mbapp\u00e9",
     "minute": 96,
     "type": "open-play",
     "phase": "Group I",
     "score": "3-1",
-    "desc": "Mbappé blasts home from long range to seal it and become France all-time top scorer"
+    "desc": "Mbapp\u00e9 blasts home from long range to seal it and become France all-time top scorer"
   },
   {
     "id": 152,
@@ -640,7 +640,7 @@
     "matchId": "m18",
     "home": "Norway",
     "away": "Iraq",
-    "scorer": "L. Østigard",
+    "scorer": "L. \u00d8stigard",
     "minute": 76,
     "type": "open-play",
     "phase": "Group I",
@@ -669,7 +669,7 @@
     "type": "open-play",
     "phase": "Group J",
     "score": "1-0",
-    "desc": "Messi opens his 2026 World Cup account with a clinical finish — his 15th World Cup goal"
+    "desc": "Messi opens his 2026 World Cup account with a clinical finish \u2014 his 15th World Cup goal"
   },
   {
     "id": 73,
@@ -681,7 +681,7 @@
     "type": "open-play",
     "phase": "Group J",
     "score": "2-0",
-    "desc": "Messi's second — Argentina cruise to a 2-0 lead"
+    "desc": "Messi's second \u2014 Argentina cruise to a 2-0 lead"
   },
   {
     "id": 74,
@@ -693,7 +693,7 @@
     "type": "open-play",
     "phase": "Group J",
     "score": "3-0",
-    "desc": "Messi completes his hat-trick — his 16th World Cup goal equals Klose's all-time record. Argentina win 3-0."
+    "desc": "Messi completes his hat-trick \u2014 his 16th World Cup goal equals Klose's all-time record. Argentina win 3-0."
   },
   {
     "id": 99,
@@ -717,7 +717,7 @@
     "type": "open-play",
     "phase": "Group J",
     "score": "1-1",
-    "desc": "Olwan equalises for Jordan — a fine finish from the midfielder"
+    "desc": "Olwan equalises for Jordan \u2014 a fine finish from the midfielder"
   },
   {
     "id": 101,
@@ -729,7 +729,7 @@
     "type": "own-goal",
     "phase": "Group J",
     "score": "2-1",
-    "desc": "Al-Arab deflects into his own net — Austria regain the lead"
+    "desc": "Al-Arab deflects into his own net \u2014 Austria regain the lead"
   },
   {
     "id": 102,
@@ -753,7 +753,7 @@
     "type": "header",
     "phase": "Group K",
     "score": "1-0",
-    "desc": "Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike — Ronaldo becomes the oldest outfield player to start a World Cup match at 41"
+    "desc": "Joao Neves fires Portugal ahead after just 6 minutes with a powerful strike \u2014 Ronaldo becomes the oldest outfield player to start a World Cup match at 41"
   },
   {
     "id": 82,
@@ -765,7 +765,7 @@
     "type": "header",
     "phase": "Group K",
     "score": "1-1",
-    "desc": "Wissa heads home Masuaku's cross in stoppage time — DR Congo's historic first ever World Cup goal and point"
+    "desc": "Wissa heads home Masuaku's cross in stoppage time \u2014 DR Congo's historic first ever World Cup goal and point"
   },
   {
     "id": 93,
@@ -777,7 +777,7 @@
     "type": "penalty",
     "phase": "Group L",
     "score": "1-0",
-    "desc": "Kane converts from the spot — England break the deadlock early on"
+    "desc": "Kane converts from the spot \u2014 England break the deadlock early on"
   },
   {
     "id": 94,
@@ -789,7 +789,7 @@
     "type": "open-play",
     "phase": "Group L",
     "score": "1-1",
-    "desc": "Baturina scores a stunning equaliser into the top corner — Croatia level"
+    "desc": "Baturina scores a stunning equaliser into the top corner \u2014 Croatia level"
   },
   {
     "id": 95,
@@ -801,7 +801,7 @@
     "type": "header",
     "phase": "Group L",
     "score": "2-1",
-    "desc": "Kane heads home from a Declan Rice corner — his second goal of the game"
+    "desc": "Kane heads home from a Declan Rice corner \u2014 his second goal of the game"
   },
   {
     "id": 96,
@@ -813,7 +813,7 @@
     "type": "open-play",
     "phase": "Group L",
     "score": "2-2",
-    "desc": "Musa levels for Croatia — Perisic flicks the ball to the FC Dallas striker who fires through Pickford"
+    "desc": "Musa levels for Croatia \u2014 Perisic flicks the ball to the FC Dallas striker who fires through Pickford"
   },
   {
     "id": 97,
@@ -825,7 +825,7 @@
     "type": "open-play",
     "phase": "Group L",
     "score": "3-2",
-    "desc": "Bellingham immediately restores England's lead seconds after half time — a brilliant solo run and finish"
+    "desc": "Bellingham immediately restores England's lead seconds after half time \u2014 a brilliant solo run and finish"
   },
   {
     "id": 98,
@@ -837,7 +837,7 @@
     "type": "open-play",
     "phase": "Group L",
     "score": "4-2",
-    "desc": "Rashford seals it from the bench — Saka finds him on the left and he cuts inside to make it four"
+    "desc": "Rashford seals it from the bench \u2014 Saka finds him on the left and he cuts inside to make it four"
   },
   {
     "id": 103,
@@ -849,14 +849,14 @@
     "type": "open-play",
     "phase": "Group L",
     "score": "1-0",
-    "desc": "Yirenkyi taps in Thomas-Asante's cross in the 95th minute — Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point"
+    "desc": "Yirenkyi taps in Thomas-Asante's cross in the 95th minute \u2014 Ghana snatch a dramatic late winner to deny Panama a first ever World Cup point"
   },
   {
     "id": 157,
     "matchId": "m24",
     "home": "Colombia",
     "away": "Uzbekistan",
-    "scorer": "D. Muñoz",
+    "scorer": "D. Mu\u00f1oz",
     "minute": 40,
     "type": "open-play",
     "phase": "Group K",
@@ -880,7 +880,7 @@
     "matchId": "m24",
     "home": "Colombia",
     "away": "Uzbekistan",
-    "scorer": "L. Díaz",
+    "scorer": "L. D\u00edaz",
     "minute": 65,
     "type": "open-play",
     "phase": "Group K",
@@ -909,7 +909,7 @@
     "type": "open-play",
     "phase": "Group A",
     "score": "1-0",
-    "desc": "Schick opens for Czechia with a clinical finish — the Bayer Leverkusen striker shows his class"
+    "desc": "Schick opens for Czechia with a clinical finish \u2014 the Bayer Leverkusen striker shows his class"
   },
   {
     "id": 115,
@@ -921,7 +921,7 @@
     "type": "penalty",
     "phase": "Group A",
     "score": "1-1",
-    "desc": "Mokoena steps up and slots the penalty — South Africa rescue a vital point to keep their knockout hopes alive"
+    "desc": "Mokoena steps up and slots the penalty \u2014 South Africa rescue a vital point to keep their knockout hopes alive"
   },
   {
     "id": 116,
@@ -933,7 +933,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "1-0",
-    "desc": "Manzambi comes off the bench and immediately breaks the deadlock with a sumptuous finish — the Swiss sub changes the game"
+    "desc": "Manzambi comes off the bench and immediately breaks the deadlock with a sumptuous finish \u2014 the Swiss sub changes the game"
   },
   {
     "id": 117,
@@ -945,7 +945,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "2-0",
-    "desc": "Vargas adds a second moments later — Bosnia down to 10 men after Muharemovic's red card, Switzerland take full control"
+    "desc": "Vargas adds a second moments later \u2014 Bosnia down to 10 men after Muharemovic's red card, Switzerland take full control"
   },
   {
     "id": 118,
@@ -957,7 +957,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "3-0",
-    "desc": "Manzambi grabs his brace after neat work by Vargas — a stunning cameo from the substitute"
+    "desc": "Manzambi grabs his brace after neat work by Vargas \u2014 a stunning cameo from the substitute"
   },
   {
     "id": 119,
@@ -969,7 +969,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "3-1",
-    "desc": "Memic grabs a late consolation for Bosnia — a small reward for their spirited defensive display"
+    "desc": "Memic grabs a late consolation for Bosnia \u2014 a small reward for their spirited defensive display"
   },
   {
     "id": 120,
@@ -981,7 +981,7 @@
     "type": "penalty",
     "phase": "Group B",
     "score": "4-1",
-    "desc": "Xhaka converts deep in injury time — Switzerland run out emphatic winners and move top of Group B"
+    "desc": "Xhaka converts deep in injury time \u2014 Switzerland run out emphatic winners and move top of Group B"
   },
   {
     "id": 121,
@@ -993,7 +993,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "1-0",
-    "desc": "Larin volleys home from close range — Canada open the scoring at BC Place in front of a raucous home crowd"
+    "desc": "Larin volleys home from close range \u2014 Canada open the scoring at BC Place in front of a raucous home crowd"
   },
   {
     "id": 122,
@@ -1005,7 +1005,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "2-0",
-    "desc": "David slots home his first with a composed finish — Canada doubling their lead before half time"
+    "desc": "David slots home his first with a composed finish \u2014 Canada doubling their lead before half time"
   },
   {
     "id": 123,
@@ -1017,7 +1017,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "3-0",
-    "desc": "David with his brace — Canada dominant as Qatar down to ten men after red card"
+    "desc": "David with his brace \u2014 Canada dominant as Qatar down to ten men after red card"
   },
   {
     "id": 124,
@@ -1029,7 +1029,7 @@
     "type": "free-kick",
     "phase": "Group B",
     "score": "4-0",
-    "desc": "Saliba scores his first international goal — Canada ruthless against nine-man Qatar"
+    "desc": "Saliba scores his first international goal \u2014 Canada ruthless against nine-man Qatar"
   },
   {
     "id": 125,
@@ -1041,7 +1041,7 @@
     "type": "own-goal",
     "phase": "Group B",
     "score": "5-0",
-    "desc": "Manai turns the ball into his own net — Qatar's miserable night complete"
+    "desc": "Manai turns the ball into his own net \u2014 Qatar's miserable night complete"
   },
   {
     "id": 126,
@@ -1053,7 +1053,7 @@
     "type": "open-play",
     "phase": "Group B",
     "score": "6-0",
-    "desc": "David completes his hat trick with a beautiful left-footed shot — Canada's first ever World Cup win in historic fashion"
+    "desc": "David completes his hat trick with a beautiful left-footed shot \u2014 Canada's first ever World Cup win in historic fashion"
   },
   {
     "id": 127,
@@ -1065,7 +1065,7 @@
     "type": "open-play",
     "phase": "Group A",
     "score": "1-0",
-    "desc": "Romo pounces on Kim Seung-Gyu's error to slot home — Mexico book their place in the round of 32"
+    "desc": "Romo pounces on Kim Seung-Gyu's error to slot home \u2014 Mexico book their place in the round of 32"
   },
   {
     "id": 130,
@@ -1077,7 +1077,7 @@
     "type": "own-goal",
     "phase": "Group D",
     "score": "1-0",
-    "desc": "Balogun drives into the box — Burgess deflects it into his own net"
+    "desc": "Balogun drives into the box \u2014 Burgess deflects it into his own net"
   },
   {
     "id": 131,
@@ -1101,7 +1101,7 @@
     "type": "open-play",
     "phase": "Group ",
     "score": "0-1",
-    "desc": "I. Saibari breaks the deadlock — Scotland lead 0-1"
+    "desc": "I. Saibari breaks the deadlock \u2014 Scotland lead 0-1"
   },
   {
     "id": 138,
@@ -1149,7 +1149,7 @@
     "type": "open-play",
     "phase": "Group ",
     "score": "0-1",
-    "desc": "M. Galarza opens the scoring with a clinical finish — Turkey 0-1 Paraguay"
+    "desc": "M. Galarza opens the scoring with a clinical finish \u2014 Turkey 0-1 Paraguay"
   },
   {
     "id": 132,
@@ -1228,7 +1228,7 @@
     "matchId": "m34",
     "home": "Germany",
     "away": "Ivory Coast",
-    "scorer": "F. Kessié",
+    "scorer": "F. Kessi\u00e9",
     "minute": 30,
     "type": "open-play",
     "phase": "Group E",
@@ -1372,7 +1372,7 @@
     "matchId": "m39",
     "home": "Uruguay",
     "away": "Cape Verde",
-    "scorer": "M. Araújo",
+    "scorer": "M. Ara\u00fajo",
     "minute": 44,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1444,7 +1444,7 @@
     "matchId": "m40",
     "home": "New Zealand",
     "away": "Egypt",
-    "scorer": "Trézéguet",
+    "scorer": "Tr\u00e9z\u00e9guet",
     "minute": 82,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1480,7 +1480,7 @@
     "matchId": "m42",
     "home": "France",
     "away": "Iraq",
-    "scorer": "K. Mbappé",
+    "scorer": "K. Mbapp\u00e9",
     "minute": 14,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1492,7 +1492,7 @@
     "matchId": "m42",
     "home": "France",
     "away": "Iraq",
-    "scorer": "K. Mbappé",
+    "scorer": "K. Mbapp\u00e9",
     "minute": 54,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1504,7 +1504,7 @@
     "matchId": "m42",
     "home": "France",
     "away": "Iraq",
-    "scorer": "O. Dembélé",
+    "scorer": "O. Demb\u00e9l\u00e9",
     "minute": 66,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1660,7 +1660,7 @@
     "matchId": "m45",
     "home": "Portugal",
     "away": "Uzbekistan",
-    "scorer": "R. Leão",
+    "scorer": "R. Le\u00e3o",
     "minute": 87,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1684,7 +1684,7 @@
     "matchId": "m48",
     "home": "Colombia",
     "away": "DR Congo",
-    "scorer": "D. Muñoz",
+    "scorer": "D. Mu\u00f1oz",
     "minute": 76,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1852,7 +1852,7 @@
     "matchId": "m52",
     "home": "Scotland",
     "away": "Brazil",
-    "scorer": "V. Júnior",
+    "scorer": "V. J\u00fanior",
     "minute": 7,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1864,7 +1864,7 @@
     "matchId": "m52",
     "home": "Scotland",
     "away": "Brazil",
-    "scorer": "V. Júnior",
+    "scorer": "V. J\u00fanior",
     "minute": 46,
     "type": "header",
     "phase": "Group Stage",
@@ -1888,7 +1888,7 @@
     "matchId": "m53",
     "home": "Czechia",
     "away": "Mexico",
-    "scorer": "M. Chávez",
+    "scorer": "M. Ch\u00e1vez",
     "minute": 55,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1900,7 +1900,7 @@
     "matchId": "m53",
     "home": "Czechia",
     "away": "Mexico",
-    "scorer": "J. Quiñones",
+    "scorer": "J. Qui\u00f1ones",
     "minute": 61,
     "type": "open-play",
     "phase": "Group Stage",
@@ -1912,7 +1912,7 @@
     "matchId": "m53",
     "home": "Czechia",
     "away": "Mexico",
-    "scorer": "Á. Fidalgo",
+    "scorer": "\u00c1. Fidalgo",
     "minute": 91,
     "type": "open-play",
     "phase": "Group Stage",
