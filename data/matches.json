@@ -570,5 +570,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/scotland-v-brazil-highlights-match-report",
     "espnId": "760465"
+  },
+  {
+    "id": "m53",
+    "date": "Jun 25",
+    "home": "Czechia",
+    "away": "Mexico",
+    "score": "0-3",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-mexico-highlights-match-report",
+    "espnId": "760467"
+  },
+  {
+    "id": "m54",
+    "date": "Jun 25",
+    "home": "S. Africa",
+    "away": "S. Korea",
+    "score": "1-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-v-south-korea-highlights-match-report",
+    "espnId": "760466"
   }
 ]
