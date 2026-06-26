@@ -3287,5 +3287,123 @@
         0
       ]
     ]
+  },
+  "m57": {
+    "home": "Japan",
+    "away": "Sweden",
+    "score": "1-1",
+    "date": "Jun 25 - AT&T Stadium",
+    "poss": [
+      52.3,
+      47.7
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        11
+      ],
+      [
+        "Shots on Goal",
+        3,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        20,
+        11
+      ],
+      [
+        "Saves",
+        4,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.24,
+        1.95
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        2
+      ]
+    ]
+  },
+  "m58": {
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "score": "1-3",
+    "date": "Jun 25 - GEHA Field at Arrowhead Stadium",
+    "poss": [
+      28.7,
+      71.3
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        10,
+        20
+      ],
+      [
+        "Shots on Goal",
+        4,
+        7
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        11,
+        10
+      ],
+      [
+        "Saves",
+        4,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.62,
+        2.96
+      ],
+      [
+        "Yellow Cards",
+        0,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
   }
 }

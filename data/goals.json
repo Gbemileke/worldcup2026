@@ -1990,5 +1990,77 @@
     "phase": "Group Stage",
     "score": "2-1",
     "desc": ""
+  },
+  {
+    "id": 214,
+    "matchId": "m57",
+    "home": "Japan",
+    "away": "Sweden",
+    "scorer": "D. Maeda",
+    "minute": 56,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 215,
+    "matchId": "m57",
+    "home": "Japan",
+    "away": "Sweden",
+    "scorer": "A. Elanga",
+    "minute": 62,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 216,
+    "matchId": "m58",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "scorer": "E. Skhiri",
+    "minute": 3,
+    "type": "own-goal",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 217,
+    "matchId": "m58",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "scorer": "B. Brobbey",
+    "minute": 7,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 218,
+    "matchId": "m58",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "scorer": "H. Mastouri",
+    "minute": 54,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-2",
+    "desc": ""
+  },
+  {
+    "id": 219,
+    "matchId": "m58",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "scorer": "J. Paul van Hecke",
+    "minute": 62,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-3",
+    "desc": ""
   }
 ]

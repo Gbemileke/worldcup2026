@@ -614,5 +614,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-germany-highlights-match-report",
     "espnId": "760468"
+  },
+  {
+    "id": "m57",
+    "date": "Jun 25",
+    "home": "Japan",
+    "away": "Sweden",
+    "score": "1-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/japan-v-sweden-highlights-match-report",
+    "espnId": "760471"
+  },
+  {
+    "id": "m58",
+    "date": "Jun 25",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "score": "1-3",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/tunisia-v-netherlands-highlights-match-report",
+    "espnId": "760472"
   }
 ]
