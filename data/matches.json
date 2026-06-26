@@ -636,5 +636,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/tunisia-v-netherlands-highlights-match-report",
     "espnId": "760472"
+  },
+  {
+    "id": "m59",
+    "date": "Jun 26",
+    "home": "Paraguay",
+    "away": "Australia",
+    "score": "0-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/paraguay-v-australia-highlights-match-report",
+    "espnId": "760469"
+  },
+  {
+    "id": "m60",
+    "date": "Jun 26",
+    "home": "Turkey",
+    "away": "USA",
+    "score": "3-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/turkey-v-united-states-highlights-match-report",
+    "espnId": "760470"
   }
 ]

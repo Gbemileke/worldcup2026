@@ -3405,5 +3405,123 @@
         1
       ]
     ]
+  },
+  "m59": {
+    "home": "Paraguay",
+    "away": "Australia",
+    "score": "0-0",
+    "date": "Jun 26 - Levi's Stadium",
+    "poss": [
+      44,
+      56
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        12
+      ],
+      [
+        "Shots on Goal",
+        2,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        9,
+        6
+      ],
+      [
+        "Saves",
+        5,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.91,
+        2.0
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        0
+      ]
+    ]
+  },
+  "m60": {
+    "home": "Turkey",
+    "away": "USA",
+    "score": "3-2",
+    "date": "Jun 26 - SoFi Stadium",
+    "poss": [
+      47.4,
+      52.6
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        9,
+        18
+      ],
+      [
+        "Shots on Goal",
+        3,
+        7
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        13
+      ],
+      [
+        "Saves",
+        5,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.29,
+        2.86
+      ],
+      [
+        "Yellow Cards",
+        0,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        5
+      ]
+    ]
   }
 }

@@ -2062,5 +2062,65 @@
     "phase": "Group Stage",
     "score": "1-3",
     "desc": ""
+  },
+  {
+    "id": 220,
+    "matchId": "m60",
+    "home": "Turkey",
+    "away": "USA",
+    "scorer": "A. Trusty",
+    "minute": 3,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 221,
+    "matchId": "m60",
+    "home": "Turkey",
+    "away": "USA",
+    "scorer": "A. G\u00fcler",
+    "minute": 10,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 222,
+    "matchId": "m60",
+    "home": "Turkey",
+    "away": "USA",
+    "scorer": "B. Alper Yilmaz",
+    "minute": 31,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
+    "id": 223,
+    "matchId": "m60",
+    "home": "Turkey",
+    "away": "USA",
+    "scorer": "S. Berhalter",
+    "minute": 49,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-1",
+    "desc": ""
+  },
+  {
+    "id": 224,
+    "matchId": "m60",
+    "home": "Turkey",
+    "away": "USA",
+    "scorer": "K. Ayhan",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-2",
+    "desc": ""
   }
 ]

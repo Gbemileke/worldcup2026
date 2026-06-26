@@ -82,5 +82,33 @@
     "away": "Austria",
     "time": "8PM CST",
     "group": "STAGE"
+  },
+  {
+    "date": "Jun 28",
+    "home": "S. Africa",
+    "away": "Canada",
+    "time": "1PM CST",
+    "group": ""
+  },
+  {
+    "date": "Jun 29",
+    "home": "Brazil",
+    "away": "Japan",
+    "time": "11AM CST",
+    "group": ""
+  },
+  {
+    "date": "Jun 29",
+    "home": "Netherlands",
+    "away": "Morocco",
+    "time": "7PM CST",
+    "group": ""
+  },
+  {
+    "date": "Jul 1",
+    "home": "USA",
+    "away": "Bosnia",
+    "time": "6PM CST",
+    "group": ""
   }
 ]
