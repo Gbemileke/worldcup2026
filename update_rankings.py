@@ -248,6 +248,8 @@ WC_RESULTS = [
     {"home":"Tunisia", "away":"Netherlands", "result":0.0},  # 1-3
     {"home":"Paraguay", "away":"Australia", "result":0.5},  # 0-0
     {"home":"Turkey", "away":"USA", "result":1.0},  # 3-2
+    {"home":"Norway", "away":"France", "result":0.0},  # 1-4
+    {"home":"Senegal", "away":"Iraq", "result":1.0},  # 5-0
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 

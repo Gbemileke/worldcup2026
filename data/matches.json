@@ -658,5 +658,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/turkey-v-united-states-highlights-match-report",
     "espnId": "760470"
+  },
+  {
+    "id": "m61",
+    "date": "Jun 26",
+    "home": "Norway",
+    "away": "France",
+    "score": "1-4",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/norway-v-france-highlights-match-report",
+    "espnId": "760475"
+  },
+  {
+    "id": "m62",
+    "date": "Jun 26",
+    "home": "Senegal",
+    "away": "Iraq",
+    "score": "5-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/senegal-v-iraq-highlights-match-report",
+    "espnId": "760474"
   }
 ]
