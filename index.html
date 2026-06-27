@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-06-27 13:44 UTC -->
+<!-- build: 2026-06-27 16:05 UTC -->
 
 <html lang="en">
 <head>
@@ -2498,6 +2498,8 @@ var GOALS = [
 
 
 
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2589,17 +2591,17 @@ var SIM_COUNT = 0;
 
 // ── Team data ────────────────────────────────────────
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2172, fifaPts:1879.58, fifaPtsDelta:-18.68, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:11.95},
-  'Argentina':   {flag:'ar', group:'J', elo:2113, fifaPts:1901.94, fifaPtsDelta:11.8, fifaRankDelta:1, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:18.65},
-  'France':      {flag:'fr', group:'I', elo:2062, fifaPts:1899.41, fifaPtsDelta:16.41, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:21.85},
-  'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1829.82, fifaPtsDelta:19.66, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.75, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:10.25},
+  'Spain':       {flag:'es', group:'H', elo:2172, fifaPts:1879.58, fifaPtsDelta:-18.68, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:11.85},
+  'Argentina':   {flag:'ar', group:'J', elo:2113, fifaPts:1901.94, fifaPtsDelta:11.8, fifaRankDelta:1, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:18.95},
+  'France':      {flag:'fr', group:'I', elo:2062, fifaPts:1899.41, fifaPtsDelta:16.41, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:22.85},
+  'England':     {flag:'gb-eng', group:'L', elo:2042, fifaPts:1829.82, fifaPtsDelta:19.66, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.75, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:10.15},
   'Brazil':      {flag:'br', group:'C', elo:1978, fifaPts:1785.19, fifaPtsDelta:6.67, fifaRankDelta:1, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.844, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:5.65},
   'Portugal':    {flag:'pt', group:'K', elo:1976, fifaPts:1755.09, fifaPtsDelta:-12.76, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.83, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:8.05},
-  'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1725.76, fifaPtsDelta:14.25, fifaRankDelta:2, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.889, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.25},
-  'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1775.49, fifaPtsDelta:-4.37, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.82, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:4.65},
+  'Colombia':    {flag:'co', group:'K', elo:1998, fifaPts:1725.76, fifaPtsDelta:14.25, fifaRankDelta:2, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.889, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:1.35},
+  'Netherlands': {flag:'nl', group:'F', elo:1959, fifaPts:1775.49, fifaPtsDelta:-4.37, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.82, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:4.55},
   'Croatia':     {flag:'hr', group:'L', elo:1912, fifaPts:1711.48, fifaPtsDelta:-19.66, fifaRankDelta:-3, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.54, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.45},
   'Norway':      {flag:'no', group:'I', elo:1922, fifaPts:1582.86, fifaPtsDelta:19.75, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.7, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:2.45},
-  'Germany':     {flag:'de', group:'E', elo:1939, fifaPts:1726.73, fifaPtsDelta:7.77, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:0.667, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:4.25},
+  'Germany':     {flag:'de', group:'E', elo:1939, fifaPts:1726.73, fifaPtsDelta:7.77, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:0.667, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:3.95},
   'Switzerland': {flag:'ch', group:'B', elo:1897, fifaPts:1675.99, fifaPtsDelta:14.01, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.833, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.95},
   'Ecuador':     {flag:'ec', group:'E', elo:1933, fifaPts:1604.49, fifaPtsDelta:-27.75, fifaRankDelta:-5, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.511, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.55},
   'Uruguay':     {flag:'uy', group:'H', elo:1890, fifaPts:1634.7, fifaPtsDelta:-11.12, fifaRankDelta:-2, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.456, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.0},
@@ -4779,6 +4781,8 @@ initLiveData();
 renderGoalsList();
 buildTicker();
 buildMatchVideoGrid();
+
+
 
 
 
