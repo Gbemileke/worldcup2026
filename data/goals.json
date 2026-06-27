@@ -2254,5 +2254,101 @@
     "phase": "Group Stage",
     "score": "0-1",
     "desc": ""
+  },
+  {
+    "id": 236,
+    "matchId": "m65",
+    "home": "Egypt",
+    "away": "Iran",
+    "scorer": "M. Saber",
+    "minute": 5,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 237,
+    "matchId": "m65",
+    "home": "Egypt",
+    "away": "Iran",
+    "scorer": "R. Rezaeian",
+    "minute": 14,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 238,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "L. Trossard",
+    "minute": 28,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 239,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "L. Trossard",
+    "minute": 50,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 240,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "K. De Bruyne",
+    "minute": 66,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-3",
+    "desc": ""
+  },
+  {
+    "id": 241,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "E. Just",
+    "minute": 84,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-4",
+    "desc": ""
+  },
+  {
+    "id": 242,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "R. Lukaku",
+    "minute": 86,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-4",
+    "desc": ""
+  },
+  {
+    "id": 243,
+    "matchId": "m66",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "scorer": "A. Saelemaekers",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-5",
+    "desc": ""
   }
 ]

@@ -3759,5 +3759,123 @@
         2
       ]
     ]
+  },
+  "m65": {
+    "home": "Egypt",
+    "away": "Iran",
+    "score": "1-1",
+    "date": "Jun 27 - Lumen Field",
+    "poss": [
+      61.4,
+      38.6
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        15,
+        13
+      ],
+      [
+        "Shots on Goal",
+        3,
+        4
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        11,
+        16
+      ],
+      [
+        "Saves",
+        2,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.59,
+        1.77
+      ],
+      [
+        "Yellow Cards",
+        3,
+        4
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        3
+      ]
+    ]
+  },
+  "m66": {
+    "home": "New Zealand",
+    "away": "Belgium",
+    "score": "1-5",
+    "date": "Jun 27 - BC Place",
+    "poss": [
+      45.5,
+      54.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        6,
+        35
+      ],
+      [
+        "Shots on Goal",
+        2,
+        10
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        7
+      ],
+      [
+        "Saves",
+        5,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.86,
+        4.55
+      ],
+      [
+        "Yellow Cards",
+        2,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        1
+      ]
+    ]
   }
 }

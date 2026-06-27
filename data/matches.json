@@ -702,5 +702,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-spain-highlights-match-report",
     "espnId": "760479"
+  },
+  {
+    "id": "m65",
+    "date": "Jun 27",
+    "home": "Egypt",
+    "away": "Iran",
+    "score": "1-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/egypt-v-iran-highlights-match-report",
+    "espnId": "760476"
+  },
+  {
+    "id": "m66",
+    "date": "Jun 27",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "score": "1-5",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/new-zealand-v-belgium-highlights-match-report",
+    "espnId": "760477"
   }
 ]
