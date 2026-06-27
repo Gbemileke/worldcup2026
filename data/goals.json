@@ -2242,5 +2242,17 @@
     "phase": "Group Stage",
     "score": "5-0",
     "desc": ""
+  },
+  {
+    "id": 235,
+    "matchId": "m64",
+    "home": "Uruguay",
+    "away": "Spain",
+    "scorer": "\u00c1. Baena",
+    "minute": 42,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
   }
 ]

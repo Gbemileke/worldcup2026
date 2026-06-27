@@ -680,5 +680,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/senegal-v-iraq-highlights-match-report",
     "espnId": "760474"
+  },
+  {
+    "id": "m63",
+    "date": "Jun 27",
+    "home": "Cape Verde",
+    "away": "Saudi Arabia",
+    "score": "0-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/cabo-verde-v-saudi-arabia-highlights-match-report",
+    "espnId": "760478"
+  },
+  {
+    "id": "m64",
+    "date": "Jun 27",
+    "home": "Uruguay",
+    "away": "Spain",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-spain-highlights-match-report",
+    "espnId": "760479"
   }
 ]

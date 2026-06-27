@@ -1,33 +1,5 @@
 [
   {
-    "date": "Jun 26",
-    "home": "Uruguay",
-    "away": "Spain",
-    "time": "6PM CST",
-    "group": "STAGE"
-  },
-  {
-    "date": "Jun 26",
-    "home": "Cape Verde",
-    "away": "Saudi Arabia",
-    "time": "6PM CST",
-    "group": "STAGE"
-  },
-  {
-    "date": "Jun 26",
-    "home": "New Zealand",
-    "away": "Belgium",
-    "time": "9PM CST",
-    "group": "STAGE"
-  },
-  {
-    "date": "Jun 26",
-    "home": "Egypt",
-    "away": "Iran",
-    "time": "9PM CST",
-    "group": "STAGE"
-  },
-  {
     "date": "Jun 27",
     "home": "Panama",
     "away": "England",
@@ -68,33 +40,5 @@
     "away": "Austria",
     "time": "8PM CST",
     "group": "STAGE"
-  },
-  {
-    "date": "Jun 28",
-    "home": "S. Africa",
-    "away": "Canada",
-    "time": "1PM CST",
-    "group": ""
-  },
-  {
-    "date": "Jun 29",
-    "home": "Brazil",
-    "away": "Japan",
-    "time": "11AM CST",
-    "group": ""
-  },
-  {
-    "date": "Jun 29",
-    "home": "Netherlands",
-    "away": "Morocco",
-    "time": "7PM CST",
-    "group": ""
-  },
-  {
-    "date": "Jul 1",
-    "home": "USA",
-    "away": "Bosnia",
-    "time": "6PM CST",
-    "group": ""
   }
 ]
