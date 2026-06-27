@@ -2350,5 +2350,65 @@
     "phase": "Group Stage",
     "score": "1-5",
     "desc": ""
+  },
+  {
+    "id": 244,
+    "matchId": "m67",
+    "home": "Croatia",
+    "away": "Ghana",
+    "scorer": "P. Sucic",
+    "minute": 31,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 245,
+    "matchId": "m67",
+    "home": "Croatia",
+    "away": "Ghana",
+    "scorer": "D. Luckassen",
+    "minute": 73,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 246,
+    "matchId": "m67",
+    "home": "Croatia",
+    "away": "Ghana",
+    "scorer": "N. Vlasic",
+    "minute": 83,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
+    "id": 247,
+    "matchId": "m68",
+    "home": "Panama",
+    "away": "England",
+    "scorer": "J. Bellingham",
+    "minute": 62,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 248,
+    "matchId": "m68",
+    "home": "Panama",
+    "away": "England",
+    "scorer": "H. Kane",
+    "minute": 67,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "0-2",
+    "desc": ""
   }
 ]

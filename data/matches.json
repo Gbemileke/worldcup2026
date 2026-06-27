@@ -724,5 +724,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/new-zealand-v-belgium-highlights-match-report",
     "espnId": "760477"
+  },
+  {
+    "id": "m67",
+    "date": "Jun 27",
+    "home": "Croatia",
+    "away": "Ghana",
+    "score": "2-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/croatia-v-ghana-highlights-match-report",
+    "espnId": "760480"
+  },
+  {
+    "id": "m68",
+    "date": "Jun 27",
+    "home": "Panama",
+    "away": "England",
+    "score": "0-2",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-england-highlights-match-report",
+    "espnId": "760485"
   }
 ]

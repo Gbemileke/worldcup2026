@@ -3877,5 +3877,123 @@
         1
       ]
     ]
+  },
+  "m67": {
+    "home": "Croatia",
+    "away": "Ghana",
+    "score": "2-1",
+    "date": "Jun 27 - Lincoln Financial Field",
+    "poss": [
+      53.3,
+      46.7
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        8,
+        6
+      ],
+      [
+        "Shots on Goal",
+        4,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        9,
+        13
+      ],
+      [
+        "Saves",
+        0,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.52,
+        0.58
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        2
+      ]
+    ]
+  },
+  "m68": {
+    "home": "Panama",
+    "away": "England",
+    "score": "0-2",
+    "date": "Jun 27 - MetLife Stadium",
+    "poss": [
+      32.8,
+      67.2
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        13,
+        17
+      ],
+      [
+        "Shots on Goal",
+        2,
+        6
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        16,
+        13
+      ],
+      [
+        "Saves",
+        4,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.21,
+        2.53
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        4,
+        4
+      ]
+    ]
   }
 }
