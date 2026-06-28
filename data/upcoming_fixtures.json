@@ -1,30 +1,128 @@
 [
   {
-    "date": "Jun 28",
-    "home": "S. Africa",
-    "away": "Canada",
+    "date": "Jun 25",
+    "home": "Ecuador",
+    "away": "Germany",
+    "time": "2PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Curacao",
+    "away": "Ivory Coast",
+    "time": "2PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Tunisia",
+    "away": "Netherlands",
+    "time": "5PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Japan",
+    "away": "Sweden",
+    "time": "5PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Turkey",
+    "away": "USA",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 25",
+    "home": "Paraguay",
+    "away": "Australia",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 26",
+    "home": "Norway",
+    "away": "France",
     "time": "1PM CST",
-    "group": ""
+    "group": "STAGE"
   },
   {
-    "date": "Jun 29",
-    "home": "Brazil",
-    "away": "Japan",
-    "time": "11AM CST",
-    "group": ""
+    "date": "Jun 26",
+    "home": "Senegal",
+    "away": "Iraq",
+    "time": "1PM CST",
+    "group": "STAGE"
   },
   {
-    "date": "Jun 29",
-    "home": "Netherlands",
-    "away": "Morocco",
-    "time": "7PM CST",
-    "group": ""
-  },
-  {
-    "date": "Jul 1",
-    "home": "USA",
-    "away": "Bosnia",
+    "date": "Jun 26",
+    "home": "Uruguay",
+    "away": "Spain",
     "time": "6PM CST",
-    "group": ""
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 26",
+    "home": "Cape Verde",
+    "away": "Saudi Arabia",
+    "time": "6PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 26",
+    "home": "New Zealand",
+    "away": "Belgium",
+    "time": "9PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 26",
+    "home": "Egypt",
+    "away": "Iran",
+    "time": "9PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "Panama",
+    "away": "England",
+    "time": "3PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "Croatia",
+    "away": "Ghana",
+    "time": "3PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "Colombia",
+    "away": "Portugal",
+    "time": "5:30PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "DR Congo",
+    "away": "Uzbekistan",
+    "time": "5:30PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "Jordan",
+    "away": "Argentina",
+    "time": "8PM CST",
+    "group": "STAGE"
+  },
+  {
+    "date": "Jun 27",
+    "home": "Algeria",
+    "away": "Austria",
+    "time": "8PM CST",
+    "group": "STAGE"
   }
 ]

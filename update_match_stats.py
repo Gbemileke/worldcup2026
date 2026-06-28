@@ -125,7 +125,81 @@ LOCKED_MATCHES = {
     'm27',  # Canada 6-0 Qatar (David/Saliba minutes)
     'm49',  # Bosnia 3-1 Qatar (running-score fix)
     'm51',  # Morocco 4-2 Haiti (own-goal running-score fix)
+    'm44',  # Jordan 1-2 Algeria (Al-Rashdan 36' score fixed 0-1→1-0: home goal not away)
+    'm56',  # Ecuador 2-1 Germany (Sané 2' 1-0→0-1, Angulo 9' 2-0→1-1: away/home swap)
+    'm61',  # Norway 1-4 France (Aasgaard 21' score fixed 0-3→1-2: NOR goal not FRA)
+    'm66',  # New Zealand 1-5 Belgium (Just 84' score fixed 0-4→1-3: NZL goal not BEL)
+    'm67',  # Croatia 2-1 Ghana (Luckassen 73' score fixed 2-0→1-1: Ghana equaliser not Croatia goal)
+    'm70',  # DR Congo 3-1 Uzbekistan (4 goals manually verified: Shomurodov 10', Wissa 68'pen, Mayele 78', Wissa 90+1')
 }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SAFE MANUAL GOAL FIX
+# Use this function to correct goals for any match instead of editing HTML
+# directly. It writes to data/goals.json (the canonical source), auto-locks
+# the match so the scraper never overwrites it, and update_site.py will
+# regenerate the HTML cleanly on the next run — no syntax errors possible.
+#
+# Usage:
+#   manual_fix_goals('mXX', [
+#       {'scorer':'Player Name', 'minute':10, 'type':'open-play', 'score':'1-0'},
+#       {'scorer':'Player Name', 'minute':67, 'type':'penalty',   'score':'1-1'},
+#   ], home='Team A', away='Team B', phase='Group Stage')
+#
+# Types: open-play | penalty | own-goal | header | free-kick
+# ─────────────────────────────────────────────────────────────────────────────
+def manual_fix_goals(match_id, new_goals, home='', away='', phase='Group Stage'):
+    import json, os
+
+    goals_path = os.path.join(os.path.dirname(__file__), 'data', 'goals.json')
+    with open(goals_path) as f:
+        goals = json.load(f)
+
+    # Remove any existing goals for this match
+    goals = [g for g in goals if g.get('matchId') != match_id]
+
+    # Determine next id
+    next_id = max((g['id'] for g in goals), default=0) + 1
+
+    # Derive home/away from existing data if not supplied
+    if not home or not away:
+        import re
+        with open(os.path.join(os.path.dirname(__file__), 'index.html')) as f:
+            html = f.read()
+        m = re.search(rf"id:'{match_id}'[^}}]*home:'([^']*)'[^}}]*away:'([^']*)'", html)
+        if m:
+            home = home or m.group(1)
+            away = away or m.group(2)
+
+    for g in new_goals:
+        goals.append({
+            "id":      next_id,
+            "matchId": match_id,
+            "home":    home,
+            "away":    away,
+            "scorer":  g['scorer'],
+            "minute":  g['minute'],
+            "type":    g.get('type', 'open-play'),
+            "phase":   g.get('phase', phase),
+            "score":   g.get('score', ''),
+            "desc":    g.get('desc', ''),
+        })
+        next_id += 1
+
+    # Sort by match then minute
+    goals.sort(key=lambda x: (x['matchId'], x['minute']))
+
+    with open(goals_path, 'w') as f:
+        json.dump(goals, f, indent=2)
+
+    # Auto-lock this match
+    if match_id not in LOCKED_MATCHES:
+        LOCKED_MATCHES.add(match_id)
+        print(f"  ✓ {match_id}: {len(new_goals)} goals written to goals.json and locked")
+    else:
+        print(f"  ✓ {match_id}: {len(new_goals)} goals written to goals.json (already locked)")
+    print(f"    Run update_site.py to regenerate index.html")
+
 
 def _strip_accents(s):
     return ''.join(ch for ch in unicodedata.normalize('NFD', s)
