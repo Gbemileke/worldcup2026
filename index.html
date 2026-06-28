@@ -3409,27 +3409,88 @@ var SIM = null;
 
 function runSimulation() {
   SIM_COUNT++;
-  if (typeof buildR32Matchups === 'function') buildR32Matchups();  // refresh teams from model/standings
+  if (typeof buildR32Matchups === 'function') buildR32Matchups();
   SIM = {r32:[], r16:[], qf:[], sf:[], final:null, champion:null, runnerUp:null, sf1Loser:'', sf2Loser:''};
+
+  // ── R32: simulate each match from BSIM_SCHEDULE bracket order ──────────────
   if (R32_MATCHUPS && R32_MATCHUPS.length) {
     SIM.r32 = R32_MATCHUPS.map(function(m) { return simMatch(m.home, m.away); });
   }
-  var r32w = SIM.r32.map(function(m) { return m.winner; });
-  for (var i = 0; i < r32w.length; i += 2) {
-    if (r32w[i] && r32w[i+1]) SIM.r16.push(simMatch(r32w[i], r32w[i+1]));
+
+  // Build a lookup: official match ID → winner of that R32 game
+  // e.g. 'M74' → 'Germany', so 'W74' resolves to 'Germany'
+  var r32WinnerByMatchId = {};
+  SIM.r32.forEach(function(m, i) {
+    var schedEntry = BSIM_SCHEDULE[i];
+    if (schedEntry) r32WinnerByMatchId[schedEntry.id] = m.winner;
+  });
+
+  // Helper: resolve 'W74' → winner of M74, or 'W89' → winner of M89 (R16), etc.
+  var r16WinnerByMatchId = {};
+  var qfWinnerByMatchId  = {};
+  var sfWinnerByMatchId  = {};
+
+  function resolveWinner(ref, maps) {
+    if (!ref) return '';
+    var m = ref.match(/^W(\d+)$/);
+    if (!m) return ref;
+    var key = 'M' + m[1];
+    for (var i = 0; i < maps.length; i++) {
+      if (maps[i][key]) return maps[i][key];
+    }
+    return '';
   }
-  var r16w = SIM.r16.map(function(m) { return m.winner; });
-  for (var i = 0; i < r16w.length; i += 2) {
-    if (r16w[i] && r16w[i+1]) SIM.qf.push(simMatch(r16w[i], r16w[i+1]));
-  }
-  var qfw = SIM.qf.map(function(m) { return m.winner; });
-  for (var i = 0; i < qfw.length; i += 2) {
-    if (qfw[i] && qfw[i+1]) SIM.sf.push(simMatch(qfw[i], qfw[i+1]));
-  }
-  var sfw = SIM.sf.map(function(m) { return m.winner; });
-  SIM.final = (sfw[0] && sfw[1]) ? simMatch(sfw[0], sfw[1]) : null;
-  SIM.champion = SIM.final ? SIM.final.winner : null;
-  SIM.runnerUp = SIM.final ? (SIM.final.winner === sfw[0] ? sfw[1] : sfw[0]) : null;
+
+  // ── R16: pair winners according to official BSIM_R16 bracket fixture ───────
+  // BSIM_R16[i].fH = 'W74' means home = winner of M74
+  SIM.r16 = BSIM_R16.map(function(fixture) {
+    var h = resolveWinner(fixture.fH, [r32WinnerByMatchId]);
+    var a = resolveWinner(fixture.fA, [r32WinnerByMatchId]);
+    if (!h || !a) return null;
+    return simMatch(h, a);
+  }).filter(Boolean);
+
+  // Build R16 winner lookup by match ID
+  SIM.r16.forEach(function(m, i) {
+    if (BSIM_R16[i]) r16WinnerByMatchId[BSIM_R16[i].id] = m.winner;
+  });
+
+  // ── QF: pair R16 winners according to official BSIM_QF bracket fixture ─────
+  // BSIM_QF[i].fH = 'W89' means home = winner of M89 (R16 match)
+  SIM.qf = BSIM_QF.map(function(fixture) {
+    var h = resolveWinner(fixture.fH, [r16WinnerByMatchId]);
+    var a = resolveWinner(fixture.fA, [r16WinnerByMatchId]);
+    if (!h || !a) return null;
+    return simMatch(h, a);
+  }).filter(Boolean);
+
+  // Build QF winner lookup
+  SIM.qf.forEach(function(m, i) {
+    if (BSIM_QF[i]) qfWinnerByMatchId[BSIM_QF[i].id] = m.winner;
+  });
+
+  // ── SF: pair QF winners according to official BSIM_SF bracket fixture ──────
+  // BSIM_SF[i].fH = 'W97' means home = winner of M97 (QF match)
+  SIM.sf = BSIM_SF.map(function(fixture) {
+    var h = resolveWinner(fixture.fH, [qfWinnerByMatchId]);
+    var a = resolveWinner(fixture.fA, [qfWinnerByMatchId]);
+    if (!h || !a) return null;
+    return simMatch(h, a);
+  }).filter(Boolean);
+
+  // Build SF winner lookup
+  SIM.sf.forEach(function(m, i) {
+    if (BSIM_SF[i]) sfWinnerByMatchId[BSIM_SF[i].id] = m.winner;
+  });
+
+  // ── FINAL: winners of M101 vs M102 ─────────────────────────────────────────
+  var finH = resolveWinner(BSIM_FINAL[0].fH, [sfWinnerByMatchId]);
+  var finA = resolveWinner(BSIM_FINAL[0].fA, [sfWinnerByMatchId]);
+  SIM.final = (finH && finA) ? simMatch(finH, finA) : null;
+  SIM.champion  = SIM.final ? SIM.final.winner : null;
+  SIM.runnerUp  = SIM.final ? (SIM.final.winner === finH ? finA : finH) : null;
+
+  // SF losers → third-place match
   SIM.sf1Loser = SIM.sf[0] ? (SIM.sf[0].winner === SIM.sf[0].home ? SIM.sf[0].away : SIM.sf[0].home) : '';
   SIM.sf2Loser = SIM.sf[1] ? (SIM.sf[1].winner === SIM.sf[1].home ? SIM.sf[1].away : SIM.sf[1].home) : '';
 
@@ -5714,21 +5775,76 @@ function bsimEnforceIntegrity() {
 
 function bsimAiFill() {
   bsimInit();
-  bsimPopulateFromSeeds();  // project teams from group model if not yet known
-  ['R32','R16','QF','SF','FINAL'].forEach(function(round) {
-    for (var i = 0; i < BSIM_COUNT[round]; i++) {
-      var h = bsimGet(round,i,'h'), a = bsimGet(round,i,'a');
-      if (!h || !a) continue;
-      var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
-      var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
-      var winner = sH >= sA ? h : a;
-      BSIM.picks[round+'-'+i] = winner;
-      BSIM.picks[round+'-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
-      var nr = BSIM_NEXT[round];
-      if (nr) { var ni=Math.floor(i/2),ns=(i%2===0)?'h':'a'; BSIM.slots[nr+'-'+ni+'-'+ns]=winner; }
-      if (round==='SF') { var loser=(winner===h)?a:h; BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=loser; }
-    }
-  });
+  bsimPopulateFromSeeds();  // project teams from group model
+
+  // ── R32: pick winners round by round using bracket-aware propagation ────────
+  // After picking each R32 winner, bsimPick() propagates them into the correct
+  // R16 slot via BSIM_NEXT and Math.floor(idx/2) — which is correct because
+  // BSIM_SCHEDULE is in bracket order matching BSIM_R16.fH/fA refs.
+  for (var i = 0; i < BSIM_COUNT.R32; i++) {
+    var h = bsimGet('R32',i,'h'), a = bsimGet('R32',i,'a');
+    if (!h || !a) continue;
+    var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+    var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+    var winner = sH >= sA ? h : a;
+    BSIM.picks['R32-'+i] = winner;
+    BSIM.picks['R32-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+    // Propagate into correct R16 slot using bracket structure
+    var ni=Math.floor(i/2), ns=(i%2===0)?'h':'a';
+    BSIM.slots['R16-'+ni+'-'+ns] = winner;
+  }
+
+  // ── R16 → QF: use BSIM_R16 to confirm correct bracket matchups ─────────────
+  for (var i = 0; i < BSIM_COUNT.R16; i++) {
+    var h = bsimGet('R16',i,'h'), a = bsimGet('R16',i,'a');
+    if (!h || !a) continue;
+    var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+    var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+    var winner = sH >= sA ? h : a;
+    BSIM.picks['R16-'+i] = winner;
+    BSIM.picks['R16-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+    var ni=Math.floor(i/2), ns=(i%2===0)?'h':'a';
+    BSIM.slots['QF-'+ni+'-'+ns] = winner;
+  }
+
+  // ── QF → SF ────────────────────────────────────────────────────────────────
+  for (var i = 0; i < BSIM_COUNT.QF; i++) {
+    var h = bsimGet('QF',i,'h'), a = bsimGet('QF',i,'a');
+    if (!h || !a) continue;
+    var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+    var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+    var winner = sH >= sA ? h : a;
+    BSIM.picks['QF-'+i] = winner;
+    BSIM.picks['QF-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+    var ni=Math.floor(i/2), ns=(i%2===0)?'h':'a';
+    BSIM.slots['SF-'+ni+'-'+ns] = winner;
+  }
+
+  // ── SF → Final ────────────────────────────────────────────────────────────
+  for (var i = 0; i < BSIM_COUNT.SF; i++) {
+    var h = bsimGet('SF',i,'h'), a = bsimGet('SF',i,'a');
+    if (!h || !a) continue;
+    var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
+    var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
+    var winner = sH >= sA ? h : a;
+    BSIM.picks['SF-'+i] = winner;
+    BSIM.picks['SF-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
+    BSIM.slots['FINAL-0-'+(i===0?'h':'a')] = winner;
+    // SF losers go to third-place
+    var loser = (winner===h)?a:h;
+    BSIM.slots['THIRD-0-'+(i===0?'h':'a')] = loser;
+  }
+
+  // ── Final ─────────────────────────────────────────────────────────────────
+  var fh = bsimGet('FINAL',0,'h'), fa = bsimGet('FINAL',0,'a');
+  if (fh && fa) {
+    var sH = typeof computeFullModelScore==='function'?computeFullModelScore(fh):(getT(fh).elo||1700);
+    var sA = typeof computeFullModelScore==='function'?computeFullModelScore(fa):(getT(fa).elo||1700);
+    var winner = sH >= sA ? fh : fa;
+    BSIM.picks['FINAL-0'] = winner;
+    BSIM.picks['FINAL-0:r'] = bsimReason(fh,fa,sH,sA,winner);
+  }
+
   bsimEnforceIntegrity();
   bsimPredictThird();
   bsimRender(); bsimUpdateProg();
