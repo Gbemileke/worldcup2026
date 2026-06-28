@@ -131,6 +131,8 @@ LOCKED_MATCHES = {
     'm66',  # New Zealand 1-5 Belgium (Just 84' score fixed 0-4→1-3: NZL goal not BEL)
     'm67',  # Croatia 2-1 Ghana (Luckassen 73' score fixed 2-0→1-1: Ghana equaliser not Croatia goal)
     'm70',  # DR Congo 3-1 Uzbekistan (4 goals manually verified: Shomurodov 10', Wissa 68'pen, Mayele 78', Wissa 90+1')
+    'm71',  # Algeria 3-3 Austria (Arnautovic 28', Belghali 45', Sabitzer 55', Mahrez 60', Mahrez 93', Kalajdzic 96')
+    'm72',  # Jordan 1-3 Argentina (Lo Celso 19'fk, L.Martinez 31'pen, Al-Taamari 55', Messi 80'fk)
 }
 
 # ─────────────────────────────────────────────────────────────────────────────

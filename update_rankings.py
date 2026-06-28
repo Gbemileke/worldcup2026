@@ -242,24 +242,6 @@ WC_RESULTS = [
     {"home":"Scotland", "away":"Brazil", "result":0.0},  # 0-3
     {"home":"Czechia", "away":"Mexico", "result":0.0},  # 0-3
     {"home":"S. Africa", "away":"S. Korea", "result":1.0},  # 1-0
-    {"home":"Curacao", "away":"Ivory Coast", "result":0.0},  # 0-2
-    {"home":"Ecuador", "away":"Germany", "result":1.0},  # 2-1
-    {"home":"Japan", "away":"Sweden", "result":0.5},  # 1-1
-    {"home":"Tunisia", "away":"Netherlands", "result":0.0},  # 1-3
-    {"home":"Paraguay", "away":"Australia", "result":0.5},  # 0-0
-    {"home":"Turkey", "away":"USA", "result":1.0},  # 3-2
-    {"home":"Norway", "away":"France", "result":0.0},  # 1-4
-    {"home":"Senegal", "away":"Iraq", "result":1.0},  # 5-0
-    {"home":"Cape Verde", "away":"Saudi Arabia", "result":0.5},  # 0-0
-    {"home":"Uruguay", "away":"Spain", "result":0.0},  # 0-1
-    {"home":"Egypt", "away":"Iran", "result":0.5},  # 1-1
-    {"home":"New Zealand", "away":"Belgium", "result":0.0},  # 1-5
-    {"home":"Croatia", "away":"Ghana", "result":1.0},  # 2-1
-    {"home":"Panama", "away":"England", "result":0.0},  # 0-2
-    {"home":"Colombia", "away":"Portugal", "result":0.5},  # 0-0
-    {"home":"DR Congo", "away":"Uzbekistan", "result":1.0},  # 3-1
-    {"home":"Algeria", "away":"Austria", "result":0.5},  # 3-3
-    {"home":"Jordan", "away":"Argentina", "result":0.0},  # 1-3
     # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
 ]
 
