@@ -37,17 +37,17 @@
       {
         "name": "Canada",
         "polymarket": 35,
-        "fanDuelOdds": 250
+        "fanDuelOdds": 200
       },
       {
         "name": "Bosnia",
         "polymarket": 15,
-        "fanDuelOdds": 420
+        "fanDuelOdds": 600
       },
       {
         "name": "Qatar",
         "polymarket": 3,
-        "fanDuelOdds": 3500
+        "fanDuelOdds": 4000
       }
     ]
   },
@@ -58,22 +58,22 @@
       {
         "name": "Brazil",
         "polymarket": 58,
-        "fanDuelOdds": -330
+        "fanDuelOdds": -200
       },
       {
         "name": "Morocco",
         "polymarket": 30,
-        "fanDuelOdds": 320
+        "fanDuelOdds": 280
       },
       {
         "name": "Scotland",
         "polymarket": 11,
-        "fanDuelOdds": 1000
+        "fanDuelOdds": 700
       },
       {
         "name": "Haiti",
         "polymarket": 1,
-        "fanDuelOdds": 10000
+        "fanDuelOdds": 15000
       }
     ]
   },
@@ -84,22 +84,22 @@
       {
         "name": "USA",
         "polymarket": 70,
-        "fanDuelOdds": -180
+        "fanDuelOdds": -260
       },
       {
         "name": "Turkey",
         "polymarket": 8,
-        "fanDuelOdds": 185
+        "fanDuelOdds": 900
       },
       {
         "name": "Australia",
         "polymarket": 21,
-        "fanDuelOdds": 1200
+        "fanDuelOdds": 300
       },
       {
         "name": "Paraguay",
         "polymarket": 1,
-        "fanDuelOdds": 3000
+        "fanDuelOdds": 5000
       }
     ]
   },
@@ -110,22 +110,22 @@
       {
         "name": "Germany",
         "polymarket": 74,
-        "fanDuelOdds": -260
+        "fanDuelOdds": -400
       },
       {
         "name": "Ecuador",
         "polymarket": 4,
-        "fanDuelOdds": 320
+        "fanDuelOdds": 2000
       },
       {
         "name": "Ivory Coast",
         "polymarket": 21,
-        "fanDuelOdds": 550
+        "fanDuelOdds": 350
       },
       {
         "name": "Curacao",
         "polymarket": 1,
-        "fanDuelOdds": 12500
+        "fanDuelOdds": 25000
       }
     ]
   },
@@ -141,7 +141,7 @@
       {
         "name": "Sweden",
         "polymarket": 28,
-        "fanDuelOdds": 450
+        "fanDuelOdds": 240
       },
       {
         "name": "Japan",
@@ -151,7 +151,7 @@
       {
         "name": "Tunisia",
         "polymarket": 1,
-        "fanDuelOdds": 1500
+        "fanDuelOdds": 10000
       }
     ]
   },
@@ -162,22 +162,22 @@
       {
         "name": "Belgium",
         "polymarket": 63,
-        "fanDuelOdds": -180
+        "fanDuelOdds": -220
       },
       {
         "name": "New Zealand",
         "polymarket": 5,
-        "fanDuelOdds": 350
+        "fanDuelOdds": 2500
       },
       {
         "name": "Iran",
         "polymarket": 7,
-        "fanDuelOdds": 500
+        "fanDuelOdds": 900
       },
       {
         "name": "Egypt",
         "polymarket": 25,
-        "fanDuelOdds": 700
+        "fanDuelOdds": 380
       }
     ]
   },
@@ -188,12 +188,12 @@
       {
         "name": "Spain",
         "polymarket": 73,
-        "fanDuelOdds": -280
+        "fanDuelOdds": -350
       },
       {
         "name": "Uruguay",
         "polymarket": 22,
-        "fanDuelOdds": 280
+        "fanDuelOdds": 320
       },
       {
         "name": "Cape Verde",
@@ -219,7 +219,7 @@
       {
         "name": "Norway",
         "polymarket": 21,
-        "fanDuelOdds": 200
+        "fanDuelOdds": 300
       },
       {
         "name": "Senegal",
@@ -240,22 +240,22 @@
       {
         "name": "Argentina",
         "polymarket": 85,
-        "fanDuelOdds": -260
+        "fanDuelOdds": -600
       },
       {
         "name": "Austria",
         "polymarket": 13,
-        "fanDuelOdds": 390
+        "fanDuelOdds": 500
       },
       {
         "name": "Algeria",
         "polymarket": 1,
-        "fanDuelOdds": 750
+        "fanDuelOdds": 3000
       },
       {
         "name": "Jordan",
         "polymarket": 1,
-        "fanDuelOdds": 6500
+        "fanDuelOdds": 15000
       }
     ]
   },
@@ -266,22 +266,22 @@
       {
         "name": "Portugal",
         "polymarket": 63,
-        "fanDuelOdds": -200
+        "fanDuelOdds": -280
       },
       {
         "name": "Colombia",
         "polymarket": 31,
-        "fanDuelOdds": 220
+        "fanDuelOdds": 260
       },
       {
         "name": "DR Congo",
         "polymarket": 3,
-        "fanDuelOdds": 2000
+        "fanDuelOdds": 2500
       },
       {
         "name": "Uzbekistan",
         "polymarket": 3,
-        "fanDuelOdds": 2700
+        "fanDuelOdds": 3000
       }
     ]
   },
@@ -292,7 +292,7 @@
       {
         "name": "England",
         "polymarket": 71,
-        "fanDuelOdds": -270
+        "fanDuelOdds": -320
       },
       {
         "name": "Croatia",
@@ -302,12 +302,12 @@
       {
         "name": "Ghana",
         "polymarket": 5,
-        "fanDuelOdds": 1300
+        "fanDuelOdds": 1800
       },
       {
         "name": "Panama",
         "polymarket": 1,
-        "fanDuelOdds": 2700
+        "fanDuelOdds": 8000
       }
     ]
   }
