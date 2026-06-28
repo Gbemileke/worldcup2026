@@ -499,6 +499,192 @@ def run_scraper():
 # MAIN
 # ─────────────────────────────────────────────────────────────────────────────
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION: VALIDATE
+# Runs all data consistency checks and auto-fixes what it can.
+# Run: python update_wc.py --section validate
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def validate_and_fix():
+    import json
+
+    html  = read_html()
+    s0    = html.find('<script>') + 8
+    e0    = html.find('</script>', s0)
+    js    = html[s0:e0]
+    changed = False
+    errors = []
+    fixes  = []
+
+    print("  ── 1. Parse MATCHES ──")
+    ms = html.find("var MATCHES = ["); me = html.find("\n];", ms) + 3
+    matches = {}
+    for m in re.finditer(
+        r"\{id:'(m\d+)'[^}]*home:'([^']*)'[^}]*away:'([^']*)'[^}]*score:'([^']*)'",
+        html[ms:me]):
+        matches[m.group(1)] = {'home': m.group(2), 'away': m.group(3), 'score': m.group(4)}
+    print(f"    {len(matches)} matches found (m1–m{max(int(x[1:]) for x in matches)})")
+
+    print("  ── 2. Parse GOALS ──")
+    gs = html.find("var GOALS = ["); ge = html.find("\n];", gs)
+    goal_list = re.findall(
+        r"\{id:(\d+), matchId:'([^']*)', home:'([^']*)', away:'([^']*)'[^}]*"
+        r"scorer:'([^']*)'[^}]*minute:(\d+)[^}]*type:'([^']*)'[^}]*score:'([^']*)'",
+        html[gs:ge])
+    gc = {}
+    for g in goal_list:
+        gc[g[1]] = gc.get(g[1], 0) + 1
+    print(f"    {len(goal_list)} goals across {len(gc)} matches")
+
+    print("  ── 3. Goal balance check ──")
+    balance_errors = []
+    for mid, info in sorted(matches.items(), key=lambda x: int(x[0][1:])):
+        sc = info['score']
+        if '-' not in sc: continue
+        try: h, a = map(int, sc.split('-'))
+        except: continue
+        exp = h + a; act = gc.get(mid, 0)
+        if exp > 0 and act != exp:
+            balance_errors.append((mid, info['home'], info['away'], sc, exp, act))
+
+    if balance_errors:
+        print(f"    ❌ {len(balance_errors)} balance conflicts:")
+        for mid, h, a, sc, exp, act in balance_errors:
+            print(f"       {mid}: {h} {sc} {a} — expected {exp} goals, have {act}")
+            errors.append(f"BALANCE {mid}: {h} {sc} {a} exp={exp} have={act}")
+    else:
+        print(f"    ✅ All {len(matches)} matches balanced")
+
+    print("  ── 4. Duplicate goal IDs ──")
+    goal_ids = [int(g[0]) for g in goal_list]
+    seen = set(); dupes = set()
+    for gid in goal_ids:
+        if gid in seen: dupes.add(gid)
+        seen.add(gid)
+    if dupes:
+        print(f"    ❌ Duplicate goal IDs: {sorted(dupes)}")
+        errors.append(f"DUPLICATE_GOAL_IDS: {sorted(dupes)}")
+    else:
+        print(f"    ✅ No duplicate goal IDs")
+
+    print("  ── 5. MATCH_STATS consistency ──")
+    ms2 = html.find("var MATCH_STATS"); me2 = html.find("\n};", ms2) + 3
+    stat_ids = set("m"+x for x in re.findall(r'\bm(\d+)\s*:', html[ms2:me2]))
+    match_ids = set(matches.keys())
+
+    # Missing stats
+    missing_stats = sorted(match_ids - stat_ids, key=lambda x: int(x[1:]))
+    extra_stats   = sorted(stat_ids - match_ids, key=lambda x: int(x[1:]))
+    if missing_stats: print(f"    ⚠ Matches missing stats: {missing_stats}"); errors.append(f"MISSING_STATS: {missing_stats}")
+    if extra_stats:   print(f"    ⚠ Stats with no match: {extra_stats}");     errors.append(f"EXTRA_STATS: {extra_stats}")
+    if not missing_stats and not extra_stats: print(f"    ✅ MATCH_STATS complete ({len(stat_ids)}/72)")
+
+    # Score/home/away alignment between MATCHES and MATCH_STATS
+    score_conflicts = []
+    for mid in stat_ids & match_ids:
+        m_home = matches[mid]['home']
+        m_away = matches[mid]['away']
+        m_score = matches[mid]['score']
+        stat_m = re.search(
+            rf'{mid}:\s*\{{home:\'([^\']*)\',\s*away:\'([^\']*)\',\s*hf:\'[^\']*\',\s*af:\'[^\']*\',\s*score:\'([^\']*)\'',
+            html[ms2:me2])
+        if not stat_m: continue
+        s_home, s_away, s_score = stat_m.group(1), stat_m.group(2), stat_m.group(3)
+
+        conflict = None
+        if s_home != m_home and s_away != m_away:
+            # home/away swapped
+            conflict = ('SWAPPED', mid, m_home, m_away, m_score, s_home, s_away, s_score)
+        elif s_score != m_score:
+            conflict = ('SCORE', mid, m_home, m_away, m_score, s_home, s_away, s_score)
+
+        if conflict:
+            score_conflicts.append(conflict)
+            kind = conflict[0]
+            mid_ = conflict[1]
+            print(f"    ❌ {kind} {mid_}: MATCHES={m_home} {m_score} {m_away} | STATS={s_home} {s_score} {s_away}")
+
+            if kind == 'SWAPPED':
+                # Auto-fix: swap home/away/score in MATCH_STATS
+                # Also flip possession
+                try:
+                    h_score, a_score = m_score.split('-')
+                    flipped = f"{a_score}-{h_score}"
+                    old_entry = f"{mid_}: {{home:'{s_home}', away:'{s_away}', hf:'', af:'', score:'{s_score}'"
+                    new_entry = f"{mid_}: {{home:'{m_home}', away:'{m_away}', hf:'', af:'', score:'{m_score}'"
+                    if old_entry in html:
+                        html = html.replace(old_entry, new_entry, 1)
+                        changed = True
+                        fixes.append(f"AUTO-FIXED swap {mid_}: {m_home} {m_score} {m_away}")
+                        print(f"       → AUTO-FIXED home/away swap")
+                except Exception as ex:
+                    errors.append(f"SWAP_FIX_FAILED {mid_}: {ex}")
+
+    if not score_conflicts:
+        print(f"    ✅ All MATCH_STATS home/away/scores consistent")
+
+    print("  ── 6. Goal type validation ──")
+    type_counts = {}
+    for g in goal_list:
+        t = g[6]; type_counts[t] = type_counts.get(t, 0) + 1
+    print(f"    Goal types: {type_counts}")
+    valid_types = {'open-play','header','penalty','own-goal','free-kick'}
+    bad_types = [(g[0],g[1],g[4],g[6]) for g in goal_list if g[6] not in valid_types]
+    if bad_types:
+        print(f"    ❌ Invalid goal types: {bad_types[:5]}")
+        errors.append(f"INVALID_TYPES: {bad_types}")
+    else:
+        print(f"    ✅ All goal types valid")
+
+    print("  ── 7. Own goal direction check ──")
+    og_issues = []
+    for g in goal_list:
+        if g[6] != 'own-goal': continue
+        gid, mid, home, away, scorer, minute, gtype, score = g
+        if '-' not in score: continue
+        try: h_s, a_s = map(int, score.split('-'))
+        except: continue
+        # OG by a player associated with home team increases away score
+        # We can't check team association automatically, just flag for review
+    print(f"    ℹ {type_counts.get('own-goal',0)} own goals (manual review recommended)")
+
+    print("  ── 8. KNOCKOUT_RESULTS integrity ──")
+    kr_idx = html.find('var KNOCKOUT_RESULTS')
+    kr_end = html.find('\n};', kr_idx) + 3
+    kr_block = html[kr_idx:kr_end]
+    kr_entries = re.findall(r"(M\d+):\s*\{home:'([^']*)',\s*away:'([^']*)',\s*score:'([^']*)',\s*winner:'([^']*)'", kr_block)
+    print(f"    {len(kr_entries)} knockout results recorded")
+    for mid, h, a, sc, w in kr_entries:
+        if w not in (h, a):
+            print(f"    ❌ {mid}: winner '{w}' not in [{h},{a}]")
+            errors.append(f"KR_WINNER_MISMATCH {mid}")
+        else:
+            print(f"    ✅ {mid}: {h} {sc} {a} → {w}")
+
+    print("  ── 9. Sequential goal IDs ──")
+    ids_sorted = sorted(goal_ids)
+    gaps = [ids_sorted[i+1] for i in range(len(ids_sorted)-1) if ids_sorted[i+1]-ids_sorted[i]>1]
+    if gaps:
+        print(f"    ⚠ Non-sequential goal IDs (gaps before): {gaps[:10]}")
+        # Not an error — just informational, IDs can have gaps from deletions
+    else:
+        print(f"    ✅ Goal IDs sequential")
+
+    # ── Write fixes ───────────────────────────────────────────────────────────
+    if changed:
+        write_html(html)
+        print(f"\n  ✅ Auto-fixed {len(fixes)} issues:")
+        for f in fixes: print(f"     • {f}")
+    else:
+        print(f"\n  ✅ No auto-fixes needed")
+
+    # ── Summary ───────────────────────────────────────────────────────────────
+    print(f"\n  {'✅ VALIDATION PASSED' if not errors else '❌ '+str(len(errors))+' ISSUES FOUND'}")
+    if errors:
+        for e in errors: print(f"    • {e}")
+    return len(errors) == 0
+
+
 SECTIONS = {
     'goals':    update_goals,
     'stats':    update_stats,
@@ -508,9 +694,10 @@ SECTIONS = {
     'snapshot': update_snapshot,
     'scrape':   run_scraper,
     'stamp':    update_stamp,
+    'validate': validate_and_fix,
 }
 
-SECTION_ORDER = ['scrape', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
+SECTION_ORDER = ['scrape', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
 
 if __name__ == '__main__':
     section = None
@@ -531,3 +718,7 @@ if __name__ == '__main__':
             SECTIONS[name]()
         print('\n✅ Done. Commit and push:')
         print('   git add index.html data/ && git commit -m "update: matchday" && git push')
+
+
+
+# ── Add 'validate' to SECTIONS dict ──────────────────────────────────────────
