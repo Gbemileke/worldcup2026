@@ -2458,5 +2458,77 @@
     "phase": "Group Stage",
     "score": "3-1",
     "desc": ""
+  },
+  {
+    "id": 253,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "M. Arnautovic",
+    "minute": 28,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 254,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "R. Belghali",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 255,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "M. Sabitzer",
+    "minute": 55,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
+    "id": 256,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "R. Mahrez",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-2",
+    "desc": ""
+  },
+  {
+    "id": 257,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "R. Mahrez",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-2",
+    "desc": ""
+  },
+  {
+    "id": 258,
+    "matchId": "m71",
+    "home": "Algeria",
+    "away": "Austria",
+    "scorer": "S. Kalajdzic",
+    "minute": 91,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "3-3",
+    "desc": ""
   }
 ]
