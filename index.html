@@ -1540,33 +1540,19 @@
   .bsim-share-note{font-size:10px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
 
   
-  .match-selector { display:flex; flex-direction:column; gap:0; margin-bottom:16px; }
-  .ms-section { margin-bottom:2px; }
-  .ms-section-hdr {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:6px 10px; margin-bottom:5px;
-    background:var(--header-bg,#1a1a2e); color:#fff;
-    font-size:9px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
-    border-radius:var(--radius-sm); cursor:pointer;
-    user-select:none; -webkit-tap-highlight-color:transparent;
-  }
-  .ms-section-hdr.ms-active { background:linear-gradient(90deg,#c8920a,#a07008); color:#000; }
-  .ms-chev { font-size:9px; margin-left:4px; }
-  .ms-meta { font-size:8px; opacity:.7; }
-  .ms-section-body { overflow:hidden; transition:max-height .28s ease,opacity .2s; }
-  .ms-section-body.ms-hide { max-height:0!important; opacity:0; pointer-events:none; }
-  .ms-wrap { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:8px; }
-  @media(max-width:900px){ .ms-wrap{ grid-template-columns:repeat(3,1fr); } }
-  @media(max-width:600px){ .ms-wrap{ grid-template-columns:repeat(2,1fr); } }
-
-  /* Stats panel inside collapsible section */
-  .ms-stats-panel {
-    margin: 0 0 10px 0;
-    border-top: 2px solid var(--gold, #c8920a);
-    padding-top: 12px;
-    animation: fadeIn .2s ease;
-  }
-  @keyframes fadeIn { from {opacity:0;transform:translateY(-4px)} to {opacity:1;transform:none} }
+  .match-selector{display:flex;flex-direction:column;gap:0;margin-bottom:16px}
+  .ms-section{margin-bottom:2px}
+  .ms-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;margin-bottom:5px;background:var(--header-bg,#1a1a2e);color:#fff;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:var(--radius-sm);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+  .ms-section-hdr.ms-active{background:linear-gradient(90deg,#c8920a,#a07008);color:#000}
+  .ms-chev{font-size:9px;margin-left:4px}
+  .ms-meta-lbl{font-size:8px;opacity:.7}
+  .ms-section-body{overflow:hidden;transition:max-height .28s ease,opacity .2s}
+  .ms-section-body.ms-hide{max-height:0!important;opacity:0;pointer-events:none}
+  .ms-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+  .ms-stats-panel{margin:0 0 10px;border-top:2px solid var(--gold,#c8920a);padding-top:12px;animation:fadeInUp .2s ease}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  @media(max-width:900px){.ms-wrap{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:600px){.ms-wrap{grid-template-columns:repeat(2,1fr)}}
 </style>
   <!-- Social share preview -->
   <meta property="og:title" content="World Cup 2026 Bracket Simulator">
@@ -3049,16 +3035,16 @@ function buildScorers() {
   if (_ms) _ms.innerHTML = restHtml;
 }
 
-function msSectionToggle(hdr) {
+function msSectionToggle(hdr){
   hdr.classList.toggle('ms-hide-hdr');
-  var body = document.getElementById('ms-b-' + hdr.getAttribute('data-s'));
-  if (body) body.classList.toggle('ms-hide');
-  var ch = hdr.querySelector('.ms-chev');
-  if (ch) ch.innerHTML = (body && body.classList.contains('ms-hide')) ? '&#9654;' : '&#9660;';
+  var body=document.getElementById('ms-b-'+hdr.getAttribute('data-s'));
+  if(body)body.classList.toggle('ms-hide');
+  var ch=hdr.querySelector('.ms-chev');
+  if(ch)ch.innerHTML=(body&&body.classList.contains('ms-hide'))?'&#9654;':'&#9660;';
 }
 
-function buildMatchSelector() {
-  var kr = KNOCKOUT_RESULTS || {};
+function buildMatchSelector(){
+  var kr=KNOCKOUT_RESULTS||{};
   var r32Done=0,r16Done=0,qfDone=0,sfDone=0;
   Object.keys(kr).forEach(function(k){
     if(!kr[k]||!kr[k].winner)return;
@@ -3084,7 +3070,7 @@ function buildMatchSelector() {
     return '<div class="ms-section">'+
       '<div class="'+hc+'" onclick="msSectionToggle(this)" data-s="'+id+'">'+
         '<span>'+label+'</span>'+
-        '<span class="ms-meta" style="margin:0 auto 0 8px">'+meta+'</span>'+
+        '<span class="ms-meta-lbl" style="margin:0 auto 0 8px">'+meta+'</span>'+
         '<span class="ms-chev">'+( open?'&#9660;':'&#9654;')+'</span>'+
       '</div>'+
       '<div class="'+bc+'" id="ms-b-'+id+'">'+
@@ -3102,8 +3088,7 @@ function buildMatchSelector() {
         '<div class="ms-teamL">'+hi+home+'</div>'+
         '<div class="ms-score">'+score+'</div>'+
         '<div class="ms-teamR">'+away+ai+'</div>'+
-      '</div>'+
-    '</div>';
+      '</div></div>';
   }
 
   function uCard(mid,home,away,dt,tm){
@@ -3117,8 +3102,7 @@ function buildMatchSelector() {
         '<div class="ms-teamL">'+hL+'</div>'+
         '<div class="ms-score" style="font-size:11px;opacity:.4">vs</div>'+
         '<div class="ms-teamR">'+aR+'</div>'+
-      '</div>'+
-    '</div>';
+      '</div></div>';
   }
 
   function kCard(mid,fH,fA,dt,tm){
@@ -3271,41 +3255,23 @@ function showMatchStats(id) {
       '</div>';
   }
 
-  // ── Inject stats inside the section that contains the clicked card ─────────
-  // 1. Clear any previously open stats panel across ALL sections
-  document.querySelectorAll('.ms-stats-panel').forEach(function(el){ el.remove(); });
-
-  // 2. Find the clicked card and its containing section body
-  var clickedCard = document.getElementById('ms-' + id);
-  var sectionBody = clickedCard ? clickedCard.closest('.ms-section-body') : null;
-
-  if (sectionBody) {
-    // Make sure the section is expanded
+  document.querySelectorAll('.ms-stats-panel').forEach(function(el){el.remove();});
+  var clickedCard=document.getElementById('ms-'+id);
+  var sectionBody=clickedCard?clickedCard.closest('.ms-section-body'):null;
+  if(sectionBody){
     sectionBody.classList.remove('ms-hide');
-    var hdr = sectionBody.previousElementSibling;
-    if (hdr) {
-      hdr.classList.remove('ms-hide-hdr');
-      var ch = hdr.querySelector('.ms-chev');
-      if (ch) ch.innerHTML = '&#9660;';
-    }
-
-    // 3. Insert stats panel inside the section, after the ms-wrap grid
-    var panel = document.createElement('div');
-    panel.className = 'ms-stats-panel';
-    panel.innerHTML = html;
-    var wrap = sectionBody.querySelector('.ms-wrap');
-    if (wrap && wrap.nextSibling) {
-      sectionBody.insertBefore(panel, wrap.nextSibling);
-    } else {
-      sectionBody.appendChild(panel);
-    }
-
-    // 4. Scroll the panel into view smoothly
-    setTimeout(function(){ panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 80);
+    var hdr=sectionBody.previousElementSibling;
+    if(hdr){hdr.classList.remove('ms-hide-hdr');var ch=hdr.querySelector('.ms-chev');if(ch)ch.innerHTML='&#9660;';}
+    var panel=document.createElement('div');
+    panel.className='ms-stats-panel';
+    panel.innerHTML=html;
+    var wrap=sectionBody.querySelector('.ms-wrap');
+    if(wrap&&wrap.nextSibling)sectionBody.insertBefore(panel,wrap.nextSibling);
+    else sectionBody.appendChild(panel);
+    setTimeout(function(){panel.scrollIntoView({behavior:'smooth',block:'nearest'});},80);
   } else {
-    // Fallback: old statsContainer if card not found in a section
-    var sc = document.getElementById('statsContainer');
-    if (sc) sc.innerHTML = html;
+    var sc=document.getElementById('statsContainer');
+    if(sc)sc.innerHTML=html;
   }
 }
 
@@ -3554,58 +3520,47 @@ var SIM = null;
 
 function runSimulation() {
   SIM_COUNT++;
-  if (typeof buildR32Matchups === 'function') buildR32Matchups();  // refresh teams from model/standings
-  SIM = {r32:[], r16:[], qf:[], sf:[], final:null, champion:null, runnerUp:null, sf1Loser:'', sf2Loser:''};
-  if (R32_MATCHUPS && R32_MATCHUPS.length) {
-    SIM.r32 = R32_MATCHUPS.map(function(m) { return simMatch(m.home, m.away); });
-  }
-  var r32w = SIM.r32.map(function(m) { return m.winner; });
-  for (var i = 0; i < r32w.length; i += 2) {
-    if (r32w[i] && r32w[i+1]) SIM.r16.push(simMatch(r32w[i], r32w[i+1]));
-  }
-  var r16w = SIM.r16.map(function(m) { return m.winner; });
-  for (var i = 0; i < r16w.length; i += 2) {
-    if (r16w[i] && r16w[i+1]) SIM.qf.push(simMatch(r16w[i], r16w[i+1]));
-  }
-  var qfw = SIM.qf.map(function(m) { return m.winner; });
-  for (var i = 0; i < qfw.length; i += 2) {
-    if (qfw[i] && qfw[i+1]) SIM.sf.push(simMatch(qfw[i], qfw[i+1]));
-  }
-  var sfw = SIM.sf.map(function(m) { return m.winner; });
-  SIM.final = (sfw[0] && sfw[1]) ? simMatch(sfw[0], sfw[1]) : null;
-  SIM.champion = SIM.final ? SIM.final.winner : null;
-  SIM.runnerUp = SIM.final ? (SIM.final.winner === sfw[0] ? sfw[1] : sfw[0]) : null;
-  SIM.sf1Loser = SIM.sf[0] ? (SIM.sf[0].winner === SIM.sf[0].home ? SIM.sf[0].away : SIM.sf[0].home) : '';
-  SIM.sf2Loser = SIM.sf[1] ? (SIM.sf[1].winner === SIM.sf[1].home ? SIM.sf[1].away : SIM.sf[1].home) : '';
+  if (typeof buildR32Matchups === 'function') buildR32Matchups();
+  SIM = {r32:[],r16:[],qf:[],sf:[],final:null,champion:null,runnerUp:null,sf1Loser:'',sf2Loser:''};
 
-  // Integrity assertion: verify each round only contains winners from the prior round
-  (function() {
-    var stages = [
-      {prev: SIM.r32,  curr: SIM.r16,  name: 'R16'},
-      {prev: SIM.r16,  curr: SIM.qf,   name: 'QF'},
-      {prev: SIM.qf,   curr: SIM.sf,   name: 'SF'},
-      {prev: SIM.sf,   curr: SIM.final ? [SIM.final] : [], name: 'Final'},
-    ];
-    stages.forEach(function(s) {
-      var prevWinners = {};
-      (s.prev||[]).forEach(function(m){ if(m && m.winner) prevWinners[m.winner] = true; });
-      (s.curr||[]).forEach(function(m) {
-        if (!m) return;
-        if (m.home && !prevWinners[m.home]) {
-          if (typeof console !== 'undefined') console.warn('Integrity: ' + m.home + ' in ' + s.name + ' but not a ' + s.name.replace('R16','R32').replace('QF','R16').replace('SF','QF').replace('Final','SF') + ' winner');
-        }
-        if (m.away && !prevWinners[m.away]) {
-          if (typeof console !== 'undefined') console.warn('Integrity: ' + m.away + ' in ' + s.name + ' but not a prior round winner');
-        }
-      });
-    });
-  })();
+  if (R32_MATCHUPS && R32_MATCHUPS.length)
+    SIM.r32 = R32_MATCHUPS.map(function(m){ return simMatch(m.home,m.away); });
 
-  var sc = document.getElementById('simCounter');
-  if (sc) sc.textContent = 'Simulation #' + SIM_COUNT;
-  renderBracket();
-}
+  var r32ByMid = {};
+  SIM.r32.forEach(function(m,i){ if(BSIM_SCHEDULE[i]) r32ByMid[BSIM_SCHEDULE[i].id]=m.winner; });
 
+  var r16ByMid={}, qfByMid={}, sfByMid={};
+  function res(ref,maps){
+    if(!ref)return '';
+    var x=ref.match(/^W(\d+)$/);
+    if(x){var k='M'+x[1];for(var i=0;i<maps.length;i++)if(maps[i][k])return maps[i][k];}
+    return '';
+  }
+
+  SIM.r16=(BSIM_R16||[]).map(function(f){
+    var h=res(f.fH,[r32ByMid]),a=res(f.fA,[r32ByMid]);
+    return (h&&a)?simMatch(h,a):null;
+  }).filter(Boolean);
+  SIM.r16.forEach(function(m,i){if(BSIM_R16[i])r16ByMid[BSIM_R16[i].id]=m.winner;});
+
+  SIM.qf=(BSIM_QF||[]).map(function(f){
+    var h=res(f.fH,[r16ByMid]),a=res(f.fA,[r16ByMid]);
+    return (h&&a)?simMatch(h,a):null;
+  }).filter(Boolean);
+  SIM.qf.forEach(function(m,i){if(BSIM_QF[i])qfByMid[BSIM_QF[i].id]=m.winner;});
+
+  SIM.sf=(BSIM_SF||[]).map(function(f){
+    var h=res(f.fH,[qfByMid]),a=res(f.fA,[qfByMid]);
+    return (h&&a)?simMatch(h,a):null;
+  }).filter(Boolean);
+  SIM.sf.forEach(function(m,i){if(BSIM_SF[i])sfByMid[BSIM_SF[i].id]=m.winner;});
+
+  var fh=res(BSIM_FINAL[0].fH,[sfByMid]),fa=res(BSIM_FINAL[0].fA,[sfByMid]);
+  SIM.final=(fh&&fa)?simMatch(fh,fa):null;
+  SIM.champion=SIM.final?SIM.final.winner:null;
+  SIM.runnerUp=SIM.final?(SIM.final.winner===fh?fa:fh):null;
+  SIM.sf1Loser=SIM.sf[0]?(SIM.sf[0].winner===SIM.sf[0].home?SIM.sf[0].away:SIM.sf[0].home):'';
+  SIM.sf2Loser=SIM.sf[1]?(SIM.sf[1].winner===SIM.sf[1].home?SIM.sf[1].away:SIM.sf[1].home):'';}
 function renderMatchupCard(m, label) {
   if (!m || !m.home || !m.away) return '';
   var tH = getT(m.home), tA = getT(m.away);
@@ -4447,7 +4402,7 @@ function buildTicker() {
 
   if (items.length === 0) return;
   var doubled = items.concat(items).join('');
-  var speed = Math.max(35, Math.min(90, items.length * 5));
+  var speed = Math.max(25, Math.min(70, items.length * 3.5));
   var inner = document.getElementById('ticker');
   if (inner) {
     inner.style.animation = 'none';
@@ -5093,17 +5048,39 @@ var R16_FIXTURES = [
 
 // Returns all fixtures that have fully resolved (real) team names
 function getKnownFixtures() {
-  var known = UPCOMING_FIXTURES.slice(); // all R32 — always have real names
-  // Add R16 entries only when BOTH teams are resolved
-  R16_FIXTURES.forEach(function(f) {
-    var h = resolveKnockoutTeam(f.home);
-    var a = resolveKnockoutTeam(f.away);
-    // If either is still a Wxx ref (unresolved), skip it
-    if (/^W\d+/.test(h) || /^W\d+/.test(a)) return;
-    known.push(Object.assign({}, f, {home: h, away: a}));
+  var known=UPCOMING_FIXTURES.filter(function(f){
+    if(!f.matchId)return true;
+    return !(KNOCKOUT_RESULTS[f.matchId]&&KNOCKOUT_RESULTS[f.matchId].winner);
+  });
+  R16_FIXTURES.forEach(function(f){
+    if(KNOCKOUT_RESULTS[f.matchId]&&KNOCKOUT_RESULTS[f.matchId].winner)return;
+    var h=resolveKnockoutTeam(f.home),a=resolveKnockoutTeam(f.away);
+    if(/^W\d+/.test(h)||/^W\d+/.test(a))return;
+    known.push(Object.assign({},f,{home:h,away:a}));
   });
   return known;
 }
+
+var BSIM_SCHEDULE = [
+  // ─ LEFT R32 (bracket order, top to bottom) ─
+  {id:'M74', date:'Jun 29', time:'16:30 ET', venue:'Gillette Stadium, Boston', seedH:'1st E', seedA:'3rd A/B/C/D/F'},
+  {id:'M77', date:'Jun 30', time:'17:00 ET', venue:'MetLife Stadium, East Rutherford', seedH:'1st I', seedA:'3rd C/D/F/G/H'},
+  {id:'M73', date:'Jun 28', time:'15:00 ET', venue:'SoFi Stadium, Los Angeles', seedH:'2nd A', seedA:'2nd B'},
+  {id:'M75', date:'Jun 29', time:'21:00 ET', venue:'Estadio BBVA, Monterrey', seedH:'1st F', seedA:'2nd C'},
+  {id:'M83', date:'Jul 2', time:'19:00 ET', venue:'BMO Field, Toronto', seedH:'2nd K', seedA:'2nd L'},
+  {id:'M84', date:'Jul 2', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'1st H', seedA:'2nd J'},
+  {id:'M81', date:'Jul 1', time:'20:00 ET', venue:'Levis Stadium, Santa Clara', seedH:'1st D', seedA:'3rd B/E/F/I/J'},
+  {id:'M82', date:'Jul 1', time:'16:00 ET', venue:'Lumen Field, Seattle', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
+  // ─ RIGHT R32 (bracket order, top to bottom) ─
+  {id:'M76', date:'Jun 29', time:'13:00 ET', venue:'NRG Stadium, Houston', seedH:'1st C', seedA:'2nd F'},
+  {id:'M78', date:'Jun 30', time:'13:00 ET', venue:'AT&T Stadium, Dallas', seedH:'2nd E', seedA:'2nd I'},
+  {id:'M79', date:'Jun 30', time:'21:00 ET', venue:'Estadio Azteca, Mexico City', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
+  {id:'M80', date:'Jul 1', time:'12:00 ET', venue:'Mercedes-Benz Stadium, Atlanta', seedH:'1st L', seedA:'3rd E/H/I/J/K'},
+  {id:'M86', date:'Jul 3', time:'18:00 ET', venue:'Hard Rock Stadium, Miami', seedH:'1st J', seedA:'2nd H'},
+  {id:'M88', date:'Jul 3', time:'14:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd D', seedA:'2nd G'},
+  {id:'M85', date:'Jul 2', time:'23:00 ET', venue:'BC Place, Vancouver', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
+  {id:'M87', date:'Jul 3', time:'21:30 ET', venue:'Arrowhead Stadium, Kansas City', seedH:'1st K', seedA:'3rd D/E/I/J/L'},
+];
 
 buildMatchSelector();
 buildTeamGrid();
@@ -5474,26 +5451,7 @@ var PREVIEW_MATCHUPS = R32_MATCHUPS.slice(0, 8).map(function(m) {
 // LEFT half R32 — index 0-7 (top→bottom in left column)
 // RIGHT half R32 — index 8-15 (top→bottom in right column)
 // seedH / seedA = the group-placement label shown before teams qualify
-var BSIM_SCHEDULE = [
-  // ─ LEFT R32 (bracket order, top to bottom) ─
-  {id:'M74', date:'Jun 29', time:'16:30 ET', venue:'Gillette Stadium, Boston', seedH:'1st E', seedA:'3rd A/B/C/D/F'},
-  {id:'M77', date:'Jun 30', time:'17:00 ET', venue:'MetLife Stadium, East Rutherford', seedH:'1st I', seedA:'3rd C/D/F/G/H'},
-  {id:'M73', date:'Jun 28', time:'15:00 ET', venue:'SoFi Stadium, Los Angeles', seedH:'2nd A', seedA:'2nd B'},
-  {id:'M75', date:'Jun 29', time:'21:00 ET', venue:'Estadio BBVA, Monterrey', seedH:'1st F', seedA:'2nd C'},
-  {id:'M83', date:'Jul 2', time:'19:00 ET', venue:'BMO Field, Toronto', seedH:'2nd K', seedA:'2nd L'},
-  {id:'M84', date:'Jul 2', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'1st H', seedA:'2nd J'},
-  {id:'M81', date:'Jul 1', time:'20:00 ET', venue:'Levis Stadium, Santa Clara', seedH:'1st D', seedA:'3rd B/E/F/I/J'},
-  {id:'M82', date:'Jul 1', time:'16:00 ET', venue:'Lumen Field, Seattle', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
-  // ─ RIGHT R32 (bracket order, top to bottom) ─
-  {id:'M76', date:'Jun 29', time:'13:00 ET', venue:'NRG Stadium, Houston', seedH:'1st C', seedA:'2nd F'},
-  {id:'M78', date:'Jun 30', time:'13:00 ET', venue:'AT&T Stadium, Dallas', seedH:'2nd E', seedA:'2nd I'},
-  {id:'M79', date:'Jun 30', time:'21:00 ET', venue:'Estadio Azteca, Mexico City', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
-  {id:'M80', date:'Jul 1', time:'12:00 ET', venue:'Mercedes-Benz Stadium, Atlanta', seedH:'1st L', seedA:'3rd E/H/I/J/K'},
-  {id:'M86', date:'Jul 3', time:'18:00 ET', venue:'Hard Rock Stadium, Miami', seedH:'1st J', seedA:'2nd H'},
-  {id:'M88', date:'Jul 3', time:'14:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd D', seedA:'2nd G'},
-  {id:'M85', date:'Jul 2', time:'23:00 ET', venue:'BC Place, Vancouver', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
-  {id:'M87', date:'Jul 3', time:'21:30 ET', venue:'Arrowhead Stadium, Kansas City', seedH:'1st K', seedA:'3rd D/E/I/J/L'},
-];
+
 
 // R16 — index 0-3 left, 4-7 right; feeders are winners of R32
 
@@ -5858,27 +5816,25 @@ function bsimEnforceIntegrity() {
 }
 
 function bsimAiFill() {
-  bsimInit();
-  bsimPopulateFromSeeds();  // project teams from group model if not yet known
-  ['R32','R16','QF','SF','FINAL'].forEach(function(round) {
-    for (var i = 0; i < BSIM_COUNT[round]; i++) {
-      var h = bsimGet(round,i,'h'), a = bsimGet(round,i,'a');
-      if (!h || !a) continue;
-      var sH = typeof computeFullModelScore==='function'?computeFullModelScore(h):(getT(h).elo||1700);
-      var sA = typeof computeFullModelScore==='function'?computeFullModelScore(a):(getT(a).elo||1700);
-      var winner = sH >= sA ? h : a;
-      BSIM.picks[round+'-'+i] = winner;
-      BSIM.picks[round+'-'+i+':r'] = bsimReason(h,a,sH,sA,winner);
-      var nr = BSIM_NEXT[round];
-      if (nr) { var ni=Math.floor(i/2),ns=(i%2===0)?'h':'a'; BSIM.slots[nr+'-'+ni+'-'+ns]=winner; }
-      if (round==='SF') { var loser=(winner===h)?a:h; BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=loser; }
-    }
-  });
-  bsimEnforceIntegrity();
-  bsimPredictThird();
-  bsimRender(); bsimUpdateProg();
+  bsimInit(); bsimPopulateFromSeeds();
+  function score(t){return typeof computeFullModelScore==='function'?computeFullModelScore(t):(getT(t).elo||1700);}
+  function pick(round,i){
+    var h=bsimGet(round,i,'h'),a=bsimGet(round,i,'a');
+    if(!h||!a)return null;
+    var sH=score(h),sA=score(a),w=sH>=sA?h:a;
+    BSIM.picks[round+'-'+i]=w;
+    BSIM.picks[round+'-'+i+':r']=bsimReason(h,a,sH,sA,w);
+    return w;
+  }
+  var i,w;
+  for(i=0;i<BSIM_COUNT.R32;i++){w=pick('R32',i);if(w){var ni=Math.floor(i/2),ns=i%2===0?'h':'a';BSIM.slots['R16-'+ni+'-'+ns]=w;}}
+  for(i=0;i<BSIM_COUNT.R16;i++){w=pick('R16',i);if(w){var ni=Math.floor(i/2),ns=i%2===0?'h':'a';BSIM.slots['QF-'+ni+'-'+ns]=w;}}
+  for(i=0;i<BSIM_COUNT.QF;i++){w=pick('QF',i);if(w){var ni=Math.floor(i/2),ns=i%2===0?'h':'a';BSIM.slots['SF-'+ni+'-'+ns]=w;}}
+  for(i=0;i<BSIM_COUNT.SF;i++){w=pick('SF',i);if(w){BSIM.slots['FINAL-0-'+(i===0?'h':'a')]=w;var l=bsimGet('SF',i,w===bsimGet('SF',i,'h')?'a':'h');BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=l;}}
+  var fh=bsimGet('FINAL',0,'h'),fa=bsimGet('FINAL',0,'a');
+  if(fh&&fa){var sH=score(fh),sA=score(fa),w=sH>=sA?fh:fa;BSIM.picks['FINAL-0']=w;BSIM.picks['FINAL-0:r']=bsimReason(fh,fa,sH,sA,w);}
+  bsimEnforceIntegrity();bsimPredictThird();bsimRender();bsimUpdateProg();
 }
-
 function bsimReason(h,a,sH,sA,winner) {
   var wT=winner===h?getT(h):getT(a), lT=winner===h?getT(a):getT(h);
   var bits=[];

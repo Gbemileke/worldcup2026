@@ -24,89 +24,41 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Step 1a — Discover AllSportsAPI league ID
-        env:
-          ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
-        run: |
-          python - << 'EOF'
-          import os, requests, json
-          key = os.environ.get('ALLSPORTSAPI_KEY','')
-          if not key:
-              print("ALLSPORTSAPI_KEY not set")
-              exit(0)
-          # Fetch leagues to find WC 2026
-          r = requests.get(f"https://allsportsapi.com/api/football/?met=Leagues&APIkey={key}&countryId=6",
-                           timeout=15)
-          print(f"Leagues status: {r.status_code}")
-          if r.status_code == 200:
-              data = r.json()
-              leagues = data.get('result') or []
-              print(f"International leagues: {len(leagues)}")
-              for lg in leagues:
-                  name = str(lg.get('league_name','')).lower()
-                  if 'world' in name or 'cup' in name or 'wc' in name:
-                      print(f"  FOUND: {lg}")
-          EOF
-
-      - name: Step 1b — Fetch match data (AllSportsAPI primary + ESPN fallback)
+      - name: Step 1 — Scrape ESPN (goals, stats)
         env:
           ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Step 2 — Update FIFA rankings + deltas
-        run: python update_rankings.py
+      - name: Step 2 — Validate data integrity + auto-fix
+        run: python update_wc.py --section validate
 
-      - name: Step 3 — Update team form
-        run: python update_site.py --section form
+      - name: Step 3 — Sync goals to index.html
+        run: python update_wc.py --section goals
 
-      - name: Step 4 — Full site rebuild
-        run: python update_site.py
+      - name: Step 4 — Sync match stats to index.html
+        run: python update_wc.py --section stats
 
-      - name: Step 5 — Patch FIFA rank deltas into TEAM_DATA
-        run: |
-          python - << 'EOF'
-          import json, re
+      - name: Step 5 — Re-apply knockout results (preserves any results you added)
+        run: python update_wc.py --section knockout
 
-          with open('index.html') as f: c = f.read()
-          with open('data/team_data.json') as f: teams = json.load(f)
+      - name: Step 6 — Update upcoming fixtures (filter played matches)
+        run: python update_wc.py --section upcoming
 
-          js_start = c.find('<script>') + 8
-          js_end   = c.find('</script>', js_start)
-          js       = c[js_start:js_end]
-          td_start = js.find('var TEAM_DATA = {')
-          td_end   = js.find('\n};', td_start) + 3
-          td       = js[td_start:td_end]
+      - name: Step 7 — Recompute team form
+        run: python update_wc.py --section form
 
-          for name, data in teams.items():
-              if data.get('group','') == '': continue
-              pd  = data.get('fifaPtsDelta', 0)
-              rd  = data.get('fifaRankDelta', 0)
-              pt  = data.get('fifaPts', 0)
-              esc = re.escape(name)
-              td  = re.sub(rf"('{esc}'[^}}]*?fifaPts:)([\d.]+)",
-                           lambda m,p=pt: m.group(1)+str(p), td, count=1)
-              if re.search(rf"'{esc}'[^}}]*fifaPtsDelta", td):
-                  td = re.sub(rf"('{esc}'[^}}]*fifaPtsDelta:)([-\d.]+)",
-                              lambda m,p=pd: m.group(1)+str(p), td, count=1)
-                  td = re.sub(rf"('{esc}'[^}}]*fifaRankDelta:)([-\d]+)",
-                              lambda m,r=rd: m.group(1)+str(r), td, count=1)
-              else:
-                  td = re.sub(rf"('{esc}'[^}}]*?fifaPts:[\d.]+)(,)",
-                      lambda m,p=pd,r=rd: m.group(1)+f', fifaPtsDelta:{p}, fifaRankDelta:{r}'+m.group(2),
-                      td, count=1)
+      - name: Step 8 — Update snapshot cards
+        run: python update_wc.py --section snapshot
 
-          js = js[:td_start] + td + js[td_end:]
-          c  = c[:js_start] + js + c[js_end:]
-          with open('index.html','w') as f: f.write(c)
-          print("✓ FIFA rank deltas patched")
-          EOF
+      - name: Step 9 — Build stamp
+        run: python update_wc.py --section stamp
 
       - name: Commit and push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html data/ update_rankings.py
+          git add index.html data/
           git diff --staged --quiet \
             && echo "No changes" \
             || (git commit -m "auto: $(date -u +'%Y-%m-%d %H:%M UTC')" && git push)
