@@ -746,5 +746,27 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-england-highlights-match-report",
     "espnId": "760485"
+  },
+  {
+    "id": "m69",
+    "date": "Jun 27",
+    "home": "Colombia",
+    "away": "Portugal",
+    "score": "0-0",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-portugal-highlights-match-report",
+    "espnId": "760481"
+  },
+  {
+    "id": "m70",
+    "date": "Jun 27",
+    "home": "DR Congo",
+    "away": "Uzbekistan",
+    "score": "3-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/democratic-republic-of-congo-v-uzbekistan-highlights-match-report",
+    "espnId": "760482"
   }
 ]

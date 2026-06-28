@@ -3995,5 +3995,123 @@
         4
       ]
     ]
+  },
+  "m69": {
+    "home": "Colombia",
+    "away": "Portugal",
+    "score": "0-0",
+    "date": "Jun 27 - Hard Rock Stadium",
+    "poss": [
+      54.6,
+      45.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        24,
+        13
+      ],
+      [
+        "Shots on Goal",
+        6,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        12,
+        6
+      ],
+      [
+        "Saves",
+        2,
+        6
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.88,
+        1.21
+      ],
+      [
+        "Yellow Cards",
+        1,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        2
+      ]
+    ]
+  },
+  "m70": {
+    "home": "DR Congo",
+    "away": "Uzbekistan",
+    "score": "3-1",
+    "date": "Jun 27 - Mercedes-Benz Stadium",
+    "poss": [
+      57.6,
+      42.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        3
+      ],
+      [
+        "Shots on Goal",
+        4,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        6,
+        16
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.07,
+        0.43
+      ],
+      [
+        "Yellow Cards",
+        3,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        1
+      ]
+    ]
   }
 }
