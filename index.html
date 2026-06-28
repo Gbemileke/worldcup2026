@@ -1430,47 +1430,58 @@
   
   
   
-  /* ── Landscape PDF print ──────────────────────────── */
+  /* ── Landscape PDF print (A3, window.print) ─────────────────── */
   @media print {
-    /* Reset page */
-    html, body.bsim-printing { margin:0!important; padding:0!important; height:auto!important; background:#fff!important; }
-    /* Hide direct children of body (goal-flash, header, div.app) */
-    body.bsim-printing > * { display:none!important; }
-    /* Re-show ONLY the ancestor chain leading to the bracket */
-    body.bsim-printing > .app { display:block!important; }
-    body.bsim-printing .app > * { display:none!important; }
-    body.bsim-printing .app > .main-panel { display:block!important; }
-    body.bsim-printing .main-panel > * { display:none!important; }
-    body.bsim-printing .main-panel > #tab-sim { display:block!important; }
-    body.bsim-printing #tab-sim > * { display:none!important; }
-    body.bsim-printing #tab-sim > .bsim-wrap { display:block!important; }
-    body.bsim-printing .bsim-wrap > * { display:none!important; }
-    body.bsim-printing .bsim-wrap > #bsimPrintRoot { display:block!important; }
-    /* Flatten ancestor spacing/positioning */
+    /* Show only the bracket, hide everything else */
+    body.bsim-printing > * { display:none !important; }
+    body.bsim-printing > .app                       { display:block !important; }
+    body.bsim-printing .app > *                     { display:none  !important; }
+    body.bsim-printing .app > .main-panel           { display:block !important; }
+    body.bsim-printing .main-panel > *              { display:none  !important; }
+    body.bsim-printing .main-panel > #tab-sim       { display:block !important; }
+    body.bsim-printing #tab-sim > *                 { display:none  !important; }
+    body.bsim-printing #tab-sim > .bsim-wrap        { display:block !important; }
+    body.bsim-printing .bsim-wrap > *               { display:none  !important; }
+    body.bsim-printing .bsim-wrap > #bsimPrintRoot  { display:block !important; }
+
+    /* Flatten ancestor spacing */
     body.bsim-printing .app,
     body.bsim-printing .main-panel,
     body.bsim-printing #tab-sim,
-    body.bsim-printing .bsim-wrap,
-    body.bsim-printing #bsimPrintRoot {
-      position:static!important; margin:0!important; padding:0!important;
-      width:100%!important; max-width:100%!important; overflow:visible!important;
-      box-shadow:none!important; border:0!important; background:#fff!important; height:auto!important;
+    body.bsim-printing .bsim-wrap {
+      position:static !important; margin:0 !important; padding:0 !important;
+      width:100% !important; max-width:none !important; overflow:visible !important;
+      background:#fff !important; box-shadow:none !important; border:0 !important;
+      height:auto !important;
     }
-    /* Breathing room around the printed bracket */
-    body.bsim-printing #bsimPrintRoot { padding:10mm 12mm 14mm!important; box-sizing:border-box!important; }
-    body.bsim-printing #bsimPrintTitle { margin-bottom:10px!important; }
-    body.bsim-printing #bsimBracket{overflow:visible!important;width:100%!important}
-    body.bsim-printing .bsim-tree{min-width:0!important;width:100%!important}
-    body.bsim-printing .bsim-slot{break-inside:avoid}
-    body.bsim-printing .bsim-col{min-width:0!important;padding:0 4px!important}
-    body.bsim-printing .bsim-team{font-size:9px!important;min-height:0!important;padding:3px 4px!important}
-    body.bsim-printing .bsim-slot-hd{font-size:7px!important}
-    body.bsim-printing .bsim-final-col{min-width:120px!important}
 
+    /* Print root: full page */
+    body.bsim-printing #bsimPrintRoot {
+      display:block !important; padding:0 !important; margin:0 !important;
+      width:100% !important; overflow:visible !important; background:#fff !important;
+    }
+
+    /* Show the print title */
+    body.bsim-printing #bsimPdfTitle { display:block !important; }
+
+    /* Bracket tree fills page width */
+    body.bsim-printing #bsimBracket { overflow:visible !important; width:100% !important; }
+    body.bsim-printing .bsim-tree   { min-width:0 !important; width:100% !important; }
+
+    /* Kill scroll wrapper */
+    body.bsim-printing #bsimPrintRoot > div { overflow:visible !important; }
+
+    /* Compact elements for fit */
+    body.bsim-printing .bsim-col       { min-width:0 !important; padding:0 3px !important; }
+    body.bsim-printing .bsim-slot      { break-inside:avoid; margin:2px !important; }
+    body.bsim-printing .bsim-team      { font-size:9px !important; padding:3px 4px !important; min-height:0 !important; }
+    body.bsim-printing .bsim-slot-hd   { font-size:7px !important; }
+    body.bsim-printing .bsim-col-hd    { font-size:7px !important; padding:3px 2px !important; }
+    body.bsim-printing .bsim-toolbar,
+    body.bsim-printing .bsim-prog-bar  { display:none !important; }
   }
 
-  
-  /* Third-place match — centered below the bracket */
+/* Third-place match — centered below the bracket */
   .bsim-third{display:flex;justify-content:center;margin:20px auto 8px;max-width:420px}
   .bsim-third>div:first-child,.bsim-third .bsim-third-hd{width:100%}
   .bsim-third{flex-direction:column;align-items:center}
@@ -1914,7 +1925,7 @@
           <div class="bsim-prog-bar"><div class="bsim-prog-fill" id="bsimProg"></div></div>
           <span id="bsimProgLbl" style="font-size:10px;color:var(--muted);font-weight:700;white-space:nowrap">0/31 picks</span>
         </div>
-        <div id="bsimPrintRoot"><div style="overflow-x:auto"><div id="bsimBracket"></div></div></div>
+        <div id="bsimPrintRoot"><div id="bsimPrintTitle" style="text-align:center;font-weight:700;font-size:15px;color:var(--text);margin-bottom:6px;font-family:sans-serif;display:none">FIFA World Cup 2026 — My Bracket Prediction</div><div style="overflow-x:auto"><div id="bsimBracket"></div></div></div>
         <div style="margin-top:8px;font-size:10px;color:var(--muted)">
           &#128161; Slots show FIFA seeding (e.g. "1st A", "3rd A/B/C/D/F") until the group stage sets the teams &nbsp;&middot;&nbsp;
           Then click any match to pick a winner, or use AI Fill to auto-predict all 31
@@ -2110,7 +2121,8 @@ var MATCHES = [
   {id:'m69', date:'Jun 27', home:'Colombia', away:'Portugal', hf:'', af:'', score:'0-0', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-portugal-highlights-match-report'},
   {id:'m70', date:'Jun 27', home:'DR Congo', away:'Uzbekistan', hf:'', af:'', score:'3-1', group:'Group K', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/democratic-republic-of-congo-v-uzbekistan-highlights-match-report'}
 ,
-  {id:'m71', date:'Jun 27', home:'Algeria', away:'Austria', hf:'', af:'', score:'3-3', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/algeria-v-austria-highlights-match-report'}
+  {id:'m71', date:'Jun 27', home:'Algeria', away:'Austria', hf:'', af:'', score:'3-3', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/algeria-v-austria-highlights-match-report'},
+  {id:'m72', date:'Jun 27', home:'Jordan', away:'Argentina', hf:'', af:'', score:'1-3', group:'Group J', ytId:'', fifaUrl:'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-argentina-highlights-match-report'}
 ];
 
 var GOALS = [
@@ -2560,15 +2572,8 @@ var UPCOMING_FIXTURES = [
   {date:'Jul 3',  home:'Australia', away:'Egypt',         time:'2:00 PM ET',  venue:'AT&T Stadium, Arlington',            group:'R32', matchId:'M88', round:'R32'},
   {date:'Jul 3',  home:'Argentina', away:'Cape Verde',    time:'6:00 PM ET',  venue:'Hard Rock Stadium, Miami',           group:'R32', matchId:'M86', round:'R32'},
   {date:'Jul 3',  home:'Colombia',  away:'Ghana',         time:'9:30 PM ET',  venue:'Arrowhead Stadium, Kansas City',     group:'R32', matchId:'M87', round:'R32'},
-  {date:'Jul 4',  home:'M89: W74', away:'W77',           time:'4:00 PM ET',  venue:'Lincoln Financial Field, Philadelphia',group:'', matchId:'M89', round:'R16'},
-  {date:'Jul 4',  home:'M90: W73', away:'W75',           time:'12:00 PM ET', venue:'NRG Stadium, Houston',               group:'', matchId:'M90', round:'R16'},
-  {date:'Jul 5',  home:'M91: W76', away:'W78',           time:'3:00 PM ET',  venue:'MetLife Stadium, East Rutherford',   group:'', matchId:'M91', round:'R16'},
-  {date:'Jul 5',  home:'M92: W79', away:'W80',           time:'7:00 PM ET',  venue:'Estadio Azteca, Mexico City',        group:'', matchId:'M92', round:'R16'},
-  {date:'Jul 6',  home:'M93: W83', away:'W84',           time:'2:00 PM ET',  venue:'AT&T Stadium, Dallas',               group:'', matchId:'M93', round:'R16'},
-  {date:'Jul 6',  home:'M94: W81', away:'W82',           time:'7:00 PM ET',  venue:'Lumen Field, Seattle',               group:'', matchId:'M94', round:'R16'},
-  {date:'Jul 7',  home:'M95: W86', away:'W88',           time:'11:00 AM ET', venue:'Mercedes-Benz Stadium, Atlanta',     group:'', matchId:'M95', round:'R16'},
-  {date:'Jul 7',  home:'M96: W85', away:'W87',           time:'3:00 PM ET',  venue:'BC Place, Vancouver',                group:'', matchId:'M96', round:'R16'},
 ];
+
 
 // ── Match statistics ─────────────────────────────────
 var MATCH_STATS = {
@@ -4272,18 +4277,24 @@ function buildTicker() {
   } // end if MATCH_STATS
 
   // ── Upcoming fixtures ──────────────────────────────────────────────────────
-  if (typeof UPCOMING_FIXTURES !== 'undefined') {
+  var _knownFixtures = (typeof getKnownFixtures === 'function') ? getKnownFixtures() : (UPCOMING_FIXTURES||[]);
+  if (_knownFixtures.length > 0) {
     // Separator
     if (items.length > 0) {
       items.push('<div class="ticker-item" style="opacity:.3;padding:0 10px;font-size:16px">|</div>');
     }
-    UPCOMING_FIXTURES.forEach(function(f) {
+    _knownFixtures.forEach(function(f) {
       items.push(
         (function(){
         var hf=getFlag(f.home),af=getFlag(f.away);
         var hi=hf?'<img src="https://flagcdn.com/16x12/'+hf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-right:3px" onerror="this.style.display=&#39;none&#39;">':'';
         var ai=af?'<img src="https://flagcdn.com/16x12/'+af+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-left:3px" onerror="this.style.display=&#39;none&#39;">':'';
-        return '<div class="ticker-item"><span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">'+(f.round||(f.group?'GRP '+f.group:'UPC'))+'</span>'+hi+f.home+'<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>'+f.away+ai+'<span style="font-size:10px;margin-left:7px;opacity:.7">'+f.date+' '+f.time+'</span></div>';
+        var fHome = (typeof resolveFixtureDisplay==='function') ? resolveFixtureDisplay(f.home) : f.home;
+        var fAway = (typeof resolveFixtureDisplay==='function') ? resolveFixtureDisplay(f.away) : f.away;
+        var fhf=getFlag(fHome),faf=getFlag(fAway);
+        var fhi=fhf?'<img src="https://flagcdn.com/16x12/'+fhf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-right:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        var fai=faf?'<img src="https://flagcdn.com/16x12/'+faf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-left:3px" onerror="this.style.display=&#39;none&#39;">':'';
+        return '<div class="ticker-item"><span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">'+(f.round||(f.group?'GRP '+f.group:'UPC'))+'</span>'+fhi+fHome+'<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>'+fAway+fai+'<span style="font-size:10px;margin-left:7px;opacity:.7">'+f.date+' '+f.time+'</span></div>';
       })()
       );
     });
@@ -4880,6 +4891,74 @@ var BSIM_SF = [
 ];
 var BSIM_THIRD = {id:'M103', date:'Jul 18', time:'16:00 ET', venue:'Hard Rock Stadium, Miami', fH:'RU101', fA:'RU102'};
 var BSIM_FINAL = [{id:'M104', date:'Jul 19', time:'14:00 ET', venue:'MetLife Stadium, East Rutherford', fH:'W101', fA:'W102'}];
+
+
+// ── Knockout stage results (auto-updated as games finish) ────────────────────
+// Maps official FIFA match number → winner name (filled as results come in)
+var KNOCKOUT_RESULTS = {
+  // R32 results — populated by update_site.py as each match finishes
+  // Do NOT manually enter scores here; run: python update_site.py --section knockout
+};
+
+// Resolve 'W74' → actual winner team name, or fallback label if not yet played
+function resolveKnockoutTeam(ref) {
+  if (!ref) return '';
+  // e.g. 'W74' → winner of match 74
+  var mNum = ref.match(/^W(\d+)$/);
+  if (mNum) {
+    var key = 'M' + mNum[1];
+    if (KNOCKOUT_RESULTS[key] && KNOCKOUT_RESULTS[key].winner) {
+      return KNOCKOUT_RESULTS[key].winner;
+    }
+    // Not yet played — return the seed label from BSIM_SCHEDULE
+    var sched = (typeof BSIM_SCHEDULE !== 'undefined' ? BSIM_SCHEDULE : []);
+    for (var i = 0; i < sched.length; i++) {
+      if (sched[i].id === key) {
+        return 'W' + mNum[1] + ' (' + sched[i].seedH + ')';
+      }
+    }
+    return ref;
+  }
+  return ref;
+}
+
+// Resolve display name for a fixture participant
+// Input may be 'W74', 'M89: W74', a real team name, or a seed label
+function resolveFixtureDisplay(raw) {
+  if (!raw) return '';
+  // Strip 'M89: ' prefix if present
+  var clean = raw.replace(/^M\d+:\s*/, '').trim();
+  // Try to resolve Wxx reference
+  var resolved = resolveKnockoutTeam(clean);
+  return resolved;
+}
+
+
+// ── Dynamic known fixtures — R16 only shown once both R32 winners are known ──
+var R16_FIXTURES = [
+  {date:'Jul 4',  home:'W74', away:'W77', time:'4:00 PM ET',  venue:'Lincoln Financial Field, Philadelphia', matchId:'M89', round:'R16'},
+  {date:'Jul 4',  home:'W73', away:'W75', time:'12:00 PM ET', venue:'NRG Stadium, Houston',                  matchId:'M90', round:'R16'},
+  {date:'Jul 5',  home:'W76', away:'W78', time:'3:00 PM ET',  venue:'MetLife Stadium, East Rutherford',      matchId:'M91', round:'R16'},
+  {date:'Jul 5',  home:'W79', away:'W80', time:'7:00 PM ET',  venue:'Estadio Azteca, Mexico City',           matchId:'M92', round:'R16'},
+  {date:'Jul 6',  home:'W83', away:'W84', time:'2:00 PM ET',  venue:'AT&T Stadium, Dallas',                  matchId:'M93', round:'R16'},
+  {date:'Jul 6',  home:'W81', away:'W82', time:'7:00 PM ET',  venue:'Lumen Field, Seattle',                  matchId:'M94', round:'R16'},
+  {date:'Jul 7',  home:'W86', away:'W88', time:'11:00 AM ET', venue:'Mercedes-Benz Stadium, Atlanta',        matchId:'M95', round:'R16'},
+  {date:'Jul 7',  home:'W85', away:'W87', time:'3:00 PM ET',  venue:'BC Place, Vancouver',                   matchId:'M96', round:'R16'},
+];
+
+// Returns all fixtures that have fully resolved (real) team names
+function getKnownFixtures() {
+  var known = UPCOMING_FIXTURES.slice(); // all R32 — always have real names
+  // Add R16 entries only when BOTH teams are resolved
+  R16_FIXTURES.forEach(function(f) {
+    var h = resolveKnockoutTeam(f.home);
+    var a = resolveKnockoutTeam(f.away);
+    // If either is still a Wxx ref (unresolved), skip it
+    if (/^W\d+/.test(h) || /^W\d+/.test(a)) return;
+    known.push(Object.assign({}, f, {home: h, away: a}));
+  });
+  return known;
+}
 
 buildMatchSelector();
 buildTeamGrid();
@@ -6116,105 +6195,88 @@ function bsimPdf() {
   Object.keys(BSIM.picks).forEach(function(k){ if(k.indexOf(':')<0) made++; });
   if (made === 0) { bsimToast('Make picks or use AI Fill first!'); return; }
 
+  if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+    bsimToast('PDF library loading — try again in a moment'); return;
+  }
+
+  // Make sure the bracket tab and bracket are rendered
   var simTab = document.getElementById('tab-sim');
   var wasHidden = simTab && simTab.style.display === 'none';
   if (simTab) simTab.style.display = 'block';
   bsimRender();
 
-  if (typeof html2canvas === 'undefined' || !window.jspdf) {
-    bsimToast('PDF library still loading — try again in a moment');
-    if (wasHidden && simTab) simTab.style.display = 'none';
-    return;
-  }
+  bsimToast('Generating PDF\u2026');
 
-  var target = document.getElementById('bsimPrintRoot');
-  if (!target) { bsimToast('Nothing to export'); return; }
+  // Capture the bracket element itself
+  var bracketEl = document.getElementById('bsimBracket');
+  if (!bracketEl) { bsimToast('Bracket not found'); return; }
 
-  bsimToast('Generating PDF…');
+  // Give DOM one frame to settle after bsimRender()
+  requestAnimationFrame(function() { requestAnimationFrame(function() {
 
-  var champ = BSIM.picks['FINAL-0'] || '';
-  var clone = target.cloneNode(true);
+    // Temporarily remove overflow constraints for capture
+    var scrollWrap = bracketEl.parentElement;
+    var prevOverflow = scrollWrap ? scrollWrap.style.overflow : '';
+    if (scrollWrap) scrollWrap.style.overflow = 'visible';
 
-  clone.removeAttribute('id');
-  var withIds = clone.querySelectorAll('[id]');
-  for (var k = 0; k < withIds.length; k++) withIds[k].removeAttribute('id');
-
-  var RENDER_W = 2800;
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'position:fixed;left:-99999px;top:0;background:#fff;padding:16px 24px 24px;width:' + RENDER_W + 'px;box-sizing:border-box;overflow:visible';
-
-  var title = document.createElement('div');
-  title.style.cssText = 'text-align:center;font-weight:700;font-size:26px;color:#111;margin-bottom:4px;font-family:sans-serif';
-  title.textContent = 'FIFA World Cup 2026 — My Bracket Prediction';
-  var sub = document.createElement('div');
-  sub.style.cssText = 'text-align:center;font-size:14px;color:#555;margin-bottom:14px;font-family:sans-serif';
-  sub.textContent = champ ? ('Champion: ' + champ) : 'Predicted bracket';
-  wrap.appendChild(title);
-  wrap.appendChild(sub);
-  wrap.appendChild(clone);
-  document.body.appendChild(wrap);
-
-  // Kill all min-widths and overflow:hidden that cause clipping
-  var allEls = wrap.querySelectorAll('*');
-  for (var j = 0; j < allEls.length; j++) {
-    var el = allEls[j];
-    var cs = window.getComputedStyle(el);
-    if (cs.minWidth && cs.minWidth !== '0px') el.style.minWidth = '0';
-    if (cs.overflow === 'hidden' || cs.overflow === 'auto' || cs.overflow === 'scroll') el.style.overflow = 'visible';
-    if (cs.overflowX === 'hidden' || cs.overflowX === 'scroll') el.style.overflowX = 'visible';
-    if (cs.overflowY === 'hidden' || cs.overflowY === 'scroll') el.style.overflowY = 'visible';
-  }
-
-  var tree = wrap.querySelector('.bsim-tree');
-  if (tree) tree.style.cssText += ';min-width:0!important;width:100%!important;display:flex!important';
-
-  var halves = wrap.querySelectorAll('.bsim-half');
-  for (var h = 0; h < halves.length; h++) halves[h].style.cssText += ';flex:1!important;min-width:0!important;overflow:visible!important';
-
-  var cols = wrap.querySelectorAll('.bsim-col');
-  for (var ci = 0; ci < cols.length; ci++) cols[ci].style.cssText += ';min-width:0!important;flex:1!important;padding:0 3px!important';
-
-  function cleanup() {
-    if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
-    if (wasHidden && simTab) simTab.style.display = 'none';
-  }
-
-  setTimeout(function() {
-    html2canvas(wrap, {
-      scale: 1.5,
+    html2canvas(bracketEl, {
+      scale: 2,
       backgroundColor: '#ffffff',
       useCORS: true,
+      allowTaint: true,
       logging: false,
-      width: RENDER_W,
-      windowWidth: RENDER_W
+      scrollX: 0,
+      scrollY: 0
     }).then(function(canvas) {
+
+      // Restore overflow
+      if (scrollWrap) scrollWrap.style.overflow = prevOverflow;
+
       var jsPDF = window.jspdf.jsPDF;
+      // A3 landscape gives the bracket maximum room
       var pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a3' });
-      var pageW = pdf.internal.pageSize.getWidth();
-      var pageH = pdf.internal.pageSize.getHeight();
-      var margin = 6;
-      var availW = pageW - margin * 2;
-      var availH = pageH - margin * 2;
-      var ratio = canvas.width / canvas.height;
+      var PW = pdf.internal.pageSize.getWidth();   // 420mm
+      var PH = pdf.internal.pageSize.getHeight();  // 297mm
+      var M  = 8; // margins
+
+      // Title
+      var champ = BSIM.picks['FINAL-0'] || '';
+      pdf.setFontSize(13);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('FIFA World Cup 2026 \u2014 My Bracket Prediction' +
+        (champ ? '  |  Champion: ' + champ : ''), PW / 2, M + 4, { align: 'center' });
+
+      // Image area below title
+      var titleH = 12;
+      var availW = PW - M * 2;
+      var availH = PH - M * 2 - titleH;
+
+      var cRatio = canvas.width / canvas.height;
       var imgW = availW;
-      var imgH = imgW / ratio;
-      if (imgH > availH) { imgH = availH; imgW = imgH * ratio; }
-      var imgData = canvas.toDataURL('image/jpeg', 0.90);
-      pdf.addImage(imgData, 'JPEG', (pageW - imgW) / 2, margin, imgW, imgH);
+      var imgH = imgW / cRatio;
+      if (imgH > availH) { imgH = availH; imgW = imgH * cRatio; }
+
+      // Centre horizontally AND vertically in the space below the title
+      var x = M + (availW - imgW) / 2;
+      var y = M + titleH + (availH - imgH) / 2;
+
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', x, y, imgW, imgH);
       pdf.save('worldcup-2026-bracket.pdf');
       bsimToast('PDF downloaded!');
-      cleanup();
+
+      if (wasHidden && simTab) simTab.style.display = 'none';
+
     }).catch(function(err) {
-      bsimToast('PDF generation failed — please try again');
-      cleanup();
+      if (scrollWrap) scrollWrap.style.overflow = prevOverflow;
+      console.error('PDF error:', err);
+      bsimToast('PDF failed \u2014 please try again');
+      if (wasHidden && simTab) simTab.style.display = 'none';
     });
-  }, 120);
+
+  }); });
 }
 
 
-
-
-// ── Entry point ───────────────────────────────────────────────────────────────
 function buildBracketSim() {
   var el=document.getElementById('bsimBracket'); if(!el) return;
   if(!el.dataset.built) {
