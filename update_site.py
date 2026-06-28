@@ -571,6 +571,49 @@ def update_form():
     write_html(c)
     print(f"  → Form updated for {form_updated} teams, marketPct for {pct_updated} teams")
 
+
+# ═══════════════════════════════════════════════════════════
+# SECTION: KNOCKOUT RESULTS
+# ═══════════════════════════════════════════════════════════
+# Maps official FIFA R32 match IDs (M73-M88) to winner names.
+# Run: python update_site.py --section knockout
+# data/knockout_results.json format:
+#   {"M73": {"home":"S. Africa","away":"Canada","score":"1-3","winner":"Canada"}, ...}
+def update_knockout_results():
+    data = load('knockout_results.json')
+    if not data:
+        print("  ⚠ knockout_results.json not found — building from MATCHES scores")
+        data = {}
+
+    c = read_html()
+
+    # Build/update KNOCKOUT_RESULTS entries from any R32 match that has a score
+    # in the MATCHES array (m73-m88 if they exist) or from data file
+    js_start = c.find('var KNOCKOUT_RESULTS')
+    js_end   = c.find('\n};', js_start) + 3
+    if js_start < 0:
+        print("  ❌ KNOCKOUT_RESULTS not found in index.html"); return
+
+    # Rebuild the block from data
+    lines = ['var KNOCKOUT_RESULTS = {',
+             '  // R32 results — populated as each match finishes']
+    match_ids = ['M73','M74','M75','M76','M77','M78','M79','M80',
+                 'M81','M82','M83','M84','M85','M86','M87','M88']
+    for mid in match_ids:
+        if mid in data:
+            r = data[mid]
+            h  = esc_js(r.get('home',''))
+            a  = esc_js(r.get('away',''))
+            sc = esc_js(r.get('score',''))
+            w  = esc_js(r.get('winner',''))
+            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}', winner:'{w}'}},")
+    lines.append('};')
+    new_block = '\n'.join(lines)
+
+    c = c[:js_start] + new_block + c[js_end:]
+    write_html(c)
+    print(f"  → KNOCKOUT_RESULTS updated with {len(data)} results")
+
 # ═══════════════════════════════════════════════════════════
 # SECTIONS + MAIN
 # ═══════════════════════════════════════════════════════════
@@ -583,6 +626,7 @@ SECTIONS = {
     'sync':     sync_upcoming,
     'snapshot': update_snapshot,
     'form':     update_form,
+    'knockout': update_knockout_results,
 }
 
 def update_build_stamp():

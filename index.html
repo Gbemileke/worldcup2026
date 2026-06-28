@@ -4960,6 +4960,27 @@ function getKnownFixtures() {
   return known;
 }
 
+var BSIM_SCHEDULE = [
+  // ─ LEFT R32 (bracket order, top to bottom) ─
+  {id:'M74', date:'Jun 29', time:'16:30 ET', venue:'Gillette Stadium, Boston', seedH:'1st E', seedA:'3rd A/B/C/D/F'},
+  {id:'M77', date:'Jun 30', time:'17:00 ET', venue:'MetLife Stadium, East Rutherford', seedH:'1st I', seedA:'3rd C/D/F/G/H'},
+  {id:'M73', date:'Jun 28', time:'15:00 ET', venue:'SoFi Stadium, Los Angeles', seedH:'2nd A', seedA:'2nd B'},
+  {id:'M75', date:'Jun 29', time:'21:00 ET', venue:'Estadio BBVA, Monterrey', seedH:'1st F', seedA:'2nd C'},
+  {id:'M83', date:'Jul 2', time:'19:00 ET', venue:'BMO Field, Toronto', seedH:'2nd K', seedA:'2nd L'},
+  {id:'M84', date:'Jul 2', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'1st H', seedA:'2nd J'},
+  {id:'M81', date:'Jul 1', time:'20:00 ET', venue:'Levis Stadium, Santa Clara', seedH:'1st D', seedA:'3rd B/E/F/I/J'},
+  {id:'M82', date:'Jul 1', time:'16:00 ET', venue:'Lumen Field, Seattle', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
+  // ─ RIGHT R32 (bracket order, top to bottom) ─
+  {id:'M76', date:'Jun 29', time:'13:00 ET', venue:'NRG Stadium, Houston', seedH:'1st C', seedA:'2nd F'},
+  {id:'M78', date:'Jun 30', time:'13:00 ET', venue:'AT&T Stadium, Dallas', seedH:'2nd E', seedA:'2nd I'},
+  {id:'M79', date:'Jun 30', time:'21:00 ET', venue:'Estadio Azteca, Mexico City', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
+  {id:'M80', date:'Jul 1', time:'12:00 ET', venue:'Mercedes-Benz Stadium, Atlanta', seedH:'1st L', seedA:'3rd E/H/I/J/K'},
+  {id:'M86', date:'Jul 3', time:'18:00 ET', venue:'Hard Rock Stadium, Miami', seedH:'1st J', seedA:'2nd H'},
+  {id:'M88', date:'Jul 3', time:'14:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd D', seedA:'2nd G'},
+  {id:'M85', date:'Jul 2', time:'23:00 ET', venue:'BC Place, Vancouver', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
+  {id:'M87', date:'Jul 3', time:'21:30 ET', venue:'Arrowhead Stadium, Kansas City', seedH:'1st K', seedA:'3rd D/E/I/J/L'},
+];
+
 buildMatchSelector();
 buildTeamGrid();
 buildSnapshotStats();
@@ -5327,26 +5348,7 @@ var PREVIEW_MATCHUPS = R32_MATCHUPS.slice(0, 8).map(function(m) {
 // LEFT half R32 — index 0-7 (top→bottom in left column)
 // RIGHT half R32 — index 8-15 (top→bottom in right column)
 // seedH / seedA = the group-placement label shown before teams qualify
-var BSIM_SCHEDULE = [
-  // ─ LEFT R32 (bracket order, top to bottom) ─
-  {id:'M74', date:'Jun 29', time:'16:30 ET', venue:'Gillette Stadium, Boston', seedH:'1st E', seedA:'3rd A/B/C/D/F'},
-  {id:'M77', date:'Jun 30', time:'17:00 ET', venue:'MetLife Stadium, East Rutherford', seedH:'1st I', seedA:'3rd C/D/F/G/H'},
-  {id:'M73', date:'Jun 28', time:'15:00 ET', venue:'SoFi Stadium, Los Angeles', seedH:'2nd A', seedA:'2nd B'},
-  {id:'M75', date:'Jun 29', time:'21:00 ET', venue:'Estadio BBVA, Monterrey', seedH:'1st F', seedA:'2nd C'},
-  {id:'M83', date:'Jul 2', time:'19:00 ET', venue:'BMO Field, Toronto', seedH:'2nd K', seedA:'2nd L'},
-  {id:'M84', date:'Jul 2', time:'15:00 ET', venue:'SoFi Stadium, Inglewood', seedH:'1st H', seedA:'2nd J'},
-  {id:'M81', date:'Jul 1', time:'20:00 ET', venue:'Levis Stadium, Santa Clara', seedH:'1st D', seedA:'3rd B/E/F/I/J'},
-  {id:'M82', date:'Jul 1', time:'16:00 ET', venue:'Lumen Field, Seattle', seedH:'1st G', seedA:'3rd A/E/H/I/J'},
-  // ─ RIGHT R32 (bracket order, top to bottom) ─
-  {id:'M76', date:'Jun 29', time:'13:00 ET', venue:'NRG Stadium, Houston', seedH:'1st C', seedA:'2nd F'},
-  {id:'M78', date:'Jun 30', time:'13:00 ET', venue:'AT&T Stadium, Dallas', seedH:'2nd E', seedA:'2nd I'},
-  {id:'M79', date:'Jun 30', time:'21:00 ET', venue:'Estadio Azteca, Mexico City', seedH:'1st A', seedA:'3rd C/E/F/H/I'},
-  {id:'M80', date:'Jul 1', time:'12:00 ET', venue:'Mercedes-Benz Stadium, Atlanta', seedH:'1st L', seedA:'3rd E/H/I/J/K'},
-  {id:'M86', date:'Jul 3', time:'18:00 ET', venue:'Hard Rock Stadium, Miami', seedH:'1st J', seedA:'2nd H'},
-  {id:'M88', date:'Jul 3', time:'14:00 ET', venue:'AT&T Stadium, Arlington', seedH:'2nd D', seedA:'2nd G'},
-  {id:'M85', date:'Jul 2', time:'23:00 ET', venue:'BC Place, Vancouver', seedH:'1st B', seedA:'3rd E/F/G/I/J'},
-  {id:'M87', date:'Jul 3', time:'21:30 ET', venue:'Arrowhead Stadium, Kansas City', seedH:'1st K', seedA:'3rd D/E/I/J/L'},
-];
+
 
 // R16 — index 0-3 left, 4-7 right; feeders are winners of R32
 
