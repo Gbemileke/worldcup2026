@@ -3407,6 +3407,29 @@ function runSimulation() {
   SIM.sf1Loser = SIM.sf[0] ? (SIM.sf[0].winner === SIM.sf[0].home ? SIM.sf[0].away : SIM.sf[0].home) : '';
   SIM.sf2Loser = SIM.sf[1] ? (SIM.sf[1].winner === SIM.sf[1].home ? SIM.sf[1].away : SIM.sf[1].home) : '';
 
+  // Integrity assertion: verify each round only contains winners from the prior round
+  (function() {
+    var stages = [
+      {prev: SIM.r32,  curr: SIM.r16,  name: 'R16'},
+      {prev: SIM.r16,  curr: SIM.qf,   name: 'QF'},
+      {prev: SIM.qf,   curr: SIM.sf,   name: 'SF'},
+      {prev: SIM.sf,   curr: SIM.final ? [SIM.final] : [], name: 'Final'},
+    ];
+    stages.forEach(function(s) {
+      var prevWinners = {};
+      (s.prev||[]).forEach(function(m){ if(m && m.winner) prevWinners[m.winner] = true; });
+      (s.curr||[]).forEach(function(m) {
+        if (!m) return;
+        if (m.home && !prevWinners[m.home]) {
+          if (typeof console !== 'undefined') console.warn('Integrity: ' + m.home + ' in ' + s.name + ' but not a ' + s.name.replace('R16','R32').replace('QF','R16').replace('SF','QF').replace('Final','SF') + ' winner');
+        }
+        if (m.away && !prevWinners[m.away]) {
+          if (typeof console !== 'undefined') console.warn('Integrity: ' + m.away + ' in ' + s.name + ' but not a prior round winner');
+        }
+      });
+    });
+  })();
+
   var sc = document.getElementById('simCounter');
   if (sc) sc.textContent = 'Simulation #' + SIM_COUNT;
   renderBracket();
@@ -5472,6 +5495,7 @@ function bsimAiFillSilent() {
     }
   });
   // predict third-place winner
+  bsimEnforceIntegrity();
   bsimPredictThird();
 }
 
@@ -5494,6 +5518,12 @@ var BSIM_NEXT = {R32:'R16', R16:'QF', QF:'SF', SF:'FINAL'};
 var BSIM_COUNT = {R32:16, R16:8, QF:4, SF:2, FINAL:1};
 
 function bsimPick(round, idx, winner) {
+  // Guard: winner must be one of the two teams actually in this match
+  var h = bsimGet(round, idx, 'h'), a = bsimGet(round, idx, 'a');
+  if (winner !== h && winner !== a) {
+    if (typeof console !== 'undefined') console.warn('bsimPick integrity: ' + winner + ' is not in ' + round + '-' + idx + ' (' + h + ' vs ' + a + ')');
+    return;
+  }
   BSIM.picks[round+'-'+idx] = winner;
   var nr = BSIM_NEXT[round];
   if (nr) {
@@ -5523,6 +5553,49 @@ function bsimClearFrom(round, idx) {
 }
 
 // ── AI fill ───────────────────────────────────────────────────────────────────
+
+// ── Bracket integrity guard ──────────────────────────────────────────────────
+// Ensures no team appears in a later round if they were eliminated in an earlier one.
+// Called after every AI fill and simulation run.
+function bsimEnforceIntegrity() {
+  var rounds = ['R32','R16','QF','SF','FINAL'];
+  // Build the set of winners for each round
+  var winners = {};  // round -> Set of winning team names
+  for (var ri = 0; ri < rounds.length; ri++) {
+    var round = rounds[ri];
+    winners[round] = {};
+    for (var i = 0; i < BSIM_COUNT[round]; i++) {
+      var pick = BSIM.picks[round+'-'+i];
+      if (pick) winners[round][pick] = true;
+    }
+  }
+  // For each round after R32, verify each team in the slots was a winner of the previous round
+  for (var ri = 1; ri < rounds.length; ri++) {
+    var round = rounds[ri];
+    var prevRound = rounds[ri-1];
+    var prevWinners = winners[prevRound];
+    for (var i = 0; i < BSIM_COUNT[round]; i++) {
+      var h = bsimGet(round, i, 'h');
+      var a = bsimGet(round, i, 'a');
+      // If a team in this slot was NOT a winner of the previous round, clear it
+      if (h && !prevWinners[h]) {
+        BSIM.slots[round+'-'+i+'-h'] = '';
+        bsimClearFrom(round, i);
+      }
+      if (a && !prevWinners[a]) {
+        BSIM.slots[round+'-'+i+'-a'] = '';
+        bsimClearFrom(round, i);
+      }
+    }
+    // Rebuild winners for this round after cleanup
+    winners[round] = {};
+    for (var i = 0; i < BSIM_COUNT[round]; i++) {
+      var pick = BSIM.picks[round+'-'+i];
+      if (pick) winners[round][pick] = true;
+    }
+  }
+}
+
 function bsimAiFill() {
   bsimInit();
   bsimPopulateFromSeeds();  // project teams from group model if not yet known
@@ -5540,6 +5613,7 @@ function bsimAiFill() {
       if (round==='SF') { var loser=(winner===h)?a:h; BSIM.slots['THIRD-0-'+(i===0?'h':'a')]=loser; }
     }
   });
+  bsimEnforceIntegrity();
   bsimPredictThird();
   bsimRender(); bsimUpdateProg();
 }
