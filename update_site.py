@@ -261,9 +261,10 @@ def update_upcoming():
 
     entries = []
     for f in data:
+        rnd = f.get('round', '') or ('R32' if not f.get('group') else 'Group ' + f['group'])
         entry = (
             f"  {{date:'{f['date']}', home:'{f['home']}', away:'{f['away']}', "
-            f"time:'{f['time']}', group:'{f['group']}'}}"
+            f"time:'{f['time']}', group:'{f['group']}', round:'{rnd}'}}"
         )
         entries.append(entry)
 

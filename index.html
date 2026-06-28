@@ -2544,10 +2544,10 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jun 28', home:'S. Africa', away:'Canada', time:'1PM CST', group:''},
-  {date:'Jun 29', home:'Brazil', away:'Japan', time:'11AM CST', group:''},
-  {date:'Jun 29', home:'Netherlands', away:'Morocco', time:'7PM CST', group:''},
-  {date:'Jul 1', home:'USA', away:'Bosnia', time:'6PM CST', group:''}
+  {date:'Jun 28', home:'S. Africa', away:'Canada', time:'1PM CST', group:'', round:'R32'},
+  {date:'Jun 29', home:'Brazil', away:'Japan', time:'11AM CST', group:'', round:'R32'},
+  {date:'Jun 29', home:'Netherlands', away:'Morocco', time:'7PM CST', group:'', round:'R32'},
+  {date:'Jul 1', home:'USA', away:'Bosnia', time:'6PM CST', group:'', round:'R32'}
 ];
 
 // ── Match statistics ─────────────────────────────────
@@ -4235,7 +4235,7 @@ function buildTicker() {
         var hf=getFlag(f.home),af=getFlag(f.away);
         var hi=hf?'<img src="https://flagcdn.com/16x12/'+hf+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-right:3px" onerror="this.style.display=&#39;none&#39;">':'';
         var ai=af?'<img src="https://flagcdn.com/16x12/'+af+'.png" width="16" height="12" style="border-radius:1px;vertical-align:middle;margin-left:3px" onerror="this.style.display=&#39;none&#39;">':'';
-        return '<div class="ticker-item"><span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">GRP '+f.group+'</span>'+hi+f.home+'<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>'+f.away+ai+'<span style="font-size:10px;margin-left:7px;opacity:.7">'+f.date+' '+f.time+'</span></div>';
+        return '<div class="ticker-item"><span style="font-size:9px;font-weight:900;letter-spacing:.5px;margin-right:6px;opacity:.7">'+(f.round||(f.group?'GRP '+f.group:'UPC'))+'</span>'+hi+f.home+'<span style="font-size:10px;font-weight:600;margin:0 5px;opacity:.6">vs</span>'+f.away+ai+'<span style="font-size:10px;margin-left:7px;opacity:.7">'+f.date+' '+f.time+'</span></div>';
       })()
       );
     });
@@ -4615,7 +4615,7 @@ function buildMatchPredictor() {
   UPCOMING_FIXTURES.forEach(function(f, i) {
     var opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = f.date + '  \u2014  ' + f.home + ' vs ' + f.away + '  \u00B7  Group ' + f.group;
+    opt.textContent = f.date + '  —  ' + f.home + ' vs ' + f.away + '  ·  ' + (f.round || (f.group ? 'Group ' + f.group : 'Upcoming'));
     sel.appendChild(opt);
   });
   sel.onchange = function() {

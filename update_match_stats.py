@@ -615,7 +615,22 @@ def fetch_upcoming(token, played_keys):
             except: date_s=m['utcDate'][:10]; time_s='?? CST'
             gr  = m.get('stage','')
             grp = gr.replace('GROUP_','') if 'GROUP_' in gr else ''
-            upcoming.append({'date':date_s,'home':home,'away':away,'time':time_s,'group':grp})
+            # Determine round label from ESPN season type / status text
+            rnd = 'Group Stage'
+            season_type = event.get('seasonType',{}).get('abbreviation','') or ''
+            comp_round = ''
+            for c2 in (event.get('competitions') or []):
+                comp_round = (c2.get('notes') or [{}])[0].get('headline','') if c2.get('notes') else ''
+                break
+            round_txt = (comp_round or season_type or '').upper()
+            if 'ROUND OF 32' in round_txt or '32' in round_txt: rnd = 'R32'
+            elif 'ROUND OF 16' in round_txt or '16' in round_txt: rnd = 'R16'
+            elif 'QUARTER' in round_txt or 'QF' in round_txt:    rnd = 'QF'
+            elif 'SEMI' in round_txt or 'SF' in round_txt:       rnd = 'SF'
+            elif 'FINAL' in round_txt:                            rnd = 'Final'
+            elif not grp:  rnd = 'R32'  # no group = knockout stage
+            else:          rnd = 'Group ' + grp
+            upcoming.append({'date':date_s,'home':home,'away':away,'time':time_s,'group':grp,'round':rnd})
         if upcoming:
             save('upcoming_fixtures.json', upcoming)
             print(f"  Upcoming: {len(upcoming)} fixtures")
