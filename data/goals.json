@@ -2578,5 +2578,17 @@
     "phase": "Group Stage",
     "score": "1-3",
     "desc": ""
+  },
+  {
+    "id": 263,
+    "matchId": "m73",
+    "home": "S. Africa",
+    "away": "Canada",
+    "scorer": "S. Eust\u00e1quio",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
   }
 ]

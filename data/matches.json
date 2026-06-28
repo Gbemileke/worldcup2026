@@ -790,5 +790,16 @@
     "ytId": "",
     "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/jordan-v-argentina-highlights-match-report",
     "espnId": "760483"
+  },
+  {
+    "id": "m73",
+    "date": "Jun 28",
+    "home": "S. Africa",
+    "away": "Canada",
+    "score": "0-1",
+    "group": "",
+    "ytId": "",
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-v-canada-highlights-match-report",
+    "espnId": "760486"
   }
 ]
