@@ -615,15 +615,16 @@ def fetch_upcoming(token, played_keys):
             except: date_s=m['utcDate'][:10]; time_s='?? CST'
             gr  = m.get('stage','')
             grp = gr.replace('GROUP_','') if 'GROUP_' in gr else ''
-            # Determine round label from ESPN season type / status text
-            rnd = 'Group Stage'
-            season_type = event.get('seasonType',{}).get('abbreviation','') or ''
-            comp_round = ''
-            for c2 in (event.get('competitions') or []):
-                comp_round = (c2.get('notes') or [{}])[0].get('headline','') if c2.get('notes') else ''
-                break
-            round_txt = (comp_round or season_type or '').upper()
-            if 'ROUND OF 32' in round_txt or '32' in round_txt: rnd = 'R32'
+            # Determine round from football-data.org stage field
+            stage = m.get('stage','') or ''
+            if 'ROUND_OF_32' in stage or 'LAST_32' in stage or '32' in stage: rnd = 'R32'
+            elif 'ROUND_OF_16' in stage or 'LAST_16' in stage or '16' in stage: rnd = 'R16'
+            elif 'QUARTER' in stage or 'QF' in stage: rnd = 'QF'
+            elif 'SEMI' in stage or 'SF' in stage: rnd = 'SF'
+            elif 'FINAL' in stage and 'SEMI' not in stage: rnd = 'Final'
+            else: rnd = 'Group Stage'
+            rnd  # (assigned above)
+            if False: rnd = 'R32'
             elif 'ROUND OF 16' in round_txt or '16' in round_txt: rnd = 'R16'
             elif 'QUARTER' in round_txt or 'QF' in round_txt:    rnd = 'QF'
             elif 'SEMI' in round_txt or 'SF' in round_txt:       rnd = 'SF'

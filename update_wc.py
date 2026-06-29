@@ -162,10 +162,14 @@ def update_goals():
 
 def update_stats():
     """
-    MERGE new ESPN stats into existing MATCH_STATS.
-    Never replaces — only adds/updates entries that exist in match_stats.json.
-    Only processes m1-m72 (group stage). Knockout stats (m73+) are ignored.
-    This preserves manually-built stats that ESPN hasn't scraped yet.
+    MERGE ESPN stats into MATCH_STATS in index.html.
+
+    Key safeguards:
+    1. Re-keys each stat entry by (home, away) team lookup against matches.json
+       so wrong IDs from the ESPN scraper are corrected before merging.
+    2. Only processes m1-m72 (group stage). Knockout stats (m73+) ignored.
+    3. MERGES - never replaces. All existing entries preserved.
+    4. Swaps home/away columns when ESPN ordering differs from matches.json.
     """
     new_data = load('match_stats.json')
     if not new_data:
@@ -173,87 +177,81 @@ def update_stats():
 
     html = read_html()
 
+    # Authoritative team-to-ID lookup from matches.json (m1-m72 only)
+    matches_data = load('matches.json') or []
+    teams_to_mid = {}
+    mid_to_canon = {}
+    for m in matches_data:
+        try: num = int(m['id'].replace('m','').replace('M',''))
+        except ValueError: continue
+        if num < 1: continue
+        h = m['home']; a = m['away']
+        teams_to_mid[(h, a)] = m['id']
+        teams_to_mid[(a, h)] = m['id']
+        mid_to_canon[m['id']] = m
+
     # Parse existing MATCH_STATS from index.html
     ms_start = html.find('var MATCH_STATS = {')
     ms_end   = html.find('\n};', ms_start) + 3
-    existing_block = html[ms_start:ms_end]
-
-    # Build a dict of existing entries (preserve what we have)
     existing_entries = {}
-    for m in re.finditer(r"  (m\d+): (\{[^}]+(?:\{[^}]*\}[^}]*)*\})", existing_block):
-        mid, body = m.group(1), m.group(2)
-        try:
-            num = int(mid.replace('m',''))
-            if 1 <= num <= 72:
-                existing_entries[mid] = body
-        except ValueError:
-            pass
+    for mm in re.finditer(r'\b(m\d+)\s*:\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}',
+                          html[ms_start:ms_end]):
+        mid = mm.group(1)
+        try: num = int(mid.replace('m',''))
+        except ValueError: continue
+        if 1 <= num <= 72:
+            existing_entries[mid] = mm.group(2)
 
-    # Merge: overlay new ESPN data (group stage only)
-    updated_count = 0
-    for mid, m in new_data.items():
-        try:
-            num = int(mid.replace('m','').replace('M',''))
-        except ValueError:
+    updated = 0; skipped = 0
+    for old_mid, stat in new_data.items():
+        h = stat.get('home',''); a = stat.get('away','')
+        # Re-key by team pair against matches.json
+        correct_mid = teams_to_mid.get((h,a)) or teams_to_mid.get((a,h))
+        if not correct_mid:
+            skipped += 1
+            print(f'  skip: no match for {h} vs {a} (was {old_mid})')
             continue
-        if num < 1 or num > 72:
-            continue  # never write knockout stats to MATCH_STATS
-        mid_lower = f'm{num}'
-        home_e  = esc(m['home'])
-        away_e  = esc(m['away'])
-        score_e = esc(m['score'])
-        date_e  = esc(m['date'])
+        try: num = int(correct_mid.replace('m',''))
+        except: continue
+        if num < 1 or num > 72: continue
+
+        # Normalize to canonical home/away order
+        canon = mid_to_canon[correct_mid]
+        stat2 = dict(stat)
+        if h != canon['home']:
+            poss = stat2.get('poss',[50,50])
+            stat2['home']  = canon['home']
+            stat2['away']  = canon['away']
+            stat2['poss']  = [poss[1],poss[0]] if len(poss)==2 else poss
+            stat2['stats'] = [[s[0],s[2],s[1]] for s in stat2.get('stats',[]) if len(s)==3]
+            stat2['xtra']  = [[s[0],s[2],s[1]] for s in stat2.get('xtra',[])  if len(s)==3]
+            sc = stat2.get('score','').split('-')
+            if len(sc)==2: stat2['score'] = f"{sc[1]}-{sc[0]}"
+
+        he = esc(stat2.get('home','')); ae = esc(stat2.get('away',''))
+        se = esc(stat2.get('score', canon['score']))
+        de = esc(stat2.get('date',  canon['date']))
         entry = (
-            f"{{home:'{home_e}', away:'{away_e}', hf:'', af:'', "
-            f"score:'{score_e}', date:'{date_e}', "
-            f"poss:{json.dumps(m['poss'])}, "
-            f"stats:{json.dumps(m['stats'])}, "
-            f"xtra:{json.dumps(m['xtra'])}}}"
+            f"home:'{he}', away:'{ae}', hf:'', af:'', "
+            f"score:'{se}', date:'{de}', "
+            f"poss:{json.dumps(stat2.get('poss',[50,50]))}, "
+            f"stats:{json.dumps(stat2.get('stats',[]))}, "
+            f"xtra:{json.dumps(stat2.get('xtra',[]))}"
         )
-        if existing_entries.get(mid_lower) != entry:
-            existing_entries[mid_lower] = entry
-            updated_count += 1
+        if existing_entries.get(correct_mid) != entry:
+            existing_entries[correct_mid] = entry
+            updated += 1
 
-    # Rebuild sorted block
-    entries = []
-    for mid in sorted(existing_entries.keys(), key=lambda x: int(x.replace('m',''))):
-        entries.append(f"  {mid}: {existing_entries[mid]}")
-
+    entries = [f"  {mid}: {{{existing_entries[mid]}}}"
+               for mid in sorted(existing_entries, key=lambda x: int(x.replace('m','')))]
     new_block = 'var MATCH_STATS = {\n' + ',\n'.join(entries) + '\n};'
     html, ok = replace_js_object(html, 'MATCH_STATS', new_block + '\n\n')
     if ok:
         write_html(html)
         total = len(existing_entries)
-        print(f'  →  {total} match stats in MATCH_STATS ({updated_count} updated from ESPN, {total-updated_count} preserved)')
+        print(f'  -> {total} MATCH_STATS entries ({updated} updated, {skipped} skipped)')
     else:
-        print('  ⚠  MATCH_STATS not found in index.html')
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SECTION: KNOCKOUT RESULTS
-# Reads data/knockout_results.json and patches KNOCKOUT_RESULTS in index.html.
-#
-# knockout_results.json format:
-# {
-#   "M73": {"home":"S. Africa","away":"Canada","score":"1-3","winner":"Canada"},
-#   "M74": {"home":"Germany",  "away":"Paraguay","score":"3-1","winner":"Germany"},
-#   ...
-# }
-# Covers R32 (M73-M88), R16 (M89-M96), QF (M97-M100), SF (M101-M102)
-# ─────────────────────────────────────────────────────────────────────────────
-
-# Official match order for all knockout rounds
-KNOCKOUT_IDS = [
-    # R32
-    'M73','M74','M75','M76','M77','M78','M79','M80',
-    'M81','M82','M83','M84','M85','M86','M87','M88',
-    # R16
-    'M89','M90','M91','M92','M93','M94','M95','M96',
-    # QF
-    'M97','M98','M99','M100',
-    # SF
-    'M101','M102',
-]
+        print('  warning: MATCH_STATS not found in index.html')
 
 def update_knockout():
     data = load('knockout_results.json')

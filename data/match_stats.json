@@ -118,8 +118,8 @@
     ]
   },
   "m5": {
-    "home": "Qatar",
-    "away": "Switzerland",
+    "home": "Switzerland",
+    "away": "Qatar",
     "score": "1-1",
     "date": "Jun 13",
     "poss": [
@@ -944,9 +944,9 @@
     ]
   },
   "m18": {
-    "home": "Iraq",
-    "away": "Norway",
-    "score": "1-4",
+    "home": "Norway",
+    "away": "Iraq",
+    "score": "4-1",
     "date": "Jun 16 - Gillette Stadium",
     "poss": [
       38.7,
@@ -1061,14 +1061,73 @@
       ]
     ]
   },
+  "m22": {
+    "home": "Portugal",
+    "away": "DR Congo",
+    "score": "1-1",
+    "date": "Jun 17 - SoFi Stadium, Los Angeles",
+    "poss": [
+      75,
+      25
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        8
+      ],
+      [
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Corner Kicks",
+        8,
+        2
+      ],
+      [
+        "Fouls",
+        10,
+        14
+      ],
+      [
+        "Saves",
+        1,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.19,
+        0.96
+      ],
+      [
+        "Yellow Cards",
+        1,
+        2
+      ],
+      [
+        "Offsides",
+        3,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ]
+    ]
+  },
   "m21": {
     "home": "England",
     "away": "Croatia",
     "score": "4-2",
-    "date": "Jun 17 - AT&T Stadium",
+    "date": "Jun 17 - AT&T Stadium, Dallas",
     "poss": [
-      51.7,
-      48.3
+      52,
+      48
     ],
     "stats": [
       [
@@ -1083,8 +1142,8 @@
       ],
       [
         "Corner Kicks",
-        0,
-        0
+        8,
+        2
       ],
       [
         "Fouls",
@@ -1112,70 +1171,6 @@
         "Red Cards",
         0,
         0
-      ],
-      [
-        "Offsides",
-        0,
-        1
-      ]
-    ]
-  },
-  "m22": {
-    "home": "Portugal",
-    "away": "DR Congo",
-    "score": "1-1",
-    "date": "Jun 17 - NRG Stadium",
-    "poss": [
-      75.4,
-      24.6
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        7,
-        8
-      ],
-      [
-        "Shots on Goal",
-        1,
-        2
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        9,
-        10
-      ],
-      [
-        "Saves",
-        1,
-        0
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.63,
-        0.96
-      ],
-      [
-        "Yellow Cards",
-        3,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        2
       ]
     ]
   },
@@ -1239,61 +1234,61 @@
     ]
   },
   "m24": {
-    "home": "Uzbekistan",
-    "away": "Colombia",
-    "score": "1-3",
-    "date": "Jun 18 - Estadio Banorte",
+    "home": "Colombia",
+    "away": "Uzbekistan",
+    "score": "3-1",
+    "date": "Jun 17 - Estadio Azteca, Mexico City",
     "poss": [
-      38.6,
-      61.4
+      38,
+      62
     ],
     "stats": [
       [
         "Shot Attempts",
-        8,
-        15
+        9,
+        17
       ],
       [
         "Shots on Goal",
-        2,
-        4
+        3,
+        7
       ],
       [
         "Corner Kicks",
-        0,
-        0
+        3,
+        7
       ],
       [
         "Fouls",
-        14,
+        13,
         11
       ],
       [
         "Saves",
-        1,
-        1
+        4,
+        2
       ]
     ],
     "xtra": [
       [
         "xG",
-        0.96,
-        1.87
+        1.29,
+        2.81
       ],
       [
         "Yellow Cards",
-        1,
+        2,
         1
+      ],
+      [
+        "Offsides",
+        1,
+        3
       ],
       [
         "Red Cards",
         0,
         0
-      ],
-      [
-        "Offsides",
-        0,
-        3
       ]
     ]
   },
@@ -2055,8 +2050,8 @@
     ]
   },
   "m36": {
-    "home": "Tunisia",
-    "away": "Japan",
+    "home": "Japan",
+    "away": "Tunisia",
     "score": "0-4",
     "date": "Jun 20 - Estadio BBVA, Monterrey",
     "poss": [
@@ -2228,1540 +2223,6 @@
         "Offsides",
         1,
         0
-      ]
-    ]
-  },
-  "m39": {
-    "home": "Uruguay",
-    "away": "Cape Verde",
-    "score": "2-2",
-    "date": "Jun 21 - Hard Rock Stadium",
-    "poss": [
-      65.2,
-      34.8
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        17,
-        12
-      ],
-      [
-        "Shots on Goal",
-        2,
-        4
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        11,
-        4
-      ],
-      [
-        "Saves",
-        2,
-        0
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.41,
-        1.72
-      ],
-      [
-        "Yellow Cards",
-        2,
-        2
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        0
-      ]
-    ]
-  },
-  "m40": {
-    "home": "New Zealand",
-    "away": "Egypt",
-    "score": "1-3",
-    "date": "Jun 22 - BC Place",
-    "poss": [
-      44.3,
-      55.7
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        11,
-        19
-      ],
-      [
-        "Shots on Goal",
-        5,
-        7
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        14,
-        8
-      ],
-      [
-        "Saves",
-        4,
-        4
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.95,
-        2.91
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        0
-      ]
-    ]
-  },
-  "m41": {
-    "home": "Argentina",
-    "away": "Austria",
-    "score": "2-0",
-    "date": "Jun 22 - AT&T Stadium",
-    "poss": [
-      53.6,
-      46.4
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        12,
-        6
-      ],
-      [
-        "Shots on Goal",
-        5,
-        1
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        13,
-        13
-      ],
-      [
-        "Saves",
-        1,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.0,
-        0.58
-      ],
-      [
-        "Yellow Cards",
-        2,
-        2
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        0
-      ]
-    ]
-  },
-  "m42": {
-    "home": "Norway",
-    "away": "France",
-    "score": "1-4",
-    "date": "Jun 26 - Gillette Stadium",
-    "poss": [
-      43.3,
-      56.7
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        10,
-        18
-      ],
-      [
-        "Shots on Goal",
-        4,
-        9
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        9,
-        11
-      ],
-      [
-        "Saves",
-        5,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.62,
-        3.42
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        2
-      ]
-    ]
-  },
-  "m43": {
-    "home": "Senegal",
-    "away": "Iraq",
-    "score": "5-0",
-    "date": "Jun 26 - BMO Field",
-    "poss": [
-      69.2,
-      30.8
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        28,
-        6
-      ],
-      [
-        "Shots on Goal",
-        12,
-        1
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        10,
-        11
-      ],
-      [
-        "Saves",
-        1,
-        7
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        4.76,
-        0.58
-      ],
-      [
-        "Yellow Cards",
-        2,
-        2
-      ],
-      [
-        "Red Cards",
-        0,
-        1
-      ],
-      [
-        "Offsides",
-        1,
-        0
-      ]
-    ]
-  },
-  "m44": {
-    "home": "Jordan",
-    "away": "Algeria",
-    "score": "1-2",
-    "date": "Jun 23 - Levi's Stadium",
-    "poss": [
-      27.9,
-      72.1
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        8,
-        17
-      ],
-      [
-        "Shots on Goal",
-        4,
-        8
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        11,
-        6
-      ],
-      [
-        "Saves",
-        6,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.52,
-        3.09
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        0
-      ]
-    ]
-  },
-  "m45": {
-    "home": "Portugal",
-    "away": "Uzbekistan",
-    "score": "5-0",
-    "date": "Jun 23 - NRG Stadium",
-    "poss": [
-      66,
-      34
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        17,
-        7
-      ],
-      [
-        "Shots on Goal",
-        9,
-        2
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        14,
-        15
-      ],
-      [
-        "Saves",
-        2,
-        4
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.37,
-        0.91
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        2
-      ]
-    ]
-  },
-  "m46": {
-    "home": "England",
-    "away": "Ghana",
-    "score": "0-0",
-    "date": "Jun 23 - Gillette Stadium",
-    "poss": [
-      78.8,
-      21.2
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        19,
-        2
-      ],
-      [
-        "Shots on Goal",
-        3,
-        1
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        14,
-        24
-      ],
-      [
-        "Saves",
-        0,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.79,
-        0.38
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        2
-      ]
-    ]
-  },
-  "m47": {
-    "home": "Panama",
-    "away": "Croatia",
-    "score": "0-1",
-    "date": "Jun 23 - BMO Field",
-    "poss": [
-      42.1,
-      57.9
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        8,
-        6
-      ],
-      [
-        "Shots on Goal",
-        1,
-        2
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        19,
-        12
-      ],
-      [
-        "Saves",
-        1,
-        1
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.68,
-        0.86
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        2
-      ]
-    ]
-  },
-  "m48": {
-    "home": "Colombia",
-    "away": "DR Congo",
-    "score": "1-0",
-    "date": "Jun 24 - Estadio Akron",
-    "poss": [
-      63.5,
-      36.5
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        20,
-        7
-      ],
-      [
-        "Shots on Goal",
-        9,
-        1
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        12,
-        16
-      ],
-      [
-        "Saves",
-        1,
-        8
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        3.52,
-        0.63
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        7,
-        0
-      ]
-    ]
-  },
-  "m49": {
-    "home": "Bosnia",
-    "away": "Qatar",
-    "score": "3-1",
-    "date": "Jun 24 - Lumen Field",
-    "poss": [
-      54.5,
-      45.5
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        14,
-        9
-      ],
-      [
-        "Shots on Goal",
-        5,
-        3
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        9,
-        14
-      ],
-      [
-        "Saves",
-        2,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.1,
-        1.29
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        3
-      ]
-    ]
-  },
-  "m50": {
-    "home": "Switzerland",
-    "away": "Canada",
-    "score": "2-1",
-    "date": "Jun 24 - BC Place",
-    "poss": [
-      55.2,
-      44.8
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        6,
-        13
-      ],
-      [
-        "Shots on Goal",
-        4,
-        7
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        19,
-        13
-      ],
-      [
-        "Saves",
-        6,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.42,
-        2.61
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        3
-      ]
-    ]
-  },
-  "m51": {
-    "home": "Morocco",
-    "away": "Haiti",
-    "score": "4-2",
-    "date": "Jun 24 - Mercedes-Benz Stadium",
-    "poss": [
-      69,
-      31
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        22,
-        9
-      ],
-      [
-        "Shots on Goal",
-        11,
-        2
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        10,
-        18
-      ],
-      [
-        "Saves",
-        1,
-        8
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        4.18,
-        1.01
-      ],
-      [
-        "Yellow Cards",
-        0,
-        3
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        5,
-        0
-      ]
-    ]
-  },
-  "m52": {
-    "home": "Morocco",
-    "away": "Haiti",
-    "score": "4-2",
-    "date": "Jun 24 - Mercedes-Benz Stadium",
-    "poss": [
-      69.1,
-      30.9
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        22,
-        9
-      ],
-      [
-        "Shots on Goal",
-        11,
-        2
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        10,
-        18
-      ],
-      [
-        "Saves",
-        1,
-        8
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        4.18,
-        1.01
-      ],
-      [
-        "Yellow Cards",
-        0,
-        3
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        5,
-        0
-      ]
-    ]
-  },
-  "m53": {
-    "home": "Czechia",
-    "away": "Mexico",
-    "score": "0-3",
-    "date": "Jun 25 - Estadio Banorte",
-    "poss": [
-      51.6,
-      48.4
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        13,
-        11
-      ],
-      [
-        "Shots on Goal",
-        1,
-        5
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        9,
-        13
-      ],
-      [
-        "Saves",
-        2,
-        1
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.93,
-        1.95
-      ],
-      [
-        "Yellow Cards",
-        0,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        0
-      ]
-    ]
-  },
-  "m54": {
-    "home": "S. Africa",
-    "away": "S. Korea",
-    "score": "1-0",
-    "date": "Jun 25 - Estadio BBVA",
-    "poss": [
-      31.5,
-      68.5
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        13,
-        8
-      ],
-      [
-        "Shots on Goal",
-        4,
-        3
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        7,
-        9
-      ],
-      [
-        "Saves",
-        2,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.77,
-        1.24
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        0
-      ]
-    ]
-  },
-  "m64": {
-    "home": "New Zealand",
-    "away": "Egypt",
-    "score": "1-3",
-    "date": "Jun 22 - BC Place",
-    "poss": [
-      44.4,
-      55.6
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        11,
-        19
-      ],
-      [
-        "Shots on Goal",
-        5,
-        7
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        14,
-        8
-      ],
-      [
-        "Saves",
-        4,
-        4
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.95,
-        2.91
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        0
-      ]
-    ]
-  },
-  "m68": {
-    "home": "Norway",
-    "away": "Senegal",
-    "score": "3-2",
-    "date": "Jun 23 - MetLife Stadium",
-    "poss": [
-      41.7,
-      58.3
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        13,
-        16
-      ],
-      [
-        "Shots on Goal",
-        7,
-        4
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        13,
-        5
-      ],
-      [
-        "Saves",
-        2,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.61,
-        1.92
-      ],
-      [
-        "Yellow Cards",
-        0,
-        0
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        0,
-        4
-      ]
-    ]
-  },
-  "m57": {
-    "home": "Curacao",
-    "away": "Ivory Coast",
-    "score": "0-2",
-    "date": "Jun 25 - Lincoln Financial Field",
-    "poss": [
-      36.7,
-      63.3
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        11,
-        7
-      ],
-      [
-        "Shots on Goal",
-        2,
-        3
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        11,
-        6
-      ],
-      [
-        "Saves",
-        1,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.11,
-        1.19
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ]
-    ]
-  },
-  "m58": {
-    "home": "Ecuador",
-    "away": "Germany",
-    "score": "2-1",
-    "date": "Jun 25 - MetLife Stadium",
-    "poss": [
-      38.9,
-      61.1
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        7,
-        11
-      ],
-      [
-        "Shots on Goal",
-        3,
-        3
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        15,
-        10
-      ],
-      [
-        "Saves",
-        2,
-        1
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.19,
-        1.39
-      ],
-      [
-        "Yellow Cards",
-        3,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        0
-      ]
-    ]
-  },
-  "m60": {
-    "home": "Japan",
-    "away": "Sweden",
-    "score": "1-1",
-    "date": "Jun 25 - AT&T Stadium",
-    "poss": [
-      52.3,
-      47.7
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        8,
-        11
-      ],
-      [
-        "Shots on Goal",
-        3,
-        5
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        20,
-        11
-      ],
-      [
-        "Saves",
-        4,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.24,
-        1.95
-      ],
-      [
-        "Yellow Cards",
-        1,
-        2
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        3,
-        2
-      ]
-    ]
-  },
-  "m59": {
-    "home": "Tunisia",
-    "away": "Netherlands",
-    "score": "1-3",
-    "date": "Jun 25 - GEHA Field at Arrowhead Stadium",
-    "poss": [
-      28.6,
-      71.4
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        10,
-        20
-      ],
-      [
-        "Shots on Goal",
-        4,
-        7
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        11,
-        10
-      ],
-      [
-        "Saves",
-        4,
-        3
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.62,
-        2.96
-      ],
-      [
-        "Yellow Cards",
-        0,
-        0
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        2,
-        1
-      ]
-    ]
-  },
-  "m62": {
-    "home": "Paraguay",
-    "away": "Australia",
-    "score": "0-0",
-    "date": "Jun 26 - Levi's Stadium",
-    "poss": [
-      44,
-      56
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        7,
-        12
-      ],
-      [
-        "Shots on Goal",
-        2,
-        5
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        9,
-        6
-      ],
-      [
-        "Saves",
-        5,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.91,
-        2.0
-      ],
-      [
-        "Yellow Cards",
-        1,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        0,
-        0
-      ]
-    ]
-  },
-  "m65": {
-    "home": "Uruguay",
-    "away": "Spain",
-    "score": "0-1",
-    "date": "Jun 27 - Estadio Akron",
-    "poss": [
-      33.1,
-      66.9
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        5,
-        6
-      ],
-      [
-        "Shots on Goal",
-        1,
-        1
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        14,
-        14
-      ],
-      [
-        "Saves",
-        0,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        0.53,
-        0.58
-      ],
-      [
-        "Yellow Cards",
-        3,
-        1
-      ],
-      [
-        "Red Cards",
-        1,
-        0
-      ],
-      [
-        "Offsides",
-        5,
-        2
-      ]
-    ]
-  },
-  "m55": {
-    "home": "Panama",
-    "away": "England",
-    "score": "0-2",
-    "date": "Jun 27 - MetLife Stadium",
-    "poss": [
-      32.9,
-      67.1
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        13,
-        17
-      ],
-      [
-        "Shots on Goal",
-        2,
-        6
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        16,
-        13
-      ],
-      [
-        "Saves",
-        4,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        1.21,
-        2.53
-      ],
-      [
-        "Yellow Cards",
-        2,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        4,
-        4
-      ]
-    ]
-  },
-  "m69": {
-    "home": "Algeria",
-    "away": "Austria",
-    "score": "3-3",
-    "date": "Jun 28 - GEHA Field at Arrowhead Stadium",
-    "poss": [
-      65,
-      35
-    ],
-    "stats": [
-      [
-        "Shot Attempts",
-        12,
-        10
-      ],
-      [
-        "Shots on Goal",
-        5,
-        3
-      ],
-      [
-        "Corner Kicks",
-        0,
-        0
-      ],
-      [
-        "Fouls",
-        3,
-        7
-      ],
-      [
-        "Saves",
-        1,
-        2
-      ]
-    ],
-    "xtra": [
-      [
-        "xG",
-        2.0,
-        1.34
-      ],
-      [
-        "Yellow Cards",
-        0,
-        1
-      ],
-      [
-        "Red Cards",
-        0,
-        0
-      ],
-      [
-        "Offsides",
-        1,
-        3
       ]
     ]
   }
