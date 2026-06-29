@@ -1,162 +1,114 @@
 [
   {
-    "home": "S. Africa",
-    "away": "Canada",
-    "date": "Jun 28",
-    "time": "3:00 PM ET",
-    "venue": "SoFi Stadium, Los Angeles",
-    "group": "R32",
-    "matchId": "M73",
-    "round": "R32"
-  },
-  {
+    "date": "Jun 29",
     "home": "Germany",
     "away": "Paraguay",
-    "date": "Jun 29",
-    "time": "4:30 PM ET",
-    "venue": "Gillette Stadium, Boston",
-    "group": "R32",
-    "matchId": "M74",
+    "time": "2:30PM CST",
+    "group": "",
     "round": "R32"
   },
   {
+    "date": "Jun 29",
     "home": "Netherlands",
     "away": "Morocco",
-    "date": "Jun 29",
-    "time": "9:00 PM ET",
-    "venue": "Estadio BBVA, Monterrey",
-    "group": "R32",
-    "matchId": "M75",
+    "time": "7PM CST",
+    "group": "",
     "round": "R32"
   },
   {
-    "home": "Brazil",
-    "away": "Japan",
-    "date": "Jun 29",
-    "time": "1:00 PM ET",
-    "venue": "NRG Stadium, Houston",
-    "group": "R32",
-    "matchId": "M76",
-    "round": "R32"
-  },
-  {
-    "home": "France",
-    "away": "Sweden",
     "date": "Jun 30",
-    "time": "5:00 PM ET",
-    "venue": "MetLife Stadium, East Rutherford",
-    "group": "R32",
-    "matchId": "M77",
-    "round": "R32"
-  },
-  {
     "home": "Ivory Coast",
     "away": "Norway",
-    "date": "Jun 30",
-    "time": "1:00 PM ET",
-    "venue": "AT&T Stadium, Dallas",
-    "group": "R32",
-    "matchId": "M78",
+    "time": "11AM CST",
+    "group": "",
     "round": "R32"
   },
   {
+    "date": "Jun 30",
+    "home": "France",
+    "away": "Sweden",
+    "time": "3PM CST",
+    "group": "",
+    "round": "R32"
+  },
+  {
+    "date": "Jun 30",
     "home": "Mexico",
     "away": "Ecuador",
-    "date": "Jun 30",
-    "time": "9:00 PM ET",
-    "venue": "Estadio Azteca, Mexico City",
-    "group": "R32",
-    "matchId": "M79",
+    "time": "7PM CST",
+    "group": "",
     "round": "R32"
   },
   {
+    "date": "Jul 1",
     "home": "England",
     "away": "DR Congo",
-    "date": "Jul 1",
-    "time": "12:00 PM ET",
-    "venue": "Mercedes-Benz Stadium, Atlanta",
-    "group": "R32",
-    "matchId": "M80",
+    "time": "10AM CST",
+    "group": "",
     "round": "R32"
   },
   {
-    "home": "USA",
-    "away": "Bosnia",
     "date": "Jul 1",
-    "time": "8:00 PM ET",
-    "venue": "Levis Stadium, Santa Clara",
-    "group": "R32",
-    "matchId": "M81",
-    "round": "R32"
-  },
-  {
     "home": "Belgium",
     "away": "Senegal",
+    "time": "2PM CST",
+    "group": "",
+    "round": "R32"
+  },
+  {
     "date": "Jul 1",
-    "time": "4:00 PM ET",
-    "venue": "Lumen Field, Seattle",
-    "group": "R32",
-    "matchId": "M82",
+    "home": "USA",
+    "away": "Bosnia",
+    "time": "6PM CST",
+    "group": "",
     "round": "R32"
   },
   {
-    "home": "Portugal",
-    "away": "Croatia",
     "date": "Jul 2",
-    "time": "7:00 PM ET",
-    "venue": "BMO Field, Toronto",
-    "group": "R32",
-    "matchId": "M83",
-    "round": "R32"
-  },
-  {
     "home": "Spain",
     "away": "Austria",
-    "date": "Jul 2",
-    "time": "3:00 PM ET",
-    "venue": "SoFi Stadium, Inglewood",
-    "group": "R32",
-    "matchId": "M84",
+    "time": "1PM CST",
+    "group": "",
     "round": "R32"
   },
   {
+    "date": "Jul 2",
+    "home": "Portugal",
+    "away": "Croatia",
+    "time": "5PM CST",
+    "group": "",
+    "round": "R32"
+  },
+  {
+    "date": "Jul 2",
     "home": "Switzerland",
     "away": "Algeria",
-    "date": "Jul 2",
-    "time": "11:00 PM ET",
-    "venue": "BC Place, Vancouver",
-    "group": "R32",
-    "matchId": "M85",
+    "time": "9PM CST",
+    "group": "",
     "round": "R32"
   },
   {
-    "home": "Argentina",
-    "away": "Cape Verde",
     "date": "Jul 3",
-    "time": "6:00 PM ET",
-    "venue": "Hard Rock Stadium, Miami",
-    "group": "R32",
-    "matchId": "M86",
-    "round": "R32"
-  },
-  {
-    "home": "Colombia",
-    "away": "Ghana",
-    "date": "Jul 3",
-    "time": "9:30 PM ET",
-    "venue": "Arrowhead Stadium, Kansas City",
-    "group": "R32",
-    "matchId": "M87",
-    "round": "R32"
-  },
-  {
     "home": "Australia",
     "away": "Egypt",
+    "time": "12PM CST",
+    "group": "",
+    "round": "R32"
+  },
+  {
     "date": "Jul 3",
-    "time": "2:00 PM ET",
-    "venue": "AT&T Stadium, Arlington",
-    "group": "R32",
-    "matchId": "M88",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "time": "4PM CST",
+    "group": "",
+    "round": "R32"
+  },
+  {
+    "date": "Jul 3",
+    "home": "Colombia",
+    "away": "Ghana",
+    "time": "7:30PM CST",
+    "group": "",
     "round": "R32"
   }
 ]

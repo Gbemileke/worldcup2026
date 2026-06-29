@@ -4290,5 +4290,64 @@
         2
       ]
     ]
+  },
+  "M76": {
+    "home": "Brazil",
+    "away": "Japan",
+    "score": "2-1",
+    "date": "Jun 29 - NRG Stadium",
+    "poss": [
+      68.6,
+      31.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        5
+      ],
+      [
+        "Shots on Goal",
+        7,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        4,
+        13
+      ],
+      [
+        "Saves",
+        1,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.91,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        2,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
   }
 }
