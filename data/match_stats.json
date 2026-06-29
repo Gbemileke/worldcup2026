@@ -4231,5 +4231,64 @@
         3
       ]
     ]
+  },
+  "M73": {
+    "home": "S. Africa",
+    "away": "Canada",
+    "score": "0-1",
+    "date": "Jun 28 - SoFi Stadium",
+    "poss": [
+      58.4,
+      41.6
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        6,
+        12
+      ],
+      [
+        "Shots on Goal",
+        1,
+        7
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        16
+      ],
+      [
+        "Saves",
+        5,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.58,
+        2.56
+      ],
+      [
+        "Yellow Cards",
+        0,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
   }
 }
