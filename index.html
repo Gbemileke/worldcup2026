@@ -1656,7 +1656,7 @@
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">215</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.99 per match · 72 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">8</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 8 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">8</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 142</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">13</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 191</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -4247,9 +4247,9 @@ function buildSnapshotStats() {
   if (typeof MATCH_STATS === 'undefined' || !MATCH_STATS) return;
   if (typeof GOALS === 'undefined' || !GOALS) return;
 
-  var totalGoals  = GOALS.filter(function(g){ var n=parseInt((g.matchId||'').replace('m','').replace('M','')); return n>=1 && n<=72; }).length;
+  var totalGoals  = GOALS.length;
   // Only count group stage matches (m1-m72) — knockout matches may also appear in MATCH_STATS
-  var matchCount = Object.keys(MATCH_STATS).filter(function(k){ return parseInt(k.replace('m','').replace('M',''))<=72; }).length;
+  var matchCount = Object.keys(MATCH_STATS).length;
   var avgPerMatch = matchCount > 0 ? (totalGoals / matchCount).toFixed(2) : '0.00';
 
   // ── Own goals ───────────────────────────────────────────────────────────
