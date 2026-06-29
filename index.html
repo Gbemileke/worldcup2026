@@ -1645,6 +1645,8 @@
       <div class="match-videos">
         <div class="section-title">ALL MATCH HIGHLIGHTS &mdash; GROUP STAGE MD1</div>
         <div class="match-video-grid" id="matchVideoGrid"></div>
+        <div class="section-title" id="knockoutVideoTitle" style="margin-top:18px;display:none">ALL MATCH HIGHLIGHTS &mdash; KNOCKOUT STAGE</div>
+        <div class="match-video-grid" id="knockoutVideoGrid"></div>
       </div>
     </div>
     <div id="tab-analytics" style="display:block">
@@ -2829,11 +2831,34 @@ function filterGoals(type, el) {
 
 function selectGoal(id) {
   selectedGoalId = id;
+
+  // Goal feed lives in the persistent sidebar, so it's clickable from any tab.
+  // If we're not on the Highlights tab, switch to it first so the hero panel
+  // (which lives inside tab-highlights) is actually visible.
+  var hiTab = document.getElementById('tab-highlights');
+  if (hiTab && hiTab.style.display === 'none') {
+    var tabs = ['highlights', 'videos', 'analytics', 'bracket', 'groups', 'sim'];
+    for (var t = 0; t < tabs.length; t++) {
+      var tEl = document.getElementById('tab-' + tabs[t]);
+      if (tEl) tEl.style.display = (tabs[t] === 'highlights') ? 'block' : 'none';
+    }
+    // Highlight the Highlights tab button (its onclick targets 'highlights')
+    var btns = document.querySelectorAll('.tab-btn');
+    for (var b = 0; b < btns.length; b++) {
+      var oc = btns[b].getAttribute('onclick') || '';
+      btns[b].classList.toggle('active', oc.indexOf("'highlights'") >= 0);
+    }
+  }
+
   var g = null;
   for (var i = 0; i < GOALS.length; i++) { if (GOALS[i].id === id) { g = GOALS[i]; break; } }
   var m = null;
   for (var j = 0; j < MATCHES.length; j++) { if (MATCHES[j].id === g.matchId) { m = MATCHES[j]; break; } }
   renderGoalsList();
+  // Record the match-specific FIFA highlight URL so the WATCH button (and a direct
+  // card click) link to this exact match's highlights page, not the generic one.
+  currentHighlightUrl = (m && m.fifaUrl) ? m.fifaUrl
+    : 'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/highlights';
   var flash = document.getElementById('goalFlash');
   flash.classList.remove('flash');
   void flash.offsetWidth;
@@ -2842,7 +2867,7 @@ function selectGoal(id) {
   document.getElementById('welcomeState').style.display = 'none';
   document.getElementById('videoPlaceholder').style.display = 'flex';
   document.getElementById('placeholderLabel').textContent = g.home + ' ' + g.score + ' ' + g.away + ' ' + g.minute + "'";
-  pendingVideoId = m.ytId;
+  pendingVideoId = m ? m.ytId : '';
   document.getElementById('heroTeams').innerHTML = (function(){
   var hf=getFlag(g.home),af=getFlag(g.away);
   var hi=hf?flagImg(hf,28,21)+' ':'';
@@ -2860,25 +2885,31 @@ function selectGoal(id) {
   var scorerTeam = g.type === 'own-goal'
     ? (ph2_ > ph_ ? g.away : g.home)   // OG: home score up → away player scored OG
     : (ph2_ > ph_ ? g.home : g.away);  // Regular: home score up → home scored
-  document.getElementById('heroTeam').textContent = scorerTeam;
-  document.getElementById('heroMinute').textContent = g.minute + "'";
-  document.getElementById('heroType').textContent = g.type.replace('-', ' ').toUpperCase();
-  document.getElementById('heroPhase').textContent = g.phase + ' - ' + m.date;
-  document.getElementById('descBox').textContent = g.desc;
-  document.getElementById('goalHero').scrollIntoView({behavior: 'smooth', block: 'start'});
+  function setText(id, txt){ var el=document.getElementById(id); if(el) el.textContent=txt; }
+  setText('heroTeam', scorerTeam);
+  setText('heroMinute', g.minute + "'");
+  setText('heroType', g.type.replace('-', ' ').toUpperCase());
+  setText('heroPhase', g.phase + (m && m.date ? ' - ' + m.date : ''));
+  setText('descBox', g.desc);
+  var heroEl = document.getElementById('goalHero');
+  if (heroEl) heroEl.scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
+// Holds the FIFA highlight URL for the currently selected goal's match.
+var currentHighlightUrl = '';
+
 function openFifaHighlight() {
-  window.open('https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/highlights', '_blank');
+  var url = currentHighlightUrl || 'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/highlights';
+  window.open(url, '_blank');
 }
 
 function toggleMatchVideo(matchId, ytId) {}
 
 function buildMatchVideoGrid() {
-  var html = MATCHES.map(function(m) {
+  function videoCard(m) {
     return '<div class="match-card" id="mc-' + m.id + '" onclick="window.open(\'https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/highlights\', \'_blank\')">' +
       '<div class="match-card-score">' +
-        '<div class="match-card-date">' + m.date + ' &middot; ' + m.group + '</div>' +
+        '<div class="match-card-date">' + (m.date ? m.date + ' &middot; ' : '') + m.group + '</div>' +
         '<div class="match-card-teams">' +
           (function(){
           var hf=getFlag(m.home),af=getFlag(m.away);
@@ -2892,8 +2923,45 @@ function buildMatchVideoGrid() {
         '<div class="mc-group">&#9654; Click to watch on FIFA.com</div>' +
       '</div>' +
     '</div>';
-  }).join('');
-  document.getElementById('matchVideoGrid').innerHTML = html;
+  }
+
+  // Group stage
+  document.getElementById('matchVideoGrid').innerHTML = MATCHES.map(videoCard).join('');
+
+  // Knockout stage — built from KNOCKOUT_RESULTS (played knockout matches only).
+  // Round label derived from match number: M73-M88 R32, M89-M96 R16, M97-M100 QF,
+  // M101-M102 SF, M103 3rd place, M104 Final.
+  var koGrid  = document.getElementById('knockoutVideoGrid');
+  var koTitle = document.getElementById('knockoutVideoTitle');
+  if (koGrid) {
+    var kr = (typeof KNOCKOUT_RESULTS !== 'undefined' && KNOCKOUT_RESULTS) ? KNOCKOUT_RESULTS : {};
+    function roundLabel(mid){
+      var n = parseInt(mid.replace('M','').replace('m',''));
+      if (n>=73 && n<=88)  return 'Round of 32';
+      if (n>=89 && n<=96)  return 'Round of 16';
+      if (n>=97 && n<=100) return 'Quarter-final';
+      if (n>=101&& n<=102) return 'Semi-final';
+      if (n===103)         return 'Third place';
+      if (n===104)         return 'Final';
+      return 'Knockout';
+    }
+    var koKeys = Object.keys(kr)
+      .filter(function(k){ return kr[k] && kr[k].winner; })
+      .sort(function(a,b){ return parseInt(a.replace('M','').replace('m','')) - parseInt(b.replace('M','').replace('m','')); });
+    var koHtml = koKeys.map(function(k){
+      var r = kr[k];
+      // Reuse the stat-entry date if available, else leave the round label as the line.
+      var ms = (typeof MATCH_STATS!=='undefined' && MATCH_STATS) ? (MATCH_STATS[k]||MATCH_STATS[k.toUpperCase()]||MATCH_STATS[k.toLowerCase()]) : null;
+      return videoCard({
+        id: k,
+        date: (ms && ms.date) ? ms.date : '',
+        group: roundLabel(k),
+        home: r.home, away: r.away, score: r.score
+      });
+    }).join('');
+    koGrid.innerHTML = koHtml;
+    if (koTitle) koTitle.style.display = koKeys.length ? '' : 'none';
+  }
 }
 
 function buildMinuteChart() {
@@ -3646,6 +3714,8 @@ var SIM = null;
 
 function runSimulation() {
   SIM_COUNT++;
+  var simCtr = document.getElementById('simCounter');
+  if (simCtr) simCtr.textContent = 'Simulation #' + SIM_COUNT;
   if (typeof buildR32Matchups === 'function') buildR32Matchups();
   SIM = {r32:[],r16:[],qf:[],sf:[],final:null,champion:null,runnerUp:null,sf1Loser:'',sf2Loser:''};
 
@@ -4934,7 +5004,16 @@ function buildMatchPredictor() {
   var panel = document.getElementById('predictorPanel');
   if (!sel || !panel) return;
   sel.innerHTML = '<option value="">Select an upcoming match...</option>';
+  var kr = (typeof KNOCKOUT_RESULTS !== 'undefined' && KNOCKOUT_RESULTS) ? KNOCKOUT_RESULTS : {};
   UPCOMING_FIXTURES.forEach(function(f, i) {
+    // Skip matches that have already been played (have a recorded knockout result,
+    // or a stats entry under their matchId). Keep the original index as the value
+    // so renderPrediction(UPCOMING_FIXTURES[idx]) still resolves correctly.
+    var mid = f.matchId || '';
+    var played = (mid && kr[mid]) ||
+                 (mid && typeof MATCH_STATS !== 'undefined' && MATCH_STATS &&
+                  (MATCH_STATS[mid] || MATCH_STATS[mid.toUpperCase()] || MATCH_STATS[mid.toLowerCase()]));
+    if (played) return;
     var opt = document.createElement('option');
     opt.value = i;
     opt.textContent = f.date + '  —  ' + f.home + ' vs ' + f.away + '  ·  ' + (f.round || (f.group ? 'Group ' + f.group : 'Upcoming'));
