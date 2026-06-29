@@ -253,6 +253,21 @@ def update_stats():
     else:
         print('  warning: MATCH_STATS not found in index.html')
 
+# Official match IDs for all knockout rounds
+KNOCKOUT_IDS = [
+    # R32
+    'M73','M74','M75','M76','M77','M78','M79','M80',
+    'M81','M82','M83','M84','M85','M86','M87','M88',
+    # R16
+    'M89','M90','M91','M92','M93','M94','M95','M96',
+    # QF
+    'M97','M98','M99','M100',
+    # SF
+    'M101','M102',
+    # 3rd place + Final
+    'M103','M104',
+]
+
 def update_knockout():
     data = load('knockout_results.json')
     if data is None:
