@@ -115,25 +115,44 @@ GOAL_TYPE_OVERRIDES = {
 #
 # To lock a match after verifying its goals: add its id, e.g. 'm10'.
 # To re-open a match for re-scraping (rare): remove its id.
-LOCKED_MATCHES = {
-    'm9',   # Germany 7-1 Curacao (Havertz minute)
-    'm10',  # Netherlands 2-2 Japan (scorers corrected)
-    'm17',  # France 3-1 Senegal (sequence corrected)
-    'm18',  # Norway 4-1 Iraq (reversed-score fix)
-    'm19',  # Argentina 3-0 Algeria (Messi minutes)
-    'm24',  # Colombia 3-1 Uzbekistan (reversed-score fix)
-    'm27',  # Canada 6-0 Qatar (David/Saliba minutes)
-    'm49',  # Bosnia 3-1 Qatar (running-score fix)
-    'm51',  # Morocco 4-2 Haiti (own-goal running-score fix)
-    'm44',  # Jordan 1-2 Algeria (Al-Rashdan 36' score fixed 0-1→1-0: home goal not away)
-    'm56',  # Ecuador 2-1 Germany (Sané 2' 1-0→0-1, Angulo 9' 2-0→1-1: away/home swap)
-    'm61',  # Norway 1-4 France (Aasgaard 21' score fixed 0-3→1-2: NOR goal not FRA)
-    'm66',  # New Zealand 1-5 Belgium (Just 84' score fixed 0-4→1-3: NZL goal not BEL)
-    'm67',  # Croatia 2-1 Ghana (Luckassen 73' score fixed 2-0→1-1: Ghana equaliser not Croatia goal)
-    'm70',  # DR Congo 3-1 Uzbekistan (4 goals manually verified: Shomurodov 10', Wissa 68'pen, Mayele 78', Wissa 90+1')
-    'm71',  # Algeria 3-3 Austria (Arnautovic 28', Belghali 45', Sabitzer 55', Mahrez 60', Mahrez 93', Kalajdzic 96')
-    'm72',  # Jordan 1-3 Argentina (Lo Celso 19'fk, L.Martinez 31'pen, Al-Taamari 55', Messi 80'fk)
+# Locks are keyed by TEAM PAIR (frozenset of the two team names), NOT by m-ID.
+# m-IDs are positional and shift whenever matches are reordered (e.g. by kickoff
+# time across time zones). A team pair is stable: Bosnia v Qatar is always the
+# same match no matter which m-ID it lands on. _resolve_locked_ids() converts
+# these pairs to the current m-IDs at runtime by reading matches.json.
+LOCKED_PAIRS = {
+    frozenset(['Germany','Curacao']),       # Germany 7-1 Curacao (Havertz minute)
+    frozenset(['Netherlands','Japan']),     # Netherlands 2-2 Japan (scorers corrected)
+    frozenset(['France','Senegal']),        # France 3-1 Senegal (sequence corrected)
+    frozenset(['Norway','Iraq']),           # Norway 4-1 Iraq (reversed-score fix)
+    frozenset(['Argentina','Algeria']),     # Argentina 3-0 Algeria (Messi minutes)
+    frozenset(['Colombia','Uzbekistan']),   # Colombia 3-1 Uzbekistan (reversed-score fix)
+    frozenset(['Canada','Qatar']),          # Canada 6-0 Qatar (David/Saliba minutes)
+    frozenset(['Bosnia','Qatar']),          # Bosnia 3-1 Qatar (running-score fix)
+    frozenset(['Morocco','Haiti']),         # Morocco 4-2 Haiti (own-goal running-score fix)
+    frozenset(['Jordan','Algeria']),        # Jordan 1-2 Algeria (Al-Rashdan 36' home goal fix)
+    frozenset(['Ecuador','Germany']),       # Ecuador 2-1 Germany (Sané/Angulo away/home swap)
+    frozenset(['Norway','France']),         # Norway 1-4 France (Aasgaard 21' NOR goal fix)
+    frozenset(['New Zealand','Belgium']),   # New Zealand 1-5 Belgium (Just 84' NZL goal fix)
+    frozenset(['Croatia','Ghana']),         # Croatia 2-1 Ghana (Luckassen 73' Ghana equaliser fix)
+    frozenset(['DR Congo','Uzbekistan']),   # DR Congo 3-1 Uzbekistan (4 goals manually verified)
+    frozenset(['Algeria','Austria']),       # Algeria 3-3 Austria (6 goals manually verified)
+    frozenset(['Jordan','Argentina']),      # Jordan 1-3 Argentina (Lo Celso/Martinez/Al-Taamari/Messi)
 }
+
+def _resolve_locked_ids(matches):
+    """Convert LOCKED_PAIRS (team pairs) to current m-IDs using matches.json.
+    This makes locks immune to match reordering — a pair always resolves to
+    whatever m-ID currently holds that fixture."""
+    ids = set()
+    for m in matches:
+        if frozenset([m.get('home',''), m.get('away','')]) in LOCKED_PAIRS:
+            ids.add(m['id'])
+    return ids
+
+# Runtime-resolved set. Populated from matches.json inside fetch/update flows.
+# Falls back to empty until resolved; _record_goal_fix also adds to it.
+LOCKED_MATCHES = set()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SAFE MANUAL GOAL FIX
@@ -711,6 +730,13 @@ def run():
     stats    = load('match_stats.json') or {}
     goals    = load('goals.json')       or []
 
+    # Resolve team-pair locks to current m-IDs (immune to reordering)
+    global LOCKED_MATCHES
+    LOCKED_MATCHES = _resolve_locked_ids(matches)
+    if LOCKED_MATCHES:
+        print(f"  🔒 {len(LOCKED_MATCHES)} locked matches resolved: "
+              f"{', '.join(sorted(LOCKED_MATCHES, key=lambda x:int(x.replace('m',''))))}")
+
     match_lookup = {}
     for m in matches:
         m['home']=sn(m['home']); m['away']=sn(m['away'])
@@ -745,6 +771,17 @@ def run():
         except: continue
 
         mid = match_lookup.get(key) or match_lookup.get(f"{away}|{home}")
+
+        # Normalize home/away to canonical order (matches.json is ground truth)
+        # ESPN may return Tunisia as home when our canonical has Japan as home.
+        # Without this, goals get wrong score perspective and stats get wrong columns.
+        if mid:
+            canon_m = next((m for m in matches if m['id'] == mid), None)
+            if canon_m and canon_m['home'] != home:
+                # Swap ESPN's home/away to match our canonical ordering
+                home, away = canon_m['home'], canon_m['away']
+                h_fin, a_fin = a_fin, h_fin  # flip goal counts too
+                score = f"{h_fin}-{a_fin}"
 
         # Add new match — GROUP STAGE ONLY
         # Knockout matches are handled by update_wc.py auto-knockout section.
