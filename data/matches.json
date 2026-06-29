@@ -12,7 +12,8 @@
     "group": "Group A",
     "venue": "Estadio Azteca, Mexico City",
     "ytId": "PmevGCkUtM8",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-africa-highlights-match-report",
+    "espnId": "760415"
   },
   {
     "id": "m2",
@@ -27,7 +28,8 @@
     "group": "Group A",
     "venue": "Estadio Akron, Guadalajara",
     "ytId": "ILjc_CIwv1Q",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-korea-v-czechia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-korea-v-czechia-highlights-match-report",
+    "espnId": "760414"
   },
   {
     "id": "m3",
@@ -42,7 +44,8 @@
     "group": "Group B",
     "venue": "BMO Field, Toronto",
     "ytId": "w-_rY5morQY",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-bosnia-herzegovina-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-bosnia-herzegovina-highlights-match-report",
+    "espnId": "760416"
   },
   {
     "id": "m4",
@@ -57,7 +60,8 @@
     "group": "Group D",
     "venue": "SoFi Stadium, Los Angeles",
     "ytId": "0PVo3bk-TMk",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/usa-v-paraguay-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/usa-v-paraguay-highlights-match-report",
+    "espnId": "760417"
   },
   {
     "id": "m5",
@@ -72,7 +76,8 @@
     "group": "Group B",
     "venue": "Levi's Stadium, San Francisco Bay Area",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760420"
   },
   {
     "id": "m6",
@@ -87,7 +92,8 @@
     "group": "Group C",
     "venue": "MetLife Stadium, New York / New Jersey",
     "ytId": "r1Afsds3ZD0",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-morocco-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-morocco-highlights-match-report",
+    "espnId": "760419"
   },
   {
     "id": "m7",
@@ -102,7 +108,8 @@
     "group": "Group C",
     "venue": "Gillette Stadium, Boston",
     "ytId": "KLXtfCg6ON8",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/haiti-v-scotland-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/haiti-v-scotland-highlights-match-report",
+    "espnId": "760418"
   },
   {
     "id": "m8",
@@ -117,7 +124,8 @@
     "group": "Group D",
     "venue": "BC Place, Vancouver",
     "ytId": "jdnyNn9XsDc",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/australia-v-turkey-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/australia-v-turkey-highlights-match-report",
+    "espnId": "760421"
   },
   {
     "id": "m9",
@@ -132,7 +140,8 @@
     "group": "Group E",
     "venue": "NRG Stadium, Houston",
     "ytId": "xHtIzadh4Lg",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-curacao-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-curacao-highlights-match-report",
+    "espnId": "760422"
   },
   {
     "id": "m10",
@@ -147,7 +156,8 @@
     "group": "Group F",
     "venue": "AT&T Stadium, Dallas",
     "ytId": "SaTyQMmOpPM",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-japan-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-japan-highlights-match-report",
+    "espnId": "760425"
   },
   {
     "id": "m11",
@@ -162,7 +172,8 @@
     "group": "Group E",
     "venue": "Lincoln Financial Field, Philadelphia",
     "ytId": "m7sQP_AZ5vM",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ivory-coast-v-ecuador-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ivory-coast-v-ecuador-highlights-match-report",
+    "espnId": "760423"
   },
   {
     "id": "m12",
@@ -177,7 +188,8 @@
     "group": "Group F",
     "venue": "Estadio BBVA, Monterrey",
     "ytId": "F47z0suCV7Y",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/sweden-v-tunisia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/sweden-v-tunisia-highlights-match-report",
+    "espnId": "760424"
   },
   {
     "id": "m13",
@@ -192,7 +204,8 @@
     "group": "Group H",
     "venue": "Mercedes-Benz Stadium, Atlanta",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-cabo-verde-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-cabo-verde-highlights-match-report",
+    "espnId": "760428"
   },
   {
     "id": "m14",
@@ -207,7 +220,8 @@
     "group": "Group G",
     "venue": "Lumen Field, Seattle",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-egypt-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-egypt-highlights-match-report",
+    "espnId": "760426"
   },
   {
     "id": "m15",
@@ -222,7 +236,8 @@
     "group": "Group H",
     "venue": "Hard Rock Stadium, Miami",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/saudi-arabia-v-uruguay-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/saudi-arabia-v-uruguay-highlights-match-report",
+    "espnId": "760429"
   },
   {
     "id": "m16",
@@ -237,7 +252,8 @@
     "group": "Group G",
     "venue": "SoFi Stadium, Los Angeles",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iran-v-new-zealand-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iran-v-new-zealand-highlights-match-report",
+    "espnId": "760427"
   },
   {
     "id": "m17",
@@ -252,7 +268,8 @@
     "group": "Group I",
     "venue": "MetLife Stadium, New York / New Jersey",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/france-v-senegal-highlights-match-report",
+    "espnId": "760432"
   },
   {
     "id": "m18",
@@ -267,7 +284,8 @@
     "group": "Group I",
     "venue": "Gillette Stadium, Boston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/iraq-v-norway-highlights-match-report",
+    "espnId": "760430"
   },
   {
     "id": "m19",
@@ -282,7 +300,8 @@
     "group": "Group J",
     "venue": "Arrowhead Stadium, Kansas City",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-algeria-highlights-match-report",
+    "espnId": "760433"
   },
   {
     "id": "m20",
@@ -297,7 +316,8 @@
     "group": "Group J",
     "venue": "Levi's Stadium, San Francisco Bay Area",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/austria-v-jordan-highlights-match-report",
+    "espnId": "760431"
   },
   {
     "id": "m21",
@@ -312,7 +332,8 @@
     "group": "Group K",
     "venue": "NRG Stadium, Houston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-democratic-republic-of-congo-highlights-match-report",
+    "espnId": "760435"
   },
   {
     "id": "m22",
@@ -327,7 +348,8 @@
     "group": "Group L",
     "venue": "AT&T Stadium, Dallas",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-croatia-highlights-match-report",
+    "espnId": "760437"
   },
   {
     "id": "m23",
@@ -342,7 +364,8 @@
     "group": "Group L",
     "venue": "BMO Field, Toronto",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ghana-v-panama-highlights-match-report",
+    "espnId": "760434"
   },
   {
     "id": "m24",
@@ -357,7 +380,8 @@
     "group": "Group K",
     "venue": "Estadio Azteca, Mexico City",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uzbekistan-v-colombia-highlights-match-report",
+    "espnId": "760436"
   },
   {
     "id": "m25",
@@ -372,7 +396,8 @@
     "group": "Group A",
     "venue": "Mercedes-Benz Stadium, Atlanta",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-south-africa-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-south-africa-highlights-match-report",
+    "espnId": "760438"
   },
   {
     "id": "m26",
@@ -387,7 +412,8 @@
     "group": "Group B",
     "venue": "SoFi Stadium, Los Angeles",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-bosnia-herzegovina-highlights-match-report",
+    "espnId": "760439"
   },
   {
     "id": "m27",
@@ -402,7 +428,8 @@
     "group": "Group B",
     "venue": "BC Place, Vancouver",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-qatar-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/canada-v-qatar-highlights-match-report",
+    "espnId": "760440"
   },
   {
     "id": "m28",
@@ -417,7 +444,8 @@
     "group": "Group A",
     "venue": "Estadio Akron, Guadalajara",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-korea-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/mexico-v-south-korea-highlights-match-report",
+    "espnId": "760441"
   },
   {
     "id": "m29",
@@ -432,7 +460,8 @@
     "group": "Group D",
     "venue": "Lumen Field, Seattle",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/united-states-v-australia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/united-states-v-australia-highlights-match-report",
+    "espnId": "760442"
   },
   {
     "id": "m30",
@@ -447,7 +476,8 @@
     "group": "Group C",
     "venue": "Gillette Stadium, Boston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/scotland-v-morocco-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/scotland-v-morocco-highlights-match-report",
+    "espnId": "760445"
   },
   {
     "id": "m31",
@@ -462,7 +492,8 @@
     "group": "Group C",
     "venue": "Lincoln Financial Field, Philadelphia",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-haiti-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/brazil-v-haiti-highlights-match-report",
+    "espnId": "760444"
   },
   {
     "id": "m32",
@@ -477,7 +508,8 @@
     "group": "Group D",
     "venue": "Levi's Stadium, San Francisco Bay Area",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/turkey-v-paraguay-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/turkey-v-paraguay-highlights-match-report",
+    "espnId": "760443"
   },
   {
     "id": "m33",
@@ -492,7 +524,8 @@
     "group": "Group F",
     "venue": "NRG Stadium, Houston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-sweden-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/netherlands-v-sweden-highlights-match-report",
+    "espnId": "760447"
   },
   {
     "id": "m34",
@@ -507,7 +540,8 @@
     "group": "Group E",
     "venue": "BMO Field, Toronto",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-ivory-coast-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/germany-v-ivory-coast-highlights-match-report",
+    "espnId": "760448"
   },
   {
     "id": "m35",
@@ -522,7 +556,8 @@
     "group": "Group E",
     "venue": "Arrowhead Stadium, Kansas City",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-curacao-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/ecuador-v-curacao-highlights-match-report",
+    "espnId": "760446"
   },
   {
     "id": "m36",
@@ -537,7 +572,8 @@
     "group": "Group F",
     "venue": "Estadio BBVA, Monterrey",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760449"
   },
   {
     "id": "m37",
@@ -552,7 +588,8 @@
     "group": "Group H",
     "venue": "Mercedes-Benz Stadium, Atlanta",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-saudi-arabia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/spain-v-saudi-arabia-highlights-match-report",
+    "espnId": "760453"
   },
   {
     "id": "m38",
@@ -567,7 +604,8 @@
     "group": "Group G",
     "venue": "SoFi Stadium, Los Angeles",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-iran-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/belgium-v-iran-highlights-match-report",
+    "espnId": "760451"
   },
   {
     "id": "m39",
@@ -582,7 +620,8 @@
     "group": "Group H",
     "venue": "Hard Rock Stadium, Miami",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-cabo-verde-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/uruguay-v-cabo-verde-highlights-match-report",
+    "espnId": "760450"
   },
   {
     "id": "m40",
@@ -597,7 +636,8 @@
     "group": "Group G",
     "venue": "BC Place, Vancouver",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760452"
   },
   {
     "id": "m41",
@@ -612,7 +652,8 @@
     "group": "Group J",
     "venue": "AT&T Stadium, Dallas",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-austria-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/argentina-v-austria-highlights-match-report",
+    "espnId": "760456"
   },
   {
     "id": "m42",
@@ -627,7 +668,8 @@
     "group": "Group I",
     "venue": "Lincoln Financial Field, Philadelphia",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760457"
   },
   {
     "id": "m43",
@@ -642,7 +684,8 @@
     "group": "Group I",
     "venue": "MetLife Stadium, New York / New Jersey",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760454"
   },
   {
     "id": "m44",
@@ -657,7 +700,8 @@
     "group": "Group J",
     "venue": "Levi's Stadium, San Francisco Bay Area",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760455"
   },
   {
     "id": "m45",
@@ -672,7 +716,8 @@
     "group": "Group K",
     "venue": "NRG Stadium, Houston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-uzbekistan-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/portugal-v-uzbekistan-highlights-match-report",
+    "espnId": "760461"
   },
   {
     "id": "m46",
@@ -687,7 +732,8 @@
     "group": "Group L",
     "venue": "Gillette Stadium, Boston",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-ghana-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/england-v-ghana-highlights-match-report",
+    "espnId": "760458"
   },
   {
     "id": "m47",
@@ -702,7 +748,8 @@
     "group": "Group L",
     "venue": "BMO Field, Toronto",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-croatia-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/panama-v-croatia-highlights-match-report",
+    "espnId": "760460"
   },
   {
     "id": "m48",
@@ -717,7 +764,8 @@
     "group": "Group K",
     "venue": "Estadio Akron, Guadalajara",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-democratic-republic-of-congo-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/colombia-v-democratic-republic-of-congo-highlights-match-report",
+    "espnId": "760459"
   },
   {
     "id": "m49",
@@ -732,7 +780,8 @@
     "group": "Group B",
     "venue": "BC Place, Vancouver",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-canada-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/switzerland-v-canada-highlights-match-report",
+    "espnId": "760463"
   },
   {
     "id": "m50",
@@ -747,7 +796,8 @@
     "group": "Group B",
     "venue": "Lumen Field, Seattle",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/bosnia-herzegovina-v-qatar-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/bosnia-herzegovina-v-qatar-highlights-match-report",
+    "espnId": "760462"
   },
   {
     "id": "m51",
@@ -762,7 +812,8 @@
     "group": "Group C",
     "venue": "Hard Rock Stadium, Miami",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760465"
   },
   {
     "id": "m52",
@@ -777,7 +828,8 @@
     "group": "Group C",
     "venue": "Mercedes-Benz Stadium, Atlanta",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760464"
   },
   {
     "id": "m53",
@@ -792,7 +844,8 @@
     "group": "Group A",
     "venue": "Estadio Azteca, Mexico City",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-mexico-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/czechia-v-mexico-highlights-match-report",
+    "espnId": "760467"
   },
   {
     "id": "m54",
@@ -807,7 +860,8 @@
     "group": "Group A",
     "venue": "Estadio BBVA, Monterrey",
     "ytId": "",
-    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-v-south-korea-highlights-match-report"
+    "fifaUrl": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/south-africa-v-south-korea-highlights-match-report",
+    "espnId": "760466"
   },
   {
     "id": "m55",
@@ -822,7 +876,8 @@
     "group": "Group E",
     "venue": "Lincoln Financial Field, Philadelphia",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760473"
   },
   {
     "id": "m56",
@@ -837,7 +892,8 @@
     "group": "Group E",
     "venue": "MetLife Stadium, New York / New Jersey",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760468"
   },
   {
     "id": "m57",
@@ -852,7 +908,8 @@
     "group": "Group F",
     "venue": "AT&T Stadium, Dallas",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760471"
   },
   {
     "id": "m58",
@@ -867,7 +924,8 @@
     "group": "Group F",
     "venue": "Arrowhead Stadium, Kansas City",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760472"
   },
   {
     "id": "m59",
@@ -882,7 +940,8 @@
     "group": "Group D",
     "venue": "SoFi Stadium, Los Angeles",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760470"
   },
   {
     "id": "m60",
@@ -897,7 +956,8 @@
     "group": "Group D",
     "venue": "Levi's Stadium, San Francisco Bay Area",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760469"
   },
   {
     "id": "m61",
@@ -912,7 +972,8 @@
     "group": "Group I",
     "venue": "Gillette Stadium, Boston",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760475"
   },
   {
     "id": "m62",
@@ -927,7 +988,8 @@
     "group": "Group I",
     "venue": "BMO Field, Toronto",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760474"
   },
   {
     "id": "m63",
@@ -942,7 +1004,8 @@
     "group": "Group H",
     "venue": "NRG Stadium, Houston",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760478"
   },
   {
     "id": "m64",
@@ -957,7 +1020,8 @@
     "group": "Group H",
     "venue": "Estadio Akron, Guadalajara",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760479"
   },
   {
     "id": "m65",
@@ -972,7 +1036,8 @@
     "group": "Group G",
     "venue": "Lumen Field, Seattle",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760476"
   },
   {
     "id": "m66",
@@ -987,7 +1052,8 @@
     "group": "Group G",
     "venue": "BC Place, Vancouver",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760477"
   },
   {
     "id": "m67",
@@ -1002,7 +1068,8 @@
     "group": "Group L",
     "venue": "MetLife Stadium, New York / New Jersey",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760485"
   },
   {
     "id": "m68",
@@ -1017,7 +1084,8 @@
     "group": "Group L",
     "venue": "Lincoln Financial Field, Philadelphia",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760480"
   },
   {
     "id": "m69",
@@ -1032,7 +1100,8 @@
     "group": "Group K",
     "venue": "Hard Rock Stadium, Miami",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760481"
   },
   {
     "id": "m70",
@@ -1047,7 +1116,8 @@
     "group": "Group K",
     "venue": "Mercedes-Benz Stadium, Atlanta",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760482"
   },
   {
     "id": "m71",
@@ -1062,7 +1132,8 @@
     "group": "Group J",
     "venue": "Arrowhead Stadium, Kansas City",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760484"
   },
   {
     "id": "m72",
@@ -1077,6 +1148,7 @@
     "group": "Group J",
     "venue": "AT&T Stadium, Dallas",
     "ytId": "",
-    "fifaUrl": ""
+    "fifaUrl": "",
+    "espnId": "760483"
   }
 ]
