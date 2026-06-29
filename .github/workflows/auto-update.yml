@@ -2,7 +2,79 @@ name: Auto-Update Match Data
 
 on:
   schedule:
-    - cron: '0 */3 * * *'   # every 3 hours
+    # ── ROUND OF 32 ─────────────────────────────────────────────
+    # Jun 28: M73 Canada/S.Africa 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 28 6 *'
+    # Jun 29: M76 Brazil/Japan 1pm ET (+3hr = 21:00 UTC)
+    - cron: '0 21 29 6 *'
+    # Jun 29/30: M74 Germany/Paraguay 4:30pm ET (+3hr = 00:30 UTC Jun 30)
+    - cron: '30 0 30 6 *'
+    # Jun 29/30: M75 Netherlands/Morocco 9pm ET (+3hr = 05:00 UTC Jun 30)
+    - cron: '0 5 30 6 *'
+    # Jun 30: M78 Ivory Coast/Norway 1pm ET (+3hr = 21:00 UTC)
+    - cron: '0 21 30 6 *'
+    # Jun 30/Jul 1: M77 France/Sweden 5pm ET (+3hr = 01:00 UTC Jul 1)
+    - cron: '0 1 1 7 *'
+    # Jun 30/Jul 1: M79 Mexico/Ecuador 9pm ET (+3hr = 05:00 UTC Jul 1)
+    - cron: '0 5 1 7 *'
+    # Jul 1: M80 England/DR Congo 12pm ET (+3hr = 20:00 UTC)
+    - cron: '0 20 1 7 *'
+    # Jul 1/2: M82 Belgium/Senegal 4pm ET (+3hr = 00:00 UTC Jul 2)
+    - cron: '0 0 2 7 *'
+    # Jul 1/2: M81 USA/Bosnia 8pm ET (+3hr = 04:00 UTC Jul 2)
+    - cron: '0 4 2 7 *'
+    # Jul 2: M84 Spain/Austria 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 2 7 *'
+    # Jul 2/3: M87 Portugal/Croatia 7pm ET (+3hr = 03:00 UTC Jul 3)
+    - cron: '0 3 3 7 *'
+    # Jul 2/3: M85 Switzerland/Algeria 11pm ET (+3hr = 07:00 UTC Jul 3)
+    - cron: '0 7 3 7 *'
+    # Jul 3: M88 Australia/Egypt 2pm ET (+3hr = 22:00 UTC)
+    - cron: '0 22 3 7 *'
+    # Jul 3/4: M86 Argentina/Cape Verde 6pm ET (+3hr = 02:00 UTC Jul 4)
+    - cron: '0 2 4 7 *'
+    # Jul 3/4: M83 Colombia/Ghana 9:30pm ET (+3hr = 05:30 UTC Jul 4)
+    - cron: '30 5 4 7 *'
+    # ── ROUND OF 16 ──────────────────────────────────────────────
+    # Jul 4: M90 1pm ET (+3hr = 21:00 UTC)
+    - cron: '0 21 4 7 *'
+    # Jul 4/5: M89 5pm ET (+3hr = 01:00 UTC Jul 5)
+    - cron: '0 1 5 7 *'
+    # Jul 5: M91 4pm ET (+3hr = 00:00 UTC Jul 6)
+    - cron: '0 0 6 7 *'
+    # Jul 5/6: M92 8pm ET (+3hr = 04:00 UTC Jul 6)
+    - cron: '0 4 6 7 *'
+    # Jul 6: M93 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 6 7 *'
+    # Jul 6/7: M94 8pm ET (+3hr = 04:00 UTC Jul 7)
+    - cron: '0 4 7 7 *'
+    # Jul 7: M95 12pm ET (+3hr = 20:00 UTC)
+    - cron: '0 20 7 7 *'
+    # Jul 7/8: M96 4pm ET (+3hr = 00:00 UTC Jul 8)
+    - cron: '0 0 8 7 *'
+    # ── QUARTER-FINALS ────────────────────────────────────────────
+    # Jul 9/10: M97 4pm ET (+3hr = 00:00 UTC Jul 10)
+    - cron: '0 0 10 7 *'
+    # Jul 10: M98 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 10 7 *'
+    # Jul 11/12: M99 5pm ET (+3hr = 01:00 UTC Jul 12)
+    - cron: '0 1 12 7 *'
+    # Jul 11: M100 9pm ET (+3hr = 05:00 UTC Jul 12)
+    - cron: '0 5 12 7 *'
+    # ── SEMI-FINALS ───────────────────────────────────────────────
+    # Jul 14: M101 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 14 7 *'
+    # Jul 15: M102 3pm ET (+3hr = 23:00 UTC)
+    - cron: '0 23 15 7 *'
+    # ── 3RD PLACE + FINAL ─────────────────────────────────────────
+    # Jul 18: M103 8pm ET (+3hr = 04:00 UTC Jul 19)
+    - cron: '0 4 19 7 *'
+    # Jul 19: M104 Final 8pm ET (+3hr = 04:00 UTC Jul 20)
+    - cron: '0 4 20 7 *'
+    # ── SAFETY NET ────────────────────────────────────────────────
+    # Every 6 hours as backup (catches AET/pens overruns)
+    - cron: '0 */6 * * *'
+
   workflow_dispatch:
 
 permissions:
@@ -24,34 +96,37 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Step 1 — Scrape ESPN (goals, stats)
+      - name: Step 1 — Scrape ESPN (goals, stats, knockout scores)
         env:
           ALLSPORTSAPI_KEY: ${{ secrets.ALLSPORTSAPI_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: python update_match_stats.py
 
-      - name: Step 2 — Validate data integrity + auto-fix
+      - name: Step 2 — Auto-populate knockout results from scrape
+        run: python update_wc.py --section auto-knockout
+
+      - name: Step 3 — Validate data integrity + auto-fix
         run: python update_wc.py --section validate
 
-      - name: Step 3 — Sync goals to index.html
+      - name: Step 4 — Sync goals to index.html
         run: python update_wc.py --section goals
 
-      - name: Step 4 — Sync match stats to index.html
+      - name: Step 5 — Sync match stats to index.html
         run: python update_wc.py --section stats
 
-      - name: Step 5 — Re-apply knockout results (preserves any results you added)
+      - name: Step 6 — Re-apply knockout results (manual entries preserved)
         run: python update_wc.py --section knockout
 
-      - name: Step 6 — Update upcoming fixtures (filter played matches)
+      - name: Step 7 — Update upcoming fixtures
         run: python update_wc.py --section upcoming
 
-      - name: Step 7 — Recompute team form
+      - name: Step 8 — Recompute team form
         run: python update_wc.py --section form
 
-      - name: Step 8 — Update snapshot cards
+      - name: Step 9 — Update snapshot cards
         run: python update_wc.py --section snapshot
 
-      - name: Step 9 — Build stamp
+      - name: Step 10 — Build stamp
         run: python update_wc.py --section stamp
 
       - name: Commit and push if changed

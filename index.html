@@ -3043,6 +3043,14 @@ function msSectionToggle(hdr){
   if(ch)ch.innerHTML=(body&&body.classList.contains('ms-hide'))?'&#9654;':'&#9660;';
 }
 
+function msSectionToggle(hdr){
+  hdr.classList.toggle('ms-hide-hdr');
+  var body=document.getElementById('ms-b-'+hdr.getAttribute('data-s'));
+  if(body)body.classList.toggle('ms-hide');
+  var ch=hdr.querySelector('.ms-chev');
+  if(ch)ch.innerHTML=(body&&body.classList.contains('ms-hide'))?'&#9654;':'&#9660;';
+}
+
 function buildMatchSelector(){
   var kr=KNOCKOUT_RESULTS||{};
   var r32Done=0,r16Done=0,qfDone=0,sfDone=0;
@@ -3056,20 +3064,20 @@ function buildMatchSelector(){
   });
   var thirdDone=!!(kr['M103']&&kr['M103'].winner);
   var finalDone=!!(kr['M104']&&kr['M104'].winner);
-  var groupDone=Object.keys(MATCH_STATS).length>=72;
-  var active='GROUP';
-  if(groupDone)active='R32';
+  var active='R32';
   if(r32Done===16)active='R16';
   if(r16Done===8)active='QF';
   if(qfDone===4)active='SF';
   if(sfDone===2)active='FINAL';
+  if(thirdDone&&finalDone)active='DONE';
 
-  function sec(id,label,meta,isActive,open,cards){
+  function sec(id,label,meta,isActive,open,cards,locked){
     var hc='ms-section-hdr'+(isActive?' ms-active':'')+(!open?' ms-hide-hdr':'');
     var bc='ms-section-body'+(open?'':' ms-hide');
+    var lockIcon=locked?'<span style="font-size:9px;opacity:.4;margin-left:4px">🔒</span>':'' ;
     return '<div class="ms-section">'+
       '<div class="'+hc+'" onclick="msSectionToggle(this)" data-s="'+id+'">'+
-        '<span>'+label+'</span>'+
+        '<span>'+label+lockIcon+'</span>'+
         '<span class="ms-meta-lbl" style="margin:0 auto 0 8px">'+meta+'</span>'+
         '<span class="ms-chev">'+( open?'&#9660;':'&#9654;')+'</span>'+
       '</div>'+
@@ -3114,9 +3122,10 @@ function buildMatchSelector(){
   }
 
   var out='';
+
   var gids=Object.keys(MATCH_STATS).sort(function(a,b){return parseInt(a.replace('m',''))-parseInt(b.replace('m',''));});
   var gc=gids.map(function(id){var m=MATCH_STATS[id];return pCard(id,m.home,m.away,m.score,m.date.split(' - ')[0]||m.date);}).join('');
-  out+=sec('group','&#9917; Group Stage',gids.length+' matches',active==='GROUP',active==='GROUP',gc);
+  out+=sec('group','&#9917; Group Stage','72/72 complete',false,false,gc,true);
 
   var r32c='';
   UPCOMING_FIXTURES.forEach(function(f){
@@ -3124,20 +3133,20 @@ function buildMatchSelector(){
     if(r&&r.winner)r32c+=pCard(f.matchId,r.home,r.away,r.score,f.matchId+' '+f.date);
     else r32c+=uCard(f.matchId,f.home,f.away,f.date,f.time);
   });
-  out+=sec('r32','&#9889; Round of 32',r32Done+'/16',active==='R32',active==='R32'||r32Done>0,r32c);
+  out+=sec('r32','&#9889; Round of 32',r32Done+'/16',active==='R32',true,r32c,false);
 
   var r16c=BSIM_R16.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('r16','&#127942; Round of 16',r16Done+'/8',active==='R16',r16Done>0,r16c);
+  out+=sec('r16','&#127942; Round of 16',r16Done+'/8',active==='R16',r16Done>0,r16c,false);
 
   var qfc=BSIM_QF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('qf','&#9889; Quarter-Finals',qfDone+'/4',active==='QF',qfDone>0,qfc);
+  out+=sec('qf','&#9889; Quarter-Finals',qfDone+'/4',active==='QF',qfDone>0,qfc,false);
 
   var sfc=BSIM_SF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('sf','&#127942; Semi-Finals',sfDone+'/2',active==='SF',sfDone>0,sfc);
+  out+=sec('sf','&#127942; Semi-Finals',sfDone+'/2',active==='SF',sfDone>0,sfc,false);
 
   var fc=kCard('M103',BSIM_THIRD.fH,BSIM_THIRD.fA,BSIM_THIRD.date,BSIM_THIRD.time)
         +kCard('M104',BSIM_FINAL[0].fH,BSIM_FINAL[0].fA,BSIM_FINAL[0].date,BSIM_FINAL[0].time);
-  out+=sec('final','&#127881; 3rd Place &amp; Final',((thirdDone?1:0)+(finalDone?1:0))+'/2',active==='FINAL',thirdDone||finalDone,fc);
+  out+=sec('final','&#127881; 3rd Place &amp; Final',((thirdDone?1:0)+(finalDone?1:0))+'/2',active==='FINAL',thirdDone||finalDone,fc,false);
 
   var el=document.getElementById('matchSelector');
   if(el)el.innerHTML=out;
@@ -4258,10 +4267,31 @@ function buildSnapshotStats() {
       sub: topSub || '—'
     },
     'stat-matches': {
-      num: matchCount,
+      num: matchCount + Object.keys(KNOCKOUT_RESULTS||{}).length,
       numSuffix: '<span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:2px">of 104</span>',
       lbl: 'Matches Played',
-      sub: breakdownSub
+      sub: (function(){
+        var kr=KNOCKOUT_RESULTS||{};
+        var r32n=0,r16n=0,qfn=0,sfn=0,tpn=0,fn=0;
+        Object.keys(kr).forEach(function(k){
+          if(!kr[k]||!kr[k].winner)return;
+          var n=parseInt(k.slice(1));
+          if(n>=73&&n<=88)r32n++;
+          else if(n>=89&&n<=96)r16n++;
+          else if(n>=97&&n<=100)qfn++;
+          else if(n>=101&&n<=102)sfn++;
+          else if(n===103)tpn++;
+          else if(n===104)fn++;
+        });
+        var parts=['72 group'];
+        if(r32n)parts.push(r32n+' R32');
+        if(r16n)parts.push(r16n+' R16');
+        if(qfn)parts.push(qfn+' QF');
+        if(sfn)parts.push(sfn+' SF');
+        if(tpn)parts.push(tpn+' 3rd');
+        if(fn)parts.push(fn+' Final');
+        return parts.join(' · ');
+      })()
     },
     'stat-alltime': (function() {
       // Messi had 14 WC goals before 2026; count his 2026 goals
@@ -4996,12 +5026,9 @@ var BSIM_FINAL = [{id:'M104', date:'Jul 19', time:'14:00 ET', venue:'MetLife Sta
 // ── Knockout stage results (auto-updated as games finish) ────────────────────
 // Maps official FIFA match number → winner name (filled as results come in)
 var KNOCKOUT_RESULTS = {
-  // Populated by update_wc.py as matches finish.
-  // Add results to data/knockout_results.json then run:
-  //   python update_wc.py --section knockout
-  M73: {home:'Canada', away:'S. Africa', score:'1-0', winner:'Canada'},
+  // R32 results — populated by update_site.py as each match finishes
+  // Do NOT manually enter scores here; run: python update_site.py --section knockout
 };
-
 
 // Resolve 'W74' → actual winner team name, or fallback label if not yet played
 function resolveKnockoutTeam(ref) {

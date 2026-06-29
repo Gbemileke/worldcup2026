@@ -685,6 +685,95 @@ def validate_and_fix():
     return len(errors) == 0
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# SECTION: AUTO-KNOCKOUT — scrape completed knockout results from ESPN
+# Reads match_stats.json (populated by update_match_stats.py) to find finished
+# knockout matches and writes them to knockout_results.json automatically.
+# add_result.py remains as manual fallback for any ESPN misses.
+# ═══════════════════════════════════════════════════════════════════════════════
+def auto_scrape_knockout():
+    """Read match_stats.json, find completed knockout matches, update knockout_results.json."""
+    import json
+
+    stats_path = os.path.join(DATA_DIR, 'match_stats.json')
+    kr_path    = os.path.join(DATA_DIR, 'knockout_results.json')
+
+    if not os.path.exists(stats_path):
+        print("    ⚠ match_stats.json not found — skipping auto knockout scrape")
+        return
+
+    with open(stats_path, encoding='utf-8') as f:
+        stats = json.load(f)
+
+    try:
+        with open(kr_path, encoding='utf-8') as f:
+            kr = json.load(f)
+    except Exception:
+        kr = {}
+
+    # UPCOMING_FIXTURES match IDs (R32)
+    R32_IDS = [
+        'M73','M74','M75','M76','M77','M78','M79','M80',
+        'M81','M82','M83','M84','M85','M86','M87','M88',
+    ]
+    R16_IDS  = ['M89','M90','M91','M92','M93','M94','M95','M96']
+    QF_IDS   = ['M97','M98','M99','M100']
+    SF_IDS   = ['M101','M102']
+    FIN_IDS  = ['M103','M104']
+    ALL_KO   = R32_IDS + R16_IDS + QF_IDS + SF_IDS + FIN_IDS
+
+    # match_stats.json keys can be 'M73' or 'm73' depending on scraper
+    # Normalise to uppercase M
+    stats_upper = {}
+    for k,v in stats.items():
+        nk = k.upper() if k.upper() in ALL_KO else k
+        stats_upper[nk] = v
+
+    added = []
+    for mid in ALL_KO:
+        if mid in kr:
+            continue   # already recorded — never overwrite manual entries
+        if mid not in stats_upper:
+            continue   # ESPN hasn't scraped it yet
+
+        entry = stats_upper[mid]
+        home  = entry.get('home','')
+        away  = entry.get('away','')
+        score = entry.get('score','')
+
+        # Only process if match is finished (score has a clear result)
+        if not score or '-' not in score:
+            continue
+        try:
+            h_g, a_g = map(int, score.split('-'))
+        except ValueError:
+            continue
+
+        # Determine winner (draws handled separately — assume AET/pens recorded in score)
+        if h_g > a_g:
+            winner = home
+        elif a_g > h_g:
+            winner = away
+        else:
+            # Draw — check if ESPN includes AET/pen winner in extra field
+            winner = entry.get('winner', '')
+            if not winner:
+                print(f"    ⚠ {mid} is a draw ({score}) — winner unknown, skipping. Use add_result.py to record penalty winner.")
+                continue
+
+        kr[mid] = {'home': home, 'away': away, 'score': score, 'winner': winner}
+        added.append(f"{mid}: {home} {score} {away} → {winner}")
+
+    if added:
+        # Sort by match number
+        kr = dict(sorted(kr.items(), key=lambda x: int(x[0][1:])))
+        with open(kr_path, 'w', encoding='utf-8') as f:
+            json.dump(kr, f, indent=2, ensure_ascii=False)
+        print(f"    ✅ Auto-knockout: added {len(added)} results:")
+        for a in added: print(f"       {a}")
+    else:
+        print(f"    ✅ Auto-knockout: no new results found ({len(kr)} already recorded)")
+
 SECTIONS = {
     'goals':    update_goals,
     'stats':    update_stats,
@@ -695,9 +784,10 @@ SECTIONS = {
     'scrape':   run_scraper,
     'stamp':    update_stamp,
     'validate': validate_and_fix,
+    'auto-knockout': auto_scrape_knockout,
 }
 
-SECTION_ORDER = ['scrape', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
+SECTION_ORDER = ['scrape', 'auto-knockout', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
 
 if __name__ == '__main__':
     section = None
