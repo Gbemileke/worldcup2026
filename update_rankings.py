@@ -1,3 +1,4 @@
+import json
 #!/usr/bin/env python3
 """
 update_rankings.py  —  WC 2026 daily data updater
@@ -56,6 +57,12 @@ FIFA_POINTS_JUNE_11_2026 = {
     "South Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
     "Bosnia": 1387.22,  "Cape Verde": 1371.11,  "Ghana": 1346.88,
     "Curacao": 1294.77,  "Haiti": 1293.1,  "New Zealand": 1275.58,
+    # Alias keys so validator finds them by both names
+    "Bosnia and Herzegovina": 1387.22,
+    "South Korea": 1591.63,
+    "Congo DR": 1474.43,
+    "Ivory Coast": 1540.87,
+    "Cape Verde": 1371.11,
     # Non-WC teams kept as ranking anchors
     "Italy": 1704.73,  "Denmark": 1619.47,  "Nigeria": 1585.02,
 }
@@ -172,97 +179,189 @@ def fetch_elo():
 # We = 1 / (10^(−Δr/600) + 1)
 # Match importance I: WC group stage = 40, knockouts = 40 (FIFA uses same)
 #
-# WC 2026 concluded matches — add each result here as the tournament progresses.
-# result: 1=win, 0.5=draw, 0=loss  (from HOME team perspective)
-WC_RESULTS = [
-    # ── GROUP A ──────────────────────────────────────────────────────────────
-    {"home":"Mexico",       "away":"South Africa", "result":1.0},  # 2-0
-    {"home":"South Korea",  "away":"Czechia",       "result":1.0},  # 2-1
-    {"home":"Czechia",      "away":"South Africa",  "result":0.5},  # 1-1
-    {"home":"Mexico",       "away":"South Korea",   "result":1.0},  # 1-0
-    {"home":"Mexico",       "away":"Czechia",       "result":1.0},  # 3-0
-    {"home":"South Africa", "away":"South Korea",   "result":1.0},  # 1-0
-    # ── GROUP B ──────────────────────────────────────────────────────────────
-    {"home":"Canada",       "away":"Bosnia",        "result":0.5},  # 1-1
-    {"home":"Switzerland",  "away":"Qatar",         "result":0.5},  # 1-1
-    {"home":"Switzerland",  "away":"Bosnia",        "result":1.0},  # 4-1
-    {"home":"Canada",       "away":"Qatar",         "result":1.0},  # 6-0
-    {"home":"Switzerland",  "away":"Canada",        "result":1.0},  # 2-1
-    {"home":"Bosnia",       "away":"Qatar",         "result":1.0},  # 3-1
-    # ── GROUP C ──────────────────────────────────────────────────────────────
-    {"home":"Brazil",       "away":"Morocco",       "result":0.5},  # 1-1
-    {"home":"Scotland",     "away":"Haiti",         "result":1.0},  # 1-0
-    {"home":"Scotland",     "away":"Morocco",       "result":0.0},  # 0-1
-    {"home":"Brazil",       "away":"Haiti",         "result":1.0},  # 3-0
-    {"home":"Brazil",       "away":"Scotland",      "result":1.0},  # 3-0
-    {"home":"Morocco",      "away":"Haiti",         "result":1.0},  # 4-2
-    # ── GROUP D ──────────────────────────────────────────────────────────────
-    {"home":"USA",          "away":"Paraguay",      "result":1.0},  # 4-1
-    {"home":"Australia",    "away":"Turkey",        "result":1.0},  # 2-0
-    {"home":"USA",          "away":"Australia",     "result":1.0},  # 2-0
-    {"home":"Turkey",       "away":"Paraguay",      "result":0.0},  # 0-1
-    {"home":"Turkey",       "away":"USA",           "result":1.0},  # 3-2
-    {"home":"Paraguay",     "away":"Australia",     "result":0.5},  # 0-0
-    # ── GROUP E ──────────────────────────────────────────────────────────────
-    {"home":"Germany",      "away":"Curacao",       "result":1.0},  # 7-1
-    {"home":"Ivory Coast",  "away":"Ecuador",       "result":1.0},  # 1-0
-    {"home":"Germany",      "away":"Ivory Coast",   "result":1.0},  # 2-1
-    {"home":"Ecuador",      "away":"Curacao",       "result":0.5},  # 0-0
-    {"home":"Ecuador",      "away":"Germany",       "result":1.0},  # 2-1
-    {"home":"Ivory Coast",  "away":"Curacao",       "result":1.0},  # 2-0
-    # ── GROUP F ──────────────────────────────────────────────────────────────
-    {"home":"Netherlands",  "away":"Japan",         "result":0.5},  # 2-2
-    {"home":"Sweden",       "away":"Tunisia",       "result":1.0},  # 5-1
-    {"home":"Netherlands",  "away":"Sweden",        "result":1.0},  # 5-1
-    {"home":"Japan",        "away":"Tunisia",       "result":1.0},  # 4-0
-    {"home":"Netherlands",  "away":"Tunisia",       "result":1.0},  # 3-1
-    {"home":"Japan",        "away":"Sweden",        "result":0.5},  # 1-1
-    # ── GROUP G ──────────────────────────────────────────────────────────────
-    {"home":"Belgium",      "away":"Egypt",         "result":0.5},  # 1-1
-    {"home":"Saudi Arabia", "away":"Uruguay",       "result":0.5},  # 1-1
-    {"home":"Belgium",      "away":"Iran",          "result":0.5},  # 0-0
-    {"home":"Egypt",        "away":"Uruguay",       "result":0.5},  # Iran vs NZ assumed
-    {"home":"Spain",        "away":"Saudi Arabia",  "result":1.0},  # 4-0
-    {"home":"Belgium",      "away":"New Zealand",   "result":1.0},  # 5-1
-    {"home":"Egypt",        "away":"Iran",          "result":0.5},  # 1-1
-    {"home":"Spain",        "away":"Uruguay",       "result":1.0},  # 1-0
-    {"home":"Belgium",      "away":"Saudi Arabia",  "result":1.0},  # 3-0
-    {"home":"Egypt",        "away":"New Zealand",   "result":1.0},  # Egypt won
-    # ── GROUP H ──────────────────────────────────────────────────────────────
-    {"home":"Spain",        "away":"Cape Verde",    "result":0.5},  # 0-0
-    {"home":"Iran",         "away":"New Zealand",   "result":0.5},  # 2-2
-    {"home":"Spain",        "away":"Saudi Arabia",  "result":1.0},  # 4-0
-    {"home":"Cape Verde",   "away":"Saudi Arabia",  "result":0.5},  # 0-0
-    {"home":"Spain",        "away":"Austria",       "result":1.0},  # via Group H correction
-    # ── GROUP I ──────────────────────────────────────────────────────────────
-    {"home":"France",       "away":"Senegal",       "result":1.0},  # 3-1
-    {"home":"Norway",       "away":"Iraq",          "result":1.0},  # 4-1
-    {"home":"France",       "away":"Norway",        "result":0.0},  # 1-4 (Norway won MD2 was rotation)
-    {"home":"Senegal",      "away":"Iraq",          "result":1.0},  # 5-0
-    {"home":"France",       "away":"Iraq",          "result":1.0},  # 4-1 MD3 Dembele hat-trick
-    {"home":"Norway",       "away":"Senegal",       "result":1.0},  # 3-2
-    # ── GROUP J ──────────────────────────────────────────────────────────────
-    {"home":"Argentina",    "away":"Algeria",       "result":1.0},  # 3-0
-    {"home":"Austria",      "away":"Jordan",        "result":1.0},  # 3-1
-    {"home":"Argentina",    "away":"Austria",       "result":1.0},  # 2-0
-    {"home":"Algeria",      "away":"Jordan",        "result":1.0},  # 2-1
-    {"home":"Argentina",    "away":"Jordan",        "result":1.0},  # 3-1
-    {"home":"Austria",      "away":"Algeria",       "result":0.5},  # 3-3 both through
-    # ── GROUP K ──────────────────────────────────────────────────────────────
-    {"home":"Portugal",     "away":"DR Congo",      "result":0.5},  # 1-1
-    {"home":"Colombia",     "away":"Uzbekistan",    "result":1.0},  # 3-1
-    {"home":"Portugal",     "away":"Uzbekistan",    "result":1.0},  # 5-0
-    {"home":"Colombia",     "away":"DR Congo",      "result":1.0},  # 1-0
-    {"home":"Colombia",     "away":"Portugal",      "result":0.5},  # 0-0
-    {"home":"DR Congo",     "away":"Uzbekistan",    "result":1.0},  # 3-1
-    # ── GROUP L ──────────────────────────────────────────────────────────────
-    {"home":"England",      "away":"Croatia",       "result":1.0},  # 4-2
-    {"home":"Ghana",        "away":"Panama",        "result":1.0},  # 1-0
-    {"home":"England",      "away":"Ghana",         "result":0.5},  # 0-0
-    {"home":"Panama",       "away":"Croatia",       "result":0.0},  # 0-1
-    {"home":"England",      "away":"Panama",        "result":1.0},  # 2-0
-    {"home":"Croatia",      "away":"Ghana",         "result":1.0},  # 2-1
-]
+# ── WC Results: loaded dynamically from match data files (NOT hardcoded) ─────
+# Ground truth sources:
+#   Group stage:  data/matches.json       (written by update_match_stats.py)
+#   Knockout:     data/knockout_results.json (written by add_result.py)
+#
+# RESULT_OVERRIDES: use only for AET/penalty winners where ESPN scores ties
+# Format: {(home, away): result}  where result = 1.0 win / 0.5 draw / 0.0 loss
+# (from HOME team perspective). These are applied AFTER the base result.
+RESULT_OVERRIDES = {
+    # Example: ("Team A", "Team B"): 1.0  # Team A won on pens after 1-1 AET
+}
+
+# Team name aliases: match data name → FIFA_POINTS_JUNE_11_2026 key
+RESULT_NAME_MAP = {
+    # Africa
+    "S. Africa": "South Africa", "South Africa": "South Africa",
+    "DR Congo": "Congo DR", "Congo DR": "Congo DR",
+    "Ivory Coast": "Ivory Coast", "Côte d'Ivoire": "Ivory Coast",
+    # Americas
+    "Cape Verde": "Cape Verde", "Cabo Verde": "Cape Verde",
+    "Bosnia": "Bosnia and Herzegovina",
+    "Bosnia and Herzegovina": "Bosnia and Herzegovina",
+    "USA": "USA", "United States": "USA",
+    # Asia
+    "South Korea": "South Korea", "Korea Republic": "South Korea",
+    "S. Korea": "South Korea",
+    # Europe
+    "Turkey": "Turkey", "Türkiye": "Turkey",
+    "Curacao": "Curacao", "Curaçao": "Curacao",
+    # Common mismatches
+    "Netherlands": "Netherlands",
+}
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
+
+def load_verified_results():
+    """
+    Build WC_RESULTS dynamically from ground-truth data files.
+    Only includes matches with a valid, parseable score.
+    Returns list of {home, away, result} dicts.
+    """
+    results = []
+    seen = set()
+
+    def normalise(name):
+        return RESULT_NAME_MAP.get(name, name)
+
+    def parse_score(score_str):
+        """Parse 'X-Y', return (home_goals, away_goals) or None if invalid."""
+        if not score_str or "-" not in score_str:
+            return None
+        parts = score_str.strip().split("-")
+        if len(parts) != 2:
+            return None
+        try:
+            h, a = int(parts[0].strip()), int(parts[1].strip())
+            return h, a
+        except ValueError:
+            return None
+
+    def score_to_result(h_goals, a_goals, home_team, away_team):
+        """Convert goal counts to Elo result (1.0/0.5/0.0 from home perspective)."""
+        key = (normalise(home_team), normalise(away_team))
+        rev_key = (normalise(away_team), normalise(home_team))
+        # Check for override (AET/pens)
+        if key in RESULT_OVERRIDES:
+            return RESULT_OVERRIDES[key]
+        if rev_key in RESULT_OVERRIDES:
+            return 1.0 - RESULT_OVERRIDES[rev_key]
+        if h_goals > a_goals:
+            return 1.0
+        elif a_goals > h_goals:
+            return 0.0
+        else:
+            return 0.5
+
+    # ── 1. Group stage: data/matches.json ────────────────────────────────────
+    matches_path = os.path.join(DATA_DIR, "matches.json")
+    if os.path.exists(matches_path):
+        with open(matches_path, encoding="utf-8") as f:
+            matches = json.load(f)
+        for m in matches:
+            home = normalise(m.get("home", ""))
+            away = normalise(m.get("away", ""))
+            score = m.get("score", "")
+            mid = m.get("id", "")
+            # Skip if not a group stage match or no valid score
+            parsed = parse_score(score)
+            if not parsed:
+                continue
+            # Skip knockout matches that may have been added to matches.json
+            num = int(mid.replace("m","").replace("M","")) if mid else 0
+            if num > 72:
+                continue
+            key = (home, away)
+            if key in seen:
+                continue
+            seen.add(key)
+            h_g, a_g = parsed
+            result = score_to_result(h_g, a_g, home, away)
+            results.append({"home": home, "away": away, "result": result,
+                           "score": score, "source": "group", "id": mid})
+    else:
+        print("  WARNING: data/matches.json not found — group stage results missing")
+
+    # ── 2. Knockout: data/knockout_results.json ───────────────────────────────
+    kr_path = os.path.join(DATA_DIR, "knockout_results.json")
+    if os.path.exists(kr_path):
+        with open(kr_path, encoding="utf-8") as f:
+            kr = json.load(f)
+        for mid, r in sorted(kr.items(), key=lambda x: int(x[0][1:])):
+            home = normalise(r.get("home", ""))
+            away = normalise(r.get("away", ""))
+            score = r.get("score", "")
+            winner = r.get("winner", "")
+            if not home or not away or not score:
+                continue
+            parsed = parse_score(score)
+            if not parsed:
+                continue
+            key = (home, away)
+            if key in seen:
+                continue
+            seen.add(key)
+            h_g, a_g = parsed
+            # If score is a draw (AET) and winner is recorded, use winner
+            if h_g == a_g and winner:
+                norm_winner = normalise(winner)
+                result = 1.0 if norm_winner == home else 0.0
+            else:
+                result = score_to_result(h_g, a_g, home, away)
+            results.append({"home": home, "away": away, "result": result,
+                           "score": score, "source": "knockout", "id": mid})
+    else:
+        print("  INFO: data/knockout_results.json not found or empty — no knockout results yet")
+
+    return results
+
+
+def validate_wc_results(results):
+    """
+    Validate the built results list.
+    Reports: missing scores, duplicate entries, unknown teams, suspicious results.
+    """
+    known_teams = set(FIFA_POINTS_JUNE_11_2026.keys())
+    errors = []
+    warnings = []
+    seen = {}
+
+    for r in results:
+        h, a = r["home"], r["away"]
+        key = (h, a)
+        # Duplicate check
+        if key in seen:
+            errors.append(f"DUPLICATE: {h} vs {a} (ids: {seen[key]}, {r['id']})")
+        else:
+            seen[key] = r["id"]
+        # Unknown team check
+        if h not in known_teams:
+            warnings.append(f"UNKNOWN HOME TEAM: '{h}' in {r['id']} — add to FIFA_POINTS or RESULT_NAME_MAP")
+        if a not in known_teams:
+            warnings.append(f"UNKNOWN AWAY TEAM: '{a}' in {r['id']} — add to FIFA_POINTS or RESULT_NAME_MAP")
+        # Result sanity check
+        if r["result"] not in (0.0, 0.5, 1.0):
+            errors.append(f"INVALID RESULT: {h} vs {a} result={r['result']}")
+
+    if errors:
+        print(f"  ❌ {len(errors)} validation errors:")
+        for e in errors: print(f"     • {e}")
+    else:
+        print(f"  ✅ No validation errors")
+
+    if warnings:
+        print(f"  ⚠  {len(warnings)} warnings:")
+        for w in warnings: print(f"     • {w}")
+
+    return len(errors) == 0
+
+
+# ── Build WC_RESULTS at runtime (validated, not hardcoded) ───────────────────
+WC_RESULTS = load_verified_results()
+
 
 import math as _math
 
@@ -328,17 +427,26 @@ def compute_fifa_points():
 
 # ── 2. FIFA points — use hardcoded June 11 values ────────────────────────────
 def get_fifa_points():
+    # Validate before computing
+    print(f"  Loading match results from data files...")
+    group_count = sum(1 for r in WC_RESULTS if r.get("source") == "group")
+    ko_count    = sum(1 for r in WC_RESULTS if r.get("source") == "knockout")
+    print(f"  Group stage: {group_count} results | Knockout: {ko_count} results")
+    print(f"  Running validation...")
+    valid = validate_wc_results(WC_RESULTS)
+    if not valid:
+        print("  ❌ Validation failed — aborting FIFA points calculation")
+        import sys; sys.exit(1)
     pts, pre_pts, pre_rank = compute_fifa_points()
     concluded = len(WC_RESULTS)
-    print(f"FIFA points: computed from {concluded} concluded WC matches")
+    print(f"  FIFA points computed from {concluded} verified match results")
     print(f"  (Baseline: June 11 2026 | Formula: P_new = P + 50×(W−We))")
-    # Show top 5 for verification
     top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
     for name, p in top5:
         baseline = FIFA_POINTS_JUNE_11_2026.get(name, 0)
         diff = round(p - baseline, 2)
         sign = "+" if diff >= 0 else ""
-        print(f"  {name}: {p} ({sign}{diff} from baseline)")
+        print(f"    {name}: {p} ({sign}{diff} from Jun 11)")
     return pts, pre_pts, pre_rank
 
 
