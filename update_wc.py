@@ -25,7 +25,8 @@ After running, commit and push:
 ═══════════════════════════════════════════════════════════════════════════════
 """
 
-import json, re, os, sys, datetime
+import json
+import re, re, os, sys, datetime
 
 HTML_FILE = 'index.html'
 DATA_DIR  = 'data'
@@ -160,30 +161,72 @@ def update_goals():
 # ─────────────────────────────────────────────────────────────────────────────
 
 def update_stats():
-    data = load('match_stats.json')
-    if not data:
+    """
+    MERGE new ESPN stats into existing MATCH_STATS.
+    Never replaces — only adds/updates entries that exist in match_stats.json.
+    Only processes m1-m72 (group stage). Knockout stats (m73+) are ignored.
+    This preserves manually-built stats that ESPN hasn't scraped yet.
+    """
+    new_data = load('match_stats.json')
+    if not new_data:
         return
 
-    entries = []
-    for mid, m in sorted(data.items(), key=lambda x: int(x[0].replace('m',''))):
+    html = read_html()
+
+    # Parse existing MATCH_STATS from index.html
+    ms_start = html.find('var MATCH_STATS = {')
+    ms_end   = html.find('\n};', ms_start) + 3
+    existing_block = html[ms_start:ms_end]
+
+    # Build a dict of existing entries (preserve what we have)
+    existing_entries = {}
+    for m in re.finditer(r"  (m\d+): (\{[^}]+(?:\{[^}]*\}[^}]*)*\})", existing_block):
+        mid, body = m.group(1), m.group(2)
+        try:
+            num = int(mid.replace('m',''))
+            if 1 <= num <= 72:
+                existing_entries[mid] = body
+        except ValueError:
+            pass
+
+    # Merge: overlay new ESPN data (group stage only)
+    updated_count = 0
+    for mid, m in new_data.items():
+        try:
+            num = int(mid.replace('m','').replace('M',''))
+        except ValueError:
+            continue
+        if num < 1 or num > 72:
+            continue  # never write knockout stats to MATCH_STATS
+        mid_lower = f'm{num}'
         home_e  = esc(m['home'])
         away_e  = esc(m['away'])
         score_e = esc(m['score'])
         date_e  = esc(m['date'])
-        entries.append(
-            f"  {mid}: {{home:'{home_e}', away:'{away_e}', hf:'', af:'', "
+        entry = (
+            f"{{home:'{home_e}', away:'{away_e}', hf:'', af:'', "
             f"score:'{score_e}', date:'{date_e}', "
             f"poss:{json.dumps(m['poss'])}, "
             f"stats:{json.dumps(m['stats'])}, "
             f"xtra:{json.dumps(m['xtra'])}}}"
         )
+        if existing_entries.get(mid_lower) != entry:
+            existing_entries[mid_lower] = entry
+            updated_count += 1
+
+    # Rebuild sorted block
+    entries = []
+    for mid in sorted(existing_entries.keys(), key=lambda x: int(x.replace('m',''))):
+        entries.append(f"  {mid}: {existing_entries[mid]}")
 
     new_block = 'var MATCH_STATS = {\n' + ',\n'.join(entries) + '\n};'
-    html = read_html()
     html, ok = replace_js_object(html, 'MATCH_STATS', new_block + '\n\n')
     if ok:
         write_html(html)
-        print(f'  →  {len(data)} match stats written')
+        total = len(existing_entries)
+        print(f'  →  {total} match stats in MATCH_STATS ({updated_count} updated from ESPN, {total-updated_count} preserved)')
+    else:
+        print('  ⚠  MATCH_STATS not found in index.html')
 
 
 # ─────────────────────────────────────────────────────────────────────────────

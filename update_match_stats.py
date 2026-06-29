@@ -683,8 +683,15 @@ def run():
 
         mid = match_lookup.get(key) or match_lookup.get(f"{away}|{home}")
 
-        # Add new match
+        # Add new match — GROUP STAGE ONLY
+        # Knockout matches are handled by update_wc.py auto-knockout section.
+        # This prevents M73+ from being assigned m-IDs and polluting matches.json.
         if not mid:
+            is_knockout = (parsed.get('round','') in ('R32','R16','QF','SF','Final')
+                           or (not parsed.get('group','') and parsed.get('round','')!=''))
+            if is_knockout:
+                print(f"  ⟳ Knockout — skipping matches.json: {home} {score} {away}")
+                continue
             mid = f"m{next_num}"; next_num+=1
             match_lookup[key]=mid; match_lookup[f"{away}|{home}"]=mid
             played_keys.update([key,f"{away}|{home}"])
@@ -782,7 +789,11 @@ def run():
 
         # ── Stats ──────────────────────────────────────────────────────────────
         espn_id = parsed['espn_id'] or next((m.get('espnId','') for m in matches if m['id']==mid),'')
-        if espn_id and (mid not in stats or stats[mid].get('score')!=score):
+        # Only write group stage stats (m1-m72) to match_stats.json
+        _mid_num = int(mid.replace('m','').replace('M','')) if mid.replace('m','').replace('M','').isdigit() else 999
+        if _mid_num > 72:
+            pass  # knockout stats not written to match_stats.json (handled separately)
+        elif espn_id and (mid not in stats or stats[mid].get('score')!=score):
             # Use cached summary if already fetched, else fetch
             summary = parsed.get('_summary')
             if not summary:
