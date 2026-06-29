@@ -9,13 +9,13 @@ Live analytics, interactive bracket simulator, and match statistics for the 2026
 
 ## What it does
 
-A single-page app (~358KB, zero dependencies, zero frameworks) with six tabs:
+A single-page app (~361KB, zero dependencies, zero frameworks) with six tabs:
 
 | Tab | Content |
 |---|---|
 | **Highlights** | Live goal feed · filters by type/group · scorer hero panel · FIFA.com links |
 | **Videos** | Match video cards linking to FIFA highlight pages |
-| **Analytics** | 8 snapshot cards · period chart · goal-type donut · top scorers · collapsible match stats selector |
+| **Analytics** | 8 snapshot cards · collapsible stage sections · match stats panel inside each section |
 | **Simulator** | Model-driven R32→Final simulation · Top 4 bar · adjustable weights · quick presets |
 | **Groups** | Match predictor with Consensus Pick · 12 group cards with live standings + qualification badges |
 | **Bracket** | Interactive knockout bracket — pick every match, AI-fill, download PDF |
@@ -26,10 +26,12 @@ A single-page app (~358KB, zero dependencies, zero frameworks) with six tabs:
 
 | Metric | Value |
 |---|---|
-| Group stage matches | 72 / 72 complete |
+| Group stage matches | 72 / 72 complete (locked) |
 | Match stats | 72 / 72 complete |
-| Goals recorded | 215 (all balanced) |
-| Knockout results | Populated via `data/knockout_results.json` as games finish |
+| Goals recorded | 215 (all balanced against scores) |
+| Knockout results | Auto-populated from ESPN · manual fallback via `add_result.py` |
+| Elo ratings | Post-group-stage (Jun 28 2026) — Spain/Argentina 2144, France 2123 |
+| FIFA points | Jun 11 2026 baseline + WC delta — Argentina 1907.40 |
 
 ---
 
@@ -37,63 +39,69 @@ A single-page app (~358KB, zero dependencies, zero frameworks) with six tabs:
 
 ```
 worldcup2026/
-├── index.html                 ← Full app (~358KB single file)
+├── index.html                 ← Full app (~361KB single file)
 ├── update_wc.py               ← ONE-STOP update script (use this)
 ├── update_site.py             ← Lower-level HTML patcher (called by update_wc.py)
 ├── update_match_stats.py      ← ESPN scraper for scores / goals / stats
+├── update_rankings.py         ← Elo + FIFA pts + Polymarket updater
+├── add_result.py              ← Manual fallback: one command to record + deploy a result
 └── data/
     ├── goals.json             ← 215 goals — scorer, minute, type, sequence
     ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta)
-    ├── knockout_results.json  ← R32→Final results (add after each game)
-    ├── matches.json           ← Match metadata + ESPN IDs
-    ├── team_data.json         ← Elo, FIFA pts, form, qual record, squad depth
+    ├── knockout_results.json  ← R32→Final results — ground truth for all knockout calcs
+    ├── matches.json           ← 54 group stage matches + ESPN IDs (ground truth for rankings)
+    ├── team_data.json         ← Elo, FIFA pts, form, qual record, squad depth (150 teams)
     ├── groups.json            ← 12 groups + Polymarket odds
-    └── upcoming_fixtures.json ← R32 schedule with ET kick-off times
+    └── upcoming_fixtures.json ← R32 schedule (ticker only — R32_SCHEDULE drives analytics)
 ```
 
 ---
 
-## update_wc.py — the main update script
+## Two types of updates
 
-```bash
-python update_wc.py                      # full update (all sections in order)
-python update_wc.py --section validate   # data integrity check + auto-fix
-python update_wc.py --section scrape     # fetch latest from ESPN
-python update_wc.py --section goals      # goals.json → GOALS in index.html
-python update_wc.py --section stats      # match_stats.json → MATCH_STATS
-python update_wc.py --section knockout   # knockout_results.json → KNOCKOUT_RESULTS
-python update_wc.py --section upcoming   # upcoming_fixtures.json → ticker
-python update_wc.py --section form       # recompute team form
-python update_wc.py --section snapshot   # update analytics header cards
-python update_wc.py --section stamp      # refresh build timestamp
+### Type 1 — Automatic (GitHub Actions)
+
+Runs on a precise schedule — **3 hours after each match kickoff** so the match is always finished when the action fires. Also has a `*/6` safety net for AET/delay overruns.
+
+```
+ESPN scrape → auto-knockout → validate → goals → stats → knockout → upcoming → form → snapshot → stamp → push
 ```
 
-### Workflow after each knockout match
+The `auto-knockout` step reads `match_stats.json` for completed knockout scores and writes them to `knockout_results.json` automatically. Your manually recorded results are **never overwritten**.
+
+### Type 2 — You (after each knockout match)
+
+One command per match after it finishes:
 
 ```bash
-# 1. Add result to data/knockout_results.json
-# {"M73": {"home":"S. Africa","away":"Canada","score":"1-3","winner":"Canada"}}
-
-# 2. Validate and update
-python update_wc.py --section validate
-python update_wc.py --section knockout
-
-# 3. Push
-git add index.html data/knockout_results.json
-git commit -m "update: M73 Canada win"
-git push origin main
+python add_result.py M73 Canada "S. Africa" 1-0
 ```
 
-The site will automatically:
-- Remove the played match from the upcoming ticker
-- Show the R16 fixture once both R32 winners for that slot are known
-- Resolve TBD cards in the R16/QF/SF sections of match analytics
+Handles: draws (prompts for penalty winner), duplicate check, validate, update, push — all automatic.
+
+---
+
+## update_wc.py — sections
+
+```bash
+python update_wc.py                        # full update (all sections)
+python update_wc.py --section validate     # 9 integrity checks + auto-fix
+python update_wc.py --section auto-knockout # auto-populate from ESPN match_stats
+python update_wc.py --section scrape       # fetch from ESPN
+python update_wc.py --section goals        # goals.json → GOALS in index.html
+python update_wc.py --section stats        # match_stats.json → MATCH_STATS
+python update_wc.py --section knockout     # knockout_results.json → KNOCKOUT_RESULTS
+python update_wc.py --section upcoming     # upcoming_fixtures.json → ticker
+python update_wc.py --section form         # recompute team form from WC results
+python update_wc.py --section snapshot     # update analytics header cards
+python update_wc.py --section stamp        # refresh build timestamp
+```
 
 ---
 
 ## Validator (`--section validate`)
 
-Runs 9 checks and auto-fixes what it can. Always run before pushing.
+Runs 9 checks and auto-fixes what it can. Runs automatically inside `add_result.py` and GitHub Actions before every push.
 
 | Check | Auto-fix |
 |---|---|
@@ -105,54 +113,104 @@ Runs 9 checks and auto-fixes what it can. Always run before pushing.
 | MATCH_STATS completeness (72/72) | No — manual |
 | KNOCKOUT_RESULTS winner in [home, away] | No — manual |
 | goals.json in sync with index.html | No — run `--section goals` |
-| Sequential goal IDs (gaps are informational only) | — |
-
-The validator found and auto-fixed m18 (Norway/Iraq) and m24 (Colombia/Uzbekistan)
-having home/away swapped in MATCH_STATS — both corrected.
+| Sequential goal IDs (gaps are informational only) | — informational |
 
 ---
 
 ## Match Analytics — collapsible sections
 
-The match selector has six collapsible sections stacked vertically.
-Each section uses the same card design as before (flag · team · score · team · flag).
+Six sections stack vertically. Cards are identical to the original design (flag · team · score · team · flag in a 4-col grid). The group stage is **permanently locked** — no new cards ever appear there.
 
-| Section | Opens when |
+| Section | Behaviour |
 |---|---|
-| Group Stage | During group stage |
-| Round of 32 | Active now — gold header |
-| Round of 16 | First R16 result recorded |
-| Quarter-Finals | First QF result recorded |
-| Semi-Finals | First SF result recorded |
-| 3rd Place and Final | SF complete |
+| ⚽ Group Stage | 🔒 Locked — 72/72 complete, always collapsed |
+| ⚡ Round of 32 | **Always open** — gold header (active stage). Uses `R32_SCHEDULE` (frozen — played matches never disappear even when update scripts run) |
+| 🏆 Round of 16 | Opens once first R16 result recorded. TBD cards resolve as R32 winners known |
+| ⚡ Quarter-Finals | Opens once first QF result recorded |
+| 🏆 Semi-Finals | Opens once first SF result recorded |
+| 🎉 3rd Place & Final | Opens once SF complete |
 
-Tap a played card → full stats panel (possession, shots, xG, discipline) opens
-inside that same section, below the cards grid.
-Unplayed matches show as dashed cards. TBD slots resolve to real team names
-once KNOCKOUT_RESULTS is populated.
+**Tap a played card** → full stats panel (possession, shots, xG, discipline) injects inside that same section and scrolls into view. Works for both group stage (m1–m72) and knockout cards (M73+) — the id is normalised to lowercase so `showMatchStats('M73')` correctly looks up `MATCH_STATS['m73']`.
+
+**Key design decision:** The R32 analytics section reads from `R32_SCHEDULE` (a frozen 16-entry constant), not from `UPCOMING_FIXTURES`. This means played R32 matches always stay visible as result cards even when `update_wc.py --section upcoming` removes them from the ticker.
 
 ---
 
-## Bracket simulator — bracket integrity
+## Matches played card
 
-The simulator follows the official FIFA bracket pairings:
+The "Matches Played" snapshot card shows a live breakdown:
 
-- `runSimulation()` resolves each round via the BSIM arrays
-  (BSIM_R16, BSIM_QF, BSIM_SF, BSIM_FINAL) not sequential array pairs
-- Each BSIM entry references winner slots: `fH:"W74"` means home = winner of M74
-- `bsimAiFill()` propagates picks through the correct slots at each stage
-- Argentina (M86 left half) cannot meet Japan (M76 right half) until the Final
+```
+73 of 104   72 group · 1 R32 · 0 R16 · 0 QF · 0 SF · 0 3rd · 0 Final
+```
 
-PDF export captures the live bracket at natural size, A3 landscape, centred.
+- Group count is capped at m1–m72 (knockout matches written to MATCH_STATS by ESPN are excluded)
+- Knockout count reads from `KNOCKOUT_RESULTS` winners only
+- Total = group + knockout played
+
+---
+
+## Rankings updater (`update_rankings.py`)
+
+Runs daily at 06:00 UTC via `daily-rankings.yml`. Updates:
+
+- **Elo** — live from eloratings.net (via footballratings.org), falls back to hardcoded post-group-stage values (Jun 28 2026) if live fetch fails
+- **FIFA pts** — frozen at Jun 11 2026 per FIFA (next update Jul 20). WC match delta applied using the FIFA Elo formula (I=50)
+- **Polymarket** — live win probabilities from gamma-api.polymarket.com
+
+### Rankings validator (built-in)
+
+`WC_RESULTS` is **never hardcoded**. It is built dynamically at runtime from:
+
+- `data/matches.json` → group stage (id ≤ 72, valid score required)
+- `data/knockout_results.json` → R32 through Final
+
+Before calculating, `validate_wc_results()` checks:
+- No duplicate match entries
+- All team names recognisable (warns on unknown teams)
+- All results are 0.0 / 0.5 / 1.0 (valid Elo values)
+- Validation failure = `sys.exit(1)` — never silently wrong
+
+**Idempotent:** running the script 5× gives the same result as running it once. AET/penalty draws are handled via `RESULT_OVERRIDES` dict — explicit and auditable.
+
+```python
+# To record a penalty shootout result:
+RESULT_OVERRIDES = {
+    ("Argentina", "France"): 1.0,  # Argentina won on pens after 3-3 AET
+}
+```
+
+---
+
+## Bracket simulator
+
+Follows the **official FIFA bracket** (M73–M104) exactly:
+
+- `runSimulation()` resolves each round via `(BSIM_R16||[]).map()` — `fH:'W74'` means home = winner of M74
+- `bsimAiFill()` propagates picks through correct slots at every stage (R32→R16→QF→SF→FINAL)
+- `bsimEnforceIntegrity()` called after AI fill to catch any slot inconsistencies
+- PDF: html2canvas direct capture of live bracket, A3 landscape, centred both axes
 
 ---
 
 ## Upcoming fixtures ticker
 
-- Shows only unplayed R32 matches (disappear once KNOCKOUT_RESULTS has winner)
-- R16 fixtures appear only once both R32 winners for that slot are known
-- Auto-refreshes every 60 seconds and on tab visibility change
-- `getKnownFixtures()` is the single source of truth for both ticker and analytics
+- Reads from `getKnownFixtures()` — single source of truth for both ticker and analytics
+- Played R32 matches removed automatically once `KNOCKOUT_RESULTS[matchId].winner` exists
+- R16 fixtures appear only when both R32 winners are resolved (no Wxx placeholders)
+- Auto-refreshes every 60s + immediately on `visibilitychange` (returning to tab)
+- `UPCOMING_FIXTURES` drives the ticker (filtered). `R32_SCHEDULE` drives analytics (frozen).
+
+---
+
+## GitHub Actions schedule
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `auto-update.yml` | 33 match-timed crons + `*/6` safety net | Scrape → auto-knockout → validate → sync all sections → push |
+| `daily-rankings.yml` | 06:00 UTC daily | Update Elo, FIFA pts delta, Polymarket odds |
+
+Crons fire exactly **3 hours after each match kickoff** (converted to UTC). The `*/6` fallback catches AET/penalty overruns.
 
 ---
 
@@ -167,20 +225,7 @@ PDF export captures the live bracket at natural size, A3 landscape, centred.
 }
 ```
 
-### Goal type classification (3-layer system)
-
-1. ESPN auto-detect — reads goal-type text and play description
-2. Preserve — existing free-kick/header types survive re-scrape
-3. GOAL_TYPE_OVERRIDES in update_match_stats.py — hardcoded map, never reset
-
-To add a manual override:
-```python
-GOAL_TYPE_OVERRIDES = {
-    ("m39", "K. Pina",   21): "free-kick",
-    ("m27", "N. Saliba", 68): "free-kick",
-    # add new entries here
-}
-```
+Goal type classification uses a 3-layer system: ESPN auto-detect → preserve existing types on re-scrape → `GOAL_TYPE_OVERRIDES` (hardcoded map, never reset by scraping).
 
 ---
 
@@ -194,31 +239,39 @@ P(win) = 1 / (1 + exp(−8 × (score_A − score_B)))
 draw%  = max(0.12, 0.30 − eloGap/2800)
 ```
 
-Form:
+Form is recalculated after each matchday:
 ```
-base = (qualW + 0.5×qualD) / total_qual_games
-form = base×0.40 + wc_avg×0.60    (win=1.0, draw=0.5, loss=0.0, floor=0.10)
+base = (qualW + 0.5×qualD) / total_qual_games   (or wc_avg if no qual data)
+form = base×0.40 + wc_avg×0.60    (floor: 0.10)
 ```
+
+Post-group-stage Elo (Jun 28 2026): Spain/Argentina 2144 · France 2123 · England 2038 · Brazil 2009
 
 ---
 
 ## Browser console checks
 
 ```javascript
+// Data state
 console.table({
-  matches:   MATCHES.length,                      // 72
-  goals:     GOALS.length,                        // 215
-  stats:     Object.keys(MATCH_STATS).length,     // 72
+  matches:   MATCHES.length,                       // 72
+  goals:     GOALS.length,                         // 215
+  stats:     Object.keys(MATCH_STATS).length,      // 72 (group only)
   knockout:  Object.keys(KNOCKOUT_RESULTS).length, // grows with results
-  upcoming:  UPCOMING_FIXTURES.length,            // 16 (R32 fixtures)
-  r16:       R16_FIXTURES.length,                 // 8
+  r32sched:  R32_SCHEDULE.length,                  // 16 (frozen)
+  upcoming:  UPCOMING_FIXTURES.length,             // ≤16 (filtered)
 })
 
 // Check bracket resolution
-resolveKnockoutTeam("W74")  // returns team name once M74 is played
+resolveKnockoutTeam('W74')   // → real team name once M74 played
 
-// Check known fixtures (played ones filtered out)
-getKnownFixtures().map(f => f.home + " vs " + f.away)
+// Fixtures in ticker (played filtered out)
+getKnownFixtures().map(f => f.matchId + ': ' + f.home + ' vs ' + f.away)
+
+// Argentina post-WC values
+TEAM_DATA['Argentina'].elo        // 2144
+TEAM_DATA['Argentina'].fifaPts    // 1907.40
+TEAM_DATA['Argentina'].form       // 1.0 (3W group stage)
 ```
 
 ---
@@ -226,18 +279,19 @@ getKnownFixtures().map(f => f.home + " vs " + f.away)
 ## Push workflow
 
 ```bash
-python update_wc.py --section validate
+# After a knockout result
+python add_result.py M73 Canada "S. Africa" 1-0
+# That's it — validates, updates, pushes automatically
 
+# If you need to push manually
+python update_wc.py --section validate
 git fetch origin && git reset --soft origin/main
 git add index.html data/
-git commit -m "update: R32 results matchday 1"
+git commit -m "update: R32 results"
 git push origin main
-```
 
-If push rejected (Action committed first):
-```bash
-git pull origin main --no-rebase
-git push origin main
+# If push rejected (Action committed first)
+git pull origin main --no-rebase && git push origin main
 ```
 
 ---
@@ -247,9 +301,11 @@ git push origin main
 | Layer | Technology |
 |---|---|
 | Frontend | Vanilla HTML/CSS/JS — zero frameworks, zero build step |
-| Data | JSON files in data/ — GitHub as a free database |
+| Data | JSON files in `data/` — GitHub as a free database |
 | Hosting | GitHub Pages |
 | Match data | ESPN API (no auth required) |
+| Rankings | eloratings.net (via footballratings.org) + FIFA hardcoded + Polymarket |
 | PDF export | jsPDF + html2canvas (CDN, deferred) |
 | Flags | flagcdn.com |
 | Charts | Pure SVG/HTML — no chart library |
+| CI/CD | GitHub Actions — free tier, 33 match-timed triggers |

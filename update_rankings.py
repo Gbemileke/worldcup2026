@@ -40,8 +40,11 @@ HEADERS = {
 # Official FIFA/Coca-Cola Men's World Ranking — June 11, 2026 (live, sourced from inside.fifa.com)
 # Next update: July 20, 2026
 FIFA_POINTS_JUNE_11_2026 = {
-    # Post-group-stage estimates (base Jun 11 + WC group match delta)
-    "Argentina": 1907.40,  "Spain": 1903.15,  "France": 1895.20,
+    # TRUE pre-tournament baseline — June 11, 2026 (before any WC match)
+    # Source: inside.fifa.com June 11 2026 official update
+    # DO NOT change these values — WC deltas are computed by compute_fifa_points()
+    # Changing this causes double-counting (WC results applied twice)
+    "Argentina": 1877.27,  "Spain": 1874.71,  "France": 1870.7,
     "England": 1828.02,  "Portugal": 1767.85,  "Brazil": 1765.86,
     "Morocco": 1755.1,  "Netherlands": 1753.57,  "Belgium": 1742.24,
     "Germany": 1735.77,  "Croatia": 1714.87,  "Colombia": 1698.35,
@@ -53,17 +56,14 @@ FIFA_POINTS_JUNE_11_2026 = {
     "Norway": 1557.44,  "Ivory Coast": 1540.87,  "Panama": 1539.16,
     "Sweden": 1509.79,  "Czechia": 1505.74,  "Paraguay": 1505.35,
     "Scotland": 1503.34,  "Tunisia": 1476.41,  "DR Congo": 1474.43,
+    "Congo DR": 1474.43,
     "Uzbekistan": 1458.73,  "Qatar": 1450.31,  "Iraq": 1446.28,
     "South Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
-    "Bosnia": 1387.22,  "Cape Verde": 1371.11,  "Ghana": 1346.88,
-    "Curacao": 1294.77,  "Haiti": 1293.1,  "New Zealand": 1275.58,
-    # Alias keys so validator finds them by both names
-    "Bosnia and Herzegovina": 1387.22,
-    "South Korea": 1591.63,
-    "Congo DR": 1474.43,
-    "Ivory Coast": 1540.87,
-    "Cape Verde": 1371.11,
-    # Non-WC teams kept as ranking anchors
+    "Bosnia": 1387.22,  "Bosnia and Herzegovina": 1387.22,
+    "Cape Verde": 1371.11,  "Ghana": 1346.88,
+    "Curacao": 1294.77,  "Curaçao": 1294.77,
+    "Haiti": 1293.1,  "New Zealand": 1275.58,
+    # Non-WC anchors
     "Italy": 1704.73,  "Denmark": 1619.47,  "Nigeria": 1585.02,
 }
 
@@ -222,7 +222,8 @@ def load_verified_results():
     Returns list of {home, away, result} dicts.
     """
     results = []
-    seen = set()
+    seen_ids = set()   # dedup by match id
+    seen_pairs = set() # secondary dedup by (home, away) pair
 
     def normalise(name):
         return RESULT_NAME_MAP.get(name, name)
@@ -275,15 +276,22 @@ def load_verified_results():
             if num > 72:
                 continue
             key = (home, away)
-            if key in seen:
+            if mid in seen_ids or key in seen_pairs:
                 continue
-            seen.add(key)
+            seen_ids.add(mid)
+            seen_pairs.add(key)
             h_g, a_g = parsed
             result = score_to_result(h_g, a_g, home, away)
             results.append({"home": home, "away": away, "result": result,
                            "score": score, "source": "group", "id": mid})
     else:
         print("  WARNING: data/matches.json not found — group stage results missing")
+
+    # Warn if group stage is incomplete
+    group_count = sum(1 for r in results if r.get("source") == "group")
+    if 0 < group_count < 72:
+        print(f"  WARNING: Only {group_count}/72 group matches in matches.json — rankings may be incomplete")
+        print(f"    Run: python update_match_stats.py  to scrape missing matches")
 
     # ── 2. Knockout: data/knockout_results.json ───────────────────────────────
     kr_path = os.path.join(DATA_DIR, "knockout_results.json")
@@ -301,9 +309,10 @@ def load_verified_results():
             if not parsed:
                 continue
             key = (home, away)
-            if key in seen:
+            if mid in seen_ids or key in seen_pairs:
                 continue
-            seen.add(key)
+            seen_ids.add(mid)
+            seen_pairs.add(key)
             h_g, a_g = parsed
             # If score is a draw (AET) and winner is recorded, use winner
             if h_g == a_g and winner:
@@ -619,14 +628,60 @@ def patch_html(elo_data, fifa_data, poly_data, pre_pts_data=None, pre_rank_data=
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
+# ── Known reference values for sanity check (screenshot Jun 29 2026) ─────────
+# Update these after each FIFA ranking update (currently frozen until Jul 20 2026)
+# Source: FIFA.com rankings page — as of Jun 29 2026 after group stage
+FIFA_REFERENCE = {
+    "Argentina": 1907.40,   # after 3W (Algeria, Austria, Jordan)
+    "France":    1906.84,   # after 2W1L (Norway rotated, Senegal, Iraq)
+    "Spain":     1879.58,   # after 2W1D1W (Cape Verde draw)
+    "England":   1840.46,   # after 2W1D (Ghana draw)
+    "Brazil":    1785.19,   # after 2W1D (Morocco draw)
+}
+FIFA_REFERENCE_TOLERANCE = 5.0  # allow ±5 pts for rounding/opponent order differences
+
+
+def sanity_check_fifa(fifa_data):
+    """
+    Compare computed FIFA pts against known reference values.
+    Warns if any team deviates beyond tolerance.
+    Returns True if all within tolerance, False if something looks wrong.
+    """
+    ok = True
+    print("  Sanity check vs known reference values (Jun 29 2026):")
+    for team, ref in FIFA_REFERENCE.items():
+        computed = fifa_data.get(team)
+        if computed is None:
+            print(f"    ⚠ {team}: not in computed data")
+            continue
+        diff = abs(computed - ref)
+        status = "✅" if diff <= FIFA_REFERENCE_TOLERANCE else "❌"
+        if diff > FIFA_REFERENCE_TOLERANCE:
+            ok = False
+        print(f"    {status} {team}: computed={computed:.2f} ref={ref:.2f} diff={diff:+.2f}")
+    if not ok:
+        print(f"  ❌ Sanity check FAILED — computed values deviate by more than ±{FIFA_REFERENCE_TOLERANCE} pts")
+        print(f"     This usually means the baseline or WC_RESULTS has an error")
+        print(f"     NOT patching index.html to prevent bad data. Fix the issue and re-run.")
+    else:
+        print(f"  ✅ Sanity check passed — values within ±{FIFA_REFERENCE_TOLERANCE} pts of reference")
+    return ok
+
+
 if __name__ == "__main__":
     print(f"=== WC 2026 Rankings Updater — {datetime.date.today()} ===\n")
 
     elo_data  = fetch_elo()
     time.sleep(1)
-    fifa_data, pre_pts_data, pre_rank_data = get_fifa_points()   # no network call needed
+    fifa_data, pre_pts_data, pre_rank_data = get_fifa_points()
     time.sleep(1)
     poly_data = fetch_polymarket()
+
+    # Sanity check before patching
+    print(f"\nSanity check ...")
+    if not sanity_check_fifa(fifa_data):
+        print("\nAborted — fix the ranking calculation before patching.")
+        import sys; sys.exit(1)
 
     print(f"\nPatching index.html ...")
     patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data)
