@@ -2568,6 +2568,8 @@ var GOALS = [
 
 
 
+
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2691,6 +2693,10 @@ var MATCH_STATS = {
   m71: {home:'Algeria', away:'Austria', hf:'', af:'', score:'3-3', date:'Jun 27', poss:[48, 52], stats:[["Shot Attempts", 14, 16], ["Shots on Goal", 5, 6], ["Corner Kicks", 8, 7], ["Fouls", 8, 16], ["Saves", 3, 2]], xtra:[["xG", 3.29, 3.33], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
   m72: {home:'Jordan', away:'Argentina', hf:'', af:'', score:'1-3', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 3, 4], ["Corner Kicks", 5, 2], ["Fouls", 7, 9], ["Saves", 1, 2]], xtra:[["xG", 1.3, 3.06], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
 };
+
+
+
+
 
 
 
@@ -4241,7 +4247,7 @@ function buildSnapshotStats() {
   if (typeof MATCH_STATS === 'undefined' || !MATCH_STATS) return;
   if (typeof GOALS === 'undefined' || !GOALS) return;
 
-  var totalGoals  = GOALS.length;
+  var totalGoals  = GOALS.filter(function(g){ var n=parseInt((g.matchId||'').replace('m','').replace('M','')); return n>=1 && n<=72; }).length;
   // Only count group stage matches (m1-m72) — knockout matches may also appear in MATCH_STATS
   var matchCount = Object.keys(MATCH_STATS).filter(function(k){ return parseInt(k.replace('m','').replace('M',''))<=72; }).length;
   var avgPerMatch = matchCount > 0 ? (totalGoals / matchCount).toFixed(2) : '0.00';
@@ -5142,6 +5148,8 @@ var KNOCKOUT_RESULTS = {
   // Add results to data/knockout_results.json then run:
   //   python update_wc.py --section knockout
 };
+
+
 
 
 

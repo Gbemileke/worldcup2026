@@ -713,10 +713,10 @@ def _record_knockout_result(home, away, score, h_goals, a_goals):
 
     if not mid:
         print(f"      ⚠ Could not find match ID for {home} vs {away} — not recorded")
-        return
+        return None
 
     if mid in kr:
-        return  # never overwrite existing (manual) entry
+        return mid  # already recorded — caller may still attach goals/stats
 
     # Determine winner
     if h_goals > a_goals:
@@ -730,6 +730,7 @@ def _record_knockout_result(home, away, score, h_goals, a_goals):
     kr = dict(sorted(kr.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 999))
     with open(kr_path, 'w', encoding='utf-8') as f:
         _json.dump(kr, f, indent=2, ensure_ascii=False)
+    return mid  # so caller can attach goals + stats under this M-ID
 
 
 def run():
@@ -793,32 +794,37 @@ def run():
                 h_fin, a_fin = a_fin, h_fin  # flip goal counts too
                 score = f"{h_fin}-{a_fin}"
 
-        # Add new match — GROUP STAGE ONLY
-        # Knockout matches are handled by update_wc.py auto-knockout section.
-        # This prevents M73+ from being assigned m-IDs and polluting matches.json.
+        # Add new match — GROUP STAGE ONLY for matches.json.
+        # Knockout matches (M73+) get their result in knockout_results.json,
+        # then flow through the SAME goals + stats processing below using their
+        # M-ID, so the knockout cards show full goals and statistics too.
         if not mid:
             # Knockout detection: group stage matches always have a group letter (A-L).
             # If group is empty, this match has no group → it's a knockout match.
             # parse_espn_event never sets 'round', so check group only.
             is_knockout = not parsed.get('group', '')
             if is_knockout:
-                # Write knockout result directly to knockout_results.json
-                # so auto_scrape_knockout and the snapshot card can find it
-                _record_knockout_result(home, away, score, h_fin, a_fin)
-                print(f"  ⟳ Knockout: {home} {score} {away} → saved to knockout_results.json")
-                continue
-            mid = f"m{next_num}"; next_num+=1
-            match_lookup[key]=mid; match_lookup[f"{away}|{home}"]=mid
-            played_keys.update([key,f"{away}|{home}"])
-            matches.append({
-                'id':mid,'date':parsed['date'],'home':home,'away':away,
-                'score':score,'group':parsed['group'],'ytId':'',
-                'fifaUrl':fifa_url(home,away),'espnId':parsed['espn_id'],
-            })
-            matches.sort(key=lambda m:int(m['id'].replace('m','')))
-            matches_added+=1
-            print(f"  ✚ {mid} {home} {score} {away}")
-            patch_wc_results(home,away,h_fin,a_fin)
+                ko_mid = _record_knockout_result(home, away, score, h_fin, a_fin)
+                if not ko_mid:
+                    # Couldn't resolve the M-ID — skip entirely this run
+                    continue
+                print(f"  ⟳ Knockout: {home} {score} {away} → {ko_mid} (result + goals + stats)")
+                mid = ko_mid  # continue into goals/stats processing under this M-ID
+                # ensure goals_by_mid has a slot for balance checks
+                goals_by_mid.setdefault(mid, [g for g in goals if g['matchId'] == mid])
+            else:
+                mid = f"m{next_num}"; next_num+=1
+                match_lookup[key]=mid; match_lookup[f"{away}|{home}"]=mid
+                played_keys.update([key,f"{away}|{home}"])
+                matches.append({
+                    'id':mid,'date':parsed['date'],'home':home,'away':away,
+                    'score':score,'group':parsed['group'],'ytId':'',
+                    'fifaUrl':fifa_url(home,away),'espnId':parsed['espn_id'],
+                })
+                matches.sort(key=lambda m:int(m['id'].replace('m','')))
+                matches_added+=1
+                print(f"  ✚ {mid} {home} {score} {away}")
+                patch_wc_results(home,away,h_fin,a_fin)
         else:
             ex = next(m for m in matches if m['id']==mid)
             if mid in LOCKED_MATCHES:
@@ -904,11 +910,9 @@ def run():
 
         # ── Stats ──────────────────────────────────────────────────────────────
         espn_id = parsed['espn_id'] or next((m.get('espnId','') for m in matches if m['id']==mid),'')
-        # Only write group stage stats (m1-m72) to match_stats.json
-        _mid_num = int(mid.replace('m','').replace('M','')) if mid.replace('m','').replace('M','').isdigit() else 999
-        if _mid_num > 72:
-            pass  # knockout stats not written to match_stats.json (handled separately)
-        elif espn_id and (mid not in stats or stats[mid].get('score')!=score):
+        # Group stages (m1-m72) AND knockout (M73+) both get stats written.
+        # Knockout stats are keyed by their M-ID and sync via update_wc.py update_stats().
+        if espn_id and (mid not in stats or stats[mid].get('score')!=score):
             # Use cached summary if already fetched, else fetch
             summary = parsed.get('_summary')
             if not summary:
@@ -929,20 +933,25 @@ def run():
         print("\nFetching upcoming fixtures...")
         fetch_upcoming(fd_token, played_keys)
 
-    goals.sort(key=lambda g:(int(g['matchId'].replace('m','')),g['minute']))
+    goals.sort(key=lambda g:(int(g['matchId'].replace('m','').replace('M','')),g['minute']))
     goals = apply_type_overrides(goals)  # re-apply permanent free-kick/header types
     save('matches.json',matches); save('match_stats.json',stats); save('goals.json',goals)
 
+    # Balance: group goals must equal sum of group scores. Knockout goals are
+    # counted separately (knockout matches aren't in matches.json).
+    group_mids = {m['id'] for m in matches}
+    group_goals = [g for g in goals if g['matchId'] in group_mids]
+    ko_goals = [g for g in goals if g['matchId'] not in group_mids]
     score_sum = sum(sum(int(p) for p in m['score'].split('-')) for m in matches)
-    balanced  = len(goals)==score_sum
+    balanced  = len(group_goals)==score_sum
 
     print(f"""
 ═══════════════════════════════
 SUMMARY
   Matches : {len(matches)}  (+{matches_added} new)
   Stats   : {len(stats)}
-  Goals   : {len(goals)}  (+{goals_added} new, {goals_fixed} fixed)
-  Balance : {len(goals)} = {score_sum} {'✓' if balanced else '✗ MISMATCH'}
+  Goals   : {len(goals)}  (group {len(group_goals)} + knockout {len(ko_goals)}; +{goals_added} new, {goals_fixed} fixed)
+  Balance : {len(group_goals)} = {score_sum} {'✓' if balanced else '✗ MISMATCH'}
 ═══════════════════════════════""")
 
     if not balanced:
