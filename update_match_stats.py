@@ -685,19 +685,29 @@ def _record_knockout_result(home, away, score, h_goals, a_goals):
         pass
 
     if not mid:
-        # Try R32_SCHEDULE in index.html — parse matchId by team pair
+        # Try R32_SCHEDULE in index.html — parse each entry by team pair.
+        # Field order varies (home/away can come before OR after matchId), so
+        # match a whole {...} entry then pull fields out individually.
         try:
             with open('index.html', encoding='utf-8') as f:
                 html = f.read()
             import re as _re
-            for m in _re.finditer(
-                r"matchId:'(M\d+)'[^}]*home:'([^']*)'[^}]*away:'([^']*)'",
-                html[html.find('var R32_SCHEDULE'):html.find('var R32_SCHEDULE')+3000]
-            ):
-                fmid, fh, fa = m.group(1), sn(m.group(2)), sn(m.group(3))
-                if (fh == home and fa == away) or (fa == home and fh == away):
-                    mid = fmid
-                    break
+            r32_start = html.find('var R32_SCHEDULE')
+            if r32_start >= 0:
+                r32_block = html[r32_start:html.find('];', r32_start) + 2]
+                for entry in _re.finditer(r"\{[^}]*\}", r32_block):
+                    et = entry.group()
+                    fmid_m = _re.search(r"matchId:'(M\d+)'", et)
+                    fh_m   = _re.search(r"home:'([^']*)'", et)
+                    fa_m   = _re.search(r"away:'([^']*)'", et)
+                    if not (fmid_m and fh_m and fa_m):
+                        continue
+                    fmid = fmid_m.group(1)
+                    fh   = sn(fh_m.group(1))
+                    fa   = sn(fa_m.group(1))
+                    if (fh == home and fa == away) or (fa == home and fh == away):
+                        mid = fmid
+                        break
         except Exception:
             pass
 

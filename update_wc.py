@@ -190,22 +190,43 @@ def update_stats():
         teams_to_mid[(a, h)] = m['id']
         mid_to_canon[m['id']] = m
 
-    # Parse existing MATCH_STATS from index.html
+    # Parse existing MATCH_STATS from index.html (group m1-m72 AND knockout M73+)
     ms_start = html.find('var MATCH_STATS = {')
     ms_end   = html.find('\n};', ms_start) + 3
     existing_entries = {}
-    for mm in re.finditer(r'\b(m\d+)\s*:\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}',
+    for mm in re.finditer(r'\b([mM]\d+)\s*:\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}',
                           html[ms_start:ms_end]):
         mid = mm.group(1)
-        try: num = int(mid.replace('m',''))
+        try: num = int(mid.replace('m','').replace('M',''))
         except ValueError: continue
-        if 1 <= num <= 72:
+        if num >= 1:
             existing_entries[mid] = mm.group(2)
 
     updated = 0; skipped = 0
     for old_mid, stat in new_data.items():
         h = stat.get('home',''); a = stat.get('away','')
-        # Re-key by team pair against matches.json
+        try: old_num = int(old_mid.replace('m','').replace('M',''))
+        except ValueError: old_num = 0
+
+        # Knockout stats (M73+) aren't in matches.json — pass through by own key.
+        # Group stats (m1-m72) get re-keyed by team pair for correctness.
+        if old_num > 72:
+            mid_key = 'M' + str(old_num)
+            se = esc(stat.get('score',''))
+            de = esc(stat.get('date',''))
+            entry = (
+                f"home:'{esc(stat.get('home',''))}', away:'{esc(stat.get('away',''))}', hf:'', af:'', "
+                f"score:'{se}', date:'{de}', "
+                f"poss:{json.dumps(stat.get('poss',[50,50]))}, "
+                f"stats:{json.dumps(stat.get('stats',[]))}, "
+                f"xtra:{json.dumps(stat.get('xtra',[]))}"
+            )
+            if existing_entries.get(mid_key) != entry:
+                existing_entries[mid_key] = entry
+                updated += 1
+            continue
+
+        # Re-key by team pair against matches.json (group stage)
         correct_mid = teams_to_mid.get((h,a)) or teams_to_mid.get((a,h))
         if not correct_mid:
             skipped += 1
@@ -243,7 +264,7 @@ def update_stats():
             updated += 1
 
     entries = [f"  {mid}: {{{existing_entries[mid]}}}"
-               for mid in sorted(existing_entries, key=lambda x: int(x.replace('m','')))]
+               for mid in sorted(existing_entries, key=lambda x: int(x.replace('m','').replace('M','')))]
     new_block = 'var MATCH_STATS = {\n' + ',\n'.join(entries) + '\n};'
     html, ok = replace_js_object(html, 'MATCH_STATS', new_block + '\n\n')
     if ok:
