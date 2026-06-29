@@ -623,14 +623,7 @@ def fetch_upcoming(token, played_keys):
             elif 'SEMI' in stage or 'SF' in stage: rnd = 'SF'
             elif 'FINAL' in stage and 'SEMI' not in stage: rnd = 'Final'
             else: rnd = 'Group Stage'
-            rnd  # (assigned above)
-            if False: rnd = 'R32'
-            elif 'ROUND OF 16' in round_txt or '16' in round_txt: rnd = 'R16'
-            elif 'QUARTER' in round_txt or 'QF' in round_txt:    rnd = 'QF'
-            elif 'SEMI' in round_txt or 'SF' in round_txt:       rnd = 'SF'
-            elif 'FINAL' in round_txt:                            rnd = 'Final'
-            elif not grp:  rnd = 'R32'  # no group = knockout stage
-            else:          rnd = 'Group ' + grp
+
             upcoming.append({'date':date_s,'home':home,'away':away,'time':time_s,'group':grp,'round':rnd})
         if upcoming:
             save('upcoming_fixtures.json', upcoming)
@@ -641,6 +634,75 @@ def fetch_upcoming(token, played_keys):
 # ══════════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════════
+def _record_knockout_result(home, away, score, h_goals, a_goals):
+    """
+    Write a completed knockout match result to data/knockout_results.json.
+    Determines match ID from UPCOMING_FIXTURES by team pair lookup.
+    Never overwrites a manually recorded result.
+    """
+    import json as _json
+
+    kr_path = os.path.join(DATA_DIR, 'knockout_results.json')
+    uf_path = os.path.join(DATA_DIR, 'upcoming_fixtures.json')
+
+    # Load existing knockout results
+    try:
+        with open(kr_path, encoding='utf-8') as f:
+            kr = _json.load(f)
+    except Exception:
+        kr = {}
+
+    # Find the match ID from upcoming_fixtures.json by team pair
+    mid = None
+    try:
+        with open(uf_path, encoding='utf-8') as f:
+            uf = _json.load(f)
+        for fx in uf:
+            fh = sn(fx.get('home', '')); fa = sn(fx.get('away', ''))
+            if (fh == home and fa == away) or (fa == home and fh == away):
+                mid = fx.get('matchId', '')
+                break
+    except Exception:
+        pass
+
+    if not mid:
+        # Try R32_SCHEDULE in index.html — parse matchId by team pair
+        try:
+            with open('index.html', encoding='utf-8') as f:
+                html = f.read()
+            import re as _re
+            for m in _re.finditer(
+                r"matchId:'(M\d+)'[^}]*home:'([^']*)'[^}]*away:'([^']*)'",
+                html[html.find('var R32_SCHEDULE'):html.find('var R32_SCHEDULE')+3000]
+            ):
+                fmid, fh, fa = m.group(1), sn(m.group(2)), sn(m.group(3))
+                if (fh == home and fa == away) or (fa == home and fh == away):
+                    mid = fmid
+                    break
+        except Exception:
+            pass
+
+    if not mid:
+        print(f"      ⚠ Could not find match ID for {home} vs {away} — not recorded")
+        return
+
+    if mid in kr:
+        return  # never overwrite existing (manual) entry
+
+    # Determine winner
+    if h_goals > a_goals:
+        winner = home
+    elif a_goals > h_goals:
+        winner = away
+    else:
+        winner = ''  # draw — penalty winner needs manual entry via add_result.py
+
+    kr[mid] = {'home': home, 'away': away, 'score': score, 'winner': winner}
+    kr = dict(sorted(kr.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 999))
+    with open(kr_path, 'w', encoding='utf-8') as f:
+        _json.dump(kr, f, indent=2, ensure_ascii=False)
+
+
 def run():
     asa_key  = os.environ.get('ALLSPORTSAPI_KEY','').strip()
     fd_token = os.environ.get('FOOTBALL_DATA_TOKEN','').strip()
@@ -688,10 +750,15 @@ def run():
         # Knockout matches are handled by update_wc.py auto-knockout section.
         # This prevents M73+ from being assigned m-IDs and polluting matches.json.
         if not mid:
-            is_knockout = (parsed.get('round','') in ('R32','R16','QF','SF','Final')
-                           or (not parsed.get('group','') and parsed.get('round','')!=''))
+            # Knockout detection: group stage matches always have a group letter (A-L).
+            # If group is empty, this match has no group → it's a knockout match.
+            # parse_espn_event never sets 'round', so check group only.
+            is_knockout = not parsed.get('group', '')
             if is_knockout:
-                print(f"  ⟳ Knockout — skipping matches.json: {home} {score} {away}")
+                # Write knockout result directly to knockout_results.json
+                # so auto_scrape_knockout and the snapshot card can find it
+                _record_knockout_result(home, away, score, h_fin, a_fin)
+                print(f"  ⟳ Knockout: {home} {score} {away} → saved to knockout_results.json")
                 continue
             mid = f"m{next_num}"; next_num+=1
             match_lookup[key]=mid; match_lookup[f"{away}|{home}"]=mid
