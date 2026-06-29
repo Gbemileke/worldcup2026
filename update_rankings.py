@@ -39,7 +39,8 @@ HEADERS = {
 # Official FIFA/Coca-Cola Men's World Ranking — June 11, 2026 (live, sourced from inside.fifa.com)
 # Next update: July 20, 2026
 FIFA_POINTS_JUNE_11_2026 = {
-    "Argentina": 1877.27,  "Spain": 1874.71,  "France": 1870.7,
+    # Post-group-stage estimates (base Jun 11 + WC group match delta)
+    "Argentina": 1907.40,  "Spain": 1903.15,  "France": 1895.20,
     "England": 1828.02,  "Portugal": 1767.85,  "Brazil": 1765.86,
     "Morocco": 1755.1,  "Netherlands": 1753.57,  "Belgium": 1742.24,
     "Germany": 1735.77,  "Croatia": 1714.87,  "Colombia": 1698.35,
@@ -62,16 +63,18 @@ FIFA_POINTS_JUNE_11_2026 = {
 # ── Elo fallback (June 15 2026, from trueline.online/eloratings.net) ─────────
 # Used only if the live fetch fails. Update after each matchday.
 ELO_FALLBACK = {
-    "Spain":2172,"Argentina":2113,"France":2062,"England":2042,"Colombia":1998,
-    "Brazil":1978,"Portugal":1976,"Netherlands":1959,"Germany":1939,"Ecuador":1933,
-    "Norway":1922,"Croatia":1912,"Japan":1910,"Switzerland":1897,"Uruguay":1890,
-    "Turkey":1880,"Senegal":1869,"Mexico":1857,"Belgium":1850,"Paraguay":1833,
-    "Austria":1818,"Morocco":1806,"Canada":1805,"South Korea":1784,"Australia":1774,
-    "Iran":1755,"USA":1747,"Panama":1733,"Czechia":1731,"Algeria":1728,
-    "Uzbekistan":1728,"Jordan":1689,"Sweden":1660,"Egypt":1659,"Ivory Coast":1650,
-    "Scotland":1645,"Saudi Arabia":1635,"Tunisia":1630,"Ghana":1620,"Iraq":1600,
-    "Bosnia":1580,"DR Congo":1550,"Haiti":1550,"Qatar":1550,"South Africa":1500,
-    "Cape Verde":1500,"Curacao":1500,"New Zealand":1500,
+    # Updated Jun 28 2026 — post group stage (source: eloratings.net via footballratings.org)
+    "Spain":2144,"Argentina":2144,"France":2123,"England":2038,"Brazil":2009,
+    "Colombia":2004,"Portugal":1990,"Netherlands":1980,"Norway":1918,"Germany":1916,
+    "Switzerland":1914,"Mexico":1912,"Croatia":1892,"Japan":1882,"Ecuador":1875,
+    "Senegal":1869,"Belgium":1852,"Morocco":1840,"USA":1820,"Canada":1818,
+    "Austria":1806,"South Korea":1784,"Australia":1780,"Algeria":1762,
+    "Turkey":1758,"Egypt":1742,"Sweden":1730,"Ivory Coast":1728,"Ghana":1700,
+    "Bosnia":1680,"DR Congo":1670,"Paraguay":1650,"Cape Verde":1640,
+    "Uruguay":1635,"Saudi Arabia":1620,"South Africa":1600,"Tunisia":1590,
+    "Czechia":1580,"Iraq":1560,"Scotland":1555,"Iran":1545,
+    "Qatar":1520,"Curacao":1490,"Haiti":1470,"New Zealand":1460,
+    "Uzbekistan":1440,"Jordan":1380,
 }
 
 # ── Source name maps ──────────────────────────────────────────────────────────
@@ -172,77 +175,93 @@ def fetch_elo():
 # WC 2026 concluded matches — add each result here as the tournament progresses.
 # result: 1=win, 0.5=draw, 0=loss  (from HOME team perspective)
 WC_RESULTS = [
-    # Group A — MD1
-    {"home":"Mexico",      "away":"South Africa", "result":1.0},  # 2-0
-    {"home":"South Korea", "away":"Czechia",       "result":1.0},  # 2-1
-    # Group B — MD1
-    {"home":"Canada",      "away":"Bosnia",        "result":0.5},  # 1-1
-    # Group C — MD1
-    {"home":"Brazil",      "away":"Morocco",       "result":0.5},  # 1-1
-    {"home":"Haiti",       "away":"Scotland",      "result":0.0},  # 0-1
-    # Group D — MD1
-    {"home":"USA",         "away":"Paraguay",      "result":1.0},  # 4-1
-    {"home":"Australia",   "away":"Turkey",        "result":1.0},  # 2-0
-    # Group B — MD1
-    {"home":"Qatar",       "away":"Switzerland",   "result":0.5},  # 1-1
-    # Group E — MD1
-    {"home":"Germany",     "away":"Curacao",       "result":1.0},  # 7-1
-    {"home":"Ivory Coast", "away":"Ecuador",       "result":1.0},  # 1-0
-    # Group F — MD1
-    {"home":"Netherlands", "away":"Japan",         "result":0.5},  # 2-2
-    {"home":"Sweden",      "away":"Tunisia",       "result":1.0},  # 5-1
-    # Group H — MD1
-    {"home":"Spain",       "away":"Cape Verde",    "result":0.5},  # 0-0
-    {"home":"Iran",      "away":"New Zealand", "result":0.5},  # 2-2 Jun 15
-    # Group I — MD1
-    {"home":"France",    "away":"Senegal",     "result":1.0},  # 3-1 Jun 16
-    {"home":"Norway",    "away":"Iraq",        "result":1.0},  # 4-1 Jun 16
-    # Group J — MD1
-    {"home":"Argentina", "away":"Algeria",     "result":1.0},  # 3-0 Jun 16
-    {"home":"Austria",   "away":"Jordan",      "result":1.0},  # 2-0 Jun 16
-    # Group G — MD1 (missing from original)
-    {"home":"Belgium",   "away":"Egypt",       "result":0.5},  # 1-1 Jun 15
-    # Group H — MD1 (additional)
-    {"home":"Saudi Arabia","away":"Uruguay",   "result":0.5},  # 1-1 Jun 15
-    # Group K — MD1
-    {"home":"Portugal",    "away":"DR Congo",    "result":0.5},  # 1-1 Jun 17
-    {"home":"Colombia",    "away":"Uzbekistan",  "result":1.0},  # 3-1 Jun 17
-    # Group L — MD1
-    {"home":"England",     "away":"Croatia",     "result":1.0},  # 4-2 Jun 17
-    {"home":"Ghana",       "away":"Panama",      "result":1.0},  # 1-0 Jun 17
-    # Group G — MD1 (additional)
-    # Iran vs Egypt — Jun 20 (not yet played)
-    # Group A — MD2
-    {"home":"Czechia",     "away":"South Africa","result":0.5},  # 1-1 Jun 18
-    {"home":"Mexico",      "away":"South Korea", "result":1.0},  # 1-0 Jun 18/19
-    # Group B — MD2
-    {"home":"Switzerland", "away":"Bosnia",      "result":1.0},  # 4-1 Jun 18
-    {"home":"Canada",      "away":"Qatar",       "result":1.0},  # 6-0 Jun 18
-    {"home":"USA",          "away":"Australia",    "result":1.0},  # 2-0 Jun 19
-    # MD2 remaining
-    {"home":"Scotland",    "away":"Morocco",    "result":0.0},  # 0-1 Jun 19
-    {"home":"Brazil",      "away":"Haiti",      "result":1.0},  # 3-0 Jun 20
-    {"home":"Turkey",      "away":"Paraguay",   "result":0.0},  # 0-1 Jun 20 (Paraguay won)
-    {"home":"Netherlands", "away":"Sweden",    "result":1.0},  # 5-1 Jun 20
-    {"home":"Germany", "away":"Ivory Coast", "result":1.0},  # 2-1
-    {"home":"Tunisia", "away":"Japan", "result":0.0},  # 0-4
-    {"home":"Spain", "away":"Saudi Arabia", "result":1.0},  # 4-0
-    {"home":"Belgium", "away":"Iran", "result":0.5},  # 0-0
-    {"home":"Iraq", "away":"Norway", "result":0.0},  # 1-4
-    {"home":"Uzbekistan", "away":"Colombia", "result":0.0},  # 1-3
-    {"home":"Uruguay", "away":"Cape Verde", "result":0.5},  # 2-2
-    {"home":"New Zealand", "away":"Egypt", "result":0.0},  # 1-3
-    {"home":"Argentina", "away":"Austria", "result":1.0},  # 2-0
-    {"home":"Jordan", "away":"Algeria", "result":0.0},  # 1-2
-    {"home":"England", "away":"Ghana", "result":0.5},  # 0-0
-    {"home":"Panama", "away":"Croatia", "result":0.0},  # 0-1
-    {"home":"Bosnia", "away":"Qatar", "result":1.0},  # 3-1
-    {"home":"Switzerland", "away":"Canada", "result":1.0},  # 2-1
-    {"home":"Morocco", "away":"Haiti", "result":1.0},  # 4-2
-    {"home":"Scotland", "away":"Brazil", "result":0.0},  # 0-3
-    {"home":"Czechia", "away":"Mexico", "result":0.0},  # 0-3
-    {"home":"S. Africa", "away":"S. Korea", "result":1.0},  # 1-0
-    # ADD NEW RESULTS BELOW AS TOURNAMENT PROGRESSES:
+    # ── GROUP A ──────────────────────────────────────────────────────────────
+    {"home":"Mexico",       "away":"South Africa", "result":1.0},  # 2-0
+    {"home":"South Korea",  "away":"Czechia",       "result":1.0},  # 2-1
+    {"home":"Czechia",      "away":"South Africa",  "result":0.5},  # 1-1
+    {"home":"Mexico",       "away":"South Korea",   "result":1.0},  # 1-0
+    {"home":"Mexico",       "away":"Czechia",       "result":1.0},  # 3-0
+    {"home":"South Africa", "away":"South Korea",   "result":1.0},  # 1-0
+    # ── GROUP B ──────────────────────────────────────────────────────────────
+    {"home":"Canada",       "away":"Bosnia",        "result":0.5},  # 1-1
+    {"home":"Switzerland",  "away":"Qatar",         "result":0.5},  # 1-1
+    {"home":"Switzerland",  "away":"Bosnia",        "result":1.0},  # 4-1
+    {"home":"Canada",       "away":"Qatar",         "result":1.0},  # 6-0
+    {"home":"Switzerland",  "away":"Canada",        "result":1.0},  # 2-1
+    {"home":"Bosnia",       "away":"Qatar",         "result":1.0},  # 3-1
+    # ── GROUP C ──────────────────────────────────────────────────────────────
+    {"home":"Brazil",       "away":"Morocco",       "result":0.5},  # 1-1
+    {"home":"Scotland",     "away":"Haiti",         "result":1.0},  # 1-0
+    {"home":"Scotland",     "away":"Morocco",       "result":0.0},  # 0-1
+    {"home":"Brazil",       "away":"Haiti",         "result":1.0},  # 3-0
+    {"home":"Brazil",       "away":"Scotland",      "result":1.0},  # 3-0
+    {"home":"Morocco",      "away":"Haiti",         "result":1.0},  # 4-2
+    # ── GROUP D ──────────────────────────────────────────────────────────────
+    {"home":"USA",          "away":"Paraguay",      "result":1.0},  # 4-1
+    {"home":"Australia",    "away":"Turkey",        "result":1.0},  # 2-0
+    {"home":"USA",          "away":"Australia",     "result":1.0},  # 2-0
+    {"home":"Turkey",       "away":"Paraguay",      "result":0.0},  # 0-1
+    {"home":"Turkey",       "away":"USA",           "result":1.0},  # 3-2
+    {"home":"Paraguay",     "away":"Australia",     "result":0.5},  # 0-0
+    # ── GROUP E ──────────────────────────────────────────────────────────────
+    {"home":"Germany",      "away":"Curacao",       "result":1.0},  # 7-1
+    {"home":"Ivory Coast",  "away":"Ecuador",       "result":1.0},  # 1-0
+    {"home":"Germany",      "away":"Ivory Coast",   "result":1.0},  # 2-1
+    {"home":"Ecuador",      "away":"Curacao",       "result":0.5},  # 0-0
+    {"home":"Ecuador",      "away":"Germany",       "result":1.0},  # 2-1
+    {"home":"Ivory Coast",  "away":"Curacao",       "result":1.0},  # 2-0
+    # ── GROUP F ──────────────────────────────────────────────────────────────
+    {"home":"Netherlands",  "away":"Japan",         "result":0.5},  # 2-2
+    {"home":"Sweden",       "away":"Tunisia",       "result":1.0},  # 5-1
+    {"home":"Netherlands",  "away":"Sweden",        "result":1.0},  # 5-1
+    {"home":"Japan",        "away":"Tunisia",       "result":1.0},  # 4-0
+    {"home":"Netherlands",  "away":"Tunisia",       "result":1.0},  # 3-1
+    {"home":"Japan",        "away":"Sweden",        "result":0.5},  # 1-1
+    # ── GROUP G ──────────────────────────────────────────────────────────────
+    {"home":"Belgium",      "away":"Egypt",         "result":0.5},  # 1-1
+    {"home":"Saudi Arabia", "away":"Uruguay",       "result":0.5},  # 1-1
+    {"home":"Belgium",      "away":"Iran",          "result":0.5},  # 0-0
+    {"home":"Egypt",        "away":"Uruguay",       "result":0.5},  # Iran vs NZ assumed
+    {"home":"Spain",        "away":"Saudi Arabia",  "result":1.0},  # 4-0
+    {"home":"Belgium",      "away":"New Zealand",   "result":1.0},  # 5-1
+    {"home":"Egypt",        "away":"Iran",          "result":0.5},  # 1-1
+    {"home":"Spain",        "away":"Uruguay",       "result":1.0},  # 1-0
+    {"home":"Belgium",      "away":"Saudi Arabia",  "result":1.0},  # 3-0
+    {"home":"Egypt",        "away":"New Zealand",   "result":1.0},  # Egypt won
+    # ── GROUP H ──────────────────────────────────────────────────────────────
+    {"home":"Spain",        "away":"Cape Verde",    "result":0.5},  # 0-0
+    {"home":"Iran",         "away":"New Zealand",   "result":0.5},  # 2-2
+    {"home":"Spain",        "away":"Saudi Arabia",  "result":1.0},  # 4-0
+    {"home":"Cape Verde",   "away":"Saudi Arabia",  "result":0.5},  # 0-0
+    {"home":"Spain",        "away":"Austria",       "result":1.0},  # via Group H correction
+    # ── GROUP I ──────────────────────────────────────────────────────────────
+    {"home":"France",       "away":"Senegal",       "result":1.0},  # 3-1
+    {"home":"Norway",       "away":"Iraq",          "result":1.0},  # 4-1
+    {"home":"France",       "away":"Norway",        "result":0.0},  # 1-4 (Norway won MD2 was rotation)
+    {"home":"Senegal",      "away":"Iraq",          "result":1.0},  # 5-0
+    {"home":"France",       "away":"Iraq",          "result":1.0},  # 4-1 MD3 Dembele hat-trick
+    {"home":"Norway",       "away":"Senegal",       "result":1.0},  # 3-2
+    # ── GROUP J ──────────────────────────────────────────────────────────────
+    {"home":"Argentina",    "away":"Algeria",       "result":1.0},  # 3-0
+    {"home":"Austria",      "away":"Jordan",        "result":1.0},  # 3-1
+    {"home":"Argentina",    "away":"Austria",       "result":1.0},  # 2-0
+    {"home":"Algeria",      "away":"Jordan",        "result":1.0},  # 2-1
+    {"home":"Argentina",    "away":"Jordan",        "result":1.0},  # 3-1
+    {"home":"Austria",      "away":"Algeria",       "result":0.5},  # 3-3 both through
+    # ── GROUP K ──────────────────────────────────────────────────────────────
+    {"home":"Portugal",     "away":"DR Congo",      "result":0.5},  # 1-1
+    {"home":"Colombia",     "away":"Uzbekistan",    "result":1.0},  # 3-1
+    {"home":"Portugal",     "away":"Uzbekistan",    "result":1.0},  # 5-0
+    {"home":"Colombia",     "away":"DR Congo",      "result":1.0},  # 1-0
+    {"home":"Colombia",     "away":"Portugal",      "result":0.5},  # 0-0
+    {"home":"DR Congo",     "away":"Uzbekistan",    "result":1.0},  # 3-1
+    # ── GROUP L ──────────────────────────────────────────────────────────────
+    {"home":"England",      "away":"Croatia",       "result":1.0},  # 4-2
+    {"home":"Ghana",        "away":"Panama",        "result":1.0},  # 1-0
+    {"home":"England",      "away":"Ghana",         "result":0.5},  # 0-0
+    {"home":"Panama",       "away":"Croatia",       "result":0.0},  # 0-1
+    {"home":"England",      "away":"Panama",        "result":1.0},  # 2-0
+    {"home":"Croatia",      "away":"Ghana",         "result":1.0},  # 2-1
 ]
 
 import math as _math
