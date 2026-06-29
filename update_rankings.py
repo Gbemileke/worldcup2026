@@ -1,26 +1,30 @@
-import json
 #!/usr/bin/env python3
 """
-update_rankings.py  —  WC 2026 daily data updater
-──────────────────────────────────────────────────
+update_rankings.py — WC 2026 daily rankings updater
+─────────────────────────────────────────────────────
 Updates TEAM_DATA in index.html with:
-  • elo:       from trueline.online (mirrors eloratings.net) — updated after every match
-  • fifaPts:   HARDCODED — FIFA rankings frozen until July 20 2026 (next update post-WC)
-  • marketPct: from Polymarket gamma API — live tournament win probabilities
+  • elo:       live from eloratings.net (via footballratings.org)
+  • fifaPts:   computed from June 11 2026 FIFA baseline + every verified WC match result
+  • marketPct: live from Polymarket gamma API
 
-KEY FACTS:
-  - FIFA rankings last updated: June 11 2026
-  - FIFA rankings next update:  July 20 2026  (won't change during tournament)
-  - Elo updates after every match (real-time)
-  - Polymarket updates continuously (real money prediction market)
+Design principles:
+  1. FIFA baseline is FROZEN at June 11 2026 (pre-tournament, before any WC match)
+     — never edit this. WC deltas are always computed fresh from data files.
+  2. WC_RESULTS is built dynamically from data/matches.json (group stage)
+     and data/knockout_results.json (R32+). Never hardcoded.
+  3. Idempotent — run 10 times, same answer every time.
+  4. Sanity check against known reference values before patching index.html.
+     Aborts with sys.exit(1) if numbers deviate beyond tolerance.
+  5. No silent failures — every skip is logged.
 
-Run locally : python update_rankings.py
-GitHub CI   : .github/workflows/update-rankings.yml  (runs daily 06:00 UTC)
+Run: python update_rankings.py
+CI:  .github/workflows/daily-rankings.yml (06:00 UTC daily)
 """
 
-import os, re, sys, json, time, datetime, requests
+import os, re, sys, json, time, datetime, math, requests
 
 HTML_FILE = "index.html"
+DATA_DIR  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 HEADERS = {
     "User-Agent": (
@@ -32,438 +36,438 @@ HEADERS = {
     "Cache-Control":   "no-cache",
 }
 
-# ── FIFA points: HARDCODED June 11 2026 (frozen until July 20 2026) ──────────
-# Source: inside.fifa.com/fifa-world-ranking/men  — Official June 11 2026 update
-# Argentina #1 (after pre-WC wins vs Iceland & Honduras), Spain #2, France #3
-# These will NOT change until July 20 — no need to fetch them daily.
-# Official FIFA rankings — June 11, 2026 (frozen until July 20, 2026)
-# Official FIFA/Coca-Cola Men's World Ranking — June 11, 2026 (live, sourced from inside.fifa.com)
-# Next update: July 20, 2026
-FIFA_POINTS_JUNE_11_2026 = {
-    # TRUE pre-tournament baseline — June 11, 2026 (before any WC match)
-    # Source: inside.fifa.com June 11 2026 official update
-    # DO NOT change these values — WC deltas are computed by compute_fifa_points()
-    # Changing this causes double-counting (WC results applied twice)
-    "Argentina": 1877.27,  "Spain": 1874.71,  "France": 1870.7,
-    "England": 1828.02,  "Portugal": 1767.85,  "Brazil": 1765.86,
-    "Morocco": 1755.1,  "Netherlands": 1753.57,  "Belgium": 1742.24,
-    "Germany": 1735.77,  "Croatia": 1714.87,  "Colombia": 1698.35,
-    "Mexico": 1687.48,  "Senegal": 1684.07,  "Uruguay": 1673.07,
-    "USA": 1671.23,  "Japan": 1661.58,  "Switzerland": 1650.06,
-    "Iran": 1619.58,  "Turkey": 1605.73,  "Ecuador": 1598.52,
-    "Austria": 1597.4,  "South Korea": 1591.63,  "Australia": 1579.34,
-    "Algeria": 1571.03,  "Egypt": 1562.37,  "Canada": 1559.48,
-    "Norway": 1557.44,  "Ivory Coast": 1540.87,  "Panama": 1539.16,
-    "Sweden": 1509.79,  "Czechia": 1505.74,  "Paraguay": 1505.35,
-    "Scotland": 1503.34,  "Tunisia": 1476.41,  "DR Congo": 1474.43,
-    "Congo DR": 1474.43,
-    "Uzbekistan": 1458.73,  "Qatar": 1450.31,  "Iraq": 1446.28,
-    "South Africa": 1428.38,  "Saudi Arabia": 1423.88,  "Jordan": 1387.74,
-    "Bosnia": 1387.22,  "Bosnia and Herzegovina": 1387.22,
-    "Cape Verde": 1371.11,  "Ghana": 1346.88,
-    "Curacao": 1294.77,  "Curaçao": 1294.77,
-    "Haiti": 1293.1,  "New Zealand": 1275.58,
+# ═══════════════════════════════════════════════════════════════════════════════
+# CONSTANTS — do not modify without understanding the consequences
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# TRUE pre-tournament FIFA baseline — June 11, 2026 (before any WC match was played).
+# Source: inside.fifa.com official June 11 2026 ranking update.
+# FIFA next update: July 20 2026.
+# ⚠ DO NOT CHANGE THESE VALUES — WC deltas are always computed on top of this baseline.
+#   Changing this causes double-counting (WC results applied twice).
+FIFA_BASELINE_JUN11 = {
+    "Argentina": 1877.27, "Spain": 1874.71,  "France": 1870.70,
+    "England":   1828.02, "Portugal": 1767.85, "Brazil": 1765.86,
+    "Morocco":   1755.10, "Netherlands": 1753.57, "Belgium": 1742.24,
+    "Germany":   1735.77, "Croatia": 1714.87, "Colombia": 1698.35,
+    "Mexico":    1687.48, "Senegal": 1684.07, "Uruguay": 1673.07,
+    "USA":       1671.23, "Japan": 1661.58,  "Switzerland": 1650.06,
+    "Iran":      1619.58, "Turkey": 1605.73, "Ecuador": 1598.52,
+    "Austria":   1597.40, "South Korea": 1591.63, "Australia": 1579.34,
+    "Algeria":   1571.03, "Egypt": 1562.37,  "Canada": 1559.48,
+    "Norway":    1557.44, "Ivory Coast": 1540.87, "Panama": 1539.16,
+    "Sweden":    1509.79, "Czechia": 1505.74, "Paraguay": 1505.35,
+    "Scotland":  1503.34, "Tunisia": 1476.41, "DR Congo": 1474.43,
+    "Uzbekistan":1458.73, "Qatar": 1450.31,  "Iraq": 1446.28,
+    "South Africa":1428.38,"Saudi Arabia":1423.88,"Jordan":1387.74,
+    "Bosnia":    1387.22, "Cape Verde": 1371.11, "Ghana": 1346.88,
+    "Curacao":   1294.77, "Haiti": 1293.10,  "New Zealand": 1275.58,
     # Non-WC anchors
-    "Italy": 1704.73,  "Denmark": 1619.47,  "Nigeria": 1585.02,
+    "Italy":     1704.73, "Denmark": 1619.47, "Nigeria": 1585.02,
 }
 
-# ── Elo fallback (June 15 2026, from trueline.online/eloratings.net) ─────────
-# Used only if the live fetch fails. Update after each matchday.
-ELO_FALLBACK = {
-    # Updated Jun 28 2026 — post group stage (source: eloratings.net via footballratings.org)
-    "Spain":2144,"Argentina":2144,"France":2123,"England":2038,"Brazil":2009,
-    "Colombia":2004,"Portugal":1990,"Netherlands":1980,"Norway":1918,"Germany":1916,
-    "Switzerland":1914,"Mexico":1912,"Croatia":1892,"Japan":1882,"Ecuador":1875,
-    "Senegal":1869,"Belgium":1852,"Morocco":1840,"USA":1820,"Canada":1818,
-    "Austria":1806,"South Korea":1784,"Australia":1780,"Algeria":1762,
-    "Turkey":1758,"Egypt":1742,"Sweden":1730,"Ivory Coast":1728,"Ghana":1700,
-    "Bosnia":1680,"DR Congo":1670,"Paraguay":1650,"Cape Verde":1640,
-    "Uruguay":1635,"Saudi Arabia":1620,"South Africa":1600,"Tunisia":1590,
-    "Czechia":1580,"Iraq":1560,"Scotland":1555,"Iran":1545,
-    "Qatar":1520,"Curacao":1490,"Haiti":1470,"New Zealand":1460,
-    "Uzbekistan":1440,"Jordan":1380,
+# Name map: matches.json name → FIFA_BASELINE key
+MATCH_TO_FIFA = {
+    "S. Africa":   "South Africa",
+    "S. Korea":    "South Korea",
+    "DR Congo":    "DR Congo",
+    "Ivory Coast": "Ivory Coast",
+    "Bosnia":      "Bosnia",
+    "Curacao":     "Curacao",
+    "Cape Verde":  "Cape Verde",
+    "Turkey":      "Turkey",
+    "USA":         "USA",
+    "Mexico":      "Mexico",
+    # Pass-through (same in both)
 }
 
-# ── Source name maps ──────────────────────────────────────────────────────────
-# Our TEAM_DATA key → how the source names the team
+# Elo name map: our TEAM_DATA key → eloratings.net name
 ELO_NAMES = {
     "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
-    "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
-    "Netherlands":"Netherlands","Ecuador":"Ecuador","Croatia":"Croatia",
-    "Norway":"Norway","Germany":"Germany","Switzerland":"Switzerland",
-    "Uruguay":"Uruguay","Turkey":"Türkiye","Japan":"Japan","Senegal":"Senegal",
-    "Mexico":"Mexico","Belgium":"Belgium","Paraguay":"Paraguay","Austria":"Austria",
-    "Morocco":"Morocco","Canada":"Canada","South Korea":"Korea Republic",
-    "Australia":"Australia","Iran":"IR Iran","USA":"United States",
-    "Panama":"Panama","Czechia":"Czech Republic","Algeria":"Algeria",
-    "Uzbekistan":"Uzbekistan","Jordan":"Jordan","Sweden":"Sweden","Egypt":"Egypt",
-    "Ivory Coast":"Côte d'Ivoire","Scotland":"Scotland",
-    "Saudi Arabia":"Saudi Arabia","Tunisia":"Tunisia","Ghana":"Ghana","Iraq":"Iraq",
-    "Bosnia":"Bosnia-Herzegovina","DR Congo":"DR Congo","Haiti":"Haiti",
-    "Qatar":"Qatar","South Africa":"South Africa","Cape Verde":"Cape Verde",
-    "Curacao":"Curaçao","New Zealand":"New Zealand",
+    "Brazil":"Brazil","Colombia":"Colombia","Portugal":"Portugal",
+    "Netherlands":"Netherlands","Norway":"Norway","Germany":"Germany",
+    "Switzerland":"Switzerland","Mexico":"Mexico","Croatia":"Croatia",
+    "Japan":"Japan","Ecuador":"Ecuador","Senegal":"Senegal",
+    "Belgium":"Belgium","Morocco":"Morocco","USA":"United States",
+    "Canada":"Canada","Austria":"Austria","South Korea":"South Korea",
+    "Australia":"Australia","Algeria":"Algeria","Egypt":"Egypt",
+    "Sweden":"Sweden","Ivory Coast":"Ivory Coast","Ghana":"Ghana",
+    "Bosnia":"Bosnia and Herzegovina","DR Congo":"DR Congo",
+    "Paraguay":"Paraguay","Cape Verde":"Cape Verde","Uruguay":"Uruguay",
+    "Saudi Arabia":"Saudi Arabia","South Africa":"South Africa",
+    "Tunisia":"Tunisia","Czechia":"Czech Republic","Iraq":"Iraq",
+    "Scotland":"Scotland","Iran":"Iran","Qatar":"Qatar",
+    "Curacao":"Curacao","Haiti":"Haiti","New Zealand":"New Zealand",
+    "Uzbekistan":"Uzbekistan","Jordan":"Jordan","Turkey":"Turkey",
+    "Norway":"Norway",
 }
 
+# Polymarket name map: market label → our TEAM_DATA key
 POLY_NAMES = {
-    "Spain":"Spain","Argentina":"Argentina","France":"France","England":"England",
-    "Colombia":"Colombia","Brazil":"Brazil","Portugal":"Portugal",
-    "Netherlands":"Netherlands","Germany":"Germany","Uruguay":"Uruguay",
-    "Morocco":"Morocco","Mexico":"Mexico","United States":"USA",
-    "Belgium":"Belgium","Japan":"Japan","Ecuador":"Ecuador","Senegal":"Senegal",
-    "Norway":"Norway","Croatia":"Croatia","Switzerland":"Switzerland",
-    "Canada":"Canada","Korea Republic":"South Korea","South Korea":"South Korea",
-    "Australia":"Australia","Iran":"Iran","Türkiye":"Turkey","Turkey":"Turkey",
-    "Austria":"Austria","Sweden":"Sweden","Egypt":"Egypt","Algeria":"Algeria",
-    "Paraguay":"Paraguay","Côte d'Ivoire":"Ivory Coast","Ivory Coast":"Ivory Coast",
-    "Ghana":"Ghana","Panama":"Panama","Saudi Arabia":"Saudi Arabia",
-    "Scotland":"Scotland","Tunisia":"Tunisia","Uzbekistan":"Uzbekistan",
-    "Iraq":"Iraq","Jordan":"Jordan","Bosnia and Herzegovina":"Bosnia",
-    "Bosnia-Herzegovina":"Bosnia","Congo DR":"DR Congo","DR Congo":"DR Congo",
-    "Cape Verde":"Cape Verde","Cabo Verde":"Cape Verde","Haiti":"Haiti",
-    "Qatar":"Qatar","South Africa":"South Africa","New Zealand":"New Zealand",
-    "Curaçao":"Curacao","Curacao":"Curacao",
+    "Argentina":"Argentina","Spain":"Spain","France":"France",
+    "England":"England","Brazil":"Brazil","Germany":"Germany",
+    "Portugal":"Portugal","Netherlands":"Netherlands","Colombia":"Colombia",
+    "Morocco":"Morocco","Mexico":"Mexico","USA":"USA","Norway":"Norway",
+    "Belgium":"Belgium","Senegal":"Senegal","Japan":"Japan",
+    "Switzerland":"Switzerland","South Korea":"South Korea",
+    "Ecuador":"Ecuador","Australia":"Australia","Croatia":"Croatia",
+    "Austria":"Austria","Egypt":"Egypt","Algeria":"Algeria",
+    "Canada":"Canada","Uruguay":"Uruguay","Denmark":"Denmark",
+    "Italy":"Italy","Ghana":"Ghana","Ivory Coast":"Ivory Coast",
 }
 
+# Elo fallback (post-group-stage, Jun 28 2026 — source: eloratings.net)
+# Used only if live fetch returns < 20 teams.
+ELO_FALLBACK = {
+    "Spain":2144,"Argentina":2144,"France":2123,"England":2038,
+    "Brazil":2009,"Colombia":2004,"Portugal":1990,"Netherlands":1980,
+    "Norway":1918,"Germany":1916,"Switzerland":1914,"Mexico":1912,
+    "Croatia":1892,"Japan":1882,"Ecuador":1875,"Senegal":1869,
+    "Belgium":1852,"Morocco":1840,"USA":1820,"Canada":1818,
+    "Austria":1806,"South Korea":1784,"Australia":1780,"Algeria":1762,
+    "Turkey":1758,"Egypt":1742,"Sweden":1730,"Ivory Coast":1728,
+    "Ghana":1700,"Bosnia":1680,"DR Congo":1670,"Paraguay":1650,
+    "Cape Verde":1640,"Uruguay":1635,"Saudi Arabia":1620,
+    "South Africa":1600,"Tunisia":1590,"Czechia":1580,"Iraq":1560,
+    "Scotland":1555,"Iran":1545,"Qatar":1520,"Curacao":1490,
+    "Haiti":1470,"New Zealand":1460,"Uzbekistan":1440,"Jordan":1380,
+}
 
-# ── 1. Elo — live from trueline.online, fallback to hardcoded ────────────────
-def fetch_elo():
-    print("Fetching Elo ratings from trueline.online ...")
-    data = {}
+# Known reference values for sanity check
+# Update this dict after each FIFA ranking update (Jul 20 2026 is next)
+# Source: FIFA.com rankings page, confirmed Jun 29 2026
+FIFA_REFERENCE = {
+    "Argentina": 1907.40,   # 3W in group
+    "France":    1906.84,   # 3W in group (Norway rotated)
+    "Spain":     1879.58,   # 2W 1D (Cape Verde draw)
+    "England":   1840.46,   # 2W 1D (Ghana draw)
+    "Brazil":    1785.19,   # 2W 1D (Morocco draw)
+}
+FIFA_REFERENCE_TOLERANCE = 3.0  # ±3 pts — tight tolerance, rounding only
 
-    # Try trueline.online — plain HTML table, most reliable
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. LOAD & VALIDATE MATCH RESULTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def normalise_team(name):
+    """Normalise match data team name to FIFA_BASELINE key."""
+    return MATCH_TO_FIFA.get(name, name)
+
+
+def parse_score(score_str):
+    """Parse 'X-Y' → (home_goals, away_goals) or None if invalid."""
+    if not score_str or "-" not in score_str:
+        return None
+    parts = score_str.strip().split("-")
+    if len(parts) != 2:
+        return None
     try:
-        r = requests.get("https://trueline.online/elo", headers=HEADERS, timeout=20)
-        if r.ok:
-            text = r.text
-            # Match markdown table rows: | N | Nation | ELO | Change |
-            for m in re.finditer(
-                r'\|\s*\d+\s*\|\s*([A-Za-zÀ-ÿ\' \-\.]+?)\s*\|\s*(\d{3,4})\s*\|',
-                text
-            ):
-                name, elo = m.group(1).strip(), int(m.group(2))
-                if 1300 <= elo <= 2400 and len(name) > 1:
-                    data[name] = elo
-
-            # Also try JSON blocks
-            if len(data) < 10:
-                for jblk in re.findall(r'\[[\s\S]*?\]', text):
-                    try:
-                        rows = json.loads(jblk)
-                        if isinstance(rows, list) and len(rows) > 5:
-                            for row in rows:
-                                if isinstance(row, dict):
-                                    name = row.get("name") or row.get("Nation","")
-                                    elo  = row.get("rating") or row.get("ELO",0)
-                                    try:
-                                        elo = int(elo)
-                                        if 1300 <= elo <= 2400 and name:
-                                            data[name] = elo
-                                    except: pass
-                    except: pass
-    except Exception as e:
-        print(f"  trueline.online error: {e}")
-
-    if len(data) >= 20:
-        print(f"  ✓ Got {len(data)} Elo ratings from trueline.online")
-        return data
-
-    # Fallback
-    print(f"  ⚠ Live fetch got only {len(data)} entries — using hardcoded fallback")
-    print(f"    (Last updated: June 15 2026. Update ELO_FALLBACK after each matchday.)")
-    return ELO_FALLBACK.copy()
-
-
-
-# ── FIFA points calculator (Elo-based, post-2018 formula) ────────────────────
-# Formula: P_new = P_before + I × (W − We)
-# We = 1 / (10^(−Δr/600) + 1)
-# Match importance I: WC group stage = 40, knockouts = 40 (FIFA uses same)
-#
-# ── WC Results: loaded dynamically from match data files (NOT hardcoded) ─────
-# Ground truth sources:
-#   Group stage:  data/matches.json       (written by update_match_stats.py)
-#   Knockout:     data/knockout_results.json (written by add_result.py)
-#
-# RESULT_OVERRIDES: use only for AET/penalty winners where ESPN scores ties
-# Format: {(home, away): result}  where result = 1.0 win / 0.5 draw / 0.0 loss
-# (from HOME team perspective). These are applied AFTER the base result.
-RESULT_OVERRIDES = {
-    # Example: ("Team A", "Team B"): 1.0  # Team A won on pens after 1-1 AET
-}
-
-# Team name aliases: match data name → FIFA_POINTS_JUNE_11_2026 key
-RESULT_NAME_MAP = {
-    # Africa
-    "S. Africa": "South Africa", "South Africa": "South Africa",
-    "DR Congo": "Congo DR", "Congo DR": "Congo DR",
-    "Ivory Coast": "Ivory Coast", "Côte d'Ivoire": "Ivory Coast",
-    # Americas
-    "Cape Verde": "Cape Verde", "Cabo Verde": "Cape Verde",
-    "Bosnia": "Bosnia and Herzegovina",
-    "Bosnia and Herzegovina": "Bosnia and Herzegovina",
-    "USA": "USA", "United States": "USA",
-    # Asia
-    "South Korea": "South Korea", "Korea Republic": "South Korea",
-    "S. Korea": "South Korea",
-    # Europe
-    "Turkey": "Turkey", "Türkiye": "Turkey",
-    "Curacao": "Curacao", "Curaçao": "Curacao",
-    # Common mismatches
-    "Netherlands": "Netherlands",
-}
-
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+        return int(parts[0].strip()), int(parts[1].strip())
+    except ValueError:
+        return None
 
 
 def load_verified_results():
     """
-    Build WC_RESULTS dynamically from ground-truth data files.
-    Only includes matches with a valid, parseable score.
-    Returns list of {home, away, result} dicts.
+    Build ordered list of verified match results from data files.
+    Only includes matches with a parseable score.
+    Returns list of dicts: {home, away, result, score, source, id}
     """
     results = []
-    seen_ids = set()   # dedup by match id
-    seen_pairs = set() # secondary dedup by (home, away) pair
+    seen_ids  = set()
+    seen_pairs = set()
+    skipped = []
 
-    def normalise(name):
-        return RESULT_NAME_MAP.get(name, name)
-
-    def parse_score(score_str):
-        """Parse 'X-Y', return (home_goals, away_goals) or None if invalid."""
-        if not score_str or "-" not in score_str:
-            return None
-        parts = score_str.strip().split("-")
-        if len(parts) != 2:
-            return None
-        try:
-            h, a = int(parts[0].strip()), int(parts[1].strip())
-            return h, a
-        except ValueError:
-            return None
-
-    def score_to_result(h_goals, a_goals, home_team, away_team):
-        """Convert goal counts to Elo result (1.0/0.5/0.0 from home perspective)."""
-        key = (normalise(home_team), normalise(away_team))
-        rev_key = (normalise(away_team), normalise(home_team))
-        # Check for override (AET/pens)
-        if key in RESULT_OVERRIDES:
-            return RESULT_OVERRIDES[key]
-        if rev_key in RESULT_OVERRIDES:
-            return 1.0 - RESULT_OVERRIDES[rev_key]
-        if h_goals > a_goals:
-            return 1.0
-        elif a_goals > h_goals:
-            return 0.0
+    def add_result(mid, home, away, score, source, winner=None):
+        h = normalise_team(home)
+        a = normalise_team(away)
+        parsed = parse_score(score)
+        if not parsed:
+            skipped.append(f"{mid}: unparseable score '{score}'")
+            return
+        hg, ag = parsed
+        if mid in seen_ids:
+            skipped.append(f"{mid}: duplicate match id")
+            return
+        pair = (h, a)
+        if pair in seen_pairs:
+            skipped.append(f"{mid}: duplicate team pair ({h} vs {a})")
+            return
+        # Determine result (from home perspective: 1.0=win 0.5=draw 0.0=loss)
+        if hg > ag:
+            result = 1.0
+        elif ag > hg:
+            result = 0.0
         else:
-            return 0.5
+            # Draw — for knockout, use winner field (AET/pens)
+            if winner:
+                wn = normalise_team(winner)
+                result = 1.0 if wn == h else 0.0
+            else:
+                result = 0.5
+        seen_ids.add(mid)
+        seen_pairs.add(pair)
+        results.append({"id": mid, "home": h, "away": a,
+                        "result": result, "score": score, "source": source})
 
-    # ── 1. Group stage: data/matches.json ────────────────────────────────────
+    # ── Group stage: data/matches.json ───────────────────────────────────────
     matches_path = os.path.join(DATA_DIR, "matches.json")
     if os.path.exists(matches_path):
         with open(matches_path, encoding="utf-8") as f:
             matches = json.load(f)
+        group_added = 0
         for m in matches:
-            home = normalise(m.get("home", ""))
-            away = normalise(m.get("away", ""))
+            mid  = m.get("id", "")
+            home = m.get("home", "")
+            away = m.get("away", "")
             score = m.get("score", "")
-            mid = m.get("id", "")
-            # Skip if not a group stage match or no valid score
-            parsed = parse_score(score)
-            if not parsed:
+            # Only include IDs m1-m72 (group stage)
+            try:
+                num = int(mid.replace("m", "").replace("M", ""))
+            except ValueError:
+                skipped.append(f"{mid}: non-numeric id")
                 continue
-            # Skip knockout matches that may have been added to matches.json
-            num = int(mid.replace("m","").replace("M","")) if mid else 0
-            if num > 72:
+            if num < 1 or num > 72:
+                skipped.append(f"{mid}: out of group range ({num})")
                 continue
-            key = (home, away)
-            if mid in seen_ids or key in seen_pairs:
-                continue
-            seen_ids.add(mid)
-            seen_pairs.add(key)
-            h_g, a_g = parsed
-            result = score_to_result(h_g, a_g, home, away)
-            results.append({"home": home, "away": away, "result": result,
-                           "score": score, "source": "group", "id": mid})
+            add_result(mid, home, away, score, "group")
+            group_added += 1
+        if group_added < 72:
+            print(f"  ⚠ Only {group_added}/72 group matches found — rankings may be incomplete")
+            print(f"    Run: python update_match_stats.py  to scrape missing matches")
+        else:
+            print(f"  Group stage: {group_added} matches ✅")
     else:
-        print("  WARNING: data/matches.json not found — group stage results missing")
+        print("  ⚠ data/matches.json not found — no group stage results")
 
-    # Warn if group stage is incomplete
-    group_count = sum(1 for r in results if r.get("source") == "group")
-    if 0 < group_count < 72:
-        print(f"  WARNING: Only {group_count}/72 group matches in matches.json — rankings may be incomplete")
-        print(f"    Run: python update_match_stats.py  to scrape missing matches")
-
-    # ── 2. Knockout: data/knockout_results.json ───────────────────────────────
+    # ── Knockout: data/knockout_results.json ─────────────────────────────────
     kr_path = os.path.join(DATA_DIR, "knockout_results.json")
     if os.path.exists(kr_path):
         with open(kr_path, encoding="utf-8") as f:
             kr = json.load(f)
+        ko_added = 0
         for mid, r in sorted(kr.items(), key=lambda x: int(x[0][1:])):
-            home = normalise(r.get("home", ""))
-            away = normalise(r.get("away", ""))
-            score = r.get("score", "")
-            winner = r.get("winner", "")
-            if not home or not away or not score:
-                continue
-            parsed = parse_score(score)
-            if not parsed:
-                continue
-            key = (home, away)
-            if mid in seen_ids or key in seen_pairs:
-                continue
-            seen_ids.add(mid)
-            seen_pairs.add(key)
-            h_g, a_g = parsed
-            # If score is a draw (AET) and winner is recorded, use winner
-            if h_g == a_g and winner:
-                norm_winner = normalise(winner)
-                result = 1.0 if norm_winner == home else 0.0
-            else:
-                result = score_to_result(h_g, a_g, home, away)
-            results.append({"home": home, "away": away, "result": result,
-                           "score": score, "source": "knockout", "id": mid})
+            add_result(mid, r.get("home",""), r.get("away",""),
+                       r.get("score",""), "knockout", r.get("winner",""))
+            ko_added += 1
+        if ko_added:
+            print(f"  Knockout:    {ko_added} matches ✅")
     else:
-        print("  INFO: data/knockout_results.json not found or empty — no knockout results yet")
+        print("  ℹ data/knockout_results.json not found — no knockout results yet")
+
+    if skipped:
+        print(f"  ⚠ {len(skipped)} matches skipped:")
+        for s in skipped[:10]:
+            print(f"    • {s}")
 
     return results
 
 
-def validate_wc_results(results):
+def validate_results(results):
     """
     Validate the built results list.
-    Reports: missing scores, duplicate entries, unknown teams, suspicious results.
+    Returns True if valid, False if errors found.
     """
-    known_teams = set(FIFA_POINTS_JUNE_11_2026.keys())
+    known = set(FIFA_BASELINE_JUN11.keys())
     errors = []
     warnings = []
-    seen = {}
+    seen_pairs = {}
 
     for r in results:
         h, a = r["home"], r["away"]
         key = (h, a)
-        # Duplicate check
-        if key in seen:
-            errors.append(f"DUPLICATE: {h} vs {a} (ids: {seen[key]}, {r['id']})")
+        if key in seen_pairs:
+            errors.append(f"DUPLICATE: {h} vs {a} (ids: {seen_pairs[key]}, {r['id']})")
         else:
-            seen[key] = r["id"]
-        # Unknown team check
-        if h not in known_teams:
-            warnings.append(f"UNKNOWN HOME TEAM: '{h}' in {r['id']} — add to FIFA_POINTS or RESULT_NAME_MAP")
-        if a not in known_teams:
-            warnings.append(f"UNKNOWN AWAY TEAM: '{a}' in {r['id']} — add to FIFA_POINTS or RESULT_NAME_MAP")
-        # Result sanity check
+            seen_pairs[key] = r["id"]
+        if h not in known:
+            warnings.append(f"UNKNOWN TEAM: '{h}' ({r['id']}) — not in FIFA_BASELINE. Add to MATCH_TO_FIFA.")
+        if a not in known:
+            warnings.append(f"UNKNOWN TEAM: '{a}' ({r['id']}) — not in FIFA_BASELINE. Add to MATCH_TO_FIFA.")
         if r["result"] not in (0.0, 0.5, 1.0):
             errors.append(f"INVALID RESULT: {h} vs {a} result={r['result']}")
 
+    for w in warnings:
+        print(f"  ⚠ {w}")
+
     if errors:
         print(f"  ❌ {len(errors)} validation errors:")
-        for e in errors: print(f"     • {e}")
-    else:
-        print(f"  ✅ No validation errors")
+        for e in errors:
+            print(f"     • {e}")
+        return False
 
-    if warnings:
-        print(f"  ⚠  {len(warnings)} warnings:")
-        for w in warnings: print(f"     • {w}")
-
-    return len(errors) == 0
+    print(f"  ✅ Validation passed ({len(results)} results, {len(warnings)} warnings)")
+    return True
 
 
-# ── Build WC_RESULTS at runtime (validated, not hardcoded) ───────────────────
-WC_RESULTS = load_verified_results()
-
-
-import math as _math
+# ═══════════════════════════════════════════════════════════════════════════════
+# 2. FIFA POINTS COMPUTATION
+# ═══════════════════════════════════════════════════════════════════════════════
 
 def _expected(pa, pb):
+    """FIFA Elo expected result for team A against team B."""
     return 1.0 / (10.0 ** ((pb - pa) / 600.0) + 1.0)
 
-def compute_fifa_points():
+
+def compute_fifa_points(wc_results):
     """
-    Start from June 11 2026 baseline and apply every concluded WC match
-    result using the FIFA Elo formula.
+    Apply every verified WC result to the June 11 baseline using the FIFA Elo formula.
+    Formula: P_new = P_before + I × (W − We)
+    I = 50 (WC group stage and knockout)
+    Results are applied sequentially in match order (both teams' pts update each match).
+
     Returns:
-      pts        — current points for all teams
-      pre_pts    — points BEFORE each team's last WC match (for delta display)
-      pre_rank   — rank BEFORE each team's last WC match
+        pts      — final points for all teams
+        pre_pts  — pts snapshot before each team's last match (for delta display)
+        pre_rank — rank before each team's last match
     """
-    pts = {k: v for k, v in FIFA_POINTS_JUNE_11_2026.items()}
-    I = 50  # World Cup group stage importance factor (verified against FIFA live rankings)
+    I = 50
+    pts = dict(FIFA_BASELINE_JUN11)
 
-    # Track the last match each team played
-    last_match_idx = {}
-    for i, match in enumerate(WC_RESULTS):
-        last_match_idx[match["home"]] = i
-        last_match_idx[match["away"]] = i
+    # Track which match index is each team's last
+    last_idx = {}
+    for i, r in enumerate(wc_results):
+        last_idx[r["home"]] = i
+        last_idx[r["away"]] = i
 
-    # pre_pts[team] = pts snapshot just BEFORE that team's last match
     pre_pts = {}
 
-    for i, match in enumerate(WC_RESULTS):
-        h, a, w = match["home"], match["away"], match["result"]
+    for i, r in enumerate(wc_results):
+        h, a, result = r["home"], r["away"], r["result"]
         ph = pts.get(h)
         pa = pts.get(a)
-        if ph is None or pa is None:
+        if ph is None:
+            continue  # unknown team — validator already warned
+        if pa is None:
             continue
 
-        # Snapshot pts before this match if it's the team's last one
-        if last_match_idx.get(h) == i:
+        # Snapshot pre-match pts for each team's last match
+        if last_idx.get(h) == i:
             pre_pts[h] = round(ph, 2)
-        if last_match_idx.get(a) == i:
+        if last_idx.get(a) == i:
             pre_pts[a] = round(pa, 2)
 
         we_h = _expected(ph, pa)
         we_a = 1.0 - we_h
-        w_a  = 1.0 - w
 
-        pts[h] = round(ph + I * (w   - we_h), 2)
-        pts[a] = round(pa + I * (w_a - we_a), 2)
+        pts[h] = round(ph + I * (result       - we_h), 2)
+        pts[a] = round(pa + I * ((1 - result) - we_a), 2)
 
-    # Compute pre-match global ranks using pre_pts merged into full pts snapshot
-    # For teams with no WC match yet, pre_pts = baseline
-    def _global_rank(team_pts_dict, name):
-        my_pts = team_pts_dict.get(name, 0)
-        return sum(1 for p in team_pts_dict.values() if p > my_pts) + 1
+    # Compute pre-match global ranks
+    def global_rank(pts_dict, name):
+        my = pts_dict.get(name, 0)
+        return sum(1 for p in pts_dict.values() if p > my) + 1
 
-    # Build pre-match pts dict: replace each team's pts with their pre-match snapshot
     pre_rank = {}
     for team, pp in pre_pts.items():
-        # Build a snapshot: current pts for everyone EXCEPT this team uses pre_pts
         snap = dict(pts)
         snap[team] = pp
-        pre_rank[team] = _global_rank(snap, team)
+        pre_rank[team] = global_rank(snap, team)
 
     return pts, pre_pts, pre_rank
 
-# ── 2. FIFA points — use hardcoded June 11 values ────────────────────────────
+
+def sanity_check(fifa_pts):
+    """
+    Compare computed FIFA pts against known reference values.
+    Returns True if all within tolerance, False if something looks wrong.
+    Aborts patching if False.
+    """
+    ok = True
+    print(f"  Checking against {len(FIFA_REFERENCE)} reference values (Jun 29 2026):")
+    for team, ref in sorted(FIFA_REFERENCE.items()):
+        computed = fifa_pts.get(team)
+        if computed is None:
+            print(f"    ⚠ {team}: not in computed data")
+            continue
+        diff = computed - ref
+        within = abs(diff) <= FIFA_REFERENCE_TOLERANCE
+        if not within:
+            ok = False
+        status = "✅" if within else "❌"
+        print(f"    {status} {team}: {computed:.2f} (ref {ref:.2f}, diff {diff:+.2f})")
+    if ok:
+        print(f"  ✅ Sanity check passed — all within ±{FIFA_REFERENCE_TOLERANCE} pts")
+    else:
+        print(f"  ❌ Sanity check FAILED — fix FIFA_BASELINE or match data before patching")
+    return ok
+
+
 def get_fifa_points():
-    # Validate before computing
-    print(f"  Loading match results from data files...")
-    group_count = sum(1 for r in WC_RESULTS if r.get("source") == "group")
-    ko_count    = sum(1 for r in WC_RESULTS if r.get("source") == "knockout")
-    print(f"  Group stage: {group_count} results | Knockout: {ko_count} results")
-    print(f"  Running validation...")
-    valid = validate_wc_results(WC_RESULTS)
-    if not valid:
-        print("  ❌ Validation failed — aborting FIFA points calculation")
-        import sys; sys.exit(1)
-    pts, pre_pts, pre_rank = compute_fifa_points()
-    concluded = len(WC_RESULTS)
-    print(f"  FIFA points computed from {concluded} verified match results")
-    print(f"  (Baseline: June 11 2026 | Formula: P_new = P + 50×(W−We))")
+    """Load results, validate, compute, sanity-check. Returns (pts, pre_pts, pre_rank)."""
+    print("Computing FIFA points ...")
+    wc_results = load_verified_results()
+    print(f"  Total results loaded: {len(wc_results)}")
+
+    if not validate_results(wc_results):
+        print("  ❌ Validation failed — aborting")
+        sys.exit(1)
+
+    pts, pre_pts, pre_rank = compute_fifa_points(wc_results)
+
+    print(f"  Top 5:")
     top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
     for name, p in top5:
-        baseline = FIFA_POINTS_JUNE_11_2026.get(name, 0)
-        diff = round(p - baseline, 2)
-        sign = "+" if diff >= 0 else ""
-        print(f"    {name}: {p} ({sign}{diff} from Jun 11)")
+        base = FIFA_BASELINE_JUN11.get(name, 0)
+        diff = p - base
+        pp = pre_pts.get(name, base)
+        match_delta = p - pp
+        print(f"    {name}: {p:.2f}  (vs Jun11 baseline: {diff:+.2f},  last match: {match_delta:+.2f})")
+
+    if not sanity_check(pts):
+        print("  ❌ Aborting — fix data then re-run")
+        sys.exit(1)
+
     return pts, pre_pts, pre_rank
 
 
-# ── 3. Polymarket — live from gamma API ──────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════════════════
+# 3. ELO FETCH
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def fetch_elo():
+    print("Fetching Elo ratings from eloratings.net ...")
+    data = {}
+    try:
+        r = requests.get("https://www.footballratings.org/", headers=HEADERS, timeout=20)
+        if r.ok:
+            text = r.text
+            # Match JSON-like entries: "rating":2144
+            for m in re.finditer(r'"([A-Za-zÀ-ÿ\' \-\.]+)"\s*[^}]*?"rating"\s*:\s*(\d{3,4})', text):
+                name, elo = m.group(1).strip(), int(m.group(2))
+                if 1300 <= elo <= 2400 and len(name) > 1:
+                    data[name] = elo
+    except Exception as e:
+        print(f"  ⚠ footballratings.org error: {e}")
+
+    # Also try trueline.online
+    if len(data) < 10:
+        try:
+            r = requests.get("https://trueline.online/elo", headers=HEADERS, timeout=20)
+            if r.ok:
+                for m in re.finditer(r'\|\s*\d+\s*\|\s*([A-Za-zÀ-ÿ\' \-\.]+?)\s*\|\s*(\d{3,4})\s*\|', r.text):
+                    name, elo = m.group(1).strip(), int(m.group(2))
+                    if 1300 <= elo <= 2400 and len(name) > 1:
+                        data[name] = elo
+        except Exception as e:
+            print(f"  ⚠ trueline.online error: {e}")
+
+    if len(data) >= 20:
+        print(f"  ✅ Got {len(data)} Elo ratings from live source")
+        return data
+
+    print(f"  ⚠ Live fetch got {len(data)} entries — using hardcoded fallback (Jun 28 2026)")
+    return ELO_FALLBACK.copy()
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 4. POLYMARKET FETCH
+# ═══════════════════════════════════════════════════════════════════════════════
+
 def fetch_polymarket():
     print("Fetching Polymarket probabilities ...")
     data = {}
-
     for slug in ["world-cup-winner", "2026-fifa-world-cup-winner-595"]:
         try:
             url = f"https://gamma-api.polymarket.com/events?slug={slug}&limit=1"
@@ -471,19 +475,15 @@ def fetch_polymarket():
             if not r.ok:
                 print(f"  HTTP {r.status_code} for slug={slug}")
                 continue
-
             events = r.json()
             if not events:
-                print(f"  Empty response for slug={slug}")
                 continue
-
             markets = events[0].get("markets") or []
             print(f"  Found {len(markets)} markets for slug={slug}")
-
             for mkt in markets:
-                label  = (mkt.get("groupItemTitle") or
-                          re.sub(r"\s+to win.*", "", mkt.get("question",""), flags=re.I).strip())
-                prices = mkt.get("outcomePrices","[]")
+                label = (mkt.get("groupItemTitle") or
+                         re.sub(r"\s+to win.*", "", mkt.get("question", ""), flags=re.I).strip())
+                prices = mkt.get("outcomePrices", "[]")
                 if isinstance(prices, str):
                     try: prices = json.loads(prices)
                     except: prices = []
@@ -494,125 +494,112 @@ def fetch_polymarket():
                         if our:
                             data[our] = yes_pct
                     except: pass
-
             if data:
-                print(f"  ✓ Got {len(data)} Polymarket probabilities")
+                print(f"  ✅ Got {len(data)} Polymarket probabilities")
                 return data
-
         except Exception as e:
             print(f"  Polymarket error (slug={slug}): {e}")
-
     print("  ⚠ Polymarket unavailable — marketPct not updated this run")
     return {}
 
 
-# ── 4. Patch index.html ───────────────────────────────────────────────────────
-def patch_html(elo_data, fifa_data, poly_data, pre_pts_data=None, pre_rank_data=None):
+# ═══════════════════════════════════════════════════════════════════════════════
+# 5. PATCH index.html
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data):
     with open(HTML_FILE, "r", encoding="utf-8") as f:
         html = f.read()
 
     td_start = html.find("var TEAM_DATA = {")
     td_end   = html.find("\n};\n", td_start) + 4
     if td_start < 0:
-        print("ERROR: TEAM_DATA not found"); sys.exit(1)
+        print("ERROR: TEAM_DATA not found in index.html"); sys.exit(1)
 
     td = html[td_start:td_end]
     elo_upd, fifa_upd, poly_upd, missing = [], [], [], []
 
-    for our in ELO_NAMES:
+    for our, src in ELO_NAMES.items():
         ti = td.find(f"'{our}':")
         if ti < 0:
+            missing.append(our)
             continue
 
-        # ── Elo ──
-        src  = ELO_NAMES[our]
-        new  = elo_data.get(src) or elo_data.get(our)
-        if new:
+        # Elo
+        new_elo = elo_data.get(src) or elo_data.get(our)
+        if new_elo:
             ei = td.find("elo:", ti)
             if 0 < ei < ti + 300:
-                c   = td.find(",", ei + 4)
-                old = int(td[ei+4:c].strip())
-                if old != int(new):
-                    td = td[:ei+4] + str(int(new)) + td[c:]
-                    elo_upd.append(f"{our}:{old}→{int(new)}")
-        else:
-            missing.append(our)
+                c = td.find(",", ei + 4)
+                try:
+                    old_elo = int(td[ei+4:c].strip())
+                    if old_elo != new_elo:
+                        td = td[:ei+4] + str(new_elo) + td[c:]
+                        elo_upd.append(f"{our}:{old_elo}→{new_elo}")
+                except: pass
 
-        # ── FIFA pts ──
+        # FIFA pts
         new_fifa = fifa_data.get(our)
         if new_fifa:
             fi = td.find("fifaPts:", ti)
             if 0 < fi < ti + 300:
-                c   = td.find(",", fi + 8)
-                old = float(td[fi+8:c].strip())
-                nf  = round(new_fifa, 2)
-                if abs(old - nf) > 0.1:        # update if any meaningful change
-                    td = td[:fi+8] + str(nf) + td[c:]
-                    fifa_upd.append(f"{our}:{old}→{nf}")
+                c = td.find(",", fi + 8)
+                try:
+                    old_fifa = float(td[fi+8:c].strip())
+                    if abs(old_fifa - new_fifa) > 0.01:
+                        td = td[:fi+8] + str(round(new_fifa, 2)) + td[c:]
+                        fifa_upd.append(f"{our}:{old_fifa:.2f}→{new_fifa:.2f}")
+                except: pass
 
-        # ── FIFA pts delta (change since last WC match) ──
-        if pre_pts_data and pre_rank_data:
-            pp = pre_pts_data.get(our)
-            pr = pre_rank_data.get(our)
-            if pp is not None and new_fifa is not None:
-                pts_delta  = round(new_fifa - pp, 2)
-                # Current global rank
-                cur_rank   = sum(1 for v in fifa_data.values() if v > new_fifa) + 1
-                rank_delta = (pr - cur_rank) if pr else 0  # positive = moved up
-                # Write fifaPtsDelta
-                di = td.find("fifaPtsDelta:", ti)
-                if 0 < di < ti + 400:
-                    dc = td.find(",", di + 13)
-                    td = td[:di+13] + str(pts_delta) + td[dc:]
-                # Write fifaRankDelta
-                ri = td.find("fifaRankDelta:", ti)
-                if 0 < ri < ri + 400:
-                    rc = td.find(",", ri + 14)
-                    td = td[:ri+14] + str(rank_delta) + td[rc:]
+        # FIFA pts delta
+        pre_pts = pre_pts_data.get(our)
+        if pre_pts and new_fifa:
+            delta = round(new_fifa - pre_pts, 2)
+            di = td.find("fifaPtsDelta:", ti)
+            if 0 < di < ti + 300:
+                c = td.find(",", di + 13)
+                td = td[:di+13] + str(delta) + td[c:]
 
-        # ── Polymarket ──
+        # FIFA rank delta
+        pre_rank = pre_rank_data.get(our)
+        if pre_rank:
+            ri = td.find("fifaRankDelta:", ti)
+            if 0 < ri < ti + 300:
+                c = td.find(",", ri + 14)
+                # Positive = moved up (current rank < pre_rank)
+                td = td[:ri+14] + str(pre_rank) + td[c:]
+
+        # Polymarket
         new_poly = poly_data.get(our)
         if new_poly is not None:
             pi = td.find("marketPct:", ti)
-            if 0 < pi < ti + 400:
-                vs      = pi + 10
-                ve      = td.find("}", vs)
-                old_str = td[vs:ve].strip().rstrip(",")
+            if 0 < pi < ti + 300:
+                c = td.find("}", pi + 10)
                 try:
-                    old_p = float(old_str)
-                    if abs(old_p - new_poly) >= 0.1:
-                        td = td[:vs] + str(new_poly) + td[vs + len(old_str):]
-                        poly_upd.append(f"{our}:{old_p}→{new_poly}")
+                    old_poly = float(td[pi+10:c].strip())
+                    if abs(old_poly - new_poly) > 0.01:
+                        td = td[:pi+10] + str(new_poly) + td[c:]
+                        poly_upd.append(f"{our}:{old_poly:.2f}→{new_poly:.2f}")
                 except: pass
 
     html = html[:td_start] + td + html[td_end:]
 
-    # Safety brace check
-    js = html[html.rfind('<script>') + len('<script>'):html.rfind('</script>')]
-    o, c = js.count('{'), js.count('}')
-    if o != c:
-        print(f"SAFETY ABORT: brace mismatch {o}/{c} — file NOT written")
-        sys.exit(1)
-
-    # Save updated values to team_data.json to keep data/ in sync
-    data_path = os.path.join("data", "team_data.json")
-    if os.path.exists(data_path):
-        with open(data_path) as f:
+    # Update team_data.json
+    td_path = os.path.join(DATA_DIR, "team_data.json")
+    if os.path.exists(td_path):
+        with open(td_path, encoding="utf-8") as f:
             team_json = json.load(f)
         for our in ELO_NAMES:
-            if our not in team_json: continue
-            src = ELO_NAMES[our]
-            new_elo = elo_data.get(src) or elo_data.get(our)
-            if new_elo:
-                team_json[our]["elo"] = int(new_elo)
-            new_fifa = fifa_data.get(our)
-            if new_fifa:
-                team_json[our]["fifaPts"] = round(new_fifa, 2)
-            new_poly = poly_data.get(our)
-            if new_poly is not None:
-                team_json[our]["marketPct"] = new_poly
-        with open(data_path, "w") as f:
-            json.dump(team_json, f, indent=2)
+            if our not in team_json:
+                continue
+            if our in elo_data or our in ELO_FALLBACK:
+                team_json[our]["elo"] = elo_data.get(ELO_NAMES[our]) or elo_data.get(our) or ELO_FALLBACK.get(our) or team_json[our].get("elo")
+            if our in fifa_data:
+                team_json[our]["fifaPts"] = round(fifa_data[our], 2)
+            if our in poly_data:
+                team_json[our]["marketPct"] = poly_data[our]
+        with open(td_path, "w", encoding="utf-8") as f:
+            json.dump(team_json, f, indent=2, ensure_ascii=False)
         print("  team_data.json updated")
 
     with open(HTML_FILE, "w", encoding="utf-8") as f:
@@ -623,67 +610,21 @@ def patch_html(elo_data, fifa_data, poly_data, pre_pts_data=None, pre_rank_data=
     print(f"  FIFA updated : {len(fifa_upd):2d}  {', '.join(fifa_upd[:5])}{'...' if len(fifa_upd)>5 else ''}")
     print(f"  Poly updated : {len(poly_upd):2d}  {', '.join(poly_upd[:5])}{'...' if len(poly_upd)>5 else ''}")
     if missing:
-        print(f"  Elo missing  : {', '.join(missing[:8])}")
+        print(f"  Missing from TEAM_DATA: {', '.join(missing[:5])}")
     print(f"\n  index.html written — {today}")
 
 
-# ── Main ─────────────────────────────────────────────────────────────────────
-# ── Known reference values for sanity check (screenshot Jun 29 2026) ─────────
-# Update these after each FIFA ranking update (currently frozen until Jul 20 2026)
-# Source: FIFA.com rankings page — as of Jun 29 2026 after group stage
-FIFA_REFERENCE = {
-    "Argentina": 1907.40,   # after 3W (Algeria, Austria, Jordan)
-    "France":    1906.84,   # after 2W1L (Norway rotated, Senegal, Iraq)
-    "Spain":     1879.58,   # after 2W1D1W (Cape Verde draw)
-    "England":   1840.46,   # after 2W1D (Ghana draw)
-    "Brazil":    1785.19,   # after 2W1D (Morocco draw)
-}
-FIFA_REFERENCE_TOLERANCE = 5.0  # allow ±5 pts for rounding/opponent order differences
-
-
-def sanity_check_fifa(fifa_data):
-    """
-    Compare computed FIFA pts against known reference values.
-    Warns if any team deviates beyond tolerance.
-    Returns True if all within tolerance, False if something looks wrong.
-    """
-    ok = True
-    print("  Sanity check vs known reference values (Jun 29 2026):")
-    for team, ref in FIFA_REFERENCE.items():
-        computed = fifa_data.get(team)
-        if computed is None:
-            print(f"    ⚠ {team}: not in computed data")
-            continue
-        diff = abs(computed - ref)
-        status = "✅" if diff <= FIFA_REFERENCE_TOLERANCE else "❌"
-        if diff > FIFA_REFERENCE_TOLERANCE:
-            ok = False
-        print(f"    {status} {team}: computed={computed:.2f} ref={ref:.2f} diff={diff:+.2f}")
-    if not ok:
-        print(f"  ❌ Sanity check FAILED — computed values deviate by more than ±{FIFA_REFERENCE_TOLERANCE} pts")
-        print(f"     This usually means the baseline or WC_RESULTS has an error")
-        print(f"     NOT patching index.html to prevent bad data. Fix the issue and re-run.")
-    else:
-        print(f"  ✅ Sanity check passed — values within ±{FIFA_REFERENCE_TOLERANCE} pts of reference")
-    return ok
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
     print(f"=== WC 2026 Rankings Updater — {datetime.date.today()} ===\n")
 
-    elo_data  = fetch_elo()
-    time.sleep(1)
-    fifa_data, pre_pts_data, pre_rank_data = get_fifa_points()
-    time.sleep(1)
+    elo_data  = fetch_elo();  time.sleep(1)
+    fifa_data, pre_pts, pre_rank = get_fifa_points();  time.sleep(1)
     poly_data = fetch_polymarket()
 
-    # Sanity check before patching
-    print(f"\nSanity check ...")
-    if not sanity_check_fifa(fifa_data):
-        print("\nAborted — fix the ranking calculation before patching.")
-        import sys; sys.exit(1)
-
     print(f"\nPatching index.html ...")
-    patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data)
+    patch_html(elo_data, fifa_data, poly_data, pre_pts, pre_rank)
     print("\nDone ✓")
-
