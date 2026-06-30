@@ -84,12 +84,28 @@ import unicodedata
 # Players ESPN spells inconsistently — map any accent variant to ONE canonical form.
 # Add new entries here whenever a player appears split across the top-scorer list.
 SCORER_ALIASES = {
-    'K. Mbappe': 'K. Mbappé',
+    # Brazilian single/Junior-name stars
     'V. Júnior': 'Vinicius Jr.',
     'V. Junior': 'Vinicius Jr.',
     'Vinícius Júnior': 'Vinicius Jr.',
     'Vinicius Júnior': 'Vinicius Jr.',
     'Vinícius Jr.': 'Vinicius Jr.',
+    # goals.json spelling/convention variants (left = what scorer_fmt produces
+    # from the official roster full name; right = the goals.json form)
+    'M. Ziko': 'M. Zico',                 # Mostafa Ziko -> Zico
+    'M. Al-Tamari': 'M. Al-Taamari',      # Mousa Al-Tamari -> Al-Taamari
+    'M. Mohebi': 'M. Mohebbi',            # Mohammad Mohebi -> Mohebbi
+    'A. Al Amri': 'A. Al-Amri',           # Abdulelah Al Amri -> Al-Amri
+    'M. Trézéguet': 'Trézéguet',          # Mahmoud Trézéguet -> single name
+    'M. Trezeguet': 'Trézéguet',
+    'J. van Hecke': 'J. Paul van Hecke',  # Jan Paul van Hecke keeps middle name
+    'M. Pedersen': 'M. Holmgren Pedersen',# Marcus (Holmgren) Pedersen
+    'B. Yilmaz': 'B. Alper Yilmaz',       # Barış Alper Yılmaz keeps middle name
+    # Korean names (surname-first in roster; goals.json uses given-initial + surname)
+    'O. Hyeon-gyu': 'H. Oh',              # Oh Hyeon-gyu
+    'O. Hyun-Kyu': 'H. Oh',
+    'H. In-Beom': 'In-B. Hwang',          # Hwang In-Beom
+    'H. In-beom': 'In-B. Hwang',
 }
 
 # ── PERMANENT goal-type overrides ─────────────────────────────────────────────
@@ -255,16 +271,39 @@ def apply_type_overrides(goals):
         print(f"  → Applied {applied} permanent goal-type override(s)")
     return goals
 
+# Surname particles that attach to the last name when abbreviating
+# (so 'Virgil van Dijk' -> 'V. van Dijk', 'Giovani Lo Celso' -> 'G. Lo Celso').
+_SURNAME_PARTICLES = {'van','von','de','del','da','dos','di','der','den','ten','ter',
+                      'la','le','el','al','bin','ibn','lo','dello','della'}
+
 def scorer_fmt(raw):
-    if not raw: return ''
-    parts = raw.strip().split()
-    name = f"{parts[0][0]}. {' '.join(parts[1:])}" if len(parts)>1 else raw.strip()
-    # Canonicalize: if the accent-stripped name matches an alias key, use the canonical form
-    stripped = _strip_accents(name)
+    """Format an ESPN full name to the goals.json convention: 'F. Lastname',
+    keeping accents and grouping multi-word surnames (particles). Handles the
+    many special/accented names correctly, then applies SCORER_ALIASES for the
+    handful of names that use a non-standard convention in goals.json."""
+    if not raw:
+        return ''
+    name = raw.strip()
+    parts = name.split()
+    if len(parts) == 1:
+        # Single-name player (Neymar, Rodri, Vinícius...) — keep as-is
+        formatted = name
+    else:
+        first = parts[0]
+        # Walk back from the last token, absorbing surname particles
+        surname_start = len(parts) - 1
+        i = len(parts) - 2
+        while i >= 1 and parts[i].lower() in _SURNAME_PARTICLES:
+            surname_start = i
+            i -= 1
+        surname = ' '.join(parts[surname_start:])
+        formatted = f"{first[0].upper()}. {surname}"
+    # Canonicalize via aliases (accent-insensitive match on the alias key)
+    stripped = _strip_accents(formatted).lower()
     for key, canon in SCORER_ALIASES.items():
-        if stripped == _strip_accents(key):
+        if stripped == _strip_accents(key).lower():
             return canon
-    return name
+    return formatted
 
 def parse_minute(clock_str):
     s = str(clock_str or '').replace("'",'').strip()
@@ -306,6 +345,16 @@ def parse_espn_event(event):
     if not home or not away: return None
     h_score = int(home_c.get('score',0) or 0)
     a_score = int(away_c.get('score',0) or 0)
+    # Penalty shootout: ESPN carries a separate shootoutScore on each competitor
+    # when a knockout match is decided on penalties (regulation/ET score is level).
+    def _so(c):
+        v = c.get('shootoutScore', None)
+        try:
+            return int(v) if v is not None and str(v) != '' else None
+        except (ValueError, TypeError):
+            return None
+    h_so = _so(home_c)
+    a_so = _so(away_c)
     group = ''
     for n in comp.get('notes',[]):
         g = re.search(r'Group\s+([A-Z])', n.get('headline',''), re.I)
@@ -319,6 +368,7 @@ def parse_espn_event(event):
         'espn_id':event.get('id',''),
         'venue':comp.get('venue',{}).get('fullName',''),
         'goals':goals,
+        'h_so':h_so, 'a_so':a_so,
     }
 
 def _parse_details(details, home, away):
@@ -405,20 +455,29 @@ def parse_espn_scoring_plays(summary, home, away):
         combined = dtype + ' ' + desc
         gtype = _classify_goal_type(combined)
 
-        # Team — use homeScore/awayScore diff to determine who scored
-        # This is more reliable than team.displayName which can be wrong
+        # Team — resolve by NAME first (robust to ESPN/our home-away orientation
+        # differing, which is common in knockout fixtures). Only fall back to the
+        # score-position method when the name genuinely can't be matched.
         home_score = p.get('homeScore', p.get('homeAthlete',{}).get('score',0))
         away_score = p.get('awayScore', p.get('awayAthlete',{}).get('score',0))
         team_disp  = sn(p.get('team',{}).get('displayName',''))
 
-        # Use explicit team if available, else infer from score
-        if team_disp in (home, away):
-            team = team_disp
-        elif isinstance(home_score,int) and isinstance(away_score,int):
-            # We'll determine team during assign_goals from running score
-            team = team_disp or home  # fallback
+        def _norm_team(s):
+            return ''.join(ch for ch in str(s).lower() if ch.isalnum())
+        _hn, _an, _tn = _norm_team(home), _norm_team(away), _norm_team(team_disp)
+
+        if _tn and _tn == _hn:
+            team = home
+        elif _tn and _tn == _an:
+            team = away
+        elif _tn and (_tn in _hn or _hn in _tn):
+            team = home
+        elif _tn and (_tn in _an or _an in _tn):
+            team = away
         else:
-            team = team_disp or home
+            # Name unresolved — leave blank so assign_goals derives from running
+            # score. Do NOT default to home (that caused Japan goals → Brazil).
+            team = ''
 
         goals.append({
             'scorer': scorer, 'minute': minute, 'type': gtype, 'team': team,
@@ -546,10 +605,18 @@ def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
         is_og = gd['type'] == 'own-goal'
         team  = _resolve_team(gd.get('team',''))
 
-        # If ESPN provided running scores, use them to determine team
+        # If the team was resolved by NAME (authoritative even when ESPN's home/away
+        # orientation differs from ours), trust it and just advance the running score.
         hs = gd.get('home_score')
         as_ = gd.get('away_score')
-        if hs is not None and as_ is not None:
+        if team in (home, away):
+            if is_og:
+                if team == home: a_run += 1
+                else:            h_run += 1
+            else:
+                if team == home: h_run += 1
+                else:            a_run += 1
+        elif hs is not None and as_ is not None:
             # Which score changed from previous?
             if hs > h_run and not is_og:   team = home
             elif as_ > a_run and not is_og: team = away
@@ -653,11 +720,15 @@ def fetch_upcoming(token, played_keys):
 # ══════════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════════
-def _record_knockout_result(home, away, score, h_goals, a_goals):
+def _record_knockout_result(home, away, score, h_goals, a_goals, h_so=None, a_so=None):
     """
     Write a completed knockout match result to data/knockout_results.json.
     Determines match ID from UPCOMING_FIXTURES by team pair lookup.
     Never overwrites a manually recorded result.
+
+    h_so/a_so are the penalty-shootout scores (or None). When the regulation/ET
+    score is level and shootout scores are present, the winner is the shootout
+    victor and a 'pens' field (e.g. '4-2') is stored alongside the regulation score.
     """
     import json as _json
 
@@ -718,15 +789,22 @@ def _record_knockout_result(home, away, score, h_goals, a_goals):
     if mid in kr:
         return mid  # already recorded — caller may still attach goals/stats
 
-    # Determine winner
+    # Determine winner. Regulation/ET first; if level, fall to penalty shootout.
+    entry = {'home': home, 'away': away, 'score': score}
     if h_goals > a_goals:
         winner = home
     elif a_goals > h_goals:
         winner = away
     else:
-        winner = ''  # draw — penalty winner needs manual entry via add_result.py
+        # Level after regulation/ET — decided on penalties if shootout scores exist.
+        if h_so is not None and a_so is not None and h_so != a_so:
+            winner = home if h_so > a_so else away
+            entry['pens'] = f"{h_so}-{a_so}"   # stored in home-away order
+        else:
+            winner = ''  # draw, no shootout data — needs manual entry via add_result.py
+    entry['winner'] = winner
 
-    kr[mid] = {'home': home, 'away': away, 'score': score, 'winner': winner}
+    kr[mid] = entry
     kr = dict(sorted(kr.items(), key=lambda x: int(x[0][1:]) if x[0][1:].isdigit() else 999))
     with open(kr_path, 'w', encoding='utf-8') as f:
         _json.dump(kr, f, indent=2, ensure_ascii=False)
@@ -778,6 +856,7 @@ def run():
     for key, parsed in espn_by_key.items():
         home  = parsed['home']; away = parsed['away']
         score = parsed['score']
+        h_so  = parsed.get('h_so'); a_so = parsed.get('a_so')  # penalty shootout (or None)
         try: h_fin,a_fin = map(int,score.split('-'))
         except: continue
 
@@ -792,6 +871,7 @@ def run():
                 # Swap ESPN's home/away to match our canonical ordering
                 home, away = canon_m['home'], canon_m['away']
                 h_fin, a_fin = a_fin, h_fin  # flip goal counts too
+                h_so, a_so = a_so, h_so      # flip shootout scores too
                 score = f"{h_fin}-{a_fin}"
 
         # Add new match — GROUP STAGE ONLY for matches.json.
@@ -804,7 +884,7 @@ def run():
             # parse_espn_event never sets 'round', so check group only.
             is_knockout = not parsed.get('group', '')
             if is_knockout:
-                ko_mid = _record_knockout_result(home, away, score, h_fin, a_fin)
+                ko_mid = _record_knockout_result(home, away, score, h_fin, a_fin, h_so, a_so)
                 if not ko_mid:
                     # Couldn't resolve the M-ID — skip entirely this run
                     continue

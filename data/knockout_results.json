@@ -4,5 +4,25 @@
     "away": "Canada",
     "score": "0-1",
     "winner": "Canada"
+  },
+  "M74": {
+    "home": "Germany",
+    "away": "Paraguay",
+    "score": "1-1",
+    "pens": "3-4",
+    "winner": "Paraguay"
+  },
+  "M75": {
+    "home": "Netherlands",
+    "away": "Morocco",
+    "score": "1-1",
+    "pens": "2-3",
+    "winner": "Morocco"
+  },
+  "M76": {
+    "home": "Brazil",
+    "away": "Japan",
+    "score": "2-1",
+    "winner": "Brazil"
   }
 }

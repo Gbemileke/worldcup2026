@@ -307,7 +307,9 @@ def update_knockout():
             a  = esc(r.get('away',''))
             sc = esc(r.get('score',''))
             w  = esc(r.get('winner',''))
-            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}', winner:'{w}'}},")
+            pens = esc(r.get('pens',''))
+            pens_part = f", pens:'{pens}'" if pens else ''
+            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}'{pens_part}, winner:'{w}'}},")
     lines.append('};')
 
     new_block = '\n'.join(lines)
@@ -746,6 +748,65 @@ def validate_and_fix():
         # Not an error — just informational, IDs can have gaps from deletions
     else:
         print(f"    ✅ Goal IDs sequential")
+
+    print("  ── 10. Scorer ↔ country consistency ──")
+    # Derive each scorer's country from running-score deltas across ALL goals,
+    # then flag any goal whose scorer is attributed to a different country than
+    # the one they predominantly score for. Catches mis-keyed goals like a Japan
+    # player's goal being assigned to Brazil.
+    # goal_list tuple = (gid, mid, home, away, scorer, minute, gtype, score)
+    from collections import defaultdict as _dd
+    _by_match = _dd(list)
+    for _g in goal_list:
+        _by_match[_g[1]].append(_g)
+    _scorer_country = _dd(lambda: _dd(int))   # scorer -> {country: count}
+    _goal_team = {}                            # gid -> derived scoring country
+    for _mid, _gs in _by_match.items():
+        _gs = sorted(_gs, key=lambda x: int(x[5]))  # by minute (int, not string)
+        _ph = _pa = 0
+        for _g in _gs:
+            _gid, _, _home, _away, _scorer, _min, _gtype, _score = _g
+            try:
+                _h, _a = map(int, _score.split('-'))
+            except Exception:
+                continue
+            _is_og = (_gtype == 'own-goal')
+            _team = None
+            if _h > _ph:
+                _team = _away if _is_og else _home
+            elif _a > _pa:
+                _team = _home if _is_og else _away
+            _ph, _pa = _h, _a
+            if _scorer and _team:
+                _goal_team[_gid] = _team
+                if not _is_og:
+                    _scorer_country[_scorer.strip()][_team] += 1
+
+    # Establish each scorer's primary country (most goals)
+    _primary = {}
+    for _s, _teams in _scorer_country.items():
+        _primary[_s] = max(_teams.items(), key=lambda kv: kv[1])[0]
+
+    # Flag goals where the scorer's derived team for THIS goal differs from their primary
+    _country_issues = []
+    for _g in goal_list:
+        _gid, _mid, _home, _away, _scorer, _min, _gtype, _score = _g
+        if _gtype == 'own-goal':
+            continue
+        _s = _scorer.strip()
+        if _s not in _primary:
+            continue
+        _this_team = _goal_team.get(_gid)
+        if _this_team and _this_team != _primary[_s]:
+            _country_issues.append((_mid, _s, _this_team, _primary[_s], _home, _away))
+
+    if _country_issues:
+        print(f"    ❌ {len(_country_issues)} scorer/country mismatch(es):")
+        for _mid, _s, _got, _exp, _h, _a in _country_issues[:10]:
+            print(f"       {_mid}: '{_s}' credited to {_got}, but normally scores for {_exp} (match {_h} v {_a})")
+        errors.append(f"SCORER_COUNTRY_MISMATCH: {[(c[0],c[1],c[2]) for c in _country_issues]}")
+    else:
+        print(f"    ✅ All {len(_primary)} scorers consistent with their country")
 
     # ── Write fixes ───────────────────────────────────────────────────────────
     if changed:
