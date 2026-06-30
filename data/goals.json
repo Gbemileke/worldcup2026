@@ -2592,6 +2592,30 @@
     "desc": ""
   },
   {
+    "id": 267,
+    "matchId": "M74",
+    "home": "Germany",
+    "away": "Paraguay",
+    "scorer": "J. Enciso",
+    "minute": 42,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 268,
+    "matchId": "M74",
+    "home": "Germany",
+    "away": "Paraguay",
+    "scorer": "K. Havertz",
+    "minute": 54,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
     "id": 264,
     "matchId": "M76",
     "home": "Brazil",

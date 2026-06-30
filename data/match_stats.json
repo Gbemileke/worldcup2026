@@ -4349,5 +4349,64 @@
         0
       ]
     ]
+  },
+  "M74": {
+    "home": "Germany",
+    "away": "Paraguay",
+    "score": "1-1",
+    "date": "Jun 29 - Gillette Stadium",
+    "poss": [
+      75.6,
+      24.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        21,
+        7
+      ],
+      [
+        "Shots on Goal",
+        6,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        18,
+        12
+      ],
+      [
+        "Saves",
+        2,
+        6
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.73,
+        1.19
+      ],
+      [
+        "Yellow Cards",
+        2,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        4,
+        1
+      ]
+    ]
   }
 }
