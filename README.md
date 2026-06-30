@@ -9,13 +9,13 @@ Live analytics, interactive bracket simulator, and match statistics for the 2026
 
 ## What it does
 
-A single-page app (~361KB, zero dependencies, zero frameworks) with six tabs:
+A single-page app (~367KB, zero dependencies, zero frameworks) with six tabs:
 
 | Tab | Content |
 |---|---|
 | **Highlights** | Live goal feed · filters by type/group · scorer hero panel · FIFA.com links |
 | **Videos** | Match video cards linking to FIFA highlight pages |
-| **Analytics** | 8 snapshot cards · collapsible stage sections · match stats panel inside each section |
+| **Analytics** | snapshot cards (incl. penalties) · collapsible stage sections · match stats panel inside each section |
 | **Simulator** | Model-driven R32→Final simulation · Top 4 bar · adjustable weights · quick presets |
 | **Groups** | Match predictor with Consensus Pick · 12 group cards with live standings + qualification badges |
 | **Bracket** | Interactive knockout bracket — pick every match, AI-fill, download PDF |
@@ -27,11 +27,21 @@ A single-page app (~361KB, zero dependencies, zero frameworks) with six tabs:
 | Metric | Value |
 |---|---|
 | Group stage matches | 72 / 72 complete (locked) |
-| Match stats | 72 / 72 complete |
-| Goals recorded | 215 (all balanced against scores) |
-| Knockout results | Auto-populated from ESPN · manual fallback via `add_result.py` |
+| Match stats | 76 / 76 complete (72 group + M73–M76 knockout) |
+| Goals recorded | 223 (all balanced against scores) |
+| Knockout results | M73–M76 recorded (R32 in progress). Auto-populated from ESPN · manual fallback via `add_result.py` |
+| Penalty shootouts | M74 (Paraguay 4-3) · M75 (Morocco 3-2) — stored as `pens` field, shown as `(2) 1-1 (3)` everywhere |
 | Elo ratings | Post-group-stage (Jun 28 2026) — Spain/Argentina 2144, France 2123 |
 | FIFA points | Jun 11 2026 baseline + WC delta — Argentina 1907.40 |
+
+### Round of 32 results so far
+
+| Match | Result | Notes |
+|---|---|---|
+| M73 | S. Africa 0-1 Canada | Eustáquio 92' |
+| M74 | Germany 1-1 Paraguay | **Paraguay win 4-3 on pens** |
+| M75 | Netherlands 1-1 Morocco | **Morocco win 3-2 on pens** |
+| M76 | Brazil 2-1 Japan | Sano (JPN), Casemiro + Martinelli (BRA) |
 
 ---
 
@@ -39,20 +49,25 @@ A single-page app (~361KB, zero dependencies, zero frameworks) with six tabs:
 
 ```
 worldcup2026/
-├── index.html                 ← Full app (~361KB single file)
+├── index.html                 ← Full app (~367KB single file)
 ├── update_wc.py               ← ONE-STOP update script (use this)
 ├── update_site.py             ← Lower-level HTML patcher (called by update_wc.py)
-├── update_match_stats.py      ← ESPN scraper for scores / goals / stats
+├── update_match_stats.py      ← ESPN scraper for scores / goals / stats (+ penalty shootouts)
 ├── update_rankings.py         ← Elo + FIFA pts + Polymarket updater
 ├── add_result.py              ← Manual fallback: one command to record + deploy a result
+├── validate_scorer_country.py ← Roster-backed scorer↔country validator (uses WC2026_Players.csv)
+├── fix_rescrape_match.py       ← One-time helper: clear a match's goals for a clean re-scrape
+├── archive/
+│   └── worldcup-goals.old.html ← Retired earlier single-file version (kept for reference)
 └── data/
-    ├── goals.json             ← 215 goals — scorer, minute, type, sequence
-    ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta)
-    ├── knockout_results.json  ← R32→Final results — ground truth for all knockout calcs
-    ├── matches.json           ← 54 group stage matches + ESPN IDs (ground truth for rankings)
+    ├── goals.json             ← 223 goals — scorer, minute, type, sequence
+    ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta) — 76 entries
+    ├── knockout_results.json  ← R32→Final results (+ optional pens field) — ground truth
+    ├── matches.json           ← 72 group stage matches + ESPN IDs (ground truth for rankings)
     ├── team_data.json         ← Elo, FIFA pts, form, qual record, squad depth (150 teams)
     ├── groups.json            ← 12 groups + Polymarket odds
-    └── upcoming_fixtures.json ← R32 schedule (ticker only — R32_SCHEDULE drives analytics)
+    ├── upcoming_fixtures.json ← R32 schedule (ticker only — R32_SCHEDULE drives analytics)
+    └── WC2026_Players.csv     ← Official 48-squad roster (1248 players) — authoritative for the validator
 ```
 
 ---
@@ -99,9 +114,11 @@ python update_wc.py --section stamp        # refresh build timestamp
 
 ---
 
-## Validator (`--section validate`)
+## Validators
 
-Runs 9 checks and auto-fixes what it can. Runs automatically inside `add_result.py` and GitHub Actions before every push.
+### Built-in validator (`update_wc.py --section validate`)
+
+Runs 10 checks and auto-fixes what it can. Runs automatically inside `add_result.py` and GitHub Actions before every push.
 
 | Check | Auto-fix |
 |---|---|
@@ -110,10 +127,26 @@ Runs 9 checks and auto-fixes what it can. Runs automatically inside `add_result.
 | Goal type validity (open-play/header/penalty/own-goal/free-kick) | No — manual |
 | MATCH_STATS home/away swapped vs MATCHES | **Yes — auto-corrects** |
 | MATCH_STATS score mismatch vs MATCHES | No — manual |
-| MATCH_STATS completeness (72/72) | No — manual |
+| MATCH_STATS completeness | No — manual |
 | KNOCKOUT_RESULTS winner in [home, away] | No — manual |
 | goals.json in sync with index.html | No — run `--section goals` |
 | Sequential goal IDs (gaps are informational only) | — informational |
+| **Scorer ↔ country consistency (history-based)** | No — manual |
+
+The scorer↔country check derives each scorer's country from running-score deltas and flags any goal crediting a known scorer to a different country. **Limitation:** it can only catch a player mis-credited *after* they've scored correctly before — it cannot catch a brand-new scorer's first goal being mis-keyed. That gap is covered by the roster-backed validator below.
+
+### Roster-backed validator (`validate_scorer_country.py`)
+
+A stronger, standalone check that uses the **official squad roster** (`data/WC2026_Players.csv`, `COUNTRY` + `PLAYER_NAME` columns) instead of goal history. Because it knows every player's real country up front, it **also catches a brand-new scorer's first goal** being credited to the wrong team — the class of bug the history-based check misses (e.g. a Japan player's goal credited to Brazil).
+
+```bash
+python validate_scorer_country.py            # report
+python validate_scorer_country.py --strict   # exit 1 on any mismatch (for CI / pre-push)
+```
+
+How it matches: derives `F. Lastname` from the roster, with full **case + accent normalization**, compound-surname handling (matches each word of `VARGAS MARTINEZ`), hyphen/spacing tolerance (`Al-Amri` ↔ `ALAMRI`), name-on-shirt fallback, country-name aliases (`IR Iran` → Iran, `Cabo Verde` → Cape Verde), and a small explicit alias map for irreducible spelling differences (`Vinicius Jr.`, `M. Al-Taamari`). Roster file is read as cp1252/UTF-8 and tab- or comma-delimited automatically.
+
+On its first run against the real roster it caught two genuine attribution bugs — **m39 (Pina, Uruguay-Cape Verde)** and **m40 (Surman, NZ-Egypt)** — where the home/away running scores were inverted.
 
 ---
 
@@ -141,12 +174,31 @@ Six sections stack vertically. Cards are identical to the original design (flag 
 The "Matches Played" snapshot card shows a live breakdown:
 
 ```
-73 of 104   72 group · 1 R32 · 0 R16 · 0 QF · 0 SF · 0 3rd · 0 Final
+76 of 104   72 group · 4 R32 · 0 R16 · 0 QF · 0 SF · 0 3rd · 0 Final
 ```
 
 - Group count is capped at m1–m72 (knockout matches written to MATCH_STATS by ESPN are excluded)
 - Knockout count reads from `KNOCKOUT_RESULTS` winners only
 - Total = group + knockout played
+
+---
+
+## Penalty shootouts
+
+Knockout matches drawn after regulation are decided on penalties. The pipeline handles this end-to-end:
+
+- **Scraper** (`update_match_stats.py`) reads ESPN's `shootoutScore` for each team. When regulation is level and shootout scores exist, the winner is the shootout victor and a `pens` field (home-away order, e.g. `"3-4"`) is recorded. The shootout scores flip correctly when ESPN's home/away orientation differs from the fixture.
+- **Schema** — `knockout_results.json` entry gains an optional `pens` field; `winner` stays authoritative (team name). Matches decided in regulation simply omit `pens`.
+- **Display** — the score shows the shootout in parentheses beside each team, **everywhere a result appears**: bracket cards, video cards, the scrolling ticker (gold bar), and the match-stats panel header.
+
+```
+Netherlands (2) 1-1 (3) Morocco
+```
+
+A single helper, `fmtScoreWithPens(matchId, score)`, looks up the shootout from `KNOCKOUT_RESULTS` and formats it consistently. Per-goal running scores (goal feed / hero panel) intentionally show the score *at the moment of the goal* and do not append pens.
+
+- `winner` advances via `resolveKnockoutTeam('W74')` — unaffected by penalties
+- The Simulator overrides simulated rounds with **actual** completed results (`applyActual`), so eliminated teams drop out of R16+ and the real winner advances
 
 ---
 
@@ -255,8 +307,8 @@ Post-group-stage Elo (Jun 28 2026): Spain/Argentina 2144 · France 2123 · Engla
 // Data state
 console.table({
   matches:   MATCHES.length,                       // 72
-  goals:     GOALS.length,                         // 215
-  stats:     Object.keys(MATCH_STATS).length,      // 72 (group only)
+  goals:     GOALS.length,                         // 223
+  stats:     Object.keys(MATCH_STATS).length,      // 76 (group + M73–M76)
   knockout:  Object.keys(KNOCKOUT_RESULTS).length, // grows with results
   r32sched:  R32_SCHEDULE.length,                  // 16 (frozen)
   upcoming:  UPCOMING_FIXTURES.length,             // ≤16 (filtered)
