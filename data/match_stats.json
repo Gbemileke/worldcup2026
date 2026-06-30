@@ -4467,5 +4467,64 @@
         1
       ]
     ]
+  },
+  "M78": {
+    "home": "Ivory Coast",
+    "away": "Norway",
+    "score": "1-2",
+    "date": "Jun 30 - AT&T Stadium",
+    "poss": [
+      47.1,
+      52.9
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        9
+      ],
+      [
+        "Shots on Goal",
+        5,
+        4
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        6,
+        7
+      ],
+      [
+        "Saves",
+        1,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.1,
+        1.57
+      ],
+      [
+        "Yellow Cards",
+        0,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        2
+      ]
+    ]
   }
 }

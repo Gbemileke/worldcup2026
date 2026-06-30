@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-06-30 14:32 UTC -->
+<!-- build: 2026-06-30 19:47 UTC -->
 
 <html lang="en">
 <head>
@@ -1654,11 +1654,11 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 30, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">76 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">175 open play · 24 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">223</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.93 per match · 76 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">77 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">178 open play · 24 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">226</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.94 per match · 77 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">8</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 8 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">13</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 208</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">13</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 209</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -2363,8 +2363,12 @@ var GOALS = [
   {id:267, matchId:'M75', home:'Netherlands', away:'Morocco', hf:'', af:'', scorer:'I. Diop', flag:'', minute:91, type:'header', phase:'Round of 32', score:'1-1', desc:''},
   {id:268, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'K. Sano', flag:'', minute:29, type:'open-play', phase:'Round of 32', score:'0-1', desc:''},
   {id:269, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'Casemiro', flag:'', minute:56, type:'header', phase:'Round of 32', score:'1-1', desc:''},
-  {id:270, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'G. Martinelli', flag:'', minute:95, type:'open-play', phase:'Round of 32', score:'2-1', desc:''}
+  {id:270, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'G. Martinelli', flag:'', minute:95, type:'open-play', phase:'Round of 32', score:'2-1', desc:''},
+  {id:271, matchId:'M78', home:'Ivory Coast', away:'Norway', hf:'', af:'', scorer:'A. Nusa', flag:'', minute:39, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
+  {id:272, matchId:'M78', home:'Ivory Coast', away:'Norway', hf:'', af:'', scorer:'A. Diallo', flag:'', minute:74, type:'open-play', phase:'Group Stage', score:'1-1', desc:''},
+  {id:273, matchId:'M78', home:'Ivory Coast', away:'Norway', hf:'', af:'', scorer:'E. Haaland', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'1-2', desc:''}
 ];
+
 
 
 
@@ -2591,18 +2595,17 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jun 30', home:'France', away:'Sweden', time:'5:00 PM ET', venue:'MetLife Stadium, East Rutherford', group:'R32', matchId:'M77', round:'R32'},
-  {date:'Jun 30', home:'Ivory Coast', away:'Norway', time:'1:00 PM ET', venue:'AT&T Stadium, Dallas', group:'R32', matchId:'M78', round:'R32'},
-  {date:'Jun 30', home:'Mexico', away:'Ecuador', time:'9:00 PM ET', venue:'Estadio Azteca, Mexico City', group:'R32', matchId:'M79', round:'R32'},
-  {date:'Jul 1', home:'England', away:'DR Congo', time:'12:00 PM ET', venue:'Mercedes-Benz Stadium, Atlanta', group:'R32', matchId:'M80', round:'R32'},
-  {date:'Jul 1', home:'USA', away:'Bosnia', time:'8:00 PM ET', venue:'Levis Stadium, Santa Clara', group:'R32', matchId:'M81', round:'R32'},
-  {date:'Jul 1', home:'Belgium', away:'Senegal', time:'4:00 PM ET', venue:'Lumen Field, Seattle', group:'R32', matchId:'M82', round:'R32'},
-  {date:'Jul 2', home:'Portugal', away:'Croatia', time:'7:00 PM ET', venue:'BMO Field, Toronto', group:'R32', matchId:'M83', round:'R32'},
-  {date:'Jul 2', home:'Spain', away:'Austria', time:'3:00 PM ET', venue:'SoFi Stadium, Inglewood', group:'R32', matchId:'M84', round:'R32'},
-  {date:'Jul 2', home:'Switzerland', away:'Algeria', time:'11:00 PM ET', venue:'BC Place, Vancouver', group:'R32', matchId:'M85', round:'R32'},
-  {date:'Jul 3', home:'Argentina', away:'Cape Verde', time:'6:00 PM ET', venue:'Hard Rock Stadium, Miami', group:'R32', matchId:'M86', round:'R32'},
-  {date:'Jul 3', home:'Colombia', away:'Ghana', time:'9:30 PM ET', venue:'Arrowhead Stadium, Kansas City', group:'R32', matchId:'M87', round:'R32'},
-  {date:'Jul 3', home:'Australia', away:'Egypt', time:'2:00 PM ET', venue:'AT&T Stadium, Arlington', group:'R32', matchId:'M88', round:'R32'}
+  {date:'Jun 30', home:'France', away:'Sweden', time:'3PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jun 30', home:'Mexico', away:'Ecuador', time:'7PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 1', home:'England', away:'DR Congo', time:'10AM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 1', home:'Belgium', away:'Senegal', time:'2PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 1', home:'USA', away:'Bosnia', time:'6PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 2', home:'Spain', away:'Austria', time:'1PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 2', home:'Portugal', away:'Croatia', time:'5PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 2', home:'Switzerland', away:'Algeria', time:'9PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 3', home:'Australia', away:'Egypt', time:'12PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 3', home:'Argentina', away:'Cape Verde', time:'4PM CST', venue:'', group:'', matchId:'', round:'R32'},
+  {date:'Jul 3', home:'Colombia', away:'Ghana', time:'7:30PM CST', venue:'', group:'', matchId:'', round:'R32'}
 ];
 // ── R32_SCHEDULE: frozen list of all 16 R32 fixtures (never modified by update scripts)
 // Used by match analytics section so played matches always show as result cards.
@@ -2705,8 +2708,11 @@ var MATCH_STATS = {
   M73: {home:'S. Africa', away:'Canada', hf:'', af:'', score:'0-1', date:'Jun 28', poss:[44, 56], stats:[["Shot Attempts", 7, 14], ["Shots on Goal", 2, 5], ["Corner Kicks", 3, 7], ["Fouls", 13, 10], ["Saves", 4, 2]], xtra:[["xG", 0.6, 1.7], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
   M74: {home:'Germany', away:'Paraguay', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[72, 28], stats:[["Shot Attempts", 18, 6], ["Shots on Goal", 5, 3], ["Corner Kicks", 9, 3], ["Fouls", 11, 16], ["Saves", 2, 4]], xtra:[["xG", 1.9, 0.7], ["Yellow Cards", 1, 4], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
   M75: {home:'Netherlands', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[52, 48], stats:[["Shot Attempts", 12, 11], ["Shots on Goal", 4, 5], ["Corner Kicks", 5, 6], ["Fouls", 12, 14], ["Saves", 4, 3]], xtra:[["xG", 1.3, 1.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  M76: {home:'Brazil', away:'Japan', hf:'', af:'', score:'2-1', date:'Jun 29', poss:[67, 33], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Corner Kicks", 8, 2], ["Fouls", 9, 12], ["Saves", 1, 5]], xtra:[["xG", 1.72, 0.23], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]}
+  M76: {home:'Brazil', away:'Japan', hf:'', af:'', score:'2-1', date:'Jun 29', poss:[67, 33], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Corner Kicks", 8, 2], ["Fouls", 9, 12], ["Saves", 1, 5]], xtra:[["xG", 1.72, 0.23], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  M78: {home:'Ivory Coast', away:'Norway', hf:'', af:'', score:'1-2', date:'Jun 30 - AT&T Stadium', poss:[47.1, 52.9], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 4], ["Corner Kicks", 0, 0], ["Fouls", 6, 7], ["Saves", 1, 4]], xtra:[["xG", 2.1, 1.57], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]}
 };
+
+
 
 
 
@@ -5307,7 +5313,9 @@ var KNOCKOUT_RESULTS = {
   M74: {home:'Germany', away:'Paraguay', score:'1-1', pens:'3-4', winner:'Paraguay'},
   M75: {home:'Netherlands', away:'Morocco', score:'1-1', pens:'2-3', winner:'Morocco'},
   M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil'},
+  M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway'},
 };
+
 
 
 
