@@ -2695,5 +2695,41 @@
     "phase": "Round of 32",
     "score": "2-1",
     "desc": ""
+  },
+  {
+    "id": 271,
+    "matchId": "M78",
+    "home": "Ivory Coast",
+    "away": "Norway",
+    "scorer": "A. Nusa",
+    "minute": 39,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 272,
+    "matchId": "M78",
+    "home": "Ivory Coast",
+    "away": "Norway",
+    "scorer": "A. Diallo",
+    "minute": 74,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 273,
+    "matchId": "M78",
+    "home": "Ivory Coast",
+    "away": "Norway",
+    "scorer": "E. Haaland",
+    "minute": 86,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-2",
+    "desc": ""
   }
 ]
