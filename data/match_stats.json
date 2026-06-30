@@ -4408,5 +4408,64 @@
         1
       ]
     ]
+  },
+  "M75": {
+    "home": "Netherlands",
+    "away": "Morocco",
+    "score": "1-1",
+    "date": "Jun 30 - Estadio BBVA",
+    "poss": [
+      30,
+      70
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        6,
+        11
+      ],
+      [
+        "Shots on Goal",
+        2,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        18,
+        15
+      ],
+      [
+        "Saves",
+        5,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.86,
+        1.95
+      ],
+      [
+        "Yellow Cards",
+        0,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        0
+      ]
+    ]
   }
 }

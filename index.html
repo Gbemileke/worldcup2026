@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-06-30 02:18 UTC -->
+<!-- build: 2026-06-30 04:09 UTC -->
 
 <html lang="en">
 <head>
@@ -1654,11 +1654,11 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JUNE 30, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">75 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">174 open play · 23 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">221</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.95 per match · 75 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">76 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">175 open play · 24 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">223</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.93 per match · 76 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">8</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 8 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">13</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 203</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">13</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 204</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -2359,10 +2359,13 @@ var GOALS = [
   {id:263, matchId:'M73', home:'S. Africa', away:'Canada', hf:'', af:'', scorer:'S. Eustáquio', flag:'', minute:92, type:'open-play', phase:'Round of 32', score:'0-1', desc:''},
   {id:267, matchId:'M74', home:'Germany', away:'Paraguay', hf:'', af:'', scorer:'J. Enciso', flag:'', minute:42, type:'header', phase:'Group Stage', score:'1-0', desc:''},
   {id:268, matchId:'M74', home:'Germany', away:'Paraguay', hf:'', af:'', scorer:'K. Havertz', flag:'', minute:54, type:'header', phase:'Group Stage', score:'1-1', desc:''},
+  {id:269, matchId:'M75', home:'Netherlands', away:'Morocco', hf:'', af:'', scorer:'C. Gakpo', flag:'', minute:72, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
+  {id:270, matchId:'M75', home:'Netherlands', away:'Morocco', hf:'', af:'', scorer:'I. Diop', flag:'', minute:91, type:'header', phase:'Group Stage', score:'1-1', desc:''},
   {id:264, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'K. Sano', flag:'', minute:29, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
   {id:265, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'Casemiro', flag:'', minute:56, type:'header', phase:'Group Stage', score:'2-0', desc:''},
   {id:266, matchId:'M76', home:'Brazil', away:'Japan', hf:'', af:'', scorer:'G. Martinelli', flag:'', minute:91, type:'open-play', phase:'Group Stage', score:'2-1', desc:''}
 ];
+
 
 
 
@@ -2702,8 +2705,11 @@ var MATCH_STATS = {
   m72: {home:'Jordan', away:'Argentina', hf:'', af:'', score:'1-3', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 3, 4], ["Corner Kicks", 5, 2], ["Fouls", 7, 9], ["Saves", 1, 2]], xtra:[["xG", 1.3, 3.06], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
   M73: {home:'S. Africa', away:'Canada', hf:'', af:'', score:'0-1', date:'Jun 28', poss:[44, 56], stats:[["Shot Attempts", 7, 14], ["Shots on Goal", 2, 5], ["Corner Kicks", 3, 7], ["Fouls", 13, 10], ["Saves", 4, 2]], xtra:[["xG", 0.6, 1.7], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
   M74: {home:'Germany', away:'Paraguay', hf:'', af:'', score:'1-1', date:'Jun 29 - Gillette Stadium', poss:[75.6, 24.4], stats:[["Shot Attempts", 21, 7], ["Shots on Goal", 6, 3], ["Corner Kicks", 0, 0], ["Fouls", 18, 12], ["Saves", 2, 6]], xtra:[["xG", 2.73, 1.19], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 4, 1]]},
+  M75: {home:'Netherlands', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 30 - Estadio BBVA', poss:[30, 70], stats:[["Shot Attempts", 6, 11], ["Shots on Goal", 2, 5], ["Corner Kicks", 0, 0], ["Fouls", 18, 15], ["Saves", 5, 1]], xtra:[["xG", 0.86, 1.95], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
   M76: {home:'Brazil', away:'Japan', hf:'', af:'', score:'2-1', date:'Jun 29 - NRG Stadium', poss:[68.6, 31.4], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 4, 13], ["Saves", 1, 4]], xtra:[["xG", 2.91, 0.81], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 1, 0]]}
 };
+
+
 
 
 
@@ -5255,8 +5261,10 @@ var KNOCKOUT_RESULTS = {
   //   python update_wc.py --section knockout
   M73: {home:'S. Africa', away:'Canada', score:'0-1', winner:'Canada'},
   M74: {home:'Germany', away:'Paraguay', score:'1-1', winner:''},
+  M75: {home:'Netherlands', away:'Morocco', score:'1-1', winner:''},
   M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil'},
 };
+
 
 
 

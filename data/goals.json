@@ -2616,6 +2616,30 @@
     "desc": ""
   },
   {
+    "id": 269,
+    "matchId": "M75",
+    "home": "Netherlands",
+    "away": "Morocco",
+    "scorer": "C. Gakpo",
+    "minute": 72,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 270,
+    "matchId": "M75",
+    "home": "Netherlands",
+    "away": "Morocco",
+    "scorer": "I. Diop",
+    "minute": 91,
+    "type": "header",
+    "phase": "Group Stage",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
     "id": 264,
     "matchId": "M76",
     "home": "Brazil",
