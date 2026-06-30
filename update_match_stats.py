@@ -692,13 +692,17 @@ def fetch_upcoming(token, played_keys):
             if f"{home}|{away}" in played_keys or f"{away}|{home}" in played_keys: continue
             try:
                 dt    = datetime.datetime.fromisoformat(m['utcDate'].replace('Z','+00:00'))
-                cst   = dt-datetime.timedelta(hours=6)
-                date_s = f"Jun {cst.day}" if cst.month==6 else f"Jul {cst.day}"
-                h12   = cst.hour%12 or 12
-                ampm  = 'AM' if cst.hour<12 else 'PM'
-                mn    = f":{cst.minute:02d}" if cst.minute else ''
-                time_s = f"{h12}{mn}{ampm} CST"
-            except: date_s=m['utcDate'][:10]; time_s='?? CST'
+                # World Cup 2026 runs in summer → US Eastern is UTC-4 (EDT).
+                # The official schedule (ESPN/Yahoo/FIFA) lists every kickoff in ET,
+                # so we standardize on ET to match and to avoid the CST drift that
+                # repeatedly overwrote the hand-corrected fixture times.
+                et    = dt-datetime.timedelta(hours=4)
+                date_s = f"Jun {et.day}" if et.month==6 else f"Jul {et.day}"
+                h12   = et.hour%12 or 12
+                ampm  = 'AM' if et.hour<12 else 'PM'
+                mn    = f":{et.minute:02d}" if et.minute else ':00'
+                time_s = f"{h12}{mn} {ampm} ET"
+            except: date_s=m['utcDate'][:10]; time_s='?? ET'
             gr  = m.get('stage','')
             grp = gr.replace('GROUP_','') if 'GROUP_' in gr else ''
             # Determine round from football-data.org stage field
@@ -712,8 +716,39 @@ def fetch_upcoming(token, played_keys):
 
             upcoming.append({'date':date_s,'home':home,'away':away,'time':time_s,'group':grp,'round':rnd})
         if upcoming:
-            save('upcoming_fixtures.json', upcoming)
-            print(f"  Upcoming: {len(upcoming)} fixtures")
+            # Don't blindly overwrite the curated file. The committed
+            # upcoming_fixtures.json carries hand-verified ET times, venues, and
+            # matchIds that the football-data.org feed lacks. So we MERGE:
+            #   • keep every existing curated entry that hasn't been played yet
+            #   • only fall back to a freshly-built entry for a fixture we don't
+            #     already have on file
+            # This stops the scraper from clobbering correct times every cycle.
+            existing = load('upcoming_fixtures.json') or []
+            def _key(f):
+                return f"{sn(f.get('home',''))}|{sn(f.get('away',''))}"
+            existing_by_key = {_key(f): f for f in existing}
+
+            merged = []
+            seen = set()
+            # 1. Preserve curated entries still upcoming (not in played_keys)
+            for f in existing:
+                k = _key(f)
+                if k in played_keys or f"{sn(f.get('away',''))}|{sn(f.get('home',''))}" in played_keys:
+                    continue  # played — drop it
+                merged.append(f)
+                seen.add(k)
+            # 2. Add any genuinely new fixture from the feed we didn't already have
+            for f in upcoming:
+                k = _key(f)
+                if k in seen or k in played_keys:
+                    continue
+                if f"{f['away']}|{f['home']}" in played_keys:
+                    continue
+                merged.append(f)
+                seen.add(k)
+
+            save('upcoming_fixtures.json', merged)
+            print(f"  Upcoming: {len(merged)} fixtures (curated preserved, played removed)")
     except Exception as e:
         print(f"  Upcoming error: {e}")
 
