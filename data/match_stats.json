@@ -4703,5 +4703,64 @@
         4
       ]
     ]
+  },
+  "M82": {
+    "home": "Belgium",
+    "away": "Senegal",
+    "score": "3-2",
+    "date": "Jul 1 - Lumen Field",
+    "poss": [
+      52.2,
+      47.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        19
+      ],
+      [
+        "Shots on Goal",
+        5,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        22,
+        12
+      ],
+      [
+        "Saves",
+        3,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.35,
+        2.35
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        2
+      ]
+    ]
   }
 }

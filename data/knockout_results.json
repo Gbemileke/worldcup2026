@@ -48,5 +48,11 @@
     "away": "DR Congo",
     "score": "2-1",
     "winner": "England"
+  },
+  "M82": {
+    "home": "Belgium",
+    "away": "Senegal",
+    "score": "3-2",
+    "winner": "Belgium"
   }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-01 21:41 UTC -->
+<!-- build: 2026-07-01 23:34 UTC -->
 
 <html lang="en">
 <head>
@@ -1677,11 +1677,11 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 1, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">80 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">185 open play · 25 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">234</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 80 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">81 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">185 open play · 25 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">234</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.89 per match · 81 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">8</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 8 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">14</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 214</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">14</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 216</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Mbappé, Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -2647,6 +2647,7 @@ var GOALS = [
 
 
 
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2772,8 +2773,11 @@ var MATCH_STATS = {
   M77: {home:'France', away:'Sweden', hf:'', af:'', score:'3-0', date:'Jun 30 - MetLife Stadium', poss:[61, 39], stats:[["Shot Attempts", 25, 8], ["Shots on Goal", 12, 3], ["Corner Kicks", 0, 0], ["Fouls", 14, 10], ["Saves", 3, 9]], xtra:[["xG", 4.61, 1.24], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
   M78: {home:'Ivory Coast', away:'Norway', hf:'', af:'', score:'1-2', date:'Jun 30 - AT&T Stadium', poss:[47.1, 52.9], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 4], ["Corner Kicks", 0, 0], ["Fouls", 6, 7], ["Saves", 1, 4]], xtra:[["xG", 2.1, 1.57], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
   M79: {home:'Mexico', away:'Ecuador', hf:'', af:'', score:'2-0', date:'Jul 1 - Estadio Banorte', poss:[43.2, 56.8], stats:[["Shot Attempts", 15, 7], ["Shots on Goal", 3, 1], ["Corner Kicks", 0, 0], ["Fouls", 10, 14], ["Saves", 1, 1]], xtra:[["xG", 1.59, 0.63], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 0, 1]]},
-  M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]}
+  M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
+  M82: {home:'Belgium', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jul 1 - Lumen Field', poss:[52.2, 47.8], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 5, 5], ["Corner Kicks", 0, 0], ["Fouls", 22, 12], ["Saves", 3, 3]], xtra:[["xG", 2.35, 2.35], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]}
 };
+
+
 
 
 
@@ -5457,7 +5461,9 @@ var KNOCKOUT_RESULTS = {
   M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway'},
   M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico'},
   M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England'},
+  M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium'},
 };
+
 
 
 
