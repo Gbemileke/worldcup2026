@@ -4644,5 +4644,64 @@
         1
       ]
     ]
+  },
+  "M80": {
+    "home": "England",
+    "away": "DR Congo",
+    "score": "2-1",
+    "date": "Jul 1 - Mercedes-Benz Stadium",
+    "poss": [
+      59.7,
+      40.3
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        16,
+        7
+      ],
+      [
+        "Shots on Goal",
+        7,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        12
+      ],
+      [
+        "Saves",
+        1,
+        5
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.76,
+        0.91
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        4
+      ]
+    ]
   }
 }
