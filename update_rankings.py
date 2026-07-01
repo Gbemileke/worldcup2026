@@ -368,16 +368,25 @@ def compute_fifa_points(wc_results):
     return pts, pre_pts, pre_rank
 
 
-def sanity_check(fifa_pts):
+def sanity_check(fifa_pts, group_pts=None):
     """
     Compare computed FIFA pts against known reference values.
     Returns True if all within tolerance, False if something looks wrong.
     Aborts patching if False.
+
+    IMPORTANT: FIFA_REFERENCE is a frozen GROUP-STAGE snapshot (verified against
+    FIFA.com on Jun 29 2026, before any knockout match). As knockout games are
+    played, the live total (fifa_pts) legitimately grows past those references,
+    so we must validate against the GROUP-STAGE-ONLY recomputation (group_pts)
+    to check the calculation is still correct — not against the live total,
+    which would fail for every team the moment it plays a knockout match.
     """
+    compare = group_pts if group_pts is not None else fifa_pts
     ok = True
-    print(f"  Checking against {len(FIFA_REFERENCE)} reference values (Jun 29 2026):")
+    label = "group-stage only" if group_pts is not None else "live total"
+    print(f"  Checking against {len(FIFA_REFERENCE)} reference values (Jun 29 2026, {label}):")
     for team, ref in sorted(FIFA_REFERENCE.items()):
-        computed = fifa_pts.get(team)
+        computed = compare.get(team)
         if computed is None:
             print(f"    ⚠ {team}: not in computed data")
             continue
@@ -406,6 +415,11 @@ def get_fifa_points():
 
     pts, pre_pts, pre_rank = compute_fifa_points(wc_results)
 
+    # Group-stage-only recomputation for the sanity check (references are a
+    # frozen group-stage snapshot; the live `pts` also includes knockout deltas).
+    group_results = [r for r in wc_results if r.get("source") == "group"]
+    group_pts, _, _ = compute_fifa_points(group_results)
+
     print(f"  Top 5:")
     top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
     for name, p in top5:
@@ -415,7 +429,7 @@ def get_fifa_points():
         match_delta = p - pp
         print(f"    {name}: {p:.2f}  (vs Jun11 baseline: {diff:+.2f},  last match: {match_delta:+.2f})")
 
-    if not sanity_check(pts):
+    if not sanity_check(pts, group_pts):
         print("  ❌ Aborting — fix data then re-run")
         sys.exit(1)
 
