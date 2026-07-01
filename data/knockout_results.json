@@ -25,10 +25,22 @@
     "score": "2-1",
     "winner": "Brazil"
   },
+  "M77": {
+    "home": "France",
+    "away": "Sweden",
+    "score": "3-0",
+    "winner": "France"
+  },
   "M78": {
     "home": "Ivory Coast",
     "away": "Norway",
     "score": "1-2",
     "winner": "Norway"
+  },
+  "M79": {
+    "home": "Mexico",
+    "away": "Ecuador",
+    "score": "2-0",
+    "winner": "Mexico"
   }
 }
