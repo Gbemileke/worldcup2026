@@ -2697,6 +2697,42 @@
     "desc": ""
   },
   {
+    "id": 274,
+    "matchId": "M77",
+    "home": "France",
+    "away": "Sweden",
+    "scorer": "K. Mbapp\u00e9",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 275,
+    "matchId": "M77",
+    "home": "France",
+    "away": "Sweden",
+    "scorer": "B. Barcola",
+    "minute": 53,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 276,
+    "matchId": "M77",
+    "home": "France",
+    "away": "Sweden",
+    "scorer": "K. Mbapp\u00e9",
+    "minute": 74,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "3-0",
+    "desc": ""
+  },
+  {
     "id": 271,
     "matchId": "M78",
     "home": "Ivory Coast",

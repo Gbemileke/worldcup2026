@@ -4526,5 +4526,64 @@
         2
       ]
     ]
+  },
+  "M77": {
+    "home": "France",
+    "away": "Sweden",
+    "score": "3-0",
+    "date": "Jun 30 - MetLife Stadium",
+    "poss": [
+      61,
+      39
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        25,
+        8
+      ],
+      [
+        "Shots on Goal",
+        12,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        10
+      ],
+      [
+        "Saves",
+        3,
+        9
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        4.61,
+        1.24
+      ],
+      [
+        "Yellow Cards",
+        0,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        1
+      ]
+    ]
   }
 }
