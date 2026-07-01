@@ -4585,5 +4585,64 @@
         1
       ]
     ]
+  },
+  "M79": {
+    "home": "Mexico",
+    "away": "Ecuador",
+    "score": "2-0",
+    "date": "Jul 1 - Estadio Banorte",
+    "poss": [
+      43.2,
+      56.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        15,
+        7
+      ],
+      [
+        "Shots on Goal",
+        3,
+        1
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        14
+      ],
+      [
+        "Saves",
+        1,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.59,
+        0.63
+      ],
+      [
+        "Yellow Cards",
+        0,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        1
+      ],
+      [
+        "Offsides",
+        0,
+        1
+      ]
+    ]
   }
 }

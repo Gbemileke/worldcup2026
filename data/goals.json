@@ -2767,5 +2767,29 @@
     "phase": "Group Stage",
     "score": "1-2",
     "desc": ""
+  },
+  {
+    "id": 277,
+    "matchId": "M79",
+    "home": "Mexico",
+    "away": "Ecuador",
+    "scorer": "J. Qui\u00f1ones",
+    "minute": 22,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 278,
+    "matchId": "M79",
+    "home": "Mexico",
+    "away": "Ecuador",
+    "scorer": "R. Jim\u00e9nez",
+    "minute": 31,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
   }
 ]

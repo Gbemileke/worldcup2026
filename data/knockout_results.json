@@ -36,5 +36,11 @@
     "away": "Norway",
     "score": "1-2",
     "winner": "Norway"
+  },
+  "M79": {
+    "home": "Mexico",
+    "away": "Ecuador",
+    "score": "2-0",
+    "winner": "Mexico"
   }
 }
