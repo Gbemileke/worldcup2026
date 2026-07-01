@@ -587,13 +587,47 @@ def run_scraper():
 def validate_and_fix():
     import json
 
+    changed = False
+    errors = []
+    fixes  = []
+
+    # ── 0. Roster-driven auto-correction (runs FIRST) ─────────────────────────
+    # The authoritative squad roster (WC2026_Players.csv) knows each player's
+    # true country, so it can CORRECT scraping inversions (e.g. ESPN home/away
+    # flipped → M80) by rebuilding running scores from the scorers' real teams —
+    # not merely flag them. Running it first means every downstream check (goal
+    # balance, history-based #10, etc.) sees already-corrected data. Only safe,
+    # unambiguous matches are touched; the rebuilt final must match the official
+    # score, or the match is left alone and surfaced below.
+    print("  ── 0. Roster auto-correction ──")
+    try:
+        import validate_scorer_country as _vsc
+        _rep = _vsc.correct_goals(apply=True)
+        if _rep['corrected']:
+            _n = sum(len(c) for _, c in _rep['corrected'])
+            print(f"    ✔ Corrected {_n} goal score(s) across {len(_rep['corrected'])} "
+                  f"match(es) from the roster:")
+            for _mid, _changes in _rep['corrected']:
+                for _sc, _old, _new in _changes:
+                    print(f"        {_mid} {_sc}: {_old} → {_new}")
+            # Push corrected goals.json into the inline GOALS block so every
+            # check below (and the live page) sees the fix.
+            update_goals()
+        else:
+            print("    ✅ No corrections needed")
+        if _rep['skipped']:
+            print(f"    ⚠ {len(_rep['skipped'])} match(es) not auto-corrected (review):")
+            for _mid, _reason in _rep['skipped'][:10]:
+                print(f"        {_mid}: {_reason}")
+    except FileNotFoundError:
+        print("    ⚠ roster file not found — skipping auto-correction (non-blocking)")
+    except Exception as _e:
+        print(f"    ⚠ auto-correction unavailable ({_e}) — skipping (non-blocking)")
+
     html  = read_html()
     s0    = html.find('<script>') + 8
     e0    = html.find('</script>', s0)
     js    = html[s0:e0]
-    changed = False
-    errors = []
-    fixes  = []
 
     print("  ── 1. Parse MATCHES ──")
     ms = html.find("var MATCHES = ["); me = html.find("\n];", ms) + 3
@@ -808,6 +842,29 @@ def validate_and_fix():
     else:
         print(f"    ✅ All {len(_primary)} scorers consistent with their country")
 
+    # ── 11. Roster-backed scorer↔country verification ─────────────────────────
+    # Correction already ran in step 0. This is the final gate: anything the
+    # roster still disagrees with (couldn't be safely auto-corrected) is a hard
+    # error that blocks the push.
+    print("  ── 11. Scorer ↔ country consistency (roster-backed) ──")
+    try:
+        import validate_scorer_country as _vsc
+        _res = _vsc.validate()
+        if _res['mismatches']:
+            print(f"    ❌ {len(_res['mismatches'])} mismatch(es) the roster couldn't auto-correct:")
+            for _mid, _sc, _credited, _rc in _res['mismatches'][:10]:
+                print(f"        {_mid}: '{_sc}' credited to {_credited}, roster has {', '.join(_rc)}")
+            errors.append(f"ROSTER_SCORER_COUNTRY_MISMATCH: {[(m[0],m[1],m[2]) for m in _res['mismatches']]}")
+        else:
+            print(f"    ✅ All {_res['checked']} goals consistent with roster")
+        if _res['unmatched']:
+            _uniq = sorted({s for _, s in _res['unmatched']})
+            print(f"    ⚠ {len(_uniq)} scorer(s) not in roster (review, not blocking): {', '.join(_uniq[:8])}")
+    except FileNotFoundError:
+        print("    ⚠ roster file data/WC2026_Players.csv not found — skipping (non-blocking)")
+    except Exception as _e:
+        print(f"    ⚠ roster check unavailable ({_e}) — skipping (non-blocking)")
+
     # ── Write fixes ───────────────────────────────────────────────────────────
     if changed:
         write_html(html)
@@ -938,12 +995,23 @@ if __name__ == '__main__':
             print(f'Options: {list(SECTIONS.keys())}')
             sys.exit(1)
         print(f'\n[ {section} ]')
-        SECTIONS[section]()
+        _ok = SECTIONS[section]()
+        # Propagate a failing validation (or any section returning False) to the
+        # exit code, so a mismatch actually blocks the pipeline/push instead of
+        # only printing. Sections that return None are treated as success.
+        if _ok is False:
+            sys.exit(1)
     else:
         print(f'=== WC 2026 Full Update — {datetime.date.today()} ===\n')
+        _all_ok = True
         for name in SECTION_ORDER:
             print(f'\n[ {name} ]')
-            SECTIONS[name]()
+            _r = SECTIONS[name]()
+            if _r is False:
+                _all_ok = False
+        if not _all_ok:
+            print('\n❌ One or more sections failed validation — NOT safe to push.')
+            sys.exit(1)
         print('\n✅ Done. Commit and push:')
         print('   git add index.html data/ && git commit -m "update: matchday" && git push')
 

@@ -217,36 +217,43 @@ def derive_goal_teams(goals):
 
 # ── Validate ─────────────────────────────────────────────────────────────────
 def resolve_scorer_countries(scorer, by_short, by_last, by_shirt):
-    """Return the set of country keys this scorer name maps to in the roster."""
+    """Return the set of country keys this scorer name maps to in the roster.
+
+    The roster contains EVERY registered player, so a scorer that fails to
+    resolve is a name-normalization gap, not a missing player. The layered
+    matching below is designed so that gap approaches zero without per-player
+    aliases: exact short form, name-on-shirt, last-name, hyphen/space
+    insensitivity, multi-word surnames, single-name/no-initial forms, and
+    transliteration tolerance (collapsed doubled letters)."""
     s = scorer.strip()
     if s.endswith(' OG'):
         s = s[:-3].strip()
     key = norm(s)
 
-    # Explicit aliases for irreducible spelling differences between goals.json
-    # and the roster (single-name stars, transliteration variants). Maps the
-    # goals.json scorer (normalized) -> the roster country key directly.
-    ALIASES = {
-        'vinicius jr': 'brazil',
-        'm al-taamari': 'jordan',   # roster shirt ALTAMARI / last SULEIMAN
-    }
-    if key in ALIASES:
-        return {ALIASES[key]}
-
     def hyless(x):
         return x.replace('-', '').replace(' ', '')
+
+    def translit(x):
+        # collapse doubled letters so transliteration variants align
+        # (e.g. "altaamari" → "altamari", "mohammed"/"mohamed")
+        x = hyless(x)
+        out = []
+        for ch in x:
+            if not out or out[-1] != ch:
+                out.append(ch)
+        return ''.join(out)
 
     # 1. Exact "F. Lastname"
     if key in by_short:
         return by_short[key]
-    # 2. Name-on-shirt (handles single-name stars & where surname differs from shirt)
+    # 2. Name-on-shirt (single-name stars, or where surname differs from shirt)
     if key in by_shirt:
         return by_shirt[key]
-    # 3. Last-name fallback (after "F. ")
+    # 3. Last-name fallback (token after "F. ")
     last = norm(s.split('. ')[-1]) if '. ' in s else key
     if last in by_last:
         return by_last[last]
-    # 4. Hyphen/space-insensitive retry (Al-Amri vs ALAMRI, Al-Taamari vs ALTAMARI)
+    # 4. Hyphen/space-insensitive retry (Al-Amri vs ALAMRI)
     hl_last = hyless(last)
     for k, v in by_last.items():
         if hyless(k) == hl_last:
@@ -254,16 +261,35 @@ def resolve_scorer_countries(scorer, by_short, by_last, by_shirt):
     for k, v in by_shirt.items():
         if hyless(k) == hyless(key):
             return v
-    # 5. Multi-word surname in goals (e.g. "Holmgren Pedersen"): try each word
-    if '. ' in s:
-        tail = s.split('. ', 1)[1]
-        for w in tail.split():
-            wk = norm(w)
-            if wk in by_last:
-                return by_last[wk]
-            for k, v in by_last.items():
-                if hyless(k) == hyless(wk):
-                    return v
+    # 5. Try EVERY token of the scorer against the index — covers single-name /
+    #    no-initial forms like "Vinicius Jr." (tokens: "vinicius", "jr") and
+    #    "Trézéguet". Skip generic suffixes that aren't identifying.
+    _SKIP = {'jr', 'jnr', 'junior', 'ii', 'iii', 'i', 'de', 'da', 'do', 'el', 'al'}
+    tokens = [t for t in key.replace('.', ' ').split() if t and t not in _SKIP]
+    # try longest, most-specific tokens first
+    for t in sorted(tokens, key=len, reverse=True):
+        if len(t) < 3:
+            continue
+        if t in by_last:
+            return by_last[t]
+        if t in by_shirt:
+            return by_shirt[t]
+    # 6. Transliteration tolerance: collapse doubled letters, hyphen/space-free.
+    #    Resolves "Al-Taamari" (altaamari) → roster "ALTAMARI" (altamari).
+    t_key = translit(key)
+    for k, v in by_shirt.items():
+        if translit(k) == t_key:
+            return v
+    for k, v in by_last.items():
+        if translit(k) == t_key:
+            return v
+    for t in sorted(tokens, key=len, reverse=True):
+        if len(t) < 4:
+            continue
+        tt = translit(t)
+        for k, v in by_last.items():
+            if translit(k) == tt:
+                return v
     return set()
 
 
@@ -303,8 +329,159 @@ def validate(roster_path=ROSTER_CSV, goals_path=GOALS_JSON):
     }
 
 
+def _official_finals(data_dir=DATA_DIR):
+    """Load authoritative final scores keyed by matchId (lowercased).
+    Group stage from matches.json, knockout from knockout_results.json.
+    Used as a safety cross-check before applying any correction."""
+    finals = {}
+    for fname in ('matches.json', 'knockout_results.json'):
+        p = os.path.join(data_dir, fname)
+        if not os.path.exists(p):
+            continue
+        try:
+            data = json.load(open(p, encoding='utf-8'))
+        except Exception:
+            continue
+        items = data.values() if isinstance(data, dict) else data
+        for it in items:
+            mid = str(it.get('id') or it.get('matchId') or '').lower()
+            # dict-keyed files (knockout_results) — key is the id
+            if not mid and isinstance(data, dict):
+                continue
+            score = it.get('score', '')
+            if mid and score and '-' in str(score):
+                finals[mid] = score
+        # knockout_results.json is keyed by matchId at the top level
+        if isinstance(data, dict):
+            for k, it in data.items():
+                if isinstance(it, dict) and it.get('score'):
+                    finals[k.lower()] = it['score']
+    return finals
+
+
+def correct_goals(roster_path=ROSTER_CSV, goals_path=GOALS_JSON, apply=False):
+    """
+    Use the authoritative roster to REBUILD each match's running scores from the
+    scorers' true countries — correcting scraping inversions rather than merely
+    flagging them.
+
+    For every match, in minute order:
+      • normal goal  → the scorer's OWN country's side increments
+      • own goal     → the OTHER side increments (scorer concedes)
+    A match is only corrected when it is SAFE to do so:
+      • every scorer in the match resolves to exactly one roster country, and
+      • every resolved country is one of the match's two teams, and
+      • the rebuilt FINAL score matches the official final (matches.json /
+        knockout_results.json) when that final is known.
+    Matches that don't meet these are left untouched and reported for review.
+
+    Returns a report dict. Writes goals.json only when apply=True.
+    """
+    by_short, by_last, by_shirt, country_display = load_roster(roster_path)
+    goals = json.load(open(goals_path, encoding='utf-8'))
+    finals = _official_finals()
+
+    from collections import defaultdict
+    by_match = defaultdict(list)
+    order = {}
+    for i, g in enumerate(goals):
+        by_match[g['matchId']].append(g)
+        order[id(g)] = i
+
+    corrected_matches = []   # (matchId, [(scorer, old_score, new_score)])
+    skipped = []             # (matchId, reason)
+
+    for mid, gs in by_match.items():
+        gs_sorted = sorted(gs, key=lambda x: int(x.get('minute', 0)))
+        home = gs_sorted[0].get('home', '')
+        away = gs_sorted[0].get('away', '')
+        home_k, away_k = norm_country(home), norm_country(away)
+
+        # Resolve every scorer's country; bail if any is unresolvable/ambiguous
+        safe = True
+        resolved = []  # (goal, country_key or None, is_og)
+        for g in gs_sorted:
+            scorer = (g.get('scorer') or '').strip()
+            is_og = g.get('type') == 'own-goal' or scorer.endswith(' OG')
+            countries = resolve_scorer_countries(scorer, by_short, by_last, by_shirt)
+            ck = None
+            if len(countries) == 1:
+                ck = next(iter(countries))
+            elif len(countries) > 1:
+                # ambiguous: prefer one that is a team in THIS match
+                inter = countries & {home_k, away_k}
+                if len(inter) == 1:
+                    ck = next(iter(inter))
+            if ck is None or ck not in (home_k, away_k):
+                safe = False
+            resolved.append((g, ck, is_og))
+        if not safe:
+            skipped.append((mid, "unresolved/ambiguous scorer or country not in match"))
+            continue
+
+        # Rebuild running score by identity
+        h = a = 0
+        proposed = []
+        for g, ck, is_og in resolved:
+            if is_og:
+                scoring_home = (ck == away_k)   # OG by away player → home scores
+            else:
+                scoring_home = (ck == home_k)
+            if scoring_home: h += 1
+            else:            a += 1
+            proposed.append((g, f"{h}-{a}"))
+
+        # Safety cross-check against official final, if known
+        official = finals.get(mid.lower())
+        if official:
+            of = official.strip()
+            if f"{h}-{a}" != of:
+                skipped.append((mid, f"rebuilt final {h}-{a} != official {of}"))
+                continue
+
+        # Record changes
+        changes = [(g['scorer'], g.get('score', ''), ns)
+                   for g, ns in proposed if g.get('score', '') != ns]
+        if changes:
+            corrected_matches.append((mid, changes))
+            if apply:
+                for g, ns in proposed:
+                    g['score'] = ns
+
+    if apply and corrected_matches:
+        json.dump(goals, open(goals_path, 'w', encoding='utf-8'),
+                  indent=2, ensure_ascii=False)
+
+    return {'corrected': corrected_matches, 'skipped': skipped, 'applied': apply}
+
+
 def main():
     strict = '--strict' in sys.argv
+    do_fix = '--fix' in sys.argv
+
+    # ── Correction mode ───────────────────────────────────────────────────────
+    if do_fix:
+        try:
+            rep = correct_goals(apply=True)
+        except (FileNotFoundError, ValueError) as e:
+            print(f"❌ {e}")
+            sys.exit(2)
+        print("── Roster-driven score correction ──")
+        if rep['corrected']:
+            print(f"   ✅ Corrected {len(rep['corrected'])} match(es):")
+            for mid, changes in rep['corrected']:
+                print(f"      {mid}:")
+                for scorer, old, new in changes:
+                    print(f"         {scorer}: {old} → {new}")
+        else:
+            print("   ✅ Nothing to correct — all running scores already match the roster")
+        if rep['skipped']:
+            print(f"\n   ⚠ {len(rep['skipped'])} match(es) left untouched (need review):")
+            for mid, reason in rep['skipped']:
+                print(f"      {mid}: {reason}")
+        # After fixing, run a normal validation to confirm clean
+        print()
+
     try:
         res = validate()
     except (FileNotFoundError, ValueError) as e:
@@ -320,6 +497,8 @@ def main():
         for mid, scorer, credited, roster_c in res['mismatches']:
             print(f"      {mid}: '{scorer}' credited to {credited}, "
                   f"but roster has them in {', '.join(roster_c)}")
+        if not do_fix:
+            print("\n   → run with --fix to auto-correct running scores from the roster")
     else:
         print("   ✅ No country mismatches")
 
