@@ -9,16 +9,16 @@ Live analytics, interactive bracket simulator, and match statistics for the 2026
 
 ## What it does
 
-A single-page app (~367KB, zero dependencies, zero frameworks) with six tabs:
+A single-page app (~390KB, zero dependencies, zero frameworks) with six tabs:
 
 | Tab | Content |
 |---|---|
 | **Highlights** | Live goal feed · filters by type/group · scorer hero panel · FIFA.com links |
 | **Videos** | Match video cards linking to FIFA highlight pages |
-| **Analytics** | snapshot cards (incl. penalties) · collapsible stage sections · match stats panel inside each section |
-| **Simulator** | Model-driven R32→Final simulation · Top 4 bar · adjustable weights · quick presets |
+| **Analytics** | snapshot cards (incl. penalties + all-time record tracker) · collapsible stage sections · match stats panel inside each section |
+| **Simulator** | Model-driven R32→Final simulation · Top 4 bar · adjustable weights · quick presets · concluded matches show a frozen result with a **prediction right/wrong** banner |
 | **Groups** | Match predictor with Consensus Pick · 12 group cards with live standings + qualification badges |
-| **Bracket** | Interactive knockout bracket — pick every match, AI-fill, download PDF |
+| **Bracket** | Interactive knockout bracket — pick every match, AI-fill, download PDF · **concluded matches are locked** to their real result (score shown, winner highlighted, uneditable) and their winner auto-advances |
 
 ---
 
@@ -27,9 +27,9 @@ A single-page app (~367KB, zero dependencies, zero frameworks) with six tabs:
 | Metric | Value |
 |---|---|
 | Group stage matches | 72 / 72 complete (locked) |
-| Match stats | 76 / 76 complete (72 group + M73–M76 knockout) |
-| Goals recorded | 223 (all balanced against scores) |
-| Knockout results | M73–M76 recorded (R32 in progress). Auto-populated from ESPN · manual fallback via `add_result.py` |
+| Match stats | 80 / 80 complete (72 group + M73–M80 knockout) |
+| Goals recorded | 234 (all balanced against scores) |
+| Knockout results | M73–M80 recorded (R32 in progress). Auto-populated from ESPN · manual fallback via `add_result.py` |
 | Penalty shootouts | M74 (Paraguay 4-3) · M75 (Morocco 3-2) — stored as `pens` field, shown as `(2) 1-1 (3)` everywhere |
 | Elo ratings | Post-group-stage (Jun 28 2026) — Spain/Argentina 2144, France 2123 |
 | FIFA points | Jun 11 2026 baseline + WC delta — Argentina 1907.40 |
@@ -42,6 +42,10 @@ A single-page app (~367KB, zero dependencies, zero frameworks) with six tabs:
 | M74 | Germany 1-1 Paraguay | **Paraguay win 4-3 on pens** |
 | M75 | Netherlands 1-1 Morocco | **Morocco win 3-2 on pens** |
 | M76 | Brazil 2-1 Japan | Sano (JPN), Casemiro + Martinelli (BRA) |
+| M77 | France 3-0 Sweden | Mbappé 2, incl. one from the spot |
+| M78 | Ivory Coast 1-2 Norway | Norway advance |
+| M79 | Mexico 2-0 Ecuador | Mexico advance |
+| M80 | England 2-1 DR Congo | Cipenga 7' (DRC), Kane 75'+86' (ENG) |
 
 ---
 
@@ -49,7 +53,7 @@ A single-page app (~367KB, zero dependencies, zero frameworks) with six tabs:
 
 ```
 worldcup2026/
-├── index.html                 ← Full app (~367KB single file)
+├── index.html                 ← Full app (~390KB single file)
 ├── update_wc.py               ← ONE-STOP update script (use this)
 ├── update_site.py             ← Lower-level HTML patcher (called by update_wc.py)
 ├── update_match_stats.py      ← ESPN scraper for scores / goals / stats (+ penalty shootouts)
@@ -60,8 +64,8 @@ worldcup2026/
 ├── archive/
 │   └── worldcup-goals.old.html ← Retired earlier single-file version (kept for reference)
 └── data/
-    ├── goals.json             ← 223 goals — scorer, minute, type, sequence
-    ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta) — 76 entries
+    ├── goals.json             ← 234 goals — scorer, minute, type, sequence
+    ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta) — 80 entries
     ├── knockout_results.json  ← R32→Final results (+ optional pens field) — ground truth
     ├── matches.json           ← 72 group stage matches + ESPN IDs (ground truth for rankings)
     ├── team_data.json         ← Elo, FIFA pts, form, qual record, squad depth (150 teams)
@@ -116,9 +120,11 @@ python update_wc.py --section stamp        # refresh build timestamp
 
 ## Validators
 
-### Built-in validator (`update_wc.py --section validate`)
+### Built-in pipeline (`update_wc.py --section validate`)
 
-Runs 10 checks and auto-fixes what it can. Runs automatically inside `add_result.py` and GitHub Actions before every push.
+Runs a **roster-driven auto-correction step first**, then 11 integrity checks. Runs automatically inside `add_result.py` and GitHub Actions before every push. **Validation failures now block the push** (the section returns a non-zero exit code — previously the return value was ignored and failures shipped silently).
+
+**Step 0 — roster auto-correction (self-healing).** Before any check runs, the pipeline rebuilds each match's running scores from the scorers' true countries (from `data/WC2026_Players.csv`) and writes the fix to `goals.json` + regenerates the inline `GOALS` in `index.html`. This *corrects* scraping inversions rather than only flagging them — e.g. an ESPN home/away flip that credited a DR Congo goal to England is silently repaired before it reaches the site. Only safe matches are touched: every scorer must resolve to exactly one roster country that is one of the two teams, **and** the rebuilt final must match the official score; otherwise the match is left alone and surfaced for review.
 
 | Check | Auto-fix |
 |---|---|
@@ -131,22 +137,30 @@ Runs 10 checks and auto-fixes what it can. Runs automatically inside `add_result
 | KNOCKOUT_RESULTS winner in [home, away] | No — manual |
 | goals.json in sync with index.html | No — run `--section goals` |
 | Sequential goal IDs (gaps are informational only) | — informational |
-| **Scorer ↔ country consistency (history-based)** | No — manual |
+| Scorer ↔ country consistency (history-based) | No — manual |
+| **Scorer ↔ country consistency (roster-backed, #11)** | **Yes — Step 0 corrects; #11 is the final gate** |
 
-The scorer↔country check derives each scorer's country from running-score deltas and flags any goal crediting a known scorer to a different country. **Limitation:** it can only catch a player mis-credited *after* they've scored correctly before — it cannot catch a brand-new scorer's first goal being mis-keyed. That gap is covered by the roster-backed validator below.
+The history-based check (#10) derives each scorer's country from running-score deltas; its blind spot is that it only catches a player mis-credited *after* they've scored correctly before. Check #11 (roster-backed) has no such blind spot and also acts as the hard gate: anything Step 0 could not safely auto-correct is a blocking error.
 
-### Roster-backed validator (`validate_scorer_country.py`)
+### Roster-backed corrector (`validate_scorer_country.py`)
 
-A stronger, standalone check that uses the **official squad roster** (`data/WC2026_Players.csv`, `COUNTRY` + `PLAYER_NAME` columns) instead of goal history. Because it knows every player's real country up front, it **also catches a brand-new scorer's first goal** being credited to the wrong team — the class of bug the history-based check misses (e.g. a Japan player's goal credited to Brazil).
+Uses the **official squad roster** (`data/WC2026_Players.csv`, `COUNTRY` + `PLAYER_NAME` columns), which contains every registered player. Because it knows every player's real country up front, it catches — and corrects — even a brand-new scorer's first goal being credited to the wrong team, the class of bug the history-based check misses.
 
 ```bash
-python validate_scorer_country.py            # report
-python validate_scorer_country.py --strict   # exit 1 on any mismatch (for CI / pre-push)
+python validate_scorer_country.py            # report mismatches
+python validate_scorer_country.py --strict   # exit 1 on any mismatch (CI / pre-push)
+python validate_scorer_country.py --fix      # rebuild running scores from the roster
 ```
 
-How it matches: derives `F. Lastname` from the roster, with full **case + accent normalization**, compound-surname handling (matches each word of `VARGAS MARTINEZ`), hyphen/spacing tolerance (`Al-Amri` ↔ `ALAMRI`), name-on-shirt fallback, country-name aliases (`IR Iran` → Iran, `Cabo Verde` → Cape Verde), and a small explicit alias map for irreducible spelling differences (`Vinicius Jr.`, `M. Al-Taamari`). Roster file is read as cp1252/UTF-8 and tab- or comma-delimited automatically.
+**Correction (`--fix`, and Step 0 of the pipeline):** for each match, rebuilds the running score from the scorers' true countries — a normal goal increments the scorer's own country's side, an own goal the opposite side. Applied only when every scorer resolves unambiguously to one of the match's two teams and the rebuilt final equals the official score (from `matches.json` / `knockout_results.json`). Idempotent, and it self-heals ESPN home/away inversions.
 
-On its first run against the real roster it caught two genuine attribution bugs — **m39 (Pina, Uruguay-Cape Verde)** and **m40 (Surman, NZ-Egypt)** — where the home/away running scores were inverted.
+**Name matching is rule-based and alias-free.** Because the roster holds every registered player, a miss is a normalization gap, not a missing player. Matching layers: case + accent normalization, compound-surname handling (matches each word of `VARGAS MARTINEZ`), hyphen/spacing tolerance (`Al-Amri` ↔ `ALAMRI`), name-on-shirt fallback, **every-token matching** for single-name / no-initial forms (`Vinicius Jr.`), and **transliteration tolerance** that collapses doubled letters (`Al-Taamari` ↔ `ALTAMARI`). The two previous hardcoded aliases were removed — both now resolve by rule, and all current scorers resolve with zero unmatched. Country-name aliases (`IR Iran` → Iran, `Congo DR`/`Cabo Verde` → DR Congo / Cape Verde) are handled too. Roster file is read as cp1252/UTF-8 and tab- or comma-delimited automatically.
+
+On its first run it caught two genuine attribution bugs — **m39 (Pina, Uruguay↔Cape Verde)** and **m40 (Surman, NZ↔Egypt)** — and later self-healed a live one: **M80**, where an ESPN orientation flip credited Brian Cipenga's DR Congo goal to England.
+
+### Scraper orientation fix (`update_match_stats.py`)
+
+Root-cause defense so inversions aren't produced in the first place: `assign_goals` now anchors the running score to team **identity**, never to ESPN's positional home/away. It detects ESPN's orientation once per match from any name-resolved goal, then advances each side by identity — so a flipped feed no longer inverts the scoreline. The roster corrector remains the safety net if anything still slips through.
 
 ---
 
@@ -174,12 +188,24 @@ Six sections stack vertically. Cards are identical to the original design (flag 
 The "Matches Played" snapshot card shows a live breakdown:
 
 ```
-76 of 104   72 group · 4 R32 · 0 R16 · 0 QF · 0 SF · 0 3rd · 0 Final
+80 of 104   72 group · 8 R32 · 0 R16 · 0 QF · 0 SF · 0 3rd · 0 Final
 ```
 
 - Group count is capped at m1–m72 (knockout matches written to MATCH_STATS by ESPN are excluded)
 - Knockout count reads from `KNOCKOUT_RESULTS` winners only
 - Total = group + knockout played
+
+---
+
+## All-time record scorer card
+
+A snapshot card (`stat-alltime`) tracks the all-time World Cup scoring record (Klose, 16) and who has passed it. Each contender's total = pre-2026 career WC goals + goals scored in 2026 (tallied live from `GOALS`). When one or more players pass 16 it flashes **NEW RECORD!** and lists them highest-first, with the current record holder **bolded**, e.g.:
+
+```
+NEW RECORD!  L. Messi 19 (6 in 2026) · K. Mbappé 18 (6 in 2026)  Passed Klose (16)
+```
+
+The list, totals, and "Passed Klose (16)" note update automatically as goals are scored.
 
 ---
 
@@ -236,10 +262,18 @@ RESULT_OVERRIDES = {
 
 ## Bracket simulator
 
-Follows the **official FIFA bracket** (M73–M104) exactly:
+There are two bracket views. The **Simulator tab** (`renderMatchupCard`) shows model-vs-market prediction cards. The **Bracket tab** (`bsimSlot` / `bsimRender`) is the interactive pick-every-match bracket with AI Fill, Reset, and PDF export. Both follow the **official FIFA bracket** (M73–M104) exactly.
 
-- `runSimulation()` resolves each round via `(BSIM_R16||[]).map()` — `fH:'W74'` means home = winner of M74
-- `bsimAiFill()` propagates picks through correct slots at every stage (R32→R16→QF→SF→FINAL)
+**Concluded-match locking (both views).** A match is "concluded" when it has a `KNOCKOUT_RESULTS` entry.
+
+- **Bracket tab:** concluded slots render **locked** — real teams, real score (with shootout as `1 (3)` / `1 (4)`), winner highlighted, a single lock icon on the header, and **not clickable**. Three guards enforce it: the locked card has no click handler, `bsimOpenModal` refuses to open, and `bsimPick` rejects the pick. The real winner is forced and cascades into the next round (`bsimApplyActual`), and downstream matches stay editable until they too conclude — so the user can complete the rest.
+- **Simulator tab:** a concluded card keeps its full prediction (probability bars, model %, market %) and adds a **FINAL banner stating whether the prediction was right (green ✓) or wrong (red ✗)** vs the actual winner. The result is frozen — re-simulating only re-rolls the unplayed matches.
+
+**Engine notes:**
+
+- `runSimulation()` resolves each round via `(BSIM_R16||[]).map()` — `fH:'W74'` means home = winner of M74; `applyActual` overrides simulated rounds with real `KNOCKOUT_RESULTS`
+- `bsimAiFill()` / `bsimAiFillSilent()` **respect concluded results** — they lock real winners first and only predict the unplayed matches (so an eliminated team never advances)
+- **Reset** (`bsimReset`) clears every pick — AI Prefill, AI Fill, and user picks — back to a blank bracket, keeping only concluded matches locked, so you start predictions from scratch
 - `bsimEnforceIntegrity()` called after AI fill to catch any slot inconsistencies
 - PDF: html2canvas direct capture of live bracket, A3 landscape, centred both axes
 
@@ -307,8 +341,8 @@ Post-group-stage Elo (Jun 28 2026): Spain/Argentina 2144 · France 2123 · Engla
 // Data state
 console.table({
   matches:   MATCHES.length,                       // 72
-  goals:     GOALS.length,                         // 223
-  stats:     Object.keys(MATCH_STATS).length,      // 76 (group + M73–M76)
+  goals:     GOALS.length,                         // 234
+  stats:     Object.keys(MATCH_STATS).length,      // 80 (group + M73–M80)
   knockout:  Object.keys(KNOCKOUT_RESULTS).length, // grows with results
   r32sched:  R32_SCHEDULE.length,                  // 16 (frozen)
   upcoming:  UPCOMING_FIXTURES.length,             // ≤16 (filtered)
