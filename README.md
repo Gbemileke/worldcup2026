@@ -57,7 +57,8 @@ worldcup2026/
 ├── update_wc.py               ← ONE-STOP update script (use this)
 ├── update_site.py             ← Lower-level HTML patcher (called by update_wc.py)
 ├── update_match_stats.py      ← ESPN scraper for scores / goals / stats (+ penalty shootouts)
-├── update_rankings.py         ← Elo + FIFA pts + Polymarket updater
+├── update_rankings.py         ← Daily: Elo + Polymarket odds (+ FIFA) updater
+├── update_fifa.py             ← FIFA ranking only, results-driven (run per match)
 ├── add_result.py              ← Manual fallback: one command to record + deploy a result
 ├── validate_scorer_country.py ← Roster-backed scorer↔country validator (uses WC2026_Players.csv)
 ├── fix_rescrape_match.py       ← One-time helper: clear a match's goals for a clean re-scrape
@@ -80,13 +81,13 @@ worldcup2026/
 
 ### Type 1 — Automatic (GitHub Actions)
 
-Runs on a precise schedule — **3 hours after each match kickoff** so the match is always finished when the action fires. Also has a `*/6` safety net for AET/delay overruns.
+Polls **every 30 minutes** during tournament hours (plus a `*/6` safety net). It's result-driven, not clock-driven: the scraper only records matches ESPN marks completed, and the run pushes only when data changed — so the site updates shortly after each match concludes, with no timezone math.
 
 ```
-ESPN scrape → auto-knockout → validate → goals → stats → knockout → upcoming → form → snapshot → stamp → push
+ESPN scrape → auto-knockout → validate → goals → stats → knockout → FIFA ranking → upcoming → form → snapshot → stamp → push
 ```
 
-The `auto-knockout` step reads `match_stats.json` for completed knockout scores and writes them to `knockout_results.json` automatically. Your manually recorded results are **never overwritten**.
+The `auto-knockout` step reads `match_stats.json` for completed knockout scores and writes them to `knockout_results.json` automatically. Your manually recorded results are **never overwritten**. The `FIFA ranking` step runs `update_fifa.py` so FIFA points refresh in the same cycle a result is recorded (Elo + odds stay on the daily job).
 
 ### Type 2 — You (after each knockout match)
 
@@ -228,35 +229,41 @@ A single helper, `fmtScoreWithPens(matchId, score)`, looks up the shootout from 
 
 ---
 
-## Rankings updater (`update_rankings.py`)
+## Rankings updaters
+
+Rankings are split by what drives them: **FIFA points are derived from match results**, so they refresh the moment a result is recorded; **Elo and Polymarket odds are external feeds**, so they refresh once daily.
+
+### `update_fifa.py` — FIFA ranking, results-driven
+
+Runs inside `auto-update.yml` after each result is recorded. Recomputes the FIFA/Coca-Cola World Ranking from the frozen Jun 11 2026 baseline plus every verified WC result, and patches **only** the FIFA fields (`fifaPts`, `fifaPtsDelta`, `fifaRankDelta`) into `index.html` and `team_data.json` — it never touches Elo or `marketPct`. The SUM computation itself is imported from `update_rankings.py`, so there is one source of truth for the maths.
+
+The calculation implements the official FIFA **SUM** formula (`P = Pbefore + I·(W − We)`) including the conditions that specifically affect knockout matches:
+
+- **Match importance I** is stage-aware: `I=50` for group stage and knockout rounds up to the QF, `I=60` from the QF stage onwards (per the FIFA spec).
+- **Penalty shootouts** are scored specially: the PSO winner gets `W=0.75` ("half a win"), the PSO loser `W=0.5` (a draw) — **not** a normal 1.0/0.0. A win in regulation or extra time (no shootout) is a normal win.
+- **Knock-out no-loss protection:** in a knockout round, if `(W − We) < 0` the team keeps its points (`P = Pbefore`). Teams don't lose ranking points for a knockout defeat.
+- **Rank delta** is the real change in position, `pre_rank − current_rank` (positive = climbed). A card's arrow direction follows this; a previous bug wrote the raw pre-match rank (always positive), so every card wrongly showed an up arrow.
+
+`python update_fifa.py --check` does a dry run (compute + print, no write).
+
+### `update_rankings.py` — Elo + odds (+ FIFA), daily
 
 Runs daily at 06:00 UTC via `daily-rankings.yml`. Updates:
 
-- **Elo** — live from eloratings.net (via footballratings.org), falls back to hardcoded post-group-stage values (Jun 28 2026) if live fetch fails
-- **FIFA pts** — frozen at Jun 11 2026 per FIFA (next update Jul 20). WC match delta applied using the FIFA Elo formula (I=50)
+- **Elo** — live from eloratings.net (via footballratings.org), falls back to hardcoded post-group-stage values (Jun 28 2026) if the live fetch fails
+- **FIFA pts** — recomputed via the same SUM logic `update_fifa.py` uses (harmless overlap; keeps the daily run self-contained)
 - **Polymarket** — live win probabilities from gamma-api.polymarket.com
 
 ### Rankings validator (built-in)
 
-`WC_RESULTS` is **never hardcoded**. It is built dynamically at runtime from:
+The result set fed to the calculator is **never hardcoded**. It is built dynamically at runtime from:
 
 - `data/matches.json` → group stage (id ≤ 72, valid score required)
-- `data/knockout_results.json` → R32 through Final
+- `data/knockout_results.json` → R32 through Final (each entry may carry an optional `pens` field, which flags a PSO for the special W-values above)
 
-Before calculating, `validate_wc_results()` checks:
-- No duplicate match entries
-- All team names recognisable (warns on unknown teams)
-- All results are 0.0 / 0.5 / 1.0 (valid Elo values)
-- Validation failure = `sys.exit(1)` — never silently wrong
+Before calculating, `validate_results()` checks for duplicate match entries, unrecognised team names (warns), and invalid result values — and `sys.exit(1)`s on failure, so bad data is never patched. A **sanity check** then confirms the recomputed group-stage points still match a frozen Jun 29 reference within ±3 pts.
 
-**Idempotent:** running the script 5× gives the same result as running it once. AET/penalty draws are handled via `RESULT_OVERRIDES` dict — explicit and auditable.
-
-```python
-# To record a penalty shootout result:
-RESULT_OVERRIDES = {
-    ("Argentina", "France"): 1.0,  # Argentina won on pens after 3-3 AET
-}
-```
+**Idempotent:** both scripts rebuild from the frozen baseline + all verified results every run, so running either one repeatedly gives the same answer as running it once — safe to run on every auto-update cycle.
 
 ---
 
@@ -293,10 +300,12 @@ There are two bracket views. The **Simulator tab** (`renderMatchupCard`) shows m
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| `auto-update.yml` | 33 match-timed crons + `*/6` safety net | Scrape → auto-knockout → validate → sync all sections → push |
-| `daily-rankings.yml` | 06:00 UTC daily | Update Elo, FIFA pts delta, Polymarket odds |
+| `auto-update.yml` | Polls every 30 min during tournament hours + `*/6` safety net | Scrape → auto-knockout → validate → sync → **refresh FIFA ranking** → push |
+| `daily-rankings.yml` | 06:00 UTC daily | Update Elo + Polymarket odds (and recompute FIFA) |
 
-Crons fire exactly **3 hours after each match kickoff** (converted to UTC). The `*/6` fallback catches AET/penalty overruns.
+**Result-driven, not clock-driven.** `auto-update.yml` used to carry ~33 hand-computed per-match crons (each needing the right EST/EDT offset and a guess about when extra-time matches finish). It now simply **polls every 30 minutes** during the active window and self-gates: the scraper only records matches ESPN marks completed (`status.state == 'post'`), and the commit step pushes only when data actually changed — so the site updates shortly after each match concludes, with no timezone math and no feed-lag gamble. An extra-time/penalty match is picked up on the next poll once ESPN posts the final.
+
+**FIFA refresh is part of the match cycle.** Because FIFA points are derived from results, `auto-update.yml` runs `update_fifa.py` right after recording a result, so the ranking is never stale relative to the score. Elo and odds — external feeds — stay on the daily job.
 
 ---
 
@@ -394,4 +403,4 @@ git pull origin main --no-rebase && git push origin main
 | PDF export | jsPDF + html2canvas (CDN, deferred) |
 | Flags | flagcdn.com |
 | Charts | Pure SVG/HTML — no chart library |
-| CI/CD | GitHub Actions — free tier, 33 match-timed triggers |
+| CI/CD | GitHub Actions — free tier, result-driven 30-min polling + daily rankings |
