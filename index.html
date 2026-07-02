@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-02 01:57 UTC -->
+<!-- build: 2026-07-02 03:09 UTC -->
 
 <html lang="en">
 <head>
@@ -1677,11 +1677,11 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 2, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">81 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">188 open play · 26 headers · 9 penalties · 11 OGs · 5 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">239</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.95 per match · 81 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">82 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">189 open play · 26 headers · 9 penalties · 11 OGs · 6 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">241</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.94 per match · 82 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">9</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 9 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">14</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 216</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">15</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 217</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Mbappé, Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -2414,12 +2414,15 @@ var GOALS = [
   {id:279, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'B. Cipenga', flag:'', minute:7, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
   {id:280, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'H. Kane', flag:'', minute:75, type:'header', phase:'Group Stage', score:'1-1', desc:''},
   {id:281, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'H. Kane', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
+  {id:287, matchId:'M81', home:'USA', away:'Bosnia', hf:'', af:'', scorer:'F. Balogun', flag:'', minute:45, type:'open-play', phase:'Group Stage', score:'1-0', desc:''},
+  {id:288, matchId:'M81', home:'USA', away:'Bosnia', hf:'', af:'', scorer:'M. Tillman', flag:'', minute:82, type:'free-kick', phase:'Group Stage', score:'2-0', desc:''},
   {id:282, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'H. Diarra', flag:'', minute:25, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
   {id:283, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'I. Sarr', flag:'', minute:51, type:'open-play', phase:'Group Stage', score:'0-2', desc:''},
   {id:284, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'R. Lukaku', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'1-2', desc:''},
   {id:285, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'Y. Tielemans', flag:'', minute:89, type:'header', phase:'Group Stage', score:'2-2', desc:''},
   {id:286, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'Y. Tielemans', flag:'', minute:121, type:'penalty', phase:'Group Stage', score:'3-2', desc:''}
 ];
+
 
 
 
@@ -2783,8 +2786,11 @@ var MATCH_STATS = {
   M78: {home:'Ivory Coast', away:'Norway', hf:'', af:'', score:'1-2', date:'Jun 30 - AT&T Stadium', poss:[47.1, 52.9], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 4], ["Corner Kicks", 0, 0], ["Fouls", 6, 7], ["Saves", 1, 4]], xtra:[["xG", 2.1, 1.57], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
   M79: {home:'Mexico', away:'Ecuador', hf:'', af:'', score:'2-0', date:'Jul 1 - Estadio Banorte', poss:[43.2, 56.8], stats:[["Shot Attempts", 15, 7], ["Shots on Goal", 3, 1], ["Corner Kicks", 0, 0], ["Fouls", 10, 14], ["Saves", 1, 1]], xtra:[["xG", 1.59, 0.63], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 0, 1]]},
   M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
+  M81: {home:'USA', away:'Bosnia', hf:'', af:'', score:'2-0', date:'Jul 2 - Levi\'s Stadium', poss:[48.4, 51.6], stats:[["Shot Attempts", 8, 10], ["Shots on Goal", 2, 3], ["Corner Kicks", 0, 0], ["Fouls", 7, 13], ["Saves", 3, 0]], xtra:[["xG", 0.96, 1.34], ["Yellow Cards", 0, 1], ["Red Cards", 1, 0], ["Offsides", 3, 0]]},
   M82: {home:'Belgium', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jul 1 - Lumen Field', poss:[52.2, 47.8], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 5, 5], ["Corner Kicks", 0, 0], ["Fouls", 22, 12], ["Saves", 3, 3]], xtra:[["xG", 2.35, 2.35], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]}
 };
+
+
 
 
 
@@ -5476,8 +5482,10 @@ var KNOCKOUT_RESULTS = {
   M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway'},
   M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico'},
   M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England'},
+  M81: {home:'USA', away:'Bosnia', score:'2-0', winner:'USA'},
   M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium'},
 };
+
 
 
 

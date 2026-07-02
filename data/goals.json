@@ -2829,6 +2829,30 @@
     "desc": ""
   },
   {
+    "id": 287,
+    "matchId": "M81",
+    "home": "USA",
+    "away": "Bosnia",
+    "scorer": "F. Balogun",
+    "minute": 45,
+    "type": "open-play",
+    "phase": "Group Stage",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 288,
+    "matchId": "M81",
+    "home": "USA",
+    "away": "Bosnia",
+    "scorer": "M. Tillman",
+    "minute": 82,
+    "type": "free-kick",
+    "phase": "Group Stage",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
     "id": 282,
     "matchId": "M82",
     "home": "Belgium",
