@@ -2911,5 +2911,41 @@
     "phase": "Round of 32",
     "score": "3-2",
     "desc": ""
+  },
+  {
+    "id": 289,
+    "matchId": "M84",
+    "home": "Spain",
+    "away": "Austria",
+    "scorer": "M. Oyarzabal",
+    "minute": 36,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 290,
+    "matchId": "M84",
+    "home": "Spain",
+    "away": "Austria",
+    "scorer": "P. Porro",
+    "minute": 66,
+    "type": "header",
+    "phase": "Round of 32",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 291,
+    "matchId": "M84",
+    "home": "Spain",
+    "away": "Austria",
+    "scorer": "M. Oyarzabal",
+    "minute": 89,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "3-0",
+    "desc": ""
   }
 ]

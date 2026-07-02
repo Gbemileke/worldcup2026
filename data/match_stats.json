@@ -4821,5 +4821,64 @@
         0
       ]
     ]
+  },
+  "M84": {
+    "home": "Spain",
+    "away": "Austria",
+    "score": "3-0",
+    "date": "Jul 2 - SoFi Stadium",
+    "poss": [
+      64.5,
+      35.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        23,
+        5
+      ],
+      [
+        "Shots on Goal",
+        10,
+        0
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        8,
+        15
+      ],
+      [
+        "Saves",
+        0,
+        6
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.95,
+        0.25
+      ],
+      [
+        "Yellow Cards",
+        0,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        5
+      ]
+    ]
   }
 }
