@@ -242,6 +242,40 @@ def _strip_accents(s):
     return ''.join(ch for ch in unicodedata.normalize('NFD', s)
                    if unicodedata.category(ch) != 'Mn')
 
+def _goal_type_from_flags(play, text=''):
+    """Classify a goal using ESPN's explicit boolean flags first, then text.
+
+    ESPN gives each play authoritative booleans — penaltyKick, ownGoal — so we
+    read those directly rather than sniffing the type label (which is why an
+    in-play penalty typed "Penalty - Scored" used to be mis-handled). Header and
+    free-kick aren't exposed as booleans, so those still come from the text.
+    """
+    if play.get('ownGoal'):    return 'own-goal'
+    if play.get('penaltyKick'): return 'penalty'
+    t = (text or '').lower()
+    if 'own goal' in t or 'own-goal' in t or ('own' in t and 'goal' in t):
+        return 'own-goal'
+    if 'penalty' in t:
+        return 'penalty'
+    if 'free kick' in t or 'free-kick' in t or 'freekick' in t or 'direct free' in t:
+        return 'free-kick'
+    if 'header' in t or 'headed' in t or 'heads' in t or 'with the head' in t:
+        return 'header'
+    return 'open-play'
+
+def _is_goal_play(play):
+    """Is this play a match goal? Uses ESPN's authoritative flags only.
+
+    A goal is any scoring play worth >=1 that isn't a shootout kick. ESPN marks
+    cards with redCard/yellowCard and scoringPlay=false, so they're excluded
+    automatically — no need to inspect the type label at all.
+    """
+    if play.get('shootout'):
+        return False
+    if play.get('redCard') or play.get('yellowCard'):
+        return False
+    return bool(play.get('scoringPlay')) and (play.get('scoreValue') or 0) >= 1
+
 def _classify_goal_type(text):
     """Classify a goal from ESPN's type text + play description.
     ESPN reliably tags penalty/own-goal; free-kick and header appear in the
@@ -372,19 +406,26 @@ def parse_espn_event(event):
     }
 
 def _parse_details(details, home, away):
-    """Parse goals from ESPN scoreboard details[] array."""
+    """Parse goals from ESPN scoreboard details[] array.
+
+    Detection and classification both come from ESPN's explicit fields, not from
+    the human-readable type label: `scoringPlay`/`scoreValue` say whether it's a
+    goal, and `penaltyKick`/`ownGoal`/`shootout` say what kind. Header/free-kick
+    (not exposed as booleans) still come from the description text.
+    """
     goals = []
     for d in details:
-        dtype = d.get('type',{}).get('text','').lower()
-        if 'goal' not in dtype: continue
+        if not _is_goal_play(d):          # scoringPlay + scoreValue, excludes cards/shootout
+            continue
         athletes = d.get('athletesInvolved',[])
         if not athletes: continue
         raw   = athletes[0].get('displayName','')
         scorer = scorer_fmt(raw)
         if not scorer: continue
         minute = parse_minute(d.get('clock',{}).get('displayValue','90'))
+        dtype = d.get('type',{}).get('text','').lower()
         desc = (d.get('text','') or d.get('shortText','') or '').lower()
-        gtype = _classify_goal_type(dtype + ' ' + desc)
+        gtype = _goal_type_from_flags(d, dtype + ' ' + desc)   # booleans first; label+desc for header/free-kick
         team   = sn(d.get('team',{}).get('displayName',''))
         # ESPN details often carry the running score — use it for exact attribution
         hs = d.get('homeScore', d.get('homeScoreValue'))
@@ -433,8 +474,11 @@ def parse_espn_scoring_plays(summary, home, away):
 
     goals = []
     for p in plays:
+        # scoringPlays is ESPN's pre-filtered scoring list, but guard anyway using
+        # the authoritative flags (shootout kicks / cards excluded, real goals kept).
+        if p.get('shootout'): continue   # penalty-shootout kick — tallied separately as `pens`
+        if p.get('redCard') or p.get('yellowCard'): continue
         dtype = (p.get('type',{}).get('text','') or p.get('scoringType',{}).get('displayName','')).lower()
-        if not dtype: continue
 
         # Get scorer
         athletes = p.get('athletesInvolved', p.get('participants',[]))
@@ -449,11 +493,10 @@ def parse_espn_scoring_plays(summary, home, away):
                   p.get('periodClock',{}).get('displayValue','90'))
         minute = parse_minute(clock)
 
-        # Goal type — detect penalty, own-goal, free-kick, header from ESPN text
-        # ESPN exposes type.text and a play-description 'text' that often name the method
+        # Goal type — ESPN's explicit booleans (penaltyKick/ownGoal) first, then
+        # the description text for header/free-kick which have no boolean.
         desc = (p.get('text','') or p.get('shortText','') or '').lower()
-        combined = dtype + ' ' + desc
-        gtype = _classify_goal_type(combined)
+        gtype = _goal_type_from_flags(p, dtype + ' ' + desc)
 
         # Team — resolve by NAME first (robust to ESPN/our home-away orientation
         # differing, which is common in knockout fixtures). Only fall back to the
@@ -577,83 +620,122 @@ def _parse_asa_goals(event, home, away):
 # ══════════════════════════════════════════════════════════════════════════════
 def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
     """
-    Build goal objects. If goals have homeScore/awayScore from ESPN,
-    use those directly. Otherwise calculate running score.
-    Validates final tally matches expected score.
+    Build goal objects with a correct running score.
+
+    ORIENTATION SAFETY (root-cause fix for inverted knockout scores, e.g. M80
+    England/DR Congo): the running score is ALWAYS advanced from the scoring
+    team's IDENTITY, never from ESPN's positional home/away. ESPN sometimes
+    orders competitors opposite to our canonical fixture; trusting its
+    homeScore/awayScore positions directly is what silently inverted scores.
+
+    Resolution order for each goal's scoring team:
+      1. The goal's own team NAME (from ESPN's scoringPlay 'team'), matched to
+         our home/away — authoritative regardless of ESPN orientation.
+      2. If the name is missing/ambiguous, use ESPN's homeScore/awayScore DELTA
+         but re-map it through orientation: figure out whether ESPN's home
+         corresponds to OUR home or OUR away (using any name-resolved goal in
+         the same match as an anchor), and flip if needed.
+      3. Last resort: infer from remaining capacity in the final score.
     """
-    h_run = a_run = 0
     built = []
 
-    # Normalize home/away once for robust comparison
     def _norm(s):
         return ''.join(ch for ch in str(s).lower() if ch.isalnum())
     home_n, away_n = _norm(home), _norm(away)
 
     def _resolve_team(raw_team):
-        """Map a (possibly blank/mismatched) ESPN team name to home or away."""
+        """Map an ESPN team name to our home or away (None if unresolvable)."""
         if not raw_team:
             return None
         rn = _norm(raw_team)
         if rn == home_n: return home
         if rn == away_n: return away
-        # Substring / partial match (handles 'Korea Republic' vs 'S. Korea', etc.)
         if rn and (rn in home_n or home_n in rn): return home
         if rn and (rn in away_n or away_n in rn): return away
         return None
 
-    for gd in sorted(goal_list, key=lambda x: x.get('minute',90)):
-        is_og = gd['type'] == 'own-goal'
-        team  = _resolve_team(gd.get('team',''))
-
-        # If the team was resolved by NAME (authoritative even when ESPN's home/away
-        # orientation differs from ours), trust it and just advance the running score.
-        hs = gd.get('home_score')
-        as_ = gd.get('away_score')
-        if team in (home, away):
-            if is_og:
-                if team == home: a_run += 1
-                else:            h_run += 1
-            else:
-                if team == home: h_run += 1
-                else:            a_run += 1
-        elif hs is not None and as_ is not None:
-            # Which score changed from previous?
-            if hs > h_run and not is_og:   team = home
-            elif as_ > a_run and not is_og: team = away
-            elif hs > h_run and is_og:      team = away   # OG by away → home scores
-            elif as_ > a_run and is_og:     team = home   # OG by home → away scores
-            h_run = hs; a_run = as_
-        else:
-            # If team still unknown, infer from remaining capacity in the final score
-            if team not in (home, away):
-                h_need = h_fin - h_run
-                a_need = a_fin - a_run
+    # ── Determine ESPN's orientation relative to ours, ONCE, using any goal we
+    #    can resolve by name together with its ESPN home/away score delta. ──────
+    # espn_home_is_our_home = True  → ESPN's homeScore maps to OUR home
+    #                       = False → ESPN's home/away is flipped vs ours
+    espn_home_is_our_home = None
+    _ph = _pa = 0
+    for gd in sorted(goal_list, key=lambda x: x.get('minute', 90)):
+        team = _resolve_team(gd.get('team', ''))
+        hs, as_ = gd.get('home_score'), gd.get('away_score')
+        if team in (home, away) and hs is not None and as_ is not None:
+            is_og = gd['type'] == 'own-goal'
+            # Which side did ESPN increment on this goal?
+            espn_side = 'home' if hs > _ph else ('away' if as_ > _pa else None)
+            # Which of OUR teams actually scored (accounting for own goals)?
+            our_side = None
+            if espn_side is not None:
                 if is_og:
-                    # OG credits the OTHER team; assign to whichever side still needs goals
-                    team = away if h_need >= a_need else home
+                    our_side = 'away' if team == home else 'home'
                 else:
-                    team = home if h_need >= a_need else away
-            # Calculate running score
+                    our_side = 'home' if team == home else 'away'
+                espn_home_is_our_home = (espn_side == our_side)
+                break
+        if hs is not None and as_ is not None:
+            _ph, _pa = hs, as_
+
+    # ── Build running score, always by identity. ─────────────────────────────
+    h_run = a_run = 0
+    prev_hs = prev_as = 0
+    for gd in sorted(goal_list, key=lambda x: x.get('minute', 90)):
+        is_og = gd['type'] == 'own-goal'
+        team  = _resolve_team(gd.get('team', ''))
+        hs, as_ = gd.get('home_score'), gd.get('away_score')
+
+        # 2. Name missing → derive team from ESPN delta, corrected for orientation
+        if team not in (home, away) and hs is not None and as_ is not None:
+            espn_side = 'home' if hs > prev_hs else ('away' if as_ > prev_as else None)
+            if espn_side is not None:
+                # Map ESPN's side to OUR side using detected orientation
+                if espn_home_is_our_home is False:
+                    our_side = 'away' if espn_side == 'home' else 'home'
+                else:
+                    our_side = espn_side  # True or unknown → assume aligned
+                # our_side is the side whose SCORE went up. For an own goal the
+                # scorer belongs to the opposite team, but the running score still
+                # increments on our_side — so advance our_side directly below.
+                if our_side == 'home':
+                    team = away if is_og else home
+                else:
+                    team = home if is_og else away
+
+        # 3. Still unknown → infer from remaining capacity in the final score
+        if team not in (home, away):
+            h_need, a_need = h_fin - h_run, a_fin - a_run
             if is_og:
-                if team == home: a_run += 1
-                else:            h_run += 1
+                team = away if h_need >= a_need else home
             else:
-                if team == home: h_run += 1
-                else:            a_run += 1
+                team = home if h_need >= a_need else away
+
+        # Advance running score by identity (own goal credits the OTHER side)
+        if is_og:
+            if team == home: a_run += 1
+            else:            h_run += 1
+        else:
+            if team == home: h_run += 1
+            else:            a_run += 1
+
+        if hs is not None and as_ is not None:
+            prev_hs, prev_as = hs, as_
 
         built.append({
-            'id':mid+str(next_id) if False else next_id,
-            'matchId':mid, 'home':home, 'away':away,
-            'scorer':gd['scorer'], 'minute':gd['minute'], 'type':gd['type'],
-            'phase':f"Group {group}" if group else 'Group Stage',
-            'score':f"{h_run}-{a_run}", 'desc':'',
+            'id': next_id,
+            'matchId': mid, 'home': home, 'away': away,
+            'scorer': gd['scorer'], 'minute': gd['minute'], 'type': gd['type'],
+            'phase': f"Group {group}" if group else 'Group Stage',
+            'score': f"{h_run}-{a_run}", 'desc': '',
         })
         next_id += 1
 
-    if h_run==h_fin and a_run==a_fin:
+    if h_run == h_fin and a_run == a_fin:
         return built, next_id
     print(f"    ✗ Validation: got {h_run}-{a_run} expected {h_fin}-{a_fin}")
-    return [], next_id-len(built)
+    return [], next_id - len(built)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # WC_RESULTS auto-patch
