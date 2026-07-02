@@ -185,8 +185,12 @@ LOCKED_MATCHES = set()
 #
 # Types: open-play | penalty | own-goal | header | free-kick
 # ─────────────────────────────────────────────────────────────────────────────
-def manual_fix_goals(match_id, new_goals, home='', away='', phase='Group Stage'):
+def manual_fix_goals(match_id, new_goals, home='', away='', phase=None):
     import json, os
+
+    # Default the phase from the match id (knockout-aware) unless caller overrides.
+    if phase is None:
+        phase = phase_for_match(match_id)
 
     goals_path = os.path.join(os.path.dirname(__file__), 'data', 'goals.json')
     with open(goals_path) as f:
@@ -618,6 +622,29 @@ def _parse_asa_goals(event, home, away):
 # ══════════════════════════════════════════════════════════════════════════════
 # Goal assignment with score validation
 # ══════════════════════════════════════════════════════════════════════════════
+def phase_for_match(mid, group=''):
+    """Human-readable phase label for a goal, derived from the match id.
+
+    Group-stage matches (m1–m72) are labelled by their group ("Group A" …) or
+    a generic "Group Stage" fallback. Knockout matches (M73+) follow the official
+    FIFA bracket numbering: M73–M88 = Round of 32, M89–M96 = Round of 16,
+    M97–M100 = Quarter-Finals, M101–M102 = Semi-Finals, M103 = Third Place,
+    M104 = Final. Previously this only ever produced group labels, so knockout
+    goals were mislabelled "Group Stage" in the goal feed.
+    """
+    try:
+        num = int(str(mid).lower().lstrip('m'))
+    except (ValueError, AttributeError):
+        num = 0
+    if num >= 73:
+        if num <= 88:  return 'Round of 32'
+        if num <= 96:  return 'Round of 16'
+        if num <= 100: return 'Quarter-Finals'
+        if num <= 102: return 'Semi-Finals'
+        if num == 103: return 'Third Place'
+        return 'Final'
+    return f"Group {group}" if group else 'Group Stage'
+
 def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
     """
     Build goal objects with a correct running score.
@@ -727,7 +754,7 @@ def assign_goals(goal_list, home, away, h_fin, a_fin, mid, group, next_id):
             'id': next_id,
             'matchId': mid, 'home': home, 'away': away,
             'scorer': gd['scorer'], 'minute': gd['minute'], 'type': gd['type'],
-            'phase': f"Group {group}" if group else 'Group Stage',
+            'phase': phase_for_match(mid, group),
             'score': f"{h_run}-{a_run}", 'desc': '',
         })
         next_id += 1
