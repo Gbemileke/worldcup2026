@@ -15,9 +15,9 @@ on:
     # penalty match is picked up on the next poll once ESPN posts the result.
     #
     # Every 30 min during tournament active hours (kickoffs span ~16:00–04:00
-    # UTC; polling 15:00–06:00 UTC covers every match plus post-match settle).
-    - cron: '*/30 15-23 * 6,7 *'
-    - cron: '*/30 0-6 * 6,7 *'
+    # UTC; polling 17:00–05:00 UTC covers every match plus post-match settle).
+    - cron: '*/30 17-23 * 6,7 *'
+    - cron: '*/30 0-5 * 6,7 *'
     # Low-frequency safety net the rest of the day (also covers any edge cases).
     - cron: '0 */6 * * *'
 
