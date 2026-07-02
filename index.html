@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-01 23:41 UTC -->
+<!-- build: 2026-07-02 00:11 UTC -->
 
 <html lang="en">
 <head>
@@ -1675,11 +1675,11 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 1, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 2, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">81 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">185 open play · 25 headers · 8 penalties · 11 OGs · 5 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">234</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.89 per match · 81 matches played</div></div>
-            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">8</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 8 matches</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">81 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">188 open play · 26 headers · 9 penalties · 11 OGs · 5 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">239</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.95 per match · 81 matches played</div></div>
+            <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">9</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 9 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">11</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 11 matches</div></div>
             <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">14</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 216</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
@@ -2413,8 +2413,15 @@ var GOALS = [
   {id:278, matchId:'M79', home:'Mexico', away:'Ecuador', hf:'', af:'', scorer:'R. Jiménez', flag:'', minute:31, type:'open-play', phase:'Group Stage', score:'2-0', desc:''},
   {id:279, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'B. Cipenga', flag:'', minute:7, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
   {id:280, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'H. Kane', flag:'', minute:75, type:'header', phase:'Group Stage', score:'1-1', desc:''},
-  {id:281, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'H. Kane', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'2-1', desc:''}
+  {id:281, matchId:'M80', home:'England', away:'DR Congo', hf:'', af:'', scorer:'H. Kane', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'2-1', desc:''},
+  {id:282, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'H. Diarra', flag:'', minute:25, type:'open-play', phase:'Group Stage', score:'0-1', desc:''},
+  {id:283, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'I. Sarr', flag:'', minute:51, type:'open-play', phase:'Group Stage', score:'0-2', desc:''},
+  {id:284, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'R. Lukaku', flag:'', minute:86, type:'open-play', phase:'Group Stage', score:'1-2', desc:''},
+  {id:285, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'Y. Tielemans', flag:'', minute:89, type:'header', phase:'Group Stage', score:'2-2', desc:''},
+  {id:286, matchId:'M82', home:'Belgium', away:'Senegal', hf:'', af:'', scorer:'Y. Tielemans', flag:'', minute:121, type:'penalty', phase:'Group Stage', score:'3-2', desc:''}
 ];
+
+
 
 
 
@@ -2777,6 +2784,8 @@ var MATCH_STATS = {
   M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
   M82: {home:'Belgium', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jul 1 - Lumen Field', poss:[52.2, 47.8], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 5, 5], ["Corner Kicks", 0, 0], ["Fouls", 22, 12], ["Saves", 3, 3]], xtra:[["xG", 2.35, 2.35], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]}
 };
+
+
 
 
 
@@ -5466,6 +5475,7 @@ var KNOCKOUT_RESULTS = {
   M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England'},
   M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium'},
 };
+
 
 
 
