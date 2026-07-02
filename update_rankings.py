@@ -179,7 +179,7 @@ def load_verified_results():
     seen_pairs = set()
     skipped = []
 
-    def add_result(mid, home, away, score, source, winner=None):
+    def add_result(mid, home, away, score, source, winner=None, pens=None):
         h = normalise_team(home)
         a = normalise_team(away)
         parsed = parse_score(score)
@@ -194,14 +194,24 @@ def load_verified_results():
         if pair in seen_pairs:
             skipped.append(f"{mid}: duplicate team pair ({h} vs {a})")
             return
-        # Determine result (from home perspective: 1.0=win 0.5=draw 0.0=loss)
+        # Determine result (from home perspective: 1.0=win 0.5=draw 0.0=loss).
+        # A penalty shoot-out (regulation level, decided on pens) is NOT a normal
+        # win: FIFA SUM scores the PSO winner 0.75 and the PSO loser 0.5. We flag
+        # it here and let compute_fifa_points apply the special W values.
+        pso = False
         if hg > ag:
             result = 1.0
         elif ag > hg:
             result = 0.0
         else:
-            # Draw — for knockout, use winner field (AET/pens)
-            if winner:
+            # Level after regulation/extra time.
+            if winner and pens:
+                # Decided on penalties → PSO. Winner side gets 0.75, loser 0.5.
+                wn = normalise_team(winner)
+                pso = True
+                result = 1.0 if wn == h else 0.0   # who won; W-values applied later
+            elif winner:
+                # Won in extra time (AET) with no shootout → treated as a normal win.
                 wn = normalise_team(winner)
                 result = 1.0 if wn == h else 0.0
             else:
@@ -209,7 +219,8 @@ def load_verified_results():
         seen_ids.add(mid)
         seen_pairs.add(pair)
         results.append({"id": mid, "home": h, "away": a,
-                        "result": result, "score": score, "source": source})
+                        "result": result, "score": score, "source": source,
+                        "pso": pso})
 
     # ── Group stage: data/matches.json ───────────────────────────────────────
     matches_path = os.path.join(DATA_DIR, "matches.json")
@@ -249,7 +260,8 @@ def load_verified_results():
         ko_added = 0
         for mid, r in sorted(kr.items(), key=lambda x: int(x[0][1:])):
             add_result(mid, r.get("home",""), r.get("away",""),
-                       r.get("score",""), "knockout", r.get("winner",""))
+                       r.get("score",""), "knockout", r.get("winner",""),
+                       pens=r.get("pens"))
             ko_added += 1
         if ko_added:
             print(f"  Knockout:    {ko_added} matches ✅")
@@ -309,6 +321,25 @@ def _expected(pa, pb):
     """FIFA Elo expected result for team A against team B."""
     return 1.0 / (10.0 ** ((pb - pa) / 600.0) + 1.0)
 
+def _match_importance(mid, knockout):
+    """FIFA SUM importance factor I for a World Cup final-competition match.
+
+    Per the FIFA/Coca-Cola World Ranking spec:
+      I = 50  WC final competition matches up until the QF stage
+      I = 60  WC final competition matches from the QF stage onwards
+    Group stage (m1–m72) and the R32 + R16 knockout rounds are all I=50; the
+    quarter-finals, semi-finals, third-place and final are I=60. The official
+    bracket numbers QFs as M97+ (M73–M88 = R32, M89–M96 = R16, M97–M100 = QF,
+    M101–M102 = SF, M103 = 3rd place, M104 = final).
+    """
+    if not knockout:
+        return 50
+    try:
+        num = int(str(mid).lower().replace("m", ""))
+    except (ValueError, AttributeError):
+        return 50
+    return 60 if num >= 97 else 50   # QF stage onwards
+
 
 def compute_fifa_points(wc_results):
     """
@@ -348,11 +379,38 @@ def compute_fifa_points(wc_results):
         if last_idx.get(a) == i:
             pre_pts[a] = round(pa, 2)
 
+        # Match importance (FIFA SUM): WC group + knockout up to QF = 50,
+        # from the QF stage onwards = 60. Group matches are m1–m72.
+        knockout = (r.get("source") == "knockout")
+        mid = str(r.get("id", ""))
+        I = _match_importance(mid, knockout)
+
         we_h = _expected(ph, pa)
         we_a = 1.0 - we_h
 
-        pts[h] = round(ph + I * (result       - we_h), 2)
-        pts[a] = round(pa + I * ((1 - result) - we_a), 2)
+        # Result values W. A penalty shoot-out is scored specially by FIFA:
+        # winner W=0.75, loser W=0.5 (a PSO is "half a win" / a draw for the loser).
+        # A win in regulation or extra time (no shootout) is a normal 1.0 / 0.0.
+        if r.get("pso"):
+            w_h = 0.75 if result == 1.0 else 0.5
+            w_a = 0.75 if result == 0.0 else 0.5
+        else:
+            w_h = result
+            w_a = 1.0 - result
+
+        dh = I * (w_h - we_h)
+        da = I * (w_a - we_a)
+
+        # Knockout no-loss protection (FIFA SUM): in the knock-out rounds of a
+        # final competition, a team that would earn negative points keeps its
+        # total unchanged. If (W − We) < 0 then P = Pbefore. This protects teams
+        # that lost (or even won on penalties against a weaker side) in a KO tie.
+        if knockout:
+            if dh < 0: dh = 0.0
+            if da < 0: da = 0.0
+
+        pts[h] = round(ph + dh, 2)
+        pts[a] = round(pa + da, 2)
 
     # Compute pre-match global ranks
     def global_rank(pts_dict, name):
@@ -365,7 +423,11 @@ def compute_fifa_points(wc_results):
         snap[team] = pp
         pre_rank[team] = global_rank(snap, team)
 
-    return pts, pre_pts, pre_rank
+    # Current global rank for every team (final points) — used with pre_rank to
+    # produce the real rank change shown on each card.
+    cur_rank = {team: global_rank(pts, team) for team in pts}
+
+    return pts, pre_pts, pre_rank, cur_rank
 
 
 def sanity_check(fifa_pts, group_pts=None):
@@ -404,7 +466,7 @@ def sanity_check(fifa_pts, group_pts=None):
 
 
 def get_fifa_points():
-    """Load results, validate, compute, sanity-check. Returns (pts, pre_pts, pre_rank)."""
+    """Load results, validate, compute, sanity-check. Returns (pts, pre_pts, pre_rank, cur_rank)."""
     print("Computing FIFA points ...")
     wc_results = load_verified_results()
     print(f"  Total results loaded: {len(wc_results)}")
@@ -413,12 +475,12 @@ def get_fifa_points():
         print("  ❌ Validation failed — aborting")
         sys.exit(1)
 
-    pts, pre_pts, pre_rank = compute_fifa_points(wc_results)
+    pts, pre_pts, pre_rank, cur_rank = compute_fifa_points(wc_results)
 
     # Group-stage-only recomputation for the sanity check (references are a
     # frozen group-stage snapshot; the live `pts` also includes knockout deltas).
     group_results = [r for r in wc_results if r.get("source") == "group"]
-    group_pts, _, _ = compute_fifa_points(group_results)
+    group_pts, _, _, _ = compute_fifa_points(group_results)
 
     print(f"  Top 5:")
     top5 = sorted(pts.items(), key=lambda x: -x[1])[:5]
@@ -433,7 +495,7 @@ def get_fifa_points():
         print("  ❌ Aborting — fix data then re-run")
         sys.exit(1)
 
-    return pts, pre_pts, pre_rank
+    return pts, pre_pts, pre_rank, cur_rank
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -521,7 +583,7 @@ def fetch_polymarket():
 # 5. PATCH index.html
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data):
+def patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data, cur_rank_data):
     with open(HTML_FILE, "r", encoding="utf-8") as f:
         html = f.read()
 
@@ -574,14 +636,19 @@ def patch_html(elo_data, fifa_data, poly_data, pre_pts_data, pre_rank_data):
                 c = td.find(",", di + 13)
                 td = td[:di+13] + str(delta) + td[c:]
 
-        # FIFA rank delta
+        # FIFA rank delta — positions moved since before this team's last match.
+        # Positive = climbed (current rank is a smaller number than pre_rank).
+        # NOTE: previously this wrote pre_rank itself (always positive), so every
+        # card showed an up arrow even for teams that lost points. Compute the
+        # real change: pre_rank - current_rank.
         pre_rank = pre_rank_data.get(our)
         if pre_rank:
+            cur_rank = cur_rank_data.get(our, pre_rank)
+            rank_delta = pre_rank - cur_rank
             ri = td.find("fifaRankDelta:", ti)
             if 0 < ri < ti + 300:
                 c = td.find(",", ri + 14)
-                # Positive = moved up (current rank < pre_rank)
-                td = td[:ri+14] + str(pre_rank) + td[c:]
+                td = td[:ri+14] + str(rank_delta) + td[c:]
 
         # Polymarket
         new_poly = poly_data.get(our)
@@ -636,9 +703,9 @@ if __name__ == "__main__":
     print(f"=== WC 2026 Rankings Updater — {datetime.date.today()} ===\n")
 
     elo_data  = fetch_elo();  time.sleep(1)
-    fifa_data, pre_pts, pre_rank = get_fifa_points();  time.sleep(1)
+    fifa_data, pre_pts, pre_rank, cur_rank = get_fifa_points();  time.sleep(1)
     poly_data = fetch_polymarket()
 
     print(f"\nPatching index.html ...")
-    patch_html(elo_data, fifa_data, poly_data, pre_pts, pre_rank)
+    patch_html(elo_data, fifa_data, poly_data, pre_pts, pre_rank, cur_rank)
     print("\nDone ✓")
