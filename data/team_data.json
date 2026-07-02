@@ -98,7 +98,7 @@
   "Netherlands": {
     "group": "F",
     "elo": 1980,
-    "fifaPts": 1750.53,
+    "fifaPts": 1775.53,
     "form": 0.82,
     "squadDepth": 87,
     "exp": 10,
@@ -143,7 +143,7 @@
   "Germany": {
     "group": "E",
     "elo": 1916,
-    "fifaPts": 1691.83,
+    "fifaPts": 1726.21,
     "form": 0.667,
     "squadDepth": 87,
     "exp": 10,
@@ -167,7 +167,7 @@
   "Ecuador": {
     "group": "E",
     "elo": 1875,
-    "fifaPts": 1574.31,
+    "fifaPts": 1592.6,
     "form": 0.511,
     "squadDepth": 72,
     "exp": 4,
@@ -212,7 +212,7 @@
   "Japan": {
     "group": "F",
     "elo": 1882,
-    "fifaPts": 1653.95,
+    "fifaPts": 1673.68,
     "form": 0.75,
     "squadDepth": 74,
     "exp": 8,
@@ -227,7 +227,7 @@
   "Senegal": {
     "group": "I",
     "elo": 1869,
-    "fifaPts": 1632.33,
+    "fifaPts": 1653.43,
     "form": 0.475,
     "squadDepth": 74,
     "exp": 4,
@@ -257,7 +257,7 @@
   "Morocco": {
     "group": "C",
     "elo": 1840,
-    "fifaPts": 1801.36,
+    "fifaPts": 1788.86,
     "form": 0.825,
     "squadDepth": 72,
     "exp": 6,
@@ -296,7 +296,7 @@
   "Sweden": {
     "group": "F",
     "elo": 1730,
-    "fifaPts": 1516.19,
+    "fifaPts": 1525.59,
     "form": 0.5,
     "squadDepth": 76,
     "exp": 7,
@@ -338,7 +338,7 @@
   "Ivory Coast": {
     "group": "E",
     "elo": 1728,
-    "fifaPts": 1541.84,
+    "fifaPts": 1565.47,
     "form": 0.666,
     "squadDepth": 72,
     "exp": 4,
@@ -446,7 +446,7 @@
   "Bosnia": {
     "group": "B",
     "elo": 1680,
-    "fifaPts": 1395.78,
+    "fifaPts": 1408.94,
     "form": 0.54,
     "squadDepth": 67,
     "exp": 1,
@@ -476,7 +476,7 @@
   "Paraguay": {
     "group": "D",
     "elo": 1650,
-    "fifaPts": 1554.97,
+    "fifaPts": 1542.47,
     "form": 0.533,
     "squadDepth": 55,
     "exp": 7,
@@ -611,7 +611,7 @@
   "DR Congo": {
     "group": "K",
     "elo": 1670,
-    "fifaPts": 1484.98,
+    "fifaPts": 1495.49,
     "form": 0.55,
     "squadDepth": 50,
     "exp": 2,
@@ -701,7 +701,7 @@
   "South Africa": {
     "group": "A",
     "elo": 1600,
-    "fifaPts": 1430.98,
+    "fifaPts": 1451.25,
     "form": 0.5,
     "squadDepth": 50,
     "exp": 3,
