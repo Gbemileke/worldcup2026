@@ -78,5 +78,12 @@
     "away": "Algeria",
     "score": "2-0",
     "winner": "Switzerland"
+  },
+  "M88": {
+    "home": "Australia",
+    "away": "Egypt",
+    "score": "1-1",
+    "pens": "2-4",
+    "winner": "Egypt"
   }
 }

@@ -365,7 +365,7 @@
   "Australia": {
     "group": "D",
     "elo": 1780,
-    "fifaPts": 1581.34,
+    "fifaPts": 1581.5,
     "form": 0.5,
     "squadDepth": 63,
     "exp": 5,
@@ -521,7 +521,7 @@
   "Egypt": {
     "group": "G",
     "elo": 1742,
-    "fifaPts": 1584.7,
+    "fifaPts": 1597.04,
     "form": 0.65,
     "squadDepth": 61,
     "exp": 4,
