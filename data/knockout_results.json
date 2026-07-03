@@ -72,5 +72,11 @@
     "away": "Austria",
     "score": "3-0",
     "winner": "Spain"
+  },
+  "M85": {
+    "home": "Switzerland",
+    "away": "Algeria",
+    "score": "2-0",
+    "winner": "Switzerland"
   }
 }

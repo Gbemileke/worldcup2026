@@ -4939,5 +4939,64 @@
         4
       ]
     ]
+  },
+  "M85": {
+    "home": "Switzerland",
+    "away": "Algeria",
+    "score": "2-0",
+    "date": "Jul 3 - BC Place",
+    "poss": [
+      44.6,
+      55.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        11,
+        8
+      ],
+      [
+        "Shots on Goal",
+        5,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        10,
+        12
+      ],
+      [
+        "Saves",
+        2,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.95,
+        0.96
+      ],
+      [
+        "Yellow Cards",
+        0,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        2
+      ]
+    ]
   }
 }

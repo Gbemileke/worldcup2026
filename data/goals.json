@@ -2983,5 +2983,29 @@
     "phase": "Round of 32",
     "score": "3-0",
     "desc": ""
+  },
+  {
+    "id": 295,
+    "matchId": "M85",
+    "home": "Switzerland",
+    "away": "Algeria",
+    "scorer": "B. Embolo",
+    "minute": 10,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 296,
+    "matchId": "M85",
+    "home": "Switzerland",
+    "away": "Algeria",
+    "scorer": "D. Ndoye",
+    "minute": 46,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "2-0",
+    "desc": ""
   }
 ]
