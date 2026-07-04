@@ -927,6 +927,73 @@ def _record_knockout_result(home, away, score, h_goals, a_goals, h_so=None, a_so
             pass
 
     if not mid:
+        # Final fallback — resolve against the FULL knockout bracket (R16 → Final).
+        # R32 lives in upcoming_fixtures.json / R32_SCHEDULE (checked above), but
+        # later rounds live in R16_FIXTURES and the BSIM_* bracket arrays, whose
+        # slots use feeder refs (e.g. 'W74' = winner of M74). We resolve those refs
+        # to real team names from the knockout results already recorded, then match
+        # the ESPN team pair. This makes the scraper file R16/QF/SF/Final results
+        # under the right M-ID automatically, instead of dropping them because no
+        # R32 fixture matched. Without this, a finished R16 game is never recorded.
+        try:
+            with open('index.html', encoding='utf-8') as f:
+                html = f.read()
+            import re as _re
+
+            def _resolve_ref(ref):
+                # 'W74' → winner of M74 (if recorded); 'RU101' → runner-up (loser).
+                m_w = _re.match(r'^W(\d+)$', ref or '')
+                if m_w:
+                    k = 'M' + m_w.group(1)
+                    return kr[k].get('winner', '') if k in kr else ''
+                m_r = _re.match(r'^RU(\d+)$', ref or '')
+                if m_r:
+                    k = 'M' + m_r.group(1)
+                    if k in kr and kr[k].get('winner'):
+                        w = kr[k]['winner']
+                        h, a = kr[k].get('home',''), kr[k].get('away','')
+                        return a if sn(w) == sn(h) else h   # the loser
+                    return ''
+                return ref  # already a real team name
+
+            # Scan every bracket array present for a matching, fully-resolved slot.
+            for arr_name in ('R16_FIXTURES','BSIM_R16','BSIM_QF','BSIM_SF','BSIM_THIRD','BSIM_FINAL'):
+                idx = html.find('var ' + arr_name)
+                if idx < 0:
+                    idx = html.find(arr_name + ' =')
+                if idx < 0:
+                    continue
+                # BSIM_THIRD is a single object ({...};); the rest are arrays ([...];).
+                # Pick whichever terminator comes first so we don't overrun into the
+                # next declaration.
+                end_arr = html.find('];', idx)
+                end_obj = html.find('};', idx)
+                cands = [e for e in (end_arr, end_obj) if e != -1]
+                if not cands:
+                    continue
+                block = html[idx:min(cands) + 2]
+                for entry in _re.finditer(r"\{[^}]*\}", block):
+                    et = entry.group()
+                    fmid_m = _re.search(r"(?:matchId|id):'(M\d+)'", et)
+                    if not fmid_m:
+                        continue
+                    fh_m = _re.search(r"(?:home|fH):'([^']*)'", et)
+                    fa_m = _re.search(r"(?:away|fA):'([^']*)'", et)
+                    if not (fh_m and fa_m):
+                        continue
+                    fh = sn(_resolve_ref(fh_m.group(1)))
+                    fa = sn(_resolve_ref(fa_m.group(1)))
+                    if not fh or not fa:
+                        continue   # slot not resolvable yet (feeding match unplayed)
+                    if (fh == home and fa == away) or (fa == home and fh == away):
+                        mid = fmid_m.group(1)
+                        break
+                if mid:
+                    break
+        except Exception:
+            pass
+
+    if not mid:
         print(f"      ⚠ Could not find match ID for {home} vs {away} — not recorded")
         return None
 
