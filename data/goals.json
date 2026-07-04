@@ -2913,6 +2913,42 @@
     "desc": ""
   },
   {
+    "id": 292,
+    "matchId": "M83",
+    "home": "Portugal",
+    "away": "Croatia",
+    "scorer": "I. Perisic",
+    "minute": 53,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 293,
+    "matchId": "M83",
+    "home": "Portugal",
+    "away": "Croatia",
+    "scorer": "C. Ronaldo",
+    "minute": 68,
+    "type": "penalty",
+    "phase": "Round of 32",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 294,
+    "matchId": "M83",
+    "home": "Portugal",
+    "away": "Croatia",
+    "scorer": "G. Ramos",
+    "minute": 91,
+    "type": "header",
+    "phase": "Round of 32",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
     "id": 289,
     "matchId": "M84",
     "home": "Spain",
@@ -2946,6 +2982,54 @@
     "type": "open-play",
     "phase": "Round of 32",
     "score": "3-0",
+    "desc": ""
+  },
+  {
+    "id": 295,
+    "matchId": "M85",
+    "home": "Switzerland",
+    "away": "Algeria",
+    "scorer": "B. Embolo",
+    "minute": 10,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 296,
+    "matchId": "M85",
+    "home": "Switzerland",
+    "away": "Algeria",
+    "scorer": "D. Ndoye",
+    "minute": 46,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 297,
+    "matchId": "M88",
+    "home": "Australia",
+    "away": "Egypt",
+    "scorer": "E. Ashour",
+    "minute": 13,
+    "type": "header",
+    "phase": "Round of 32",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 298,
+    "matchId": "M88",
+    "home": "Australia",
+    "away": "Egypt",
+    "scorer": "M. Hany",
+    "minute": 55,
+    "type": "own-goal",
+    "phase": "Round of 32",
+    "score": "1-1",
     "desc": ""
   }
 ]
