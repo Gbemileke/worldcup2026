@@ -1033,9 +1033,27 @@ def run():
     # Resolve team-pair locks to current m-IDs (immune to reordering)
     global LOCKED_MATCHES
     LOCKED_MATCHES = _resolve_locked_ids(matches)
+
+    # Auto-lock every KNOCKOUT match that already has a recorded result. Once a
+    # knockout game is complete its result, goals, stats AND kickoff time are
+    # history — the scraper must never re-derive them (the UTC→ET reconversion
+    # was drifting completed-match times). This freezes each round automatically
+    # as it finishes, the same way verified group-stage matches are locked, with
+    # no manual LOCKED_PAIRS upkeep. We add the knockout M-IDs directly so the
+    # existing `if mid in LOCKED_MATCHES: continue` guards apply to them.
+    try:
+        import json as _json
+        _kr_path = os.path.join(DATA_DIR, 'knockout_results.json')
+        with open(_kr_path, encoding='utf-8') as _f:
+            _kr = _json.load(_f)
+        _locked_ko = {mid for mid, r in _kr.items() if isinstance(r, dict) and r.get('winner')}
+        LOCKED_MATCHES |= _locked_ko
+    except Exception:
+        _locked_ko = set()
+
     if LOCKED_MATCHES:
         print(f"  🔒 {len(LOCKED_MATCHES)} locked matches resolved: "
-              f"{', '.join(sorted(LOCKED_MATCHES, key=lambda x:int(x.replace('m',''))))}")
+              f"{', '.join(sorted(LOCKED_MATCHES, key=lambda x:int(x.replace('m','').replace('M',''))))}")
 
     match_lookup = {}
     for m in matches:
@@ -1098,6 +1116,10 @@ def run():
                 ko_mid = _record_knockout_result(home, away, score, h_fin, a_fin, h_so, a_so)
                 if not ko_mid:
                     # Couldn't resolve the M-ID — skip entirely this run
+                    continue
+                # If this knockout match is already complete (locked), freeze it:
+                # don't re-record goals/stats/time. Its result is history.
+                if ko_mid in LOCKED_MATCHES:
                     continue
                 print(f"  ⟳ Knockout: {home} {score} {away} → {ko_mid} (result + goals + stats)")
                 mid = ko_mid  # continue into goals/stats processing under this M-ID
@@ -1222,6 +1244,22 @@ def run():
     # ── Upcoming ──────────────────────────────────────────────────────────────
     if fd_token:
         print("\nFetching upcoming fixtures...")
+        # Completed knockout matches must be treated as "played" so the fixtures
+        # builder never regenerates their kickoff time (the source of the drifting
+        # completed-match times). knockout_results.json is the authoritative list
+        # of finished knockout games; add both team-pair orderings.
+        try:
+            import json as _json
+            with open(os.path.join(DATA_DIR, 'knockout_results.json'), encoding='utf-8') as _f:
+                _krd = _json.load(_f)
+            for _mid, _r in _krd.items():
+                if isinstance(_r, dict) and _r.get('winner'):
+                    _h, _a = sn(_r.get('home', '')), sn(_r.get('away', ''))
+                    if _h and _a:
+                        played_keys.add(f"{_h}|{_a}")
+                        played_keys.add(f"{_a}|{_h}")
+        except Exception:
+            pass
         fetch_upcoming(fd_token, played_keys)
 
     goals.sort(key=lambda g:(int(g['matchId'].replace('m','').replace('M','')),g['minute']))
