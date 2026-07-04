@@ -3103,5 +3103,41 @@
     "phase": "Round of 32",
     "score": "1-1",
     "desc": ""
+  },
+  {
+    "id": 305,
+    "matchId": "M90",
+    "home": "Canada",
+    "away": "Morocco",
+    "scorer": "A. Ounahi",
+    "minute": 50,
+    "type": "open-play",
+    "phase": "Round of 16",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 306,
+    "matchId": "M90",
+    "home": "Canada",
+    "away": "Morocco",
+    "scorer": "A. Ounahi",
+    "minute": 82,
+    "type": "open-play",
+    "phase": "Round of 16",
+    "score": "0-2",
+    "desc": ""
+  },
+  {
+    "id": 307,
+    "matchId": "M90",
+    "home": "Canada",
+    "away": "Morocco",
+    "scorer": "S. Rahimi",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Round of 16",
+    "score": "0-3",
+    "desc": ""
   }
 ]
