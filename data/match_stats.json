@@ -5057,5 +5057,64 @@
         3
       ]
     ]
+  },
+  "M86": {
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "score": "3-2",
+    "date": "Jul 3 - Hard Rock Stadium",
+    "poss": [
+      63.5,
+      36.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        22,
+        16
+      ],
+      [
+        "Shots on Goal",
+        10,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        12
+      ],
+      [
+        "Saves",
+        3,
+        8
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.9,
+        2.2
+      ],
+      [
+        "Yellow Cards",
+        1,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        2
+      ]
+    ]
   }
 }
