@@ -5116,5 +5116,64 @@
         2
       ]
     ]
+  },
+  "M87": {
+    "home": "Colombia",
+    "away": "Ghana",
+    "score": "1-0",
+    "date": "Jul 4 - GEHA Field at Arrowhead Stadium",
+    "poss": [
+      60.6,
+      39.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        8
+      ],
+      [
+        "Shots on Goal",
+        8,
+        0
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        10
+      ],
+      [
+        "Saves",
+        0,
+        7
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.24,
+        0.4
+      ],
+      [
+        "Yellow Cards",
+        2,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        0
+      ]
+    ]
   }
 }
