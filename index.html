@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-04 00:04 UTC -->
+<!-- build: 2026-07-04 03:42 UTC -->
 
 <html lang="en">
 <head>
@@ -1677,13 +1677,13 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 4, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">86 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">194 open play · 29 headers · 10 penalties · 12 OGs · 6 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">251</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 86 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">88 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">199 open play · 29 headers · 10 penalties · 13 OGs · 6 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">257</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 88 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">10</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 10 matches</div></div>
-            <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">12</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 12 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">15</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 225</div></div>
+            <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">13</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 13 matches</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">15</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 232</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
-            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">6</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Mbappé, Messi</div></div>
+            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">7</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
                       </div>
         </div>
@@ -2430,9 +2430,19 @@ var GOALS = [
   {id:291, matchId:'M84', home:'Spain', away:'Austria', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:89, type:'open-play', phase:'Round of 32', score:'3-0', desc:''},
   {id:295, matchId:'M85', home:'Switzerland', away:'Algeria', hf:'', af:'', scorer:'B. Embolo', flag:'', minute:10, type:'open-play', phase:'Round of 32', score:'1-0', desc:''},
   {id:296, matchId:'M85', home:'Switzerland', away:'Algeria', hf:'', af:'', scorer:'D. Ndoye', flag:'', minute:46, type:'open-play', phase:'Round of 32', score:'2-0', desc:''},
+  {id:299, matchId:'M86', home:'Argentina', away:'Cape Verde', hf:'', af:'', scorer:'L. Messi', flag:'', minute:29, type:'open-play', phase:'Round of 32', score:'1-0', desc:''},
+  {id:300, matchId:'M86', home:'Argentina', away:'Cape Verde', hf:'', af:'', scorer:'D. Duarte', flag:'', minute:59, type:'open-play', phase:'Round of 32', score:'1-1', desc:''},
+  {id:301, matchId:'M86', home:'Argentina', away:'Cape Verde', hf:'', af:'', scorer:'L. Martínez', flag:'', minute:92, type:'open-play', phase:'Round of 32', score:'2-1', desc:''},
+  {id:302, matchId:'M86', home:'Argentina', away:'Cape Verde', hf:'', af:'', scorer:'S. Cabral', flag:'', minute:103, type:'open-play', phase:'Round of 32', score:'2-2', desc:''},
+  {id:303, matchId:'M86', home:'Argentina', away:'Cape Verde', hf:'', af:'', scorer:'D. Borges', flag:'', minute:111, type:'own-goal', phase:'Round of 32', score:'3-2', desc:''},
+  {id:304, matchId:'M87', home:'Colombia', away:'Ghana', hf:'', af:'', scorer:'J. Arias', flag:'', minute:14, type:'open-play', phase:'Round of 32', score:'1-0', desc:''},
   {id:297, matchId:'M88', home:'Australia', away:'Egypt', hf:'', af:'', scorer:'E. Ashour', flag:'', minute:13, type:'header', phase:'Round of 32', score:'0-1', desc:''},
   {id:298, matchId:'M88', home:'Australia', away:'Egypt', hf:'', af:'', scorer:'M. Hany', flag:'', minute:55, type:'own-goal', phase:'Round of 32', score:'1-1', desc:''}
 ];
+
+
+
+
 
 
 
@@ -2829,8 +2839,16 @@ var MATCH_STATS = {
   M83: {home:'Portugal', away:'Croatia', hf:'', af:'', score:'2-1', date:'Jul 2 - BMO Field', poss:[60.4, 39.6], stats:[["Shot Attempts", 15, 13], ["Shots on Goal", 3, 6], ["Corner Kicks", 0, 0], ["Fouls", 6, 12], ["Saves", 5, 2]], xtra:[["xG", 1.59, 2.33], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 4]]},
   M84: {home:'Spain', away:'Austria', hf:'', af:'', score:'3-0', date:'Jul 2 - SoFi Stadium', poss:[64.5, 35.5], stats:[["Shot Attempts", 23, 5], ["Shots on Goal", 10, 0], ["Corner Kicks", 0, 0], ["Fouls", 8, 15], ["Saves", 0, 6]], xtra:[["xG", 3.95, 0.25], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 5]]},
   M85: {home:'Switzerland', away:'Algeria', hf:'', af:'', score:'2-0', date:'Jul 3 - BC Place', poss:[44.6, 55.4], stats:[["Shot Attempts", 11, 8], ["Shots on Goal", 5, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 2, 2]], xtra:[["xG", 1.95, 0.96], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 2]]},
+  M86: {home:'Argentina', away:'Cape Verde', hf:'', af:'', score:'3-2', date:'Jul 3 - Hard Rock Stadium', poss:[63.5, 36.5], stats:[["Shot Attempts", 22, 16], ["Shots on Goal", 10, 5], ["Corner Kicks", 0, 0], ["Fouls", 13, 12], ["Saves", 3, 8]], xtra:[["xG", 3.9, 2.2], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
+  M87: {home:'Colombia', away:'Ghana', hf:'', af:'', score:'1-0', date:'Jul 4 - GEHA Field at Arrowhead Stadium', poss:[60.6, 39.4], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 8, 0], ["Corner Kicks", 0, 0], ["Fouls", 14, 10], ["Saves", 0, 7]], xtra:[["xG", 3.24, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
   M88: {home:'Australia', away:'Egypt', hf:'', af:'', score:'1-1', date:'Jul 3 - AT&T Stadium', poss:[41.7, 58.3], stats:[["Shot Attempts", 16, 14], ["Shots on Goal", 1, 3], ["Corner Kicks", 0, 0], ["Fouls", 12, 14], ["Saves", 3, 1]], xtra:[["xG", 1.08, 1.54], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]}
 };
+
+
+
+
+
+
 
 
 
@@ -3699,12 +3717,12 @@ function showMatchStats(id) {
 
 var TEAM_DATA = {
   'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1892.28, fifaPtsDelta:12.7, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:12.35},
-  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1907.42, fifaPtsDelta:5.48, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:19.25},
+  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1913.72, fifaPtsDelta:6.3, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:19.25},
   'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1916.24, fifaPtsDelta:9.4, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:33.45},
   'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1850.97, fifaPtsDelta:10.51, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.833, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:7.25},
   'Brazil':      {flag:'br', group:'C', elo:2009, fifaPts:1804.92, fifaPtsDelta:19.73, fifaRankDelta:2, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.844, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:6.25},
   'Portugal':    {flag:'pt', group:'K', elo:1990, fifaPts:1787.85, fifaPtsDelta:23.0, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.78, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:6.1},
-  'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1729.29, fifaPtsDelta:1.88, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.789, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:2.25},
+  'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1739.88, fifaPtsDelta:10.59, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.789, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:2.25},
   'Netherlands': {flag:'nl', group:'F', elo:1980, fifaPts:1775.53, fifaPtsDelta:0.04, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.82, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:0.0},
   'Croatia':     {flag:'hr', group:'L', elo:1892, fifaPts:1723.05, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.64, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.0},
   'Norway':      {flag:'no', group:'I', elo:1918, fifaPts:1617.68, fifaPtsDelta:23.63, fifaRankDelta:3, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.7, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:1.85},
@@ -3715,10 +3733,10 @@ var TEAM_DATA = {
   'Turkey':      {flag:'tr', group:'D', elo:1758, fifaPts:1582.55, fifaPtsDelta:32.42, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.48, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
   'Japan':       {flag:'jp', group:'F', elo:1882, fifaPts:1673.68, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.75, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:0.0},
   'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1653.43, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.475, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.0},
-  'Belgium':     {flag:'be', group:'G', elo:1852, fifaPts:1756.52, fifaPtsDelta:21.1, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.72, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:1.25},
+  'Belgium':     {flag:'be', group:'G', elo:1852, fifaPts:1756.52, fifaPtsDelta:21.1, fifaRankDelta:2, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.72, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:1.25},
   'Morocco':     {flag:'ma', group:'C', elo:1840, fifaPts:1788.86, fifaPtsDelta:12.46, fifaRankDelta:1, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.825, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.35},
   'USA':         {flag:'us', group:'D', elo:1820, fifaPts:1690.33, fifaPtsDelta:13.16, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:0.667, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:2.55},
-  'Mexico':      {flag:'mx', group:'A', elo:1912, fifaPts:1754.3, fifaPtsDelta:18.29, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:3.15},
+  'Mexico':      {flag:'mx', group:'A', elo:1912, fifaPts:1754.3, fifaPtsDelta:18.29, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:3.15},
   'Sweden':      {flag:'se', group:'F', elo:1730, fifaPts:1525.59, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.45},
   'South Korea': {flag:'kr', group:'A', elo:1784, fifaPts:1558.72, fifaPtsDelta:-33.03, fifaRankDelta:-6, qualW:5,qualD:3,qualL:2,qualGF:22,qualGA:10,form:0.334, squadDepth:70, exp:8,  keyPlayer:'H. Son',       marketPct:0.0},
   'Algeria':     {flag:'dz', group:'J', elo:1762, fifaPts:1576.8, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.55, squadDepth:68, exp:4,  keyPlayer:'R. Mahrez',    marketPct:0.0},
@@ -3739,13 +3757,13 @@ var TEAM_DATA = {
   'Tunisia':      {flag:'tn', group:'F', elo:1590, fifaPts:1426.59, fifaPtsDelta:-11.1, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.225, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.05},
   'Egypt':        {flag:'eg', group:'G', elo:1742, fifaPts:1597.04, fifaPtsDelta:12.34, fifaRankDelta:2, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.65, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.15},
   'New Zealand':  {flag:'nz', group:'G', elo:1460, fifaPts:1269.8, fifaPtsDelta:-7.54, fifaRankDelta:0, qualW:3,qualD:1,qualL:2,qualGF:12,qualGA:8, form:0.333, squadDepth:44, exp:4,  keyPlayer:'C. Wood',      marketPct:0.05},
-  'Cape Verde':   {flag:'cv', group:'H', elo:1640, fifaPts:1402.97, fifaPtsDelta:1.19, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.525, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.05},
+  'Cape Verde':   {flag:'cv', group:'H', elo:1640, fifaPts:1402.97, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.525, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.05},
   'Iraq':         {flag:'iq', group:'I', elo:1560, fifaPts:1404.17, fifaPtsDelta:-15.07, fifaRankDelta:-3, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.25, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.05},
   'Jordan':       {flag:'jo', group:'J', elo:1380, fifaPts:1350.41, fifaPtsDelta:-5.48, fifaRankDelta:0, qualW:3,qualD:2,qualL:3,qualGF:9, qualGA:11,form:0.225, squadDepth:43, exp:1,  keyPlayer:'Y. Al-Naimat', marketPct:0.05},
   'Uzbekistan':   {flag:'uz', group:'K', elo:1440, fifaPts:1409.73, fifaPtsDelta:-23.11, fifaRankDelta:-3, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:9, form:0.25, squadDepth:47, exp:1,  keyPlayer:'I. Kobilov',   marketPct:0.05},
   'DR Congo':     {flag:'cd', group:'K', elo:1670, fifaPts:1495.49, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:3,qualD:3,qualL:2,qualGF:11,qualGA:8, form:0.55, squadDepth:50, exp:2,  keyPlayer:'S. Mbemba',    marketPct:0.15},
   'Panama':       {flag:'pa', group:'L', elo:1733, fifaPts:1478.42, fifaPtsDelta:-10.64, fifaRankDelta:0, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.26, squadDepth:42, exp:2,  keyPlayer:'R. Fajardo',   marketPct:0.05},
-  'Ghana':        {flag:'gh', group:'L', elo:1700, fifaPts:1387.0, fifaPtsDelta:-11.57, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.55, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.05},
+  'Ghana':        {flag:'gh', group:'L', elo:1700, fifaPts:1387.0, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:14,qualGA:8, form:0.55, squadDepth:58, exp:5,  keyPlayer:'M. Kudus',     marketPct:0.05},
   'Italy': {flag:'it', group:'', elo:0, fifaPts:1704.73, qualW:0, qualD:0, qualL:0, qualGF:0, qualGA:0, form:0, squadDepth:0, exp:0, keyPlayer:'', marketPct:0},
   'Denmark': {flag:'dk', group:'', elo:0, fifaPts:1619.47, qualW:0, qualD:0, qualL:0, qualGF:0, qualGA:0, form:0, squadDepth:0, exp:0, keyPlayer:'', marketPct:0},
   'Nigeria': {flag:'ng', group:'', elo:0, fifaPts:1585.02, qualW:0, qualD:0, qualL:0, qualGF:0, qualGA:0, form:0, squadDepth:0, exp:0, keyPlayer:'', marketPct:0},
@@ -5329,13 +5347,22 @@ function buildMatchPredictor() {
   var panel = document.getElementById('predictorPanel');
   if (!sel || !panel) return;
   sel.innerHTML = '<option value="">Select an upcoming match...</option>';
+
+  // Use getKnownFixtures(): it merges still-unplayed group/R32 games with the next
+  // resolvable knockout round (R16, then QF, SF, third-place, final) off the full
+  // bracket, resolving each slot's teams from prior-round winners. Iterating
+  // UPCOMING_FIXTURES directly (as this used to) meant the dropdown went empty once
+  // every R32 game was played, since later rounds live in the BSIM bracket arrays.
+  var fixtures = (typeof getKnownFixtures === 'function')
+                 ? getKnownFixtures()
+                 : (UPCOMING_FIXTURES || []);
   var kr = (typeof KNOCKOUT_RESULTS !== 'undefined' && KNOCKOUT_RESULTS) ? KNOCKOUT_RESULTS : {};
-  UPCOMING_FIXTURES.forEach(function(f, i) {
-    // Skip matches that have already been played (have a recorded knockout result,
-    // or a stats entry under their matchId). Keep the original index as the value
-    // so renderPrediction(UPCOMING_FIXTURES[idx]) still resolves correctly.
+
+  fixtures.forEach(function(f, i) {
+    // getKnownFixtures already drops played matches; keep the stats guard as a
+    // belt-and-braces check for a match with a stats entry but no result record.
     var mid = f.matchId || '';
-    var played = (mid && kr[mid]) ||
+    var played = (mid && kr[mid] && kr[mid].winner) ||
                  (mid && typeof MATCH_STATS !== 'undefined' && MATCH_STATS &&
                   (MATCH_STATS[mid] || MATCH_STATS[mid.toUpperCase()] || MATCH_STATS[mid.toLowerCase()]));
     if (played) return;
@@ -5344,10 +5371,13 @@ function buildMatchPredictor() {
     opt.textContent = f.date + '  —  ' + f.home + ' vs ' + f.away + '  ·  ' + (f.round || (f.group ? 'Group ' + f.group : 'Upcoming'));
     sel.appendChild(opt);
   });
+
+  // Store the exact list the option indices refer to, so onchange resolves correctly.
+  sel._fixtures = fixtures;
   sel.onchange = function() {
     var idx = parseInt(sel.value);
     if (isNaN(idx)) { panel.style.display='none'; return; }
-    renderPrediction(UPCOMING_FIXTURES[idx]);
+    renderPrediction((sel._fixtures || fixtures)[idx]);
     panel.style.display = 'block';
   };
 }
@@ -5579,8 +5609,13 @@ var KNOCKOUT_RESULTS = {
   M83: {home:'Portugal', away:'Croatia', score:'2-1', winner:'Portugal'},
   M84: {home:'Spain', away:'Austria', score:'3-0', winner:'Spain'},
   M85: {home:'Switzerland', away:'Algeria', score:'2-0', winner:'Switzerland'},
+  M86: {home:'Argentina', away:'Cape Verde', score:'3-2', winner:'Argentina'},
+  M87: {home:'Colombia', away:'Ghana', score:'1-0', winner:'Colombia'},
   M88: {home:'Australia', away:'Egypt', score:'1-1', pens:'2-4', winner:'Egypt'},
 };
+
+
+
 
 
 
@@ -5697,16 +5732,53 @@ var R16_FIXTURES = [
 
 // Returns all fixtures that have fully resolved (real) team names
 function getKnownFixtures() {
+  // Start with still-unplayed group/UPCOMING fixtures.
   var known=UPCOMING_FIXTURES.filter(function(f){
     if(!f.matchId)return true;
     return !(KNOCKOUT_RESULTS[f.matchId]&&KNOCKOUT_RESULTS[f.matchId].winner);
   });
-  R16_FIXTURES.forEach(function(f){
-    if(KNOCKOUT_RESULTS[f.matchId]&&KNOCKOUT_RESULTS[f.matchId].winner)return;
-    var h=resolveKnockoutTeam(f.home),a=resolveKnockoutTeam(f.away);
-    if(/^W\d+/.test(h)||/^W\d+/.test(a))return;
-    known.push(Object.assign({},f,{home:h,away:a}));
-  });
+
+  // Append every knockout round from the full bracket, resolving each slot's
+  // teams from the winners of the feeding matches. Driven off the same BSIM_*
+  // bracket arrays the interactive bracket uses, so the predictor (and anything
+  // else calling getKnownFixtures) automatically surfaces R16, then the quarter-
+  // finals, semis, third-place and final as each becomes resolvable — no per-round
+  // wiring needed. A fixture is listed only once BOTH its teams resolve to real
+  // names (the feeding matches have winners) and it hasn't itself been played.
+  function addRound(arr, roundLabel) {
+    if (typeof arr === 'undefined' || !arr) return;
+    var list = Array.isArray(arr) ? arr : [arr];
+    list.forEach(function(f){
+      var mid = f.matchId || f.id;
+      if (KNOCKOUT_RESULTS[mid] && KNOCKOUT_RESULTS[mid].winner) return;
+      // Bracket entries use fH/fA feeder refs (e.g. 'W89'); fixtures use home/away.
+      var refH = f.home || f.fH, refA = f.away || f.fA;
+      var h = resolveKnockoutTeam(refH), a = resolveKnockoutTeam(refA);
+      // Skip until both teams are known — unresolved refs still look like
+      // 'W89', 'W89 (1st E)', or 'RU101'.
+      if (/^W\d+/.test(h) || /^W\d+/.test(a) || /^RU\d+/.test(h) || /^RU\d+/.test(a)) return;
+      known.push({
+        matchId: mid,
+        home: h, away: a,
+        date: f.date || '', time: f.time || '',
+        venue: f.venue || '',
+        round: f.round || roundLabel
+      });
+    });
+  }
+
+  // Prefer the full BSIM bracket (all rounds). Fall back to the legacy
+  // R16_FIXTURES array only if the bracket arrays aren't present.
+  if (typeof BSIM_R16 !== 'undefined') {
+    addRound(BSIM_R16,   'R16');
+    addRound(BSIM_QF,    'QF');
+    addRound(BSIM_SF,    'SF');
+    addRound(BSIM_THIRD, '3rd Place');
+    addRound(BSIM_FINAL, 'Final');
+  } else if (typeof R16_FIXTURES !== 'undefined') {
+    addRound(R16_FIXTURES, 'R16');
+  }
+
   return known;
 }
 
