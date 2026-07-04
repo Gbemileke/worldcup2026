@@ -3559,20 +3559,20 @@ function buildMatchSelector(){
       }
     }
   });
-  out+=sec('r32','&#9889; Round of 32',r32Done+'/16',active==='R32',true,r32c,false);
+  out+=sec('r32','&#9889; Round of 32',r32Done+'/16',active==='R32',true,r32c,r32Done===16);
 
-  var r16c=BSIM_R16.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('r16','&#127942; Round of 16',r16Done+'/8',active==='R16',r16Done>0,r16c,false);
+  var r16c=BSIM_R16.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,koTime(f.id,f.time));}).join('');
+  out+=sec('r16','&#127942; Round of 16',r16Done+'/8',active==='R16',r16Done>0,r16c,r16Done===8);
 
-  var qfc=BSIM_QF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('qf','&#9889; Quarter-Finals',qfDone+'/4',active==='QF',qfDone>0,qfc,false);
+  var qfc=BSIM_QF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,koTime(f.id,f.time));}).join('');
+  out+=sec('qf','&#9889; Quarter-Finals',qfDone+'/4',active==='QF',qfDone>0,qfc,qfDone===4);
 
-  var sfc=BSIM_SF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,f.time);}).join('');
-  out+=sec('sf','&#127942; Semi-Finals',sfDone+'/2',active==='SF',sfDone>0,sfc,false);
+  var sfc=BSIM_SF.map(function(f){return kCard(f.id,f.fH,f.fA,f.date,koTime(f.id,f.time));}).join('');
+  out+=sec('sf','&#127942; Semi-Finals',sfDone+'/2',active==='SF',sfDone>0,sfc,sfDone===2);
 
-  var fc=kCard('M103',BSIM_THIRD.fH,BSIM_THIRD.fA,BSIM_THIRD.date,BSIM_THIRD.time)
-        +kCard('M104',BSIM_FINAL[0].fH,BSIM_FINAL[0].fA,BSIM_FINAL[0].date,BSIM_FINAL[0].time);
-  out+=sec('final','&#127881; 3rd Place &amp; Final',((thirdDone?1:0)+(finalDone?1:0))+'/2',active==='FINAL',thirdDone||finalDone,fc,false);
+  var fc=kCard('M103',BSIM_THIRD.fH,BSIM_THIRD.fA,BSIM_THIRD.date,koTime('M103',BSIM_THIRD.time))
+        +kCard('M104',BSIM_FINAL[0].fH,BSIM_FINAL[0].fA,BSIM_FINAL[0].date,koTime('M104',BSIM_FINAL[0].time));
+  out+=sec('final','&#127881; 3rd Place &amp; Final',((thirdDone?1:0)+(finalDone?1:0))+'/2',active==='FINAL',thirdDone||finalDone,fc,thirdDone&&finalDone);
 
   var el=document.getElementById('matchSelector');
   if(el)el.innerHTML=out;
@@ -5591,6 +5591,16 @@ function renderPrediction(fix) {
 }
 
 // ── BOOT: runs after all data + functions defined ─────
+// Authoritative kickoff times (matchId → time), from curated upcoming_fixtures.json.
+// The bracket arrays (BSIM_*/R16_FIXTURES) carry hand-entered time fields that were
+// an hour off, so the ticker, predictor AND analytics cards read THIS map instead.
+// Extend with QF/SF/Final (M97–M104) once those kickoff times are confirmed.
+var KICKOFF_TIMES = {
+  M89:'5:00 PM ET',  M90:'1:00 PM ET',  M91:'4:00 PM ET',  M92:'8:00 PM ET',
+  M93:'3:00 PM ET',  M94:'8:00 PM ET',  M95:'12:00 PM ET', M96:'4:00 PM ET'
+};
+function koTime(mid, fallback){ return (mid && KICKOFF_TIMES[mid]) ? KICKOFF_TIMES[mid] : (fallback || ''); }
+
 var BSIM_R16 = [
   // LEFT HALF: [0,1] → M97 QF;  [2,3] → M98 QF
   {id:'M89',  date:'Jul 4',  time:'16:00 ET', venue:'Lincoln Financial Field, Philadelphia', fH:'W74', fA:'W77'},
@@ -5772,10 +5782,18 @@ var R16_FIXTURES = [
 
 // Returns all fixtures that have fully resolved (real) team names
 function getKnownFixtures() {
-  // Start with still-unplayed group/UPCOMING fixtures.
+  // Start with still-unplayed group/UPCOMING fixtures. Exclude knockout-round
+  // entries here (R16/QF/SF/Final) — the bracket walk below adds those with real
+  // matchIds and resolved teams. UPCOMING_FIXTURES sometimes carries R16 rows
+  // without a matchId (curated feed lacks them), which would otherwise duplicate
+  // every knockout fixture in the ticker/predictor.
+  var _KO_ROUNDS = { R16:1, QF:1, SF:1, '3rd Place':1, Final:1 };
   var known=UPCOMING_FIXTURES.filter(function(f){
+    if (f.round && _KO_ROUNDS[f.round]) return false;
     if(!f.matchId)return true;
     return !(KNOCKOUT_RESULTS[f.matchId]&&KNOCKOUT_RESULTS[f.matchId].winner);
+  }).map(function(f){
+    return Object.assign({}, f, { time: koTime(f.matchId, f.time) });
   });
 
   // Append every knockout round from the full bracket, resolving each slot's
@@ -5800,7 +5818,7 @@ function getKnownFixtures() {
       known.push({
         matchId: mid,
         home: h, away: a,
-        date: f.date || '', time: f.time || '',
+        date: f.date || '', time: koTime(mid, f.time || ''),
         venue: f.venue || '',
         round: f.round || roundLabel
       });
