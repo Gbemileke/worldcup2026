@@ -3009,6 +3009,78 @@
     "desc": ""
   },
   {
+    "id": 299,
+    "matchId": "M86",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "scorer": "L. Messi",
+    "minute": 29,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 300,
+    "matchId": "M86",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "scorer": "D. Duarte",
+    "minute": 59,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 301,
+    "matchId": "M86",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "scorer": "L. Mart\u00ednez",
+    "minute": 92,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "2-1",
+    "desc": ""
+  },
+  {
+    "id": 302,
+    "matchId": "M86",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "scorer": "S. Cabral",
+    "minute": 103,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "2-2",
+    "desc": ""
+  },
+  {
+    "id": 303,
+    "matchId": "M86",
+    "home": "Argentina",
+    "away": "Cape Verde",
+    "scorer": "D. Borges",
+    "minute": 111,
+    "type": "own-goal",
+    "phase": "Round of 32",
+    "score": "3-2",
+    "desc": ""
+  },
+  {
+    "id": 304,
+    "matchId": "M87",
+    "home": "Colombia",
+    "away": "Ghana",
+    "scorer": "J. Arias",
+    "minute": 14,
+    "type": "open-play",
+    "phase": "Round of 32",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
     "id": 297,
     "matchId": "M88",
     "home": "Australia",
