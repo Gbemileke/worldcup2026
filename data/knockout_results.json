@@ -98,6 +98,12 @@
     "pens": "2-4",
     "winner": "Egypt"
   },
+  "M89": {
+    "home": "Paraguay",
+    "away": "France",
+    "score": "0-1",
+    "winner": "France"
+  },
   "M90": {
     "home": "Canada",
     "away": "Morocco",

@@ -5234,5 +5234,64 @@
         3
       ]
     ]
+  },
+  "M89": {
+    "home": "Paraguay",
+    "away": "France",
+    "score": "0-1",
+    "date": "Jul 4 - Lincoln Financial Field",
+    "poss": [
+      24,
+      76
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        5,
+        15
+      ],
+      [
+        "Shots on Goal",
+        1,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        11
+      ],
+      [
+        "Saves",
+        4,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.53,
+        2.15
+      ],
+      [
+        "Yellow Cards",
+        0,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        0
+      ]
+    ]
   }
 }
