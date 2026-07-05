@@ -5293,5 +5293,64 @@
         0
       ]
     ]
+  },
+  "M91": {
+    "home": "Brazil",
+    "away": "Norway",
+    "score": "1-2",
+    "date": "Jul 5 - MetLife Stadium",
+    "poss": [
+      33.5,
+      66.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        9
+      ],
+      [
+        "Shots on Goal",
+        4,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        7,
+        6
+      ],
+      [
+        "Saves",
+        3,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.82,
+        1.85
+      ],
+      [
+        "Yellow Cards",
+        1,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        1
+      ]
+    ]
   }
 }
