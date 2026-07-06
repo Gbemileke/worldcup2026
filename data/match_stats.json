@@ -5411,5 +5411,64 @@
         0
       ]
     ]
+  },
+  "M93": {
+    "home": "Portugal",
+    "away": "Spain",
+    "score": "0-1",
+    "date": "Jul 6 - AT&T Stadium",
+    "poss": [
+      44.5,
+      55.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        10,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        6
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        9,
+        13
+      ],
+      [
+        "Saves",
+        5,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.06,
+        2.43
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
   }
 }

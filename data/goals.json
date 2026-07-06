@@ -3247,5 +3247,17 @@
     "phase": "Round of 16",
     "score": "2-3",
     "desc": ""
+  },
+  {
+    "id": 317,
+    "matchId": "M93",
+    "home": "Portugal",
+    "away": "Spain",
+    "scorer": "M. Merino",
+    "minute": 91,
+    "type": "open-play",
+    "phase": "Round of 16",
+    "score": "0-1",
+    "desc": ""
   }
 ]
