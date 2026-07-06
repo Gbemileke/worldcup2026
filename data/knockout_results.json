@@ -115,5 +115,11 @@
     "away": "Norway",
     "score": "1-2",
     "winner": "Norway"
+  },
+  "M92": {
+    "home": "Mexico",
+    "away": "England",
+    "score": "2-3",
+    "winner": "England"
   }
 }
