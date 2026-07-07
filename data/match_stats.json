@@ -5529,5 +5529,64 @@
         1
       ]
     ]
+  },
+  "M95": {
+    "home": "Argentina",
+    "away": "Egypt",
+    "score": "3-2",
+    "date": "Jul 7 - Mercedes-Benz Stadium",
+    "poss": [
+      63.6,
+      36.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        5
+      ],
+      [
+        "Shots on Goal",
+        7,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        11
+      ],
+      [
+        "Saves",
+        0,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.91,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        0,
+        4
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        0
+      ]
+    ]
   }
 }

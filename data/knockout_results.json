@@ -133,5 +133,11 @@
     "away": "Belgium",
     "score": "1-4",
     "winner": "Belgium"
+  },
+  "M95": {
+    "home": "Argentina",
+    "away": "Egypt",
+    "score": "3-2",
+    "winner": "Argentina"
   }
 }
