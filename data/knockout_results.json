@@ -127,5 +127,11 @@
     "away": "Spain",
     "score": "0-1",
     "winner": "Spain"
+  },
+  "M94": {
+    "home": "USA",
+    "away": "Belgium",
+    "score": "1-4",
+    "winner": "Belgium"
   }
 }

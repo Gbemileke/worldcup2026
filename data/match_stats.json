@@ -5470,5 +5470,64 @@
         1
       ]
     ]
+  },
+  "M94": {
+    "home": "USA",
+    "away": "Belgium",
+    "score": "1-4",
+    "date": "Jul 7 - Lumen Field",
+    "poss": [
+      56.2,
+      43.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        7
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        11,
+        9
+      ],
+      [
+        "Saves",
+        3,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.91,
+        2.71
+      ],
+      [
+        "Yellow Cards",
+        2,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        1
+      ]
+    ]
   }
 }
