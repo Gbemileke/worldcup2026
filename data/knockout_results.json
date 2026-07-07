@@ -139,5 +139,12 @@
     "away": "Egypt",
     "score": "3-2",
     "winner": "Argentina"
+  },
+  "M96": {
+    "home": "Switzerland",
+    "away": "Colombia",
+    "score": "0-0",
+    "pens": "4-3",
+    "winner": "Switzerland"
   }
 }

@@ -5588,5 +5588,64 @@
         0
       ]
     ]
+  },
+  "M96": {
+    "home": "Switzerland",
+    "away": "Colombia",
+    "score": "0-0",
+    "date": "Jul 7 - BC Place",
+    "poss": [
+      53.2,
+      46.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        22,
+        21
+      ],
+      [
+        "Saves",
+        3,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.91,
+        1.59
+      ],
+      [
+        "Yellow Cards",
+        3,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        5,
+        4
+      ]
+    ]
   }
 }
