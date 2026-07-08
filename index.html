@@ -9,13 +9,13 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 FIFA World Cup — Goals & Highlights</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
   /* ═══════════════════════════════════════════════
      FIFA WORLD CUP 2026 — ANALYTICS DASHBOARD
      Professional light theme
      ═══════════════════════════════════════════════ */
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
   :root {
     /* Palette — light, clean, FIFA-inspired */
@@ -128,6 +128,25 @@
     color: #ff6b6b;
     letter-spacing: 1px;
     text-transform: uppercase;
+  }
+  /* "Live By" prefix — override the badge's uppercase so it reads normally. */
+  .byline-prefix {
+    text-transform: none;
+    letter-spacing: 0.3px;
+  }
+  /* Fancy signature-style name in the live badge — overrides the badge's
+     uppercase/letter-spacing so it reads as an elegant byline. */
+  .byline-name {
+    font-family: 'Great Vibes', cursive;
+    text-transform: none;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 1;
+    color: #ffd479;
+    margin-left: 2px;
+    position: relative;
+    top: 1px;
   }
 
   .live-dot {
@@ -1616,7 +1635,7 @@
   </div>
   <div class="live-badge">
     <div class="live-dot" id="liveDot"></div>
-    <span id="liveText">LIVE &middot; GROUP STAGE</span>
+    <span id="liveText">LIVE <span class="byline-prefix">By</span> <span class="byline-name">Dr. Leke Ogunranti</span></span>
   </div>
 </header>
 <div class="jumbotron"><div class="ticker-inner" id="ticker"></div></div>
@@ -5312,7 +5331,7 @@ function setLiveStatus(state, detail) {
   var dotColors = {loading:'var(--muted)', live:'var(--red)', ok:'#4cde7e', error:'var(--gold)', off:'var(--red)'};
   var textColors = {loading:'var(--muted)', live:'var(--red)', ok:'#4cde7e', error:'var(--gold)', off:'var(--red)'};
   var icons = {loading:'⏳ ', live:'', ok:'✅ ', error:'⚠️ ', off:''};
-  textEl.textContent = (icons[state] || '') + detail;
+  textEl.innerHTML = (icons[state] || '') + detail;
   textEl.style.color = textColors[state] || 'var(--red)';
   if (dotEl) dotEl.style.background = dotColors[state] || 'var(--red)';
 }
@@ -5328,7 +5347,7 @@ async function fetchLiveMatches() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var data = await res.json();
     processMatches(data.matches || []);
-    setLiveStatus('live', 'LIVE · Group Stage');
+    setLiveStatus('live', 'LIVE <span class="byline-prefix">By</span> <span class="byline-name">Dr. Leke Ogunranti</span>');
   } catch(e) {
     setLiveStatus('error', 'API error — showing cached data');
     console.warn('football-data.org fetch failed:', e.message);
@@ -5486,7 +5505,7 @@ function initLiveData() {
     setInterval(fetchLiveScorers, LIVE_CONFIG.refreshMs * 2); // scorers every 3 min
     console.log('Live data enabled — refreshing every', LIVE_CONFIG.refreshMs/1000, 'seconds');
   } else {
-    setLiveStatus('off', 'LIVE · Group Stage');
+    setLiveStatus('off', 'LIVE <span class="byline-prefix">By</span> <span class="byline-name">Dr. Leke Ogunranti</span>');
     console.log('football-data.org token not set — showing static data. See LIVE_CONFIG in source.');
   }
 }
@@ -5741,10 +5760,7 @@ function renderPrediction(fix) {
 // Extend with QF/SF/Final (M97–M104) once those kickoff times are confirmed.
 var KICKOFF_TIMES = {
   M89:'5:00 PM ET',  M90:'1:00 PM ET',  M91:'4:00 PM ET',  M92:'8:00 PM ET',
-  M93:'3:00 PM ET',  M94:'8:00 PM ET',  M95:'12:00 PM ET', M96:'4:00 PM ET',
-  // QF (M97–M100), SF (M101–M102), 3rd place (M103), Final (M104) — ET.
-  M97:'4:00 PM ET',  M98:'3:00 PM ET',  M99:'5:00 PM ET',  M100:'9:00 PM ET',
-  M101:'3:00 PM ET', M102:'3:00 PM ET', M103:'5:00 PM ET', M104:'3:00 PM ET'
+  M93:'3:00 PM ET',  M94:'8:00 PM ET',  M95:'12:00 PM ET', M96:'4:00 PM ET'
 };
 function koTime(mid, fallback){ return (mid && KICKOFF_TIMES[mid]) ? KICKOFF_TIMES[mid] : (fallback || ''); }
 
@@ -7267,10 +7283,10 @@ function bsimRender() {
     '</div>';
 
   // THIRD-PLACE match (below the bracket, centered)
-  var thirdSlot = bsimSlot('THIRD', 0, BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+koTime(BSIM_THIRD.id,BSIM_THIRD.time), BSIM_THIRD.fH, BSIM_THIRD.fA);
+  var thirdSlot = bsimSlot('THIRD', 0, BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time, BSIM_THIRD.fH, BSIM_THIRD.fA);
   var thirdHtml =
     '<div class="bsim-third">' +
-      '<div class="bsim-third-hd">&#129353; Third-place match &nbsp;·&nbsp; '+BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+koTime(BSIM_THIRD.id,BSIM_THIRD.time)+'</div>' +
+      '<div class="bsim-third-hd">&#129353; Third-place match &nbsp;·&nbsp; '+BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time+'</div>' +
       '<div class="bsim-third-body">'+thirdSlot+'</div>' +
     '</div>';
 
