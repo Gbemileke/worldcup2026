@@ -5760,7 +5760,10 @@ function renderPrediction(fix) {
 // Extend with QF/SF/Final (M97–M104) once those kickoff times are confirmed.
 var KICKOFF_TIMES = {
   M89:'5:00 PM ET',  M90:'1:00 PM ET',  M91:'4:00 PM ET',  M92:'8:00 PM ET',
-  M93:'3:00 PM ET',  M94:'8:00 PM ET',  M95:'12:00 PM ET', M96:'4:00 PM ET'
+  M93:'3:00 PM ET',  M94:'8:00 PM ET',  M95:'12:00 PM ET', M96:'4:00 PM ET',
+  // QF (M97–M100), SF (M101–M102), 3rd place (M103), Final (M104) — ET.
+  M97:'4:00 PM ET',  M98:'3:00 PM ET',  M99:'5:00 PM ET',  M100:'9:00 PM ET',
+  M101:'3:00 PM ET', M102:'3:00 PM ET', M103:'5:00 PM ET', M104:'3:00 PM ET'
 };
 function koTime(mid, fallback){ return (mid && KICKOFF_TIMES[mid]) ? KICKOFF_TIMES[mid] : (fallback || ''); }
 
@@ -7283,10 +7286,10 @@ function bsimRender() {
     '</div>';
 
   // THIRD-PLACE match (below the bracket, centered)
-  var thirdSlot = bsimSlot('THIRD', 0, BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time, BSIM_THIRD.fH, BSIM_THIRD.fA);
+  var thirdSlot = bsimSlot('THIRD', 0, BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+koTime(BSIM_THIRD.id,BSIM_THIRD.time), BSIM_THIRD.fH, BSIM_THIRD.fA);
   var thirdHtml =
     '<div class="bsim-third">' +
-      '<div class="bsim-third-hd">&#129353; Third-place match &nbsp;·&nbsp; '+BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+BSIM_THIRD.time+'</div>' +
+      '<div class="bsim-third-hd">&#129353; Third-place match &nbsp;·&nbsp; '+BSIM_THIRD.id+' · '+BSIM_THIRD.date+' · '+koTime(BSIM_THIRD.id,BSIM_THIRD.time)+'</div>' +
       '<div class="bsim-third-body">'+thirdSlot+'</div>' +
     '</div>';
 
