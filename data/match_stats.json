@@ -5234,5 +5234,418 @@
         3
       ]
     ]
+  },
+  "M89": {
+    "home": "Paraguay",
+    "away": "France",
+    "score": "0-1",
+    "date": "Jul 4 - Lincoln Financial Field",
+    "poss": [
+      24,
+      76
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        5,
+        15
+      ],
+      [
+        "Shots on Goal",
+        1,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        11
+      ],
+      [
+        "Saves",
+        4,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.53,
+        2.15
+      ],
+      [
+        "Yellow Cards",
+        0,
+        3
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        0
+      ]
+    ]
+  },
+  "M91": {
+    "home": "Brazil",
+    "away": "Norway",
+    "score": "1-2",
+    "date": "Jul 5 - MetLife Stadium",
+    "poss": [
+      33.5,
+      66.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        14,
+        9
+      ],
+      [
+        "Shots on Goal",
+        4,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        7,
+        6
+      ],
+      [
+        "Saves",
+        3,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.82,
+        1.85
+      ],
+      [
+        "Yellow Cards",
+        1,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        1,
+        1
+      ]
+    ]
+  },
+  "M92": {
+    "home": "Mexico",
+    "away": "England",
+    "score": "2-3",
+    "date": "Jul 6 - Estadio Banorte",
+    "poss": [
+      66.8,
+      33.2
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        6
+      ],
+      [
+        "Shots on Goal",
+        5,
+        5
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        14,
+        7
+      ],
+      [
+        "Saves",
+        2,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.4,
+        1.7
+      ],
+      [
+        "Yellow Cards",
+        2,
+        4
+      ],
+      [
+        "Red Cards",
+        0,
+        1
+      ],
+      [
+        "Offsides",
+        1,
+        0
+      ]
+    ]
+  },
+  "M93": {
+    "home": "Portugal",
+    "away": "Spain",
+    "score": "0-1",
+    "date": "Jul 6 - AT&T Stadium",
+    "poss": [
+      44.5,
+      55.5
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        10,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        6
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        9,
+        13
+      ],
+      [
+        "Saves",
+        5,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.06,
+        2.43
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        2,
+        1
+      ]
+    ]
+  },
+  "M94": {
+    "home": "USA",
+    "away": "Belgium",
+    "score": "1-4",
+    "date": "Jul 7 - Lumen Field",
+    "poss": [
+      56.2,
+      43.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        7
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        11,
+        9
+      ],
+      [
+        "Saves",
+        3,
+        1
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.91,
+        2.71
+      ],
+      [
+        "Yellow Cards",
+        2,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        0,
+        1
+      ]
+    ]
+  },
+  "M95": {
+    "home": "Argentina",
+    "away": "Egypt",
+    "score": "3-2",
+    "date": "Jul 7 - Mercedes-Benz Stadium",
+    "poss": [
+      63.6,
+      36.4
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        5
+      ],
+      [
+        "Shots on Goal",
+        7,
+        2
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        13,
+        11
+      ],
+      [
+        "Saves",
+        0,
+        4
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        2.91,
+        0.81
+      ],
+      [
+        "Yellow Cards",
+        0,
+        4
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        0
+      ]
+    ]
+  },
+  "M96": {
+    "home": "Switzerland",
+    "away": "Colombia",
+    "score": "0-0",
+    "date": "Jul 7 - BC Place",
+    "poss": [
+      53.2,
+      46.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        7,
+        15
+      ],
+      [
+        "Shots on Goal",
+        2,
+        3
+      ],
+      [
+        "Corner Kicks",
+        0,
+        0
+      ],
+      [
+        "Fouls",
+        22,
+        21
+      ],
+      [
+        "Saves",
+        3,
+        2
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        0.91,
+        1.59
+      ],
+      [
+        "Yellow Cards",
+        3,
+        2
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        5,
+        4
+      ]
+    ]
   }
 }

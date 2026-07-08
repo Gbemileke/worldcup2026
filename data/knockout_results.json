@@ -98,10 +98,53 @@
     "pens": "2-4",
     "winner": "Egypt"
   },
+  "M89": {
+    "home": "Paraguay",
+    "away": "France",
+    "score": "0-1",
+    "winner": "France"
+  },
   "M90": {
     "home": "Canada",
     "away": "Morocco",
     "score": "0-3",
     "winner": "Morocco"
+  },
+  "M91": {
+    "home": "Brazil",
+    "away": "Norway",
+    "score": "1-2",
+    "winner": "Norway"
+  },
+  "M92": {
+    "home": "Mexico",
+    "away": "England",
+    "score": "2-3",
+    "winner": "England"
+  },
+  "M93": {
+    "home": "Portugal",
+    "away": "Spain",
+    "score": "0-1",
+    "winner": "Spain"
+  },
+  "M94": {
+    "home": "USA",
+    "away": "Belgium",
+    "score": "1-4",
+    "winner": "Belgium"
+  },
+  "M95": {
+    "home": "Argentina",
+    "away": "Egypt",
+    "score": "3-2",
+    "winner": "Argentina"
+  },
+  "M96": {
+    "home": "Switzerland",
+    "away": "Colombia",
+    "score": "0-0",
+    "pens": "4-3",
+    "winner": "Switzerland"
   }
 }
