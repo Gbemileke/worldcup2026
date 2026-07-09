@@ -146,5 +146,11 @@
     "score": "0-0",
     "pens": "4-3",
     "winner": "Switzerland"
+  },
+  "M97": {
+    "home": "France",
+    "away": "Morocco",
+    "score": "2-0",
+    "winner": "France"
   }
 }

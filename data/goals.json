@@ -3379,5 +3379,29 @@
     "phase": "Round of 16",
     "score": "3-2",
     "desc": ""
+  },
+  {
+    "id": 328,
+    "matchId": "M97",
+    "home": "France",
+    "away": "Morocco",
+    "scorer": "K. Mbapp\u00e9",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 329,
+    "matchId": "M97",
+    "home": "France",
+    "away": "Morocco",
+    "scorer": "O. Demb\u00e9l\u00e9",
+    "minute": 66,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "2-0",
+    "desc": ""
   }
 ]
