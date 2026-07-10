@@ -152,5 +152,11 @@
     "away": "Morocco",
     "score": "2-0",
     "winner": "France"
+  },
+  "M98": {
+    "home": "Spain",
+    "away": "Belgium",
+    "score": "2-1",
+    "winner": "Spain"
   }
 }
