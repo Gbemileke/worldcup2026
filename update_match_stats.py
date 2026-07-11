@@ -69,13 +69,30 @@ def fifa_url(home, away):
             if (home,away) in FIFA_SWAP
             else f"{FIFA_BASE_URL}{h}-v-{a}-highlights-match-report")
 
+def _norm_stat_key(s):
+    """Collapse a stat key to comparable form: lowercase, strip non-alphanumerics.
+    So ESPN's label 'Corner Kicks', its name 'cornerKicks', and 'corner_kicks'
+    all reduce to 'cornerkicks' and match each other.
+
+    This fixes a silent-zero class of bug: get_stat() matches on name/abbreviation
+    /label, and ESPN reliably supplies a human-readable *label*. 'Fouls' and 'Saves'
+    always worked because their labels are single words that happened to equal the
+    search term. 'Corner Kicks' has a SPACE, so it never matched the search terms
+    'cornerKicks'/'corners' — and whenever ESPN's internal name field differed too,
+    the lookup returned None and `or 0` wrote a false 0-0. Normalizing kills the
+    whole class of bug rather than patching corners alone.
+    """
+    return re.sub(r'[^a-z0-9]', '', str(s or '').lower())
+
 def get_stat(stats, *names):
+    targets = {_norm_stat_key(n) for n in names}
+    targets.discard('')
     for s in stats:
-        for field in ('name','abbreviation','label'):
-            if s.get(field,'').lower() in [n.lower() for n in names]:
+        for field in ('name', 'abbreviation', 'label', 'displayName', 'shortDisplayName'):
+            if _norm_stat_key(s.get(field, '')) in targets:
                 try:
-                    v = str(s.get('displayValue','0')).replace('%','').strip()
-                    return round(float(v),2) if '.' in v else int(v)
+                    v = str(s.get('displayValue', '0')).replace('%', '').strip()
+                    return round(float(v), 2) if '.' in v else int(v)
                 except: pass
     return None
 
@@ -533,6 +550,55 @@ def parse_espn_scoring_plays(summary, home, away):
 
     return goals
 
+def _corners(side_stats):
+    """Corner kicks, resilient to ESPN's differing feed naming.
+
+    ESPN returns corners under several internal names across match feeds
+    ('cornerKicks', 'wonCorners', ...) but consistently labels it 'Corner Kicks'.
+    _norm_stat_key() lets the LABEL match, so this works regardless of the
+    internal name. We still list the known names explicitly as a fallback for
+    feeds that omit the label. Returns 0 only when genuinely absent — and says so,
+    instead of silently writing a false 0-0 (which is what hid this bug for 46 matches).
+    """
+    v = get_stat(side_stats, 'cornerKicks', 'corners', 'wonCorners',
+                 'Corner Kicks', 'cornersWon', 'CK')
+    if v is None:
+        print("     ⚠ corner kicks not found in ESPN stats "
+              f"(keys seen: {[s.get('name') or s.get('label') for s in side_stats][:12]})")
+        return 0
+    return v
+
+def _passes(side_stats):
+    """Return (total_passes, accuracy_pct) for one side — e.g. (575, 88).
+
+    Feeds the 5-element row ["Pass Accuracy", homeTotal, awayTotal, homeAcc, awayAcc]
+    that index.html renders as `575 (88%)`.
+
+    Accuracy is DERIVED from accuratePasses / totalPasses — deliberately NOT taken
+    from ESPN's own `passPct`, which is a fraction rounded to ONE decimal and is far
+    too coarse to trust. Real example from the feed:
+        accuratePasses 505, totalPasses 575  -> true accuracy 87.8%  (we emit 88)
+        passPct        0.9                   -> would render 90% (or 0.9%!)
+    passPct is wrong by >2 points before you start, so we compute it ourselves and
+    only fall back to it if the two components are genuinely missing.
+    """
+    acc = get_stat(side_stats, 'accuratePasses', 'Accurate Passes')
+    tot = get_stat(side_stats, 'totalPasses', 'Passes')
+
+    if tot and acc is not None:
+        return int(tot), round(acc / tot * 100)
+
+    # Fallbacks — always warn, never silently emit a plausible-looking wrong number.
+    p = get_stat(side_stats, 'passPct', 'Pass Completion %')
+    if tot and p is not None:
+        print("     ⚠ pass accuracy fell back to ESPN passPct (coarse, 1dp)")
+        return int(tot), (round(p * 100) if p <= 1 else round(p))
+    if tot:
+        print("     ⚠ total passes found but accuracy unavailable")
+        return int(tot), 0
+    print("     ⚠ passing data not found in ESPN stats")
+    return 0, 0
+
 def parse_espn_stats(summary):
     bs    = summary.get('boxscore',{})
     teams = bs.get('teams',[])
@@ -549,11 +615,16 @@ def parse_espn_stats(summary):
     shots_a = get_stat(a,'shotAttempts','totalShots','shots') or sot_a
     xg_h    = get_stat(h,'expectedGoals','xg') or round(sot_h*0.33+max(0,shots_h-sot_h)*0.05,2)
     xg_a    = get_stat(a,'expectedGoals','xg') or round(sot_a*0.33+max(0,shots_a-sot_a)*0.05,2)
+    pass_h_tot, pass_h_acc = _passes(h)
+    pass_a_tot, pass_a_acc = _passes(a)
     return {
         'poss':[poss_h,poss_a],
         'stats':[
             ['Shot Attempts',shots_h,shots_a],['Shots on Goal',sot_h,sot_a],
-            ['Corner Kicks',get_stat(h,'cornerKicks','corners') or 0,get_stat(a,'cornerKicks','corners') or 0],
+            # 5-element row: index.html renders this as "575 (88%)" / "(90%) 598".
+            # Rows with only 3 elements render as before, so this is additive-safe.
+            ['Pass Accuracy',pass_h_tot,pass_a_tot,pass_h_acc,pass_a_acc],
+            ['Corner Kicks',_corners(h),_corners(a)],
             ['Fouls',get_stat(h,'fouls') or 0,get_stat(a,'fouls') or 0],
             ['Saves',get_stat(h,'saves') or 0,get_stat(a,'saves') or 0],
         ],
@@ -801,17 +872,17 @@ def fetch_upcoming(token, played_keys):
             if f"{home}|{away}" in played_keys or f"{away}|{home}" in played_keys: continue
             try:
                 dt    = datetime.datetime.fromisoformat(m['utcDate'].replace('Z','+00:00'))
-                # World Cup 2026 runs in summer → US Eastern is UTC-4 (EDT).
-                # The official schedule (ESPN/Yahoo/FIFA) lists every kickoff in ET,
-                # so we standardize on ET to match and to avoid the CST drift that
-                # repeatedly overwrote the hand-corrected fixture times.
-                et    = dt-datetime.timedelta(hours=4)
+                # Display kickoff in US CENTRAL time (the site's chosen zone).
+                # World Cup 2026 runs in summer → US Central is UTC-5 (CDT).
+                # The site standardizes on CT; labeling everything CT avoids the
+                # ET/CT mismatch that made the ticker read an hour off.
+                et    = dt-datetime.timedelta(hours=5)
                 date_s = f"Jun {et.day}" if et.month==6 else f"Jul {et.day}"
                 h12   = et.hour%12 or 12
                 ampm  = 'AM' if et.hour<12 else 'PM'
                 mn    = f":{et.minute:02d}" if et.minute else ':00'
-                time_s = f"{h12}{mn} {ampm} ET"
-            except: date_s=m['utcDate'][:10]; time_s='?? ET'
+                time_s = f"{h12}{mn} {ampm} CT"
+            except: date_s=m['utcDate'][:10]; time_s='?? CT'
             gr  = m.get('stage','')
             grp = gr.replace('GROUP_','') if 'GROUP_' in gr else ''
             # Determine round from football-data.org stage field

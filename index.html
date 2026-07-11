@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-08 01:30 UTC -->
+<!-- build: 2026-07-11 13:40 UTC -->
 
 <html lang="en">
 <head>
@@ -1694,15 +1694,16 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 8, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 11, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">96 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">211 open play · 35 headers · 14 penalties · 13 OGs · 7 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">280</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 96 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">98 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">215 open play · 36 headers · 14 penalties · 13 OGs · 7 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">285</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.91 per match · 98 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">14</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 13 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">13</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 13 matches</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">16</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 264</div></div>
+            <div class="stat-card sc-blue" id="stat-corners"><div class="stat-num">0</div><div class="stat-label">Corner Kicks</div><div class="stat-sub">&mdash;</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">16</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 269</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
-            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">8</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Messi</div></div>
+            <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">8</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Mbappé, Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
                       </div>
         </div>
@@ -2479,8 +2480,51 @@ var GOALS = [
   {id:324, matchId:'M95', home:'Argentina', away:'Egypt', hf:'', af:'', scorer:'M. Zico', flag:'', minute:67, type:'open-play', phase:'Round of 16', score:'0-2', desc:''},
   {id:325, matchId:'M95', home:'Argentina', away:'Egypt', hf:'', af:'', scorer:'C. Romero', flag:'', minute:79, type:'header', phase:'Round of 16', score:'1-2', desc:''},
   {id:326, matchId:'M95', home:'Argentina', away:'Egypt', hf:'', af:'', scorer:'L. Messi', flag:'', minute:83, type:'open-play', phase:'Round of 16', score:'2-2', desc:''},
-  {id:327, matchId:'M95', home:'Argentina', away:'Egypt', hf:'', af:'', scorer:'E. Fernández', flag:'', minute:91, type:'header', phase:'Round of 16', score:'3-2', desc:''}
+  {id:327, matchId:'M95', home:'Argentina', away:'Egypt', hf:'', af:'', scorer:'E. Fernández', flag:'', minute:91, type:'header', phase:'Round of 16', score:'3-2', desc:''},
+  {id:328, matchId:'M97', home:'France', away:'Morocco', hf:'', af:'', scorer:'K. Mbappé', flag:'', minute:60, type:'open-play', phase:'Quarter-Finals', score:'1-0', desc:''},
+  {id:329, matchId:'M97', home:'France', away:'Morocco', hf:'', af:'', scorer:'O. Dembélé', flag:'', minute:66, type:'open-play', phase:'Quarter-Finals', score:'2-0', desc:''},
+  {id:330, matchId:'M98', home:'Spain', away:'Belgium', hf:'', af:'', scorer:'F. Ruiz', flag:'', minute:30, type:'open-play', phase:'Quarter-Finals', score:'1-0', desc:''},
+  {id:331, matchId:'M98', home:'Spain', away:'Belgium', hf:'', af:'', scorer:'C. De Ketelaere', flag:'', minute:41, type:'header', phase:'Quarter-Finals', score:'1-1', desc:''},
+  {id:332, matchId:'M98', home:'Spain', away:'Belgium', hf:'', af:'', scorer:'M. Merino', flag:'', minute:88, type:'open-play', phase:'Quarter-Finals', score:'2-1', desc:''}
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2810,9 +2854,9 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jul 9', home:'France', away:'Morocco', time:'4:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
   {date:'Jul 11', home:'Norway', away:'England', time:'5:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
-  {date:'Jul 10', home:'Spain', away:'Belgium', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'QF'}
+  {date:'Jul 11', home:'Argentina', away:'Switzerland', time:'9:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
+  {date:'Jul 14', home:'France', away:'Spain', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'SF'}
 ];
 // ── R32_SCHEDULE: frozen list of all 16 R32 fixtures (never modified by update scripts)
 // Used by match analytics section so played matches always show as result cards.
@@ -2840,103 +2884,181 @@ var R32_SCHEDULE = [
 
 // ── Match statistics ─────────────────────────────────
 var MATCH_STATS = {
-  m1: {home:'Mexico', away:'S. Africa', hf:'', af:'', score:'2-0', date:'Jun 11', poss:[62, 38], stats:[["Shot Attempts", 14, 5], ["Shots on Goal", 6, 2], ["Corner Kicks", 7, 2], ["Fouls", 10, 13], ["Saves", 2, 6]], xtra:[["xG", 2.1, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 1, 2], ["Offsides", 2, 1]]},
-  m2: {home:'S. Korea', away:'Czechia', hf:'', af:'', score:'2-1', date:'Jun 11', poss:[54, 46], stats:[["Shot Attempts", 9, 5], ["Shots on Goal", 4, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 2]], xtra:[["xG", 1.57, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m3: {home:'Canada', away:'Bosnia', hf:'', af:'', score:'1-1', date:'Jun 12', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m4: {home:'USA', away:'Paraguay', hf:'', af:'', score:'4-1', date:'Jun 12', poss:[65.3, 34.7], stats:[["Shot Attempts", 16, 9], ["Shots on Goal", 6, 1], ["Corner Kicks", 0, 0], ["Fouls", 13, 17], ["Saves", 1, 3]], xtra:[["xG", 2.48, 0.73], ["Yellow Cards", 1, 5], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
-  m5: {home:'Qatar', away:'Switzerland', hf:'', af:'', score:'1-1', date:'Jun 13', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m6: {home:'Brazil', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 13', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m7: {home:'Haiti', away:'Scotland', hf:'', af:'', score:'0-1', date:'Jun 13', poss:[46, 54], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m8: {home:'Australia', away:'Turkey', hf:'', af:'', score:'2-0', date:'Jun 13', poss:[58, 42], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 1], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 2]], xtra:[["xG", 1.24, 0.53], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m9: {home:'Germany', away:'Curacao', hf:'', af:'', score:'7-1', date:'Jun 14', poss:[71, 29], stats:[["Shot Attempts", 22, 5], ["Shots on Goal", 10, 2], ["Corner Kicks", 9, 1], ["Fouls", 8, 16], ["Saves", 1, 9]], xtra:[["xG", 3.9, 0.81], ["Yellow Cards", 0, 2], ["Offsides", 2, 0], ["Red Cards", 0, 0]]},
-  m10: {home:'Netherlands', away:'Japan', hf:'', af:'', score:'2-2', date:'Jun 14', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 3], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 2, 2]], xtra:[["xG", 1.24, 1.09], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m11: {home:'Ivory Coast', away:'Ecuador', hf:'', af:'', score:'1-0', date:'Jun 14', poss:[54, 46], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 1], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.53], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m12: {home:'Sweden', away:'Tunisia', hf:'', af:'', score:'5-1', date:'Jun 14', poss:[47, 42], stats:[["Shot Attempts", 13, 6], ["Shots on Goal", 7, 2], ["Corner Kicks", 4, 2], ["Fouls", 9, 8], ["Saves", 1, 6]], xtra:[["xG", 1.51, 0.3], ["Yellow Cards", 0, 1], ["Offsides", 3, 6], ["Red Cards", 0, 0]]},
-  m13: {home:'Spain', away:'Cape Verde', hf:'', af:'', score:'0-0', date:'Jun 15', poss:[78, 22], stats:[["Shot Attempts", 27, 3], ["Shots on Goal", 8, 1], ["Corner Kicks", 12, 1], ["Fouls", 9, 15], ["Saves", 1, 8]], xtra:[["xG", 3.59, 0.43], ["Yellow Cards", 1, 1], ["Offsides", 2, 0], ["Red Cards", 0, 0]]},
-  m14: {home:'Belgium', away:'Egypt', hf:'', af:'', score:'1-1', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m15: {home:'Saudi Arabia', away:'Uruguay', hf:'', af:'', score:'1-1', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m16: {home:'Iran', away:'New Zealand', hf:'', af:'', score:'2-2', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 3], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 2, 2]], xtra:[["xG", 1.24, 1.09], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m17: {home:'France', away:'Senegal', hf:'', af:'', score:'3-1', date:'Jun 16', poss:[62, 38], stats:[["Shot Attempts", 17, 9], ["Shots on Goal", 7, 4], ["Corner Kicks", 7, 3], ["Fouls", 10, 12], ["Saves", 3, 4]], xtra:[["xG", 2.81, 1.57], ["Yellow Cards", 1, 2], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m18: {home:'Iraq', away:'Norway', hf:'', af:'', score:'1-4', date:'Jun 16', poss:[38.7, 61.3], stats:[["Shot Attempts", 11, 12], ["Shots on Goal", 1, 5], ["Corner Kicks", 0, 0], ["Fouls", 12, 13], ["Saves", 2, 0]], xtra:[["xG", 0.83, 2.0], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', date:'Jun 16', poss:[65, 35], stats:[["Shot Attempts", 18, 5], ["Shots on Goal", 8, 1], ["Corner Kicks", 8, 2], ["Fouls", 9, 14], ["Saves", 1, 8]], xtra:[["xG", 3.14, 0.53], ["Yellow Cards", 0, 3], ["Offsides", 4, 1], ["Red Cards", 0, 0]]},
-  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', date:'Jun 16', poss:[58, 42], stats:[["Shot Attempts", 11, 5], ["Shots on Goal", 4, 2], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 3]], xtra:[["xG", 1.67, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
-  m21: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', date:'Jun 17', poss:[75, 25], stats:[["Shot Attempts", 7, 8], ["Shots on Goal", 3, 2], ["Corner Kicks", 8, 2], ["Fouls", 10, 14], ["Saves", 1, 2]], xtra:[["xG", 1.19, 0.96], ["Yellow Cards", 1, 2], ["Offsides", 3, 1], ["Red Cards", 0, 0]]},
-  m22: {home:'England', away:'Croatia', hf:'', af:'', score:'4-2', date:'Jun 17', poss:[52, 48], stats:[["Shot Attempts", 22, 10], ["Shots on Goal", 11, 5], ["Corner Kicks", 8, 2], ["Fouls", 10, 12], ["Saves", 3, 7]], xtra:[["xG", 4.18, 1.9], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0]]},
-  m23: {home:'Ghana', away:'Panama', hf:'', af:'', score:'1-0', date:'Jun 17', poss:[38, 62], stats:[["Shot Attempts", 8, 11], ["Shots on Goal", 2, 4], ["Corner Kicks", 4, 5], ["Fouls", 9, 11], ["Saves", 4, 2]], xtra:[["xG", 1.31, 0.73], ["Yellow Cards", 2, 1], ["Offsides", 1, 2], ["Red Cards", 0, 0]]},
-  m24: {home:'Uzbekistan', away:'Colombia', hf:'', af:'', score:'1-3', date:'Jun 17', poss:[38.6, 61.4], stats:[["Shot Attempts", 8, 15], ["Shots on Goal", 2, 4], ["Corner Kicks", 0, 0], ["Fouls", 14, 11], ["Saves", 1, 1]], xtra:[["xG", 0.96, 1.87], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
-  m25: {home:'Czechia', away:'S. Africa', hf:'', af:'', score:'1-1', date:'Jun 18', poss:[55, 45], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 3], ["Corner Kicks", 6, 3], ["Fouls", 11, 13], ["Saves", 2, 4]], xtra:[["xG", 2.1, 1.29], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0]]},
-  m26: {home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', date:'Jun 18', poss:[58, 42], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 7, 2], ["Corner Kicks", 9, 3], ["Fouls", 10, 14], ["Saves", 1, 6]], xtra:[["xG", 2.96, 0.96], ["Yellow Cards", 2, 3], ["Red Cards", 0, 1]]},
-  m27: {home:'Canada', away:'Qatar', hf:'', af:'', score:'6-0', date:'Jun 18', poss:[72, 28], stats:[["Shot Attempts", 33, 2], ["Shots on Goal", 12, 0], ["Corner Kicks", 14, 1], ["Fouls", 10, 18], ["Saves", 0, 11]], xtra:[["xG", 4.54, 0.18], ["Yellow Cards", 2, 3], ["Red Cards", 0, 2], ["Offsides", 2, 1]]},
-  m28: {home:'Mexico', away:'S. Korea', hf:'', af:'', score:'1-0', date:'Jun 18', poss:[52, 48], stats:[["Shot Attempts", 9, 8], ["Shots on Goal", 2, 3], ["Corner Kicks", 4, 5], ["Fouls", 12, 10], ["Saves", 3, 2]], xtra:[["xG", 0.48, 0.67], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
-  m29: {home:'USA', away:'Australia', hf:'', af:'', score:'2-0', date:'Jun 19', poss:[61.9, 38.1], stats:[["Shot Attempts", 10, 5], ["Shots on Goal", 2, 2], ["Corner Kicks", 0, 0], ["Fouls", 12, 16], ["Saves", 2, 1]], xtra:[["xG", 1.06, 0.81], ["Yellow Cards", 3, 4], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m30: {home:'Scotland', away:'Morocco', hf:'', af:'', score:'0-1', date:'Jun 19', poss:[41.1, 58.9], stats:[["Shot Attempts", 6, 12], ["Shots on Goal", 0, 2], ["Corner Kicks", 0, 0], ["Fouls", 11, 8], ["Saves", 1, 0]], xtra:[["xG", 0.3, 1.16], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m31: {home:'Brazil', away:'Haiti', hf:'', af:'', score:'3-0', date:'Jun 19', poss:[56.7, 43.3], stats:[["Shot Attempts", 8, 7], ["Shots on Goal", 5, 3], ["Corner Kicks", 0, 0], ["Fouls", 13, 14], ["Saves", 3, 2]], xtra:[["xG", 1.8, 1.19], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 8, 4]]},
-  m32: {home:'Turkey', away:'Paraguay', hf:'', af:'', score:'0-1', date:'Jun 19', poss:[78.5, 21.5], stats:[["Shot Attempts", 32, 7], ["Shots on Goal", 5, 2], ["Corner Kicks", 0, 0], ["Fouls", 14, 15], ["Saves", 1, 5]], xtra:[["xG", 3.0, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 1], ["Offsides", 2, 3]]},
-  m33: {home:'Netherlands', away:'Sweden', hf:'', af:'', score:'5-1', date:'Jun 20', poss:[50.9, 49.1], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 7, 8], ["Corner Kicks", 0, 0], ["Fouls", 9, 12], ["Saves", 7, 2]], xtra:[["xG", 2.46, 3.04], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 3, 3]]},
-  m34: {home:'Germany', away:'Ivory Coast', hf:'', af:'', score:'2-1', date:'Jun 20', poss:[58, 42], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 3], ["Corner Kicks", 6, 3], ["Fouls", 11, 14], ["Saves", 2, 2]], xtra:[["xG", 1.83, 1.23], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
-  m35: {home:'Ecuador', away:'Curacao', hf:'', af:'', score:'0-0', date:'Jun 20', poss:[68, 32], stats:[["Shot Attempts", 22, 6], ["Shots on Goal", 15, 0], ["Corner Kicks", 8, 1], ["Fouls", 9, 13], ["Saves", 0, 15]], xtra:[["xG", 2.41, 0.12], ["Yellow Cards", 1, 5], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m36: {home:'Tunisia', away:'Japan', hf:'', af:'', score:'0-4', date:'Jun 20', poss:[41, 59], stats:[["Shot Attempts", 7, 16], ["Shots on Goal", 2, 8], ["Corner Kicks", 3, 7], ["Fouls", 14, 9], ["Saves", 4, 2]], xtra:[["xG", 0.54, 2.87], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
-  m37: {home:'Spain', away:'Saudi Arabia', hf:'', af:'', score:'4-0', date:'Jun 21', poss:[65, 35], stats:[["Shot Attempts", 18, 5], ["Shots on Goal", 8, 1], ["Corner Kicks", 7, 2], ["Fouls", 10, 14], ["Saves", 1, 4]], xtra:[["xG", 3.21, 0.43], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  m38: {home:'Belgium', away:'Iran', hf:'', af:'', score:'0-0', date:'Jun 21', poss:[70, 30], stats:[["Shot Attempts", 21, 7], ["Shots on Goal", 7, 3], ["Corner Kicks", 9, 2], ["Fouls", 8, 12], ["Saves", 3, 7]], xtra:[["xG", 1.68, 0.53], ["Yellow Cards", 1, 1], ["Red Cards", 1, 0], ["Offsides", 1, 0]]},
-  m39: {home:'Uruguay', away:'Cape Verde', hf:'', af:'', score:'2-2', date:'Jun 21', poss:[65.2, 34.8], stats:[["Shot Attempts", 17, 12], ["Shots on Goal", 2, 4], ["Corner Kicks", 0, 0], ["Fouls", 11, 4], ["Saves", 2, 0]], xtra:[["xG", 1.41, 1.72], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m40: {home:'New Zealand', away:'Egypt', hf:'', af:'', score:'1-3', date:'Jun 21', poss:[44.3, 55.7], stats:[["Shot Attempts", 11, 19], ["Shots on Goal", 5, 7], ["Corner Kicks", 0, 0], ["Fouls", 14, 8], ["Saves", 4, 4]], xtra:[["xG", 1.95, 2.91], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m41: {home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', date:'Jun 22', poss:[53.6, 46.4], stats:[["Shot Attempts", 12, 6], ["Shots on Goal", 5, 1], ["Corner Kicks", 0, 0], ["Fouls", 13, 13], ["Saves", 1, 2]], xtra:[["xG", 2.0, 0.58], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
-  m42: {home:'France', away:'Iraq', hf:'', af:'', score:'3-0', date:'Jun 22', poss:[55.6, 44.4], stats:[["Shot Attempts", 19, 4], ["Shots on Goal", 5, 0], ["Corner Kicks", 0, 0], ["Fouls", 8, 4], ["Saves", 0, 2]], xtra:[["xG", 2.35, 0.2], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m43: {home:'Norway', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jun 22', poss:[41.7, 58.3], stats:[["Shot Attempts", 13, 16], ["Shots on Goal", 7, 4], ["Corner Kicks", 0, 0], ["Fouls", 13, 5], ["Saves", 2, 3]], xtra:[["xG", 2.61, 1.92], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
-  m44: {home:'Jordan', away:'Algeria', hf:'', af:'', score:'1-2', date:'Jun 22', poss:[27.9, 72.1], stats:[["Shot Attempts", 8, 17], ["Shots on Goal", 4, 8], ["Corner Kicks", 0, 0], ["Fouls", 11, 6], ["Saves", 6, 3]], xtra:[["xG", 1.52, 3.09], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m45: {home:'Portugal', away:'Uzbekistan', hf:'', af:'', score:'5-0', date:'Jun 23', poss:[66, 34], stats:[["Shot Attempts", 17, 7], ["Shots on Goal", 9, 2], ["Corner Kicks", 0, 0], ["Fouls", 14, 15], ["Saves", 2, 4]], xtra:[["xG", 3.37, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
-  m46: {home:'England', away:'Ghana', hf:'', af:'', score:'0-0', date:'Jun 23', poss:[78.8, 21.2], stats:[["Shot Attempts", 19, 2], ["Shots on Goal", 3, 1], ["Corner Kicks", 0, 0], ["Fouls", 14, 24], ["Saves", 0, 3]], xtra:[["xG", 1.79, 0.38], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
-  m47: {home:'Panama', away:'Croatia', hf:'', af:'', score:'0-1', date:'Jun 23', poss:[42.1, 57.9], stats:[["Shot Attempts", 8, 6], ["Shots on Goal", 1, 2], ["Corner Kicks", 0, 0], ["Fouls", 19, 12], ["Saves", 1, 1]], xtra:[["xG", 0.68, 0.86], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  m48: {home:'Colombia', away:'DR Congo', hf:'', af:'', score:'1-0', date:'Jun 23', poss:[63.5, 36.5], stats:[["Shot Attempts", 20, 7], ["Shots on Goal", 9, 1], ["Corner Kicks", 0, 0], ["Fouls", 12, 16], ["Saves", 1, 8]], xtra:[["xG", 3.52, 0.63], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 7, 0]]},
-  m49: {home:'Switzerland', away:'Canada', hf:'', af:'', score:'2-1', date:'Jun 24', poss:[55.2, 44.8], stats:[["Shot Attempts", 6, 13], ["Shots on Goal", 4, 7], ["Corner Kicks", 0, 0], ["Fouls", 19, 13], ["Saves", 6, 2]], xtra:[["xG", 1.42, 2.61], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
-  m50: {home:'Bosnia', away:'Qatar', hf:'', af:'', score:'3-1', date:'Jun 24', poss:[54.5, 45.5], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 3], ["Corner Kicks", 0, 0], ["Fouls", 9, 14], ["Saves", 2, 3]], xtra:[["xG", 2.1, 1.29], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
-  m51: {home:'Scotland', away:'Brazil', hf:'', af:'', score:'0-3', date:'Jun 24', poss:[45.9, 54.1], stats:[["Shot Attempts", 14, 21], ["Shots on Goal", 5, 9], ["Corner Kicks", 0, 0], ["Fouls", 10, 11], ["Saves", 5, 5]], xtra:[["xG", 2.1, 3.57], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 0, 1]]},
-  m52: {home:'Morocco', away:'Haiti', hf:'', af:'', score:'4-2', date:'Jun 24', poss:[69, 31], stats:[["Shot Attempts", 22, 9], ["Shots on Goal", 11, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 18], ["Saves", 1, 8]], xtra:[["xG", 4.18, 1.01], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 5, 0]]},
-  m53: {home:'Czechia', away:'Mexico', hf:'', af:'', score:'0-3', date:'Jun 24', poss:[51.6, 48.4], stats:[["Shot Attempts", 13, 11], ["Shots on Goal", 1, 5], ["Corner Kicks", 0, 0], ["Fouls", 9, 13], ["Saves", 2, 1]], xtra:[["xG", 0.93, 1.95], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
-  m54: {home:'S. Africa', away:'S. Korea', hf:'', af:'', score:'1-0', date:'Jun 24', poss:[31.5, 68.5], stats:[["Shot Attempts", 13, 8], ["Shots on Goal", 4, 3], ["Corner Kicks", 0, 0], ["Fouls", 7, 9], ["Saves", 2, 3]], xtra:[["xG", 1.77, 1.24], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m55: {home:'Curacao', away:'Ivory Coast', hf:'', af:'', score:'0-2', date:'Jun 25', poss:[33, 67], stats:[["Shot Attempts", 8, 17], ["Shots on Goal", 3, 3], ["Corner Kicks", 2, 8], ["Fouls", 9, 14], ["Saves", 1, 3]], xtra:[["xG", 0.64, 2.22], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
-  m56: {home:'Ecuador', away:'Germany', hf:'', af:'', score:'2-1', date:'Jun 25', poss:[39, 51], stats:[["Shot Attempts", 7, 11], ["Shots on Goal", 3, 3], ["Corner Kicks", 3, 6], ["Fouls", 14, 11], ["Saves", 2, 1]], xtra:[["xG", 1.51, 0.65], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  m57: {home:'Japan', away:'Sweden', hf:'', af:'', score:'1-1', date:'Jun 25', poss:[58, 42], stats:[["Shot Attempts", 10, 8], ["Shots on Goal", 3, 4], ["Corner Kicks", 9, 4], ["Fouls", 9, 9], ["Saves", 3, 2]], xtra:[["xG", 1.45, 1.57], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
-  m58: {home:'Tunisia', away:'Netherlands', hf:'', af:'', score:'1-3', date:'Jun 25', poss:[32, 68], stats:[["Shot Attempts", 8, 16], ["Shots on Goal", 4, 4], ["Corner Kicks", 6, 3], ["Fouls", 9, 7], ["Saves", 1, 3]], xtra:[["xG", 1.67, 3.11], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
-  m59: {home:'Turkey', away:'USA', hf:'', af:'', score:'3-2', date:'Jun 25', poss:[49, 51], stats:[["Shot Attempts", 17, 15], ["Shots on Goal", 4, 3], ["Corner Kicks", 8, 2], ["Fouls", 11, 14], ["Saves", 1, 1]], xtra:[["xG", 2.94, 2.03], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
-  m60: {home:'Paraguay', away:'Australia', hf:'', af:'', score:'0-0', date:'Jun 25', poss:[43, 57], stats:[["Shot Attempts", 8, 9], ["Shots on Goal", 1, 3], ["Corner Kicks", 2, 7], ["Fouls", 9, 10], ["Saves", 3, 1]], xtra:[["xG", 0.47, 0.79], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  m61: {home:'Norway', away:'France', hf:'', af:'', score:'1-4', date:'Jun 26', poss:[33, 67], stats:[["Shot Attempts", 11, 19], ["Shots on Goal", 3, 6], ["Corner Kicks", 7, 6], ["Fouls", 14, 11], ["Saves", 2, 2]], xtra:[["xG", 1.39, 4.01], ["Yellow Cards", 3, 2], ["Red Cards", 1, 1], ["Offsides", 1, 2]]},
-  m62: {home:'Senegal', away:'Iraq', hf:'', af:'', score:'5-0', date:'Jun 26', poss:[68, 32], stats:[["Shot Attempts", 25, 4], ["Shots on Goal", 8, 2], ["Corner Kicks", 5, 2], ["Fouls", 16, 16], ["Saves", 2, 3]], xtra:[["xG", 5.03, 0.36], ["Yellow Cards", 2, 2], ["Red Cards", 1, 0], ["Offsides", 1, 3]]},
-  m63: {home:'Cape Verde', away:'Saudi Arabia', hf:'', af:'', score:'0-0', date:'Jun 26', poss:[51, 49], stats:[["Shot Attempts", 8, 8], ["Shots on Goal", 2, 3], ["Corner Kicks", 5, 6], ["Fouls", 9, 10], ["Saves", 3, 2]], xtra:[["xG", 0.4, 0.78], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
-  m64: {home:'Uruguay', away:'Spain', hf:'', af:'', score:'0-1', date:'Jun 26', poss:[32, 68], stats:[["Shot Attempts", 5, 15], ["Shots on Goal", 1, 3], ["Corner Kicks", 6, 2], ["Fouls", 8, 15], ["Saves", 2, 1]], xtra:[["xG", 0.38, 1.51], ["Yellow Cards", 1, 0], ["Red Cards", 1, 0], ["Offsides", 0, 3]]},
-  m65: {home:'Egypt', away:'Iran', hf:'', af:'', score:'1-1', date:'Jun 26', poss:[61, 39], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 3], ["Corner Kicks", 6, 7], ["Fouls", 16, 10], ["Saves", 2, 3]], xtra:[["xG", 1.55, 1.26], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 3]]},
-  m66: {home:'New Zealand', away:'Belgium', hf:'', af:'', score:'1-5', date:'Jun 26', poss:[32, 68], stats:[["Shot Attempts", 10, 25], ["Shots on Goal", 3, 6], ["Corner Kicks", 5, 5], ["Fouls", 8, 11], ["Saves", 1, 2]], xtra:[["xG", 1.28, 4.83], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 3, 2]]},
-  m67: {home:'Panama', away:'England', hf:'', af:'', score:'0-2', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 8, 16], ["Shots on Goal", 3, 3], ["Corner Kicks", 9, 3], ["Fouls", 12, 12], ["Saves", 1, 3]], xtra:[["xG", 0.73, 2.2], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
-  m68: {home:'Croatia', away:'Ghana', hf:'', af:'', score:'2-1', date:'Jun 27', poss:[63, 37], stats:[["Shot Attempts", 14, 7], ["Shots on Goal", 5, 3], ["Corner Kicks", 7, 3], ["Fouls", 13, 10], ["Saves", 2, 3]], xtra:[["xG", 2.49, 1.47], ["Yellow Cards", 3, 0], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
-  m69: {home:'Colombia', away:'Portugal', hf:'', af:'', score:'0-0', date:'Jun 27', poss:[51, 49], stats:[["Shot Attempts", 7, 8], ["Shots on Goal", 2, 1], ["Corner Kicks", 6, 7], ["Fouls", 11, 15], ["Saves", 1, 2]], xtra:[["xG", 0.58, 0.41], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
-  m70: {home:'DR Congo', away:'Uzbekistan', hf:'', af:'', score:'3-1', date:'Jun 27', poss:[67, 33], stats:[["Shot Attempts", 18, 9], ["Shots on Goal", 4, 4], ["Corner Kicks", 7, 3], ["Fouls", 7, 12], ["Saves", 3, 1]], xtra:[["xG", 2.86, 1.47], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
-  m71: {home:'Algeria', away:'Austria', hf:'', af:'', score:'3-3', date:'Jun 27', poss:[48, 52], stats:[["Shot Attempts", 14, 16], ["Shots on Goal", 5, 6], ["Corner Kicks", 8, 7], ["Fouls", 8, 16], ["Saves", 3, 2]], xtra:[["xG", 3.29, 3.33], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
-  m72: {home:'Jordan', away:'Argentina', hf:'', af:'', score:'1-3', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 3, 4], ["Corner Kicks", 5, 2], ["Fouls", 7, 9], ["Saves", 1, 2]], xtra:[["xG", 1.3, 3.06], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
-  M73: {home:'S. Africa', away:'Canada', hf:'', af:'', score:'0-1', date:'Jun 28', poss:[44, 56], stats:[["Shot Attempts", 7, 14], ["Shots on Goal", 2, 5], ["Corner Kicks", 3, 7], ["Fouls", 13, 10], ["Saves", 4, 2]], xtra:[["xG", 0.6, 1.7], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  M74: {home:'Germany', away:'Paraguay', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[72, 28], stats:[["Shot Attempts", 18, 6], ["Shots on Goal", 5, 3], ["Corner Kicks", 9, 3], ["Fouls", 11, 16], ["Saves", 2, 4]], xtra:[["xG", 1.9, 0.7], ["Yellow Cards", 1, 4], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
-  M75: {home:'Netherlands', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[52, 48], stats:[["Shot Attempts", 12, 11], ["Shots on Goal", 4, 5], ["Corner Kicks", 5, 6], ["Fouls", 12, 14], ["Saves", 4, 3]], xtra:[["xG", 1.3, 1.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
-  M76: {home:'Brazil', away:'Japan', hf:'', af:'', score:'2-1', date:'Jun 29', poss:[67, 33], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Corner Kicks", 8, 2], ["Fouls", 9, 12], ["Saves", 1, 5]], xtra:[["xG", 1.72, 0.23], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
-  M77: {home:'France', away:'Sweden', hf:'', af:'', score:'3-0', date:'Jun 30 - MetLife Stadium', poss:[61, 39], stats:[["Shot Attempts", 25, 8], ["Shots on Goal", 12, 3], ["Corner Kicks", 0, 0], ["Fouls", 14, 10], ["Saves", 3, 9]], xtra:[["xG", 4.61, 1.24], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
-  M78: {home:'Ivory Coast', away:'Norway', hf:'', af:'', score:'1-2', date:'Jun 30 - AT&T Stadium', poss:[47.1, 52.9], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 4], ["Corner Kicks", 0, 0], ["Fouls", 6, 7], ["Saves", 1, 4]], xtra:[["xG", 2.1, 1.57], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
-  M79: {home:'Mexico', away:'Ecuador', hf:'', af:'', score:'2-0', date:'Jul 1 - Estadio Banorte', poss:[43.2, 56.8], stats:[["Shot Attempts", 15, 7], ["Shots on Goal", 3, 1], ["Corner Kicks", 0, 0], ["Fouls", 10, 14], ["Saves", 1, 1]], xtra:[["xG", 1.59, 0.63], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 0, 1]]},
-  M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
-  M81: {home:'USA', away:'Bosnia', hf:'', af:'', score:'2-0', date:'Jul 2 - Levi\'s Stadium', poss:[48.4, 51.6], stats:[["Shot Attempts", 8, 10], ["Shots on Goal", 2, 3], ["Corner Kicks", 0, 0], ["Fouls", 7, 13], ["Saves", 3, 0]], xtra:[["xG", 0.96, 1.34], ["Yellow Cards", 0, 1], ["Red Cards", 1, 0], ["Offsides", 3, 0]]},
-  M82: {home:'Belgium', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jul 1 - Lumen Field', poss:[52.2, 47.8], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 5, 5], ["Corner Kicks", 0, 0], ["Fouls", 22, 12], ["Saves", 3, 3]], xtra:[["xG", 2.35, 2.35], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
-  M83: {home:'Portugal', away:'Croatia', hf:'', af:'', score:'2-1', date:'Jul 2 - BMO Field', poss:[60.4, 39.6], stats:[["Shot Attempts", 15, 13], ["Shots on Goal", 3, 6], ["Corner Kicks", 0, 0], ["Fouls", 6, 12], ["Saves", 5, 2]], xtra:[["xG", 1.59, 2.33], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 4]]},
-  M84: {home:'Spain', away:'Austria', hf:'', af:'', score:'3-0', date:'Jul 2 - SoFi Stadium', poss:[64.5, 35.5], stats:[["Shot Attempts", 23, 5], ["Shots on Goal", 10, 0], ["Corner Kicks", 0, 0], ["Fouls", 8, 15], ["Saves", 0, 6]], xtra:[["xG", 3.95, 0.25], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 5]]},
-  M85: {home:'Switzerland', away:'Algeria', hf:'', af:'', score:'2-0', date:'Jul 3 - BC Place', poss:[44.6, 55.4], stats:[["Shot Attempts", 11, 8], ["Shots on Goal", 5, 2], ["Corner Kicks", 0, 0], ["Fouls", 10, 12], ["Saves", 2, 2]], xtra:[["xG", 1.95, 0.96], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 2]]},
-  M86: {home:'Argentina', away:'Cape Verde', hf:'', af:'', score:'3-2', date:'Jul 3 - Hard Rock Stadium', poss:[63.5, 36.5], stats:[["Shot Attempts", 22, 16], ["Shots on Goal", 10, 5], ["Corner Kicks", 0, 0], ["Fouls", 13, 12], ["Saves", 3, 8]], xtra:[["xG", 3.9, 2.2], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
-  M87: {home:'Colombia', away:'Ghana', hf:'', af:'', score:'1-0', date:'Jul 4 - GEHA Field at Arrowhead Stadium', poss:[60.6, 39.4], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 8, 0], ["Corner Kicks", 0, 0], ["Fouls", 14, 10], ["Saves", 0, 7]], xtra:[["xG", 3.24, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
-  M88: {home:'Australia', away:'Egypt', hf:'', af:'', score:'1-1', date:'Jul 3 - AT&T Stadium', poss:[41.7, 58.3], stats:[["Shot Attempts", 16, 14], ["Shots on Goal", 1, 3], ["Corner Kicks", 0, 0], ["Fouls", 12, 14], ["Saves", 3, 1]], xtra:[["xG", 1.08, 1.54], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
-  M89: {home:'Paraguay', away:'France', hf:'', af:'', score:'0-1', date:'Jul 4 - Lincoln Financial Field', poss:[24, 76], stats:[["Shot Attempts", 5, 15], ["Shots on Goal", 1, 5], ["Corner Kicks", 0, 0], ["Fouls", 13, 11], ["Saves", 4, 1]], xtra:[["xG", 0.53, 2.15], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
-  M90: {home:'Canada', away:'Morocco', hf:'', af:'', score:'0-3', date:'Jul 4 - NRG Stadium', poss:[44.6, 55.4], stats:[["Shot Attempts", 10, 5], ["Shots on Goal", 3, 4], ["Corner Kicks", 0, 0], ["Fouls", 24, 14], ["Saves", 1, 3]], xtra:[["xG", 1.34, 1.37], ["Yellow Cards", 4, 4], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
-  M91: {home:'Brazil', away:'Norway', hf:'', af:'', score:'1-2', date:'Jul 5 - MetLife Stadium', poss:[33.5, 66.5], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 5], ["Corner Kicks", 0, 0], ["Fouls", 7, 6], ["Saves", 3, 4]], xtra:[["xG", 1.82, 1.85], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 1]]},
-  M92: {home:'Mexico', away:'England', hf:'', af:'', score:'2-3', date:'Jul 6 - Estadio Banorte', poss:[66.8, 33.2], stats:[["Shot Attempts", 20, 6], ["Shots on Goal", 5, 5], ["Corner Kicks", 0, 0], ["Fouls", 14, 7], ["Saves", 2, 3]], xtra:[["xG", 2.4, 1.7], ["Yellow Cards", 2, 4], ["Red Cards", 0, 1], ["Offsides", 1, 0]]},
-  M93: {home:'Portugal', away:'Spain', hf:'', af:'', score:'0-1', date:'Jul 6 - AT&T Stadium', poss:[44.5, 55.5], stats:[["Shot Attempts", 10, 15], ["Shots on Goal", 2, 6], ["Corner Kicks", 0, 0], ["Fouls", 9, 13], ["Saves", 5, 2]], xtra:[["xG", 1.06, 2.43], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
-  M94: {home:'USA', away:'Belgium', hf:'', af:'', score:'1-4', date:'Jul 7 - Lumen Field', poss:[56.2, 43.8], stats:[["Shot Attempts", 7, 15], ["Shots on Goal", 2, 7], ["Corner Kicks", 0, 0], ["Fouls", 11, 9], ["Saves", 3, 1]], xtra:[["xG", 0.91, 2.71], ["Yellow Cards", 2, 0], ["Red Cards", 0, 0], ["Offsides", 0, 1]]},
-  M95: {home:'Argentina', away:'Egypt', hf:'', af:'', score:'3-2', date:'Jul 7 - Mercedes-Benz Stadium', poss:[63.6, 36.4], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Corner Kicks", 0, 0], ["Fouls", 13, 11], ["Saves", 0, 4]], xtra:[["xG", 2.91, 0.81], ["Yellow Cards", 0, 4], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
-  M96: {home:'Switzerland', away:'Colombia', hf:'', af:'', score:'0-0', date:'Jul 7 - BC Place', poss:[53.2, 46.8], stats:[["Shot Attempts", 7, 15], ["Shots on Goal", 2, 3], ["Corner Kicks", 0, 0], ["Fouls", 22, 21], ["Saves", 3, 2]], xtra:[["xG", 0.91, 1.59], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 5, 4]]}
+  m1: {home:'Mexico', away:'S. Africa', hf:'', af:'', score:'2-0', date:'Jun 11', poss:[62, 38], stats:[["Shot Attempts", 14, 5], ["Shots on Goal", 6, 2], ["Pass Accuracy", 520, 334, 90, 81], ["Corner Kicks", 7, 2], ["Fouls", 10, 13], ["Saves", 2, 6]], xtra:[["xG", 2.1, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 1, 2], ["Offsides", 2, 1]]},
+  m2: {home:'S. Korea', away:'Czechia', hf:'', af:'', score:'2-1', date:'Jun 11', poss:[54, 46], stats:[["Shot Attempts", 9, 5], ["Shots on Goal", 4, 2], ["Pass Accuracy", 541, 327, 87, 70], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 2]], xtra:[["xG", 1.57, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m3: {home:'Canada', away:'Bosnia', hf:'', af:'', score:'1-1', date:'Jun 12', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 421, 271, 74, 63], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m4: {home:'USA', away:'Paraguay', hf:'', af:'', score:'4-1', date:'Jun 12', poss:[65.3, 34.7], stats:[["Shot Attempts", 16, 9], ["Shots on Goal", 6, 1], ["Pass Accuracy", 598, 319, 85, 73], ["Corner Kicks", 3, 1], ["Fouls", 13, 17], ["Saves", 1, 3]], xtra:[["xG", 2.48, 0.73], ["Yellow Cards", 1, 5], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  m5: {home:'Qatar', away:'Switzerland', hf:'', af:'', score:'1-1', date:'Jun 13', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 278, 576, 72, 91], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m6: {home:'Brazil', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 13', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 514, 486, 87, 86], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m7: {home:'Haiti', away:'Scotland', hf:'', af:'', score:'0-1', date:'Jun 13', poss:[46, 54], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 431, 374, 85, 82], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m8: {home:'Australia', away:'Turkey', hf:'', af:'', score:'2-0', date:'Jun 13', poss:[58, 42], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 1], ["Pass Accuracy", 271, 704, 74, 90], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 2]], xtra:[["xG", 1.24, 0.53], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m9: {home:'Germany', away:'Curacao', hf:'', af:'', score:'7-1', date:'Jun 14', poss:[71, 29], stats:[["Shot Attempts", 22, 5], ["Shots on Goal", 10, 2], ["Pass Accuracy", 637, 343, 87, 82], ["Corner Kicks", 9, 1], ["Fouls", 8, 16], ["Saves", 1, 9]], xtra:[["xG", 3.9, 0.81], ["Yellow Cards", 0, 2], ["Offsides", 2, 0], ["Red Cards", 0, 0]]},
+  m10: {home:'Netherlands', away:'Japan', hf:'', af:'', score:'2-2', date:'Jun 14', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 3], ["Pass Accuracy", 524, 341, 88, 84], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 2, 2]], xtra:[["xG", 1.24, 1.09], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m11: {home:'Ivory Coast', away:'Ecuador', hf:'', af:'', score:'1-0', date:'Jun 14', poss:[54, 46], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 1], ["Pass Accuracy", 470, 492, 84, 85], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.53], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m12: {home:'Sweden', away:'Tunisia', hf:'', af:'', score:'5-1', date:'Jun 14', poss:[47, 42], stats:[["Shot Attempts", 13, 6], ["Shots on Goal", 7, 2], ["Pass Accuracy", 356, 371, 78, 79], ["Corner Kicks", 4, 2], ["Fouls", 9, 8], ["Saves", 1, 6]], xtra:[["xG", 1.51, 0.3], ["Yellow Cards", 0, 1], ["Offsides", 3, 6], ["Red Cards", 0, 0]]},
+  m13: {home:'Spain', away:'Cape Verde', hf:'', af:'', score:'0-0', date:'Jun 15', poss:[78, 22], stats:[["Shot Attempts", 27, 3], ["Shots on Goal", 8, 1], ["Pass Accuracy", 800, 278, 92, 74], ["Corner Kicks", 12, 1], ["Fouls", 9, 15], ["Saves", 1, 8]], xtra:[["xG", 3.59, 0.43], ["Yellow Cards", 1, 1], ["Offsides", 2, 0], ["Red Cards", 0, 0]]},
+  m14: {home:'Belgium', away:'Egypt', hf:'', af:'', score:'1-1', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 455, 398, 86, 81], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m15: {home:'Saudi Arabia', away:'Uruguay', hf:'', af:'', score:'1-1', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 2], ["Pass Accuracy", 322, 612, 73, 88], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 1]], xtra:[["xG", 1.24, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m16: {home:'Iran', away:'New Zealand', hf:'', af:'', score:'2-2', date:'Jun 15', poss:[50, 50], stats:[["Shot Attempts", 8, 5], ["Shots on Goal", 3, 3], ["Pass Accuracy", 409, 446, 77, 84], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 2, 2]], xtra:[["xG", 1.24, 1.09], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m17: {home:'France', away:'Senegal', hf:'', af:'', score:'3-1', date:'Jun 16', poss:[62, 38], stats:[["Shot Attempts", 17, 9], ["Shots on Goal", 7, 4], ["Pass Accuracy", 575, 502, 88, 86], ["Corner Kicks", 7, 3], ["Fouls", 10, 12], ["Saves", 3, 4]], xtra:[["xG", 2.81, 1.57], ["Yellow Cards", 1, 2], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m18: {home:'Iraq', away:'Norway', hf:'', af:'', score:'1-4', date:'Jun 16', poss:[38.7, 61.3], stats:[["Shot Attempts", 11, 12], ["Shots on Goal", 1, 5], ["Pass Accuracy", 334, 537, 81, 89], ["Corner Kicks", 2, 5], ["Fouls", 12, 13], ["Saves", 2, 0]], xtra:[["xG", 0.83, 2.0], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m19: {home:'Argentina', away:'Algeria', hf:'', af:'', score:'3-0', date:'Jun 16', poss:[65, 35], stats:[["Shot Attempts", 18, 5], ["Shots on Goal", 8, 1], ["Pass Accuracy", 561, 609, 90, 92], ["Corner Kicks", 8, 2], ["Fouls", 9, 14], ["Saves", 1, 8]], xtra:[["xG", 3.14, 0.53], ["Yellow Cards", 0, 3], ["Offsides", 4, 1], ["Red Cards", 0, 0]]},
+  m20: {home:'Austria', away:'Jordan', hf:'', af:'', score:'3-1', date:'Jun 16', poss:[58, 42], stats:[["Shot Attempts", 11, 5], ["Shots on Goal", 4, 2], ["Pass Accuracy", 580, 332, 84, 73], ["Corner Kicks", 5, 4], ["Fouls", 12, 12], ["Saves", 1, 3]], xtra:[["xG", 1.67, 0.81], ["Yellow Cards", 1, 1], ["Offsides", 2, 1], ["Red Cards", 0, 0]]},
+  m21: {home:'Portugal', away:'DR Congo', hf:'', af:'', score:'1-1', date:'Jun 17', poss:[75, 25], stats:[["Shot Attempts", 7, 8], ["Shots on Goal", 3, 2], ["Pass Accuracy", 783, 249, 92, 78], ["Corner Kicks", 8, 2], ["Fouls", 10, 14], ["Saves", 1, 2]], xtra:[["xG", 1.19, 0.96], ["Yellow Cards", 1, 2], ["Offsides", 3, 1], ["Red Cards", 0, 0]]},
+  m22: {home:'England', away:'Croatia', hf:'', af:'', score:'4-2', date:'Jun 17', poss:[52, 48], stats:[["Shot Attempts", 22, 10], ["Shots on Goal", 11, 5], ["Pass Accuracy", 474, 443, 86, 86], ["Corner Kicks", 8, 2], ["Fouls", 10, 12], ["Saves", 3, 7]], xtra:[["xG", 4.18, 1.9], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0]]},
+  m23: {home:'Ghana', away:'Panama', hf:'', af:'', score:'1-0', date:'Jun 17', poss:[38, 62], stats:[["Shot Attempts", 8, 11], ["Shots on Goal", 2, 4], ["Pass Accuracy", 352, 583, 83, 86], ["Corner Kicks", 4, 5], ["Fouls", 9, 11], ["Saves", 4, 2]], xtra:[["xG", 1.31, 0.73], ["Yellow Cards", 2, 1], ["Offsides", 1, 2], ["Red Cards", 0, 0]]},
+  m24: {home:'Uzbekistan', away:'Colombia', hf:'', af:'', score:'1-3', date:'Jun 17', poss:[38.6, 61.4], stats:[["Shot Attempts", 8, 15], ["Shots on Goal", 2, 4], ["Pass Accuracy", 319, 519, 76, 86], ["Corner Kicks", 3, 4], ["Fouls", 14, 11], ["Saves", 1, 1]], xtra:[["xG", 0.96, 1.87], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
+  m25: {home:'Czechia', away:'S. Africa', hf:'', af:'', score:'1-1', date:'Jun 18', poss:[55, 45], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 3], ["Pass Accuracy", 341, 563, 80, 90], ["Corner Kicks", 6, 3], ["Fouls", 11, 13], ["Saves", 2, 4]], xtra:[["xG", 2.1, 1.29], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0]]},
+  m26: {home:'Switzerland', away:'Bosnia', hf:'', af:'', score:'4-1', date:'Jun 18', poss:[58, 42], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 7, 2], ["Pass Accuracy", 586, 354, 88, 81], ["Corner Kicks", 9, 3], ["Fouls", 10, 14], ["Saves", 1, 6]], xtra:[["xG", 2.96, 0.96], ["Yellow Cards", 2, 3], ["Red Cards", 0, 1]]},
+  m27: {home:'Canada', away:'Qatar', hf:'', af:'', score:'6-0', date:'Jun 18', poss:[72, 28], stats:[["Shot Attempts", 33, 2], ["Shots on Goal", 12, 0], ["Pass Accuracy", 567, 162, 91, 64], ["Corner Kicks", 14, 1], ["Fouls", 10, 18], ["Saves", 0, 11]], xtra:[["xG", 4.54, 0.18], ["Yellow Cards", 2, 3], ["Red Cards", 0, 2], ["Offsides", 2, 1]]},
+  m28: {home:'Mexico', away:'S. Korea', hf:'', af:'', score:'1-0', date:'Jun 18', poss:[52, 48], stats:[["Shot Attempts", 9, 8], ["Shots on Goal", 2, 3], ["Pass Accuracy", 427, 578, 82, 84], ["Corner Kicks", 4, 5], ["Fouls", 12, 10], ["Saves", 3, 2]], xtra:[["xG", 0.48, 0.67], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  m29: {home:'USA', away:'Australia', hf:'', af:'', score:'2-0', date:'Jun 19', poss:[61.9, 38.1], stats:[["Shot Attempts", 10, 5], ["Shots on Goal", 2, 2], ["Pass Accuracy", 523, 310, 85, 71], ["Corner Kicks", 7, 4], ["Fouls", 12, 16], ["Saves", 2, 1]], xtra:[["xG", 1.06, 0.81], ["Yellow Cards", 3, 4], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m30: {home:'Scotland', away:'Morocco', hf:'', af:'', score:'0-1', date:'Jun 19', poss:[41.1, 58.9], stats:[["Shot Attempts", 6, 12], ["Shots on Goal", 0, 2], ["Pass Accuracy", 456, 670, 85, 90], ["Corner Kicks", 2, 5], ["Fouls", 11, 8], ["Saves", 1, 0]], xtra:[["xG", 0.3, 1.16], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m31: {home:'Brazil', away:'Haiti', hf:'', af:'', score:'3-0', date:'Jun 19', poss:[56.7, 43.3], stats:[["Shot Attempts", 8, 7], ["Shots on Goal", 5, 3], ["Pass Accuracy", 525, 399, 88, 83], ["Corner Kicks", 4, 4], ["Fouls", 13, 14], ["Saves", 3, 2]], xtra:[["xG", 1.8, 1.19], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 8, 4]]},
+  m32: {home:'Turkey', away:'Paraguay', hf:'', af:'', score:'0-1', date:'Jun 19', poss:[78.5, 21.5], stats:[["Shot Attempts", 32, 7], ["Shots on Goal", 5, 2], ["Pass Accuracy", 629, 178, 89, 54], ["Corner Kicks", 12, 0], ["Fouls", 14, 15], ["Saves", 1, 5]], xtra:[["xG", 3.0, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 1], ["Offsides", 2, 3]]},
+  m33: {home:'Netherlands', away:'Sweden', hf:'', af:'', score:'5-1', date:'Jun 20', poss:[50.9, 49.1], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 7, 8], ["Pass Accuracy", 449, 425, 89, 85], ["Corner Kicks", 2, 5], ["Fouls", 9, 12], ["Saves", 7, 2]], xtra:[["xG", 2.46, 3.04], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 3, 3]]},
+  m34: {home:'Germany', away:'Ivory Coast', hf:'', af:'', score:'2-1', date:'Jun 20', poss:[58, 42], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 3], ["Pass Accuracy", 624, 431, 89, 85], ["Corner Kicks", 6, 3], ["Fouls", 11, 14], ["Saves", 2, 2]], xtra:[["xG", 1.83, 1.23], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  m35: {home:'Ecuador', away:'Curacao', hf:'', af:'', score:'0-0', date:'Jun 20', poss:[68, 32], stats:[["Shot Attempts", 22, 6], ["Shots on Goal", 15, 0], ["Pass Accuracy", 644, 227, 90, 70], ["Corner Kicks", 8, 1], ["Fouls", 9, 13], ["Saves", 0, 15]], xtra:[["xG", 2.41, 0.12], ["Yellow Cards", 1, 5], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  m36: {home:'Tunisia', away:'Japan', hf:'', af:'', score:'0-4', date:'Jun 20', poss:[41, 59], stats:[["Shot Attempts", 7, 16], ["Shots on Goal", 2, 8], ["Pass Accuracy", 354, 583, 80, 89], ["Corner Kicks", 3, 7], ["Fouls", 14, 9], ["Saves", 4, 2]], xtra:[["xG", 0.54, 2.87], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
+  m37: {home:'Spain', away:'Saudi Arabia', hf:'', af:'', score:'4-0', date:'Jun 21', poss:[65, 35], stats:[["Shot Attempts", 18, 5], ["Shots on Goal", 8, 1], ["Pass Accuracy", 726, 364, 92, 81], ["Corner Kicks", 7, 2], ["Fouls", 10, 14], ["Saves", 1, 4]], xtra:[["xG", 3.21, 0.43], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
+  m38: {home:'Belgium', away:'Iran', hf:'', af:'', score:'0-0', date:'Jun 21', poss:[70, 30], stats:[["Shot Attempts", 21, 7], ["Shots on Goal", 7, 3], ["Pass Accuracy", 621, 270, 86, 73], ["Corner Kicks", 9, 2], ["Fouls", 8, 12], ["Saves", 3, 7]], xtra:[["xG", 1.68, 0.53], ["Yellow Cards", 1, 1], ["Red Cards", 1, 0], ["Offsides", 1, 0]]},
+  m39: {home:'Uruguay', away:'Cape Verde', hf:'', af:'', score:'2-2', date:'Jun 21', poss:[65.2, 34.8], stats:[["Shot Attempts", 17, 12], ["Shots on Goal", 2, 4], ["Pass Accuracy", 511, 278, 82, 74], ["Corner Kicks", 11, 4], ["Fouls", 11, 4], ["Saves", 2, 0]], xtra:[["xG", 1.41, 1.72], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  m40: {home:'New Zealand', away:'Egypt', hf:'', af:'', score:'1-3', date:'Jun 21', poss:[44.3, 55.7], stats:[["Shot Attempts", 11, 19], ["Shots on Goal", 5, 7], ["Pass Accuracy", 421, 526, 80, 87], ["Corner Kicks", 4, 4], ["Fouls", 14, 8], ["Saves", 4, 4]], xtra:[["xG", 1.95, 2.91], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  m41: {home:'Argentina', away:'Austria', hf:'', af:'', score:'2-0', date:'Jun 22', poss:[53.6, 46.4], stats:[["Shot Attempts", 12, 6], ["Shots on Goal", 5, 1], ["Pass Accuracy", 554, 468, 89, 86], ["Corner Kicks", 1, 3], ["Fouls", 13, 13], ["Saves", 1, 2]], xtra:[["xG", 2.0, 0.58], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
+  m42: {home:'France', away:'Iraq', hf:'', af:'', score:'3-0', date:'Jun 22', poss:[55.6, 44.4], stats:[["Shot Attempts", 19, 4], ["Shots on Goal", 5, 0], ["Pass Accuracy", 603, 481, 90, 86], ["Corner Kicks", 4, 2], ["Fouls", 8, 4], ["Saves", 0, 2]], xtra:[["xG", 2.35, 0.2], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m43: {home:'Norway', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jun 22', poss:[41.7, 58.3], stats:[["Shot Attempts", 13, 16], ["Shots on Goal", 7, 4], ["Pass Accuracy", 353, 489, 80, 88], ["Corner Kicks", 5, 4], ["Fouls", 13, 5], ["Saves", 2, 3]], xtra:[["xG", 2.61, 1.92], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
+  m44: {home:'Jordan', away:'Algeria', hf:'', af:'', score:'1-2', date:'Jun 22', poss:[27.9, 72.1], stats:[["Shot Attempts", 8, 17], ["Shots on Goal", 4, 8], ["Pass Accuracy", 251, 641, 72, 88], ["Corner Kicks", 1, 10], ["Fouls", 11, 6], ["Saves", 6, 3]], xtra:[["xG", 1.52, 3.09], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m45: {home:'Portugal', away:'Uzbekistan', hf:'', af:'', score:'5-0', date:'Jun 23', poss:[66, 34], stats:[["Shot Attempts", 17, 7], ["Shots on Goal", 9, 2], ["Pass Accuracy", 624, 327, 90, 80], ["Corner Kicks", 3, 2], ["Fouls", 14, 15], ["Saves", 2, 4]], xtra:[["xG", 3.37, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
+  m46: {home:'England', away:'Ghana', hf:'', af:'', score:'0-0', date:'Jun 23', poss:[78.8, 21.2], stats:[["Shot Attempts", 19, 2], ["Shots on Goal", 3, 1], ["Pass Accuracy", 633, 172, 93, 74], ["Corner Kicks", 9, 2], ["Fouls", 14, 24], ["Saves", 0, 3]], xtra:[["xG", 1.79, 0.38], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
+  m47: {home:'Panama', away:'Croatia', hf:'', af:'', score:'0-1', date:'Jun 23', poss:[42.1, 57.9], stats:[["Shot Attempts", 8, 6], ["Shots on Goal", 1, 2], ["Pass Accuracy", 352, 512, 79, 84], ["Corner Kicks", 7, 2], ["Fouls", 19, 12], ["Saves", 1, 1]], xtra:[["xG", 0.68, 0.86], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
+  m48: {home:'Colombia', away:'DR Congo', hf:'', af:'', score:'1-0', date:'Jun 23', poss:[63.5, 36.5], stats:[["Shot Attempts", 20, 7], ["Shots on Goal", 9, 1], ["Pass Accuracy", 541, 299, 87, 76], ["Corner Kicks", 5, 4], ["Fouls", 12, 16], ["Saves", 1, 8]], xtra:[["xG", 3.52, 0.63], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 7, 0]]},
+  m49: {home:'Switzerland', away:'Canada', hf:'', af:'', score:'2-1', date:'Jun 24', poss:[55.2, 44.8], stats:[["Shot Attempts", 6, 13], ["Shots on Goal", 4, 7], ["Pass Accuracy", 443, 339, 83, 80], ["Corner Kicks", 2, 7], ["Fouls", 19, 13], ["Saves", 6, 2]], xtra:[["xG", 1.42, 2.61], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
+  m50: {home:'Bosnia', away:'Qatar', hf:'', af:'', score:'3-1', date:'Jun 24', poss:[54.5, 45.5], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 3], ["Pass Accuracy", 515, 434, 88, 85], ["Corner Kicks", 5, 5], ["Fouls", 9, 14], ["Saves", 2, 3]], xtra:[["xG", 2.1, 1.29], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
+  m51: {home:'Scotland', away:'Brazil', hf:'', af:'', score:'0-3', date:'Jun 24', poss:[45.9, 54.1], stats:[["Shot Attempts", 14, 21], ["Shots on Goal", 5, 9], ["Pass Accuracy", 500, 605, 90, 93], ["Corner Kicks", 7, 7], ["Fouls", 10, 11], ["Saves", 5, 5]], xtra:[["xG", 2.1, 3.57], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 0, 1]]},
+  m52: {home:'Morocco', away:'Haiti', hf:'', af:'', score:'4-2', date:'Jun 24', poss:[69, 31], stats:[["Shot Attempts", 22, 9], ["Shots on Goal", 11, 2], ["Pass Accuracy", 541, 247, 88, 80], ["Corner Kicks", 9, 1], ["Fouls", 10, 18], ["Saves", 1, 8]], xtra:[["xG", 4.18, 1.01], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 5, 0]]},
+  m53: {home:'Czechia', away:'Mexico', hf:'', af:'', score:'0-3', date:'Jun 24', poss:[51.6, 48.4], stats:[["Shot Attempts", 13, 11], ["Shots on Goal", 1, 5], ["Pass Accuracy", 398, 386, 84, 85], ["Corner Kicks", 5, 1], ["Fouls", 9, 13], ["Saves", 2, 1]], xtra:[["xG", 0.93, 1.95], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 1, 0]]},
+  m54: {home:'S. Africa', away:'S. Korea', hf:'', af:'', score:'1-0', date:'Jun 24', poss:[31.5, 68.5], stats:[["Shot Attempts", 13, 8], ["Shots on Goal", 4, 3], ["Pass Accuracy", 340, 719, 81, 89], ["Corner Kicks", 4, 6], ["Fouls", 7, 9], ["Saves", 2, 3]], xtra:[["xG", 1.77, 1.24], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  m55: {home:'Curacao', away:'Ivory Coast', hf:'', af:'', score:'0-2', date:'Jun 25', poss:[33, 67], stats:[["Shot Attempts", 8, 17], ["Shots on Goal", 3, 3], ["Pass Accuracy", 355, 624, 83, 89], ["Corner Kicks", 2, 8], ["Fouls", 9, 14], ["Saves", 1, 3]], xtra:[["xG", 0.64, 2.22], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
+  m56: {home:'Ecuador', away:'Germany', hf:'', af:'', score:'2-1', date:'Jun 25', poss:[39, 51], stats:[["Shot Attempts", 7, 11], ["Shots on Goal", 3, 3], ["Pass Accuracy", 378, 592, 83, 87], ["Corner Kicks", 3, 6], ["Fouls", 14, 11], ["Saves", 2, 1]], xtra:[["xG", 1.51, 0.65], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
+  m57: {home:'Japan', away:'Sweden', hf:'', af:'', score:'1-1', date:'Jun 25', poss:[58, 42], stats:[["Shot Attempts", 10, 8], ["Shots on Goal", 3, 4], ["Pass Accuracy", 445, 395, 85, 79], ["Corner Kicks", 9, 4], ["Fouls", 9, 9], ["Saves", 3, 2]], xtra:[["xG", 1.45, 1.57], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
+  m58: {home:'Tunisia', away:'Netherlands', hf:'', af:'', score:'1-3', date:'Jun 25', poss:[32, 68], stats:[["Shot Attempts", 8, 16], ["Shots on Goal", 4, 4], ["Pass Accuracy", 258, 647, 77, 93], ["Corner Kicks", 6, 3], ["Fouls", 9, 7], ["Saves", 1, 3]], xtra:[["xG", 1.67, 3.11], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
+  m59: {home:'Turkey', away:'USA', hf:'', af:'', score:'3-2', date:'Jun 25', poss:[49, 51], stats:[["Shot Attempts", 17, 15], ["Shots on Goal", 4, 3], ["Pass Accuracy", 434, 471, 77, 85], ["Corner Kicks", 8, 2], ["Fouls", 11, 14], ["Saves", 1, 1]], xtra:[["xG", 2.94, 2.03], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
+  m60: {home:'Paraguay', away:'Australia', hf:'', af:'', score:'0-0', date:'Jun 25', poss:[43, 57], stats:[["Shot Attempts", 8, 9], ["Shots on Goal", 1, 3], ["Pass Accuracy", 426, 537, 77, 82], ["Corner Kicks", 2, 7], ["Fouls", 9, 10], ["Saves", 3, 1]], xtra:[["xG", 0.47, 0.79], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  m61: {home:'Norway', away:'France', hf:'', af:'', score:'1-4', date:'Jun 26', poss:[33, 67], stats:[["Shot Attempts", 11, 19], ["Shots on Goal", 3, 6], ["Pass Accuracy", 421, 555, 81, 86], ["Corner Kicks", 7, 6], ["Fouls", 14, 11], ["Saves", 2, 2]], xtra:[["xG", 1.39, 4.01], ["Yellow Cards", 3, 2], ["Red Cards", 1, 1], ["Offsides", 1, 2]]},
+  m62: {home:'Senegal', away:'Iraq', hf:'', af:'', score:'5-0', date:'Jun 26', poss:[68, 32], stats:[["Shot Attempts", 25, 4], ["Shots on Goal", 8, 2], ["Pass Accuracy", 590, 266, 88, 69], ["Corner Kicks", 5, 2], ["Fouls", 16, 16], ["Saves", 2, 3]], xtra:[["xG", 5.03, 0.36], ["Yellow Cards", 2, 2], ["Red Cards", 1, 0], ["Offsides", 1, 3]]},
+  m63: {home:'Cape Verde', away:'Saudi Arabia', hf:'', af:'', score:'0-0', date:'Jun 26', poss:[51, 49], stats:[["Shot Attempts", 8, 8], ["Shots on Goal", 2, 3], ["Pass Accuracy", 451, 444, 84, 81], ["Corner Kicks", 5, 6], ["Fouls", 9, 10], ["Saves", 3, 2]], xtra:[["xG", 0.4, 0.78], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
+  m64: {home:'Uruguay', away:'Spain', hf:'', af:'', score:'0-1', date:'Jun 26', poss:[32, 68], stats:[["Shot Attempts", 5, 15], ["Shots on Goal", 1, 3], ["Pass Accuracy", 301, 622, 76, 89], ["Corner Kicks", 6, 2], ["Fouls", 8, 15], ["Saves", 2, 1]], xtra:[["xG", 0.38, 1.51], ["Yellow Cards", 1, 0], ["Red Cards", 1, 0], ["Offsides", 0, 3]]},
+  m65: {home:'Egypt', away:'Iran', hf:'', af:'', score:'1-1', date:'Jun 26', poss:[61, 39], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 3], ["Pass Accuracy", 589, 367, 87, 77], ["Corner Kicks", 6, 7], ["Fouls", 16, 10], ["Saves", 2, 3]], xtra:[["xG", 1.55, 1.26], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 3]]},
+  m66: {home:'New Zealand', away:'Belgium', hf:'', af:'', score:'1-5', date:'Jun 26', poss:[32, 68], stats:[["Shot Attempts", 10, 25], ["Shots on Goal", 3, 6], ["Pass Accuracy", 436, 525, 85, 88], ["Corner Kicks", 5, 5], ["Fouls", 8, 11], ["Saves", 1, 2]], xtra:[["xG", 1.28, 4.83], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 3, 2]]},
+  m67: {home:'Panama', away:'England', hf:'', af:'', score:'0-2', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 8, 16], ["Shots on Goal", 3, 3], ["Pass Accuracy", 268, 558, 75, 88], ["Corner Kicks", 9, 3], ["Fouls", 12, 12], ["Saves", 1, 3]], xtra:[["xG", 0.73, 2.2], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
+  m68: {home:'Croatia', away:'Ghana', hf:'', af:'', score:'2-1', date:'Jun 27', poss:[63, 37], stats:[["Shot Attempts", 14, 7], ["Shots on Goal", 5, 3], ["Pass Accuracy", 523, 455, 91, 88], ["Corner Kicks", 7, 3], ["Fouls", 13, 10], ["Saves", 2, 3]], xtra:[["xG", 2.49, 1.47], ["Yellow Cards", 3, 0], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
+  m69: {home:'Colombia', away:'Portugal', hf:'', af:'', score:'0-0', date:'Jun 27', poss:[51, 49], stats:[["Shot Attempts", 7, 8], ["Shots on Goal", 2, 1], ["Pass Accuracy", 544, 446, 89, 91], ["Corner Kicks", 6, 7], ["Fouls", 11, 15], ["Saves", 1, 2]], xtra:[["xG", 0.58, 0.41], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
+  m70: {home:'DR Congo', away:'Uzbekistan', hf:'', af:'', score:'3-1', date:'Jun 27', poss:[67, 33], stats:[["Shot Attempts", 18, 9], ["Shots on Goal", 4, 4], ["Pass Accuracy", 485, 355, 82, 76], ["Corner Kicks", 7, 3], ["Fouls", 7, 12], ["Saves", 3, 1]], xtra:[["xG", 2.86, 1.47], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
+  m71: {home:'Algeria', away:'Austria', hf:'', af:'', score:'3-3', date:'Jun 27', poss:[48, 52], stats:[["Shot Attempts", 14, 16], ["Shots on Goal", 5, 6], ["Pass Accuracy", 754, 396, 94, 87], ["Corner Kicks", 8, 7], ["Fouls", 8, 16], ["Saves", 3, 2]], xtra:[["xG", 3.29, 3.33], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
+  m72: {home:'Jordan', away:'Argentina', hf:'', af:'', score:'1-3', date:'Jun 27', poss:[32, 68], stats:[["Shot Attempts", 10, 16], ["Shots on Goal", 3, 4], ["Pass Accuracy", 285, 801, 80, 92], ["Corner Kicks", 5, 2], ["Fouls", 7, 9], ["Saves", 1, 2]], xtra:[["xG", 1.3, 3.06], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
+  M73: {home:'S. Africa', away:'Canada', hf:'', af:'', score:'0-1', date:'Jun 28', poss:[44, 56], stats:[["Shot Attempts", 7, 14], ["Shots on Goal", 2, 5], ["Pass Accuracy", 554, 379, 84, 79], ["Corner Kicks", 3, 7], ["Fouls", 13, 10], ["Saves", 4, 2]], xtra:[["xG", 0.6, 1.7], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
+  M74: {home:'Germany', away:'Paraguay', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[72, 28], stats:[["Shot Attempts", 18, 6], ["Shots on Goal", 5, 3], ["Pass Accuracy", 805, 255, 90, 63], ["Corner Kicks", 9, 3], ["Fouls", 11, 16], ["Saves", 2, 4]], xtra:[["xG", 1.9, 0.7], ["Yellow Cards", 1, 4], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
+  M75: {home:'Netherlands', away:'Morocco', hf:'', af:'', score:'1-1', date:'Jun 29', poss:[52, 48], stats:[["Shot Attempts", 12, 11], ["Shots on Goal", 4, 5], ["Pass Accuracy", 371, 879, 79, 91], ["Corner Kicks", 5, 6], ["Fouls", 12, 14], ["Saves", 4, 3]], xtra:[["xG", 1.3, 1.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 1, 2]]},
+  M76: {home:'Brazil', away:'Japan', hf:'', af:'', score:'2-1', date:'Jun 29', poss:[67, 33], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Pass Accuracy", 682, 313, 92, 83], ["Corner Kicks", 8, 2], ["Fouls", 9, 12], ["Saves", 1, 5]], xtra:[["xG", 1.72, 0.23], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  M77: {home:'France', away:'Sweden', hf:'', af:'', score:'3-0', date:'Jun 30 - MetLife Stadium', poss:[61, 39], stats:[["Shot Attempts", 25, 8], ["Shots on Goal", 12, 3], ["Pass Accuracy", 551, 350, 88, 79], ["Corner Kicks", 9, 1], ["Fouls", 14, 10], ["Saves", 3, 9]], xtra:[["xG", 4.61, 1.24], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
+  M78: {home:'Ivory Coast', away:'Norway', hf:'', af:'', score:'1-2', date:'Jun 30 - AT&T Stadium', poss:[47.1, 52.9], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 5, 4], ["Pass Accuracy", 401, 474, 85, 88], ["Corner Kicks", 14, 3], ["Fouls", 6, 7], ["Saves", 1, 4]], xtra:[["xG", 2.1, 1.57], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
+  M79: {home:'Mexico', away:'Ecuador', hf:'', af:'', score:'2-0', date:'Jul 1 - Estadio Banorte', poss:[43.2, 56.8], stats:[["Shot Attempts", 15, 7], ["Shots on Goal", 3, 1], ["Pass Accuracy", 316, 410, 78, 83], ["Corner Kicks", 3, 8], ["Fouls", 10, 14], ["Saves", 1, 1]], xtra:[["xG", 1.59, 0.63], ["Yellow Cards", 0, 3], ["Red Cards", 0, 1], ["Offsides", 0, 1]]},
+  M80: {home:'England', away:'DR Congo', hf:'', af:'', score:'2-1', date:'Jul 1 - Mercedes-Benz Stadium', poss:[59.7, 40.3], stats:[["Shot Attempts", 16, 7], ["Shots on Goal", 7, 2], ["Pass Accuracy", 517, 365, 91, 82], ["Corner Kicks", 5, 3], ["Fouls", 10, 12], ["Saves", 1, 5]], xtra:[["xG", 2.76, 0.91], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 0, 4]]},
+  M81: {home:'USA', away:'Bosnia', hf:'', af:'', score:'2-0', date:'Jul 2 - Levi\'s Stadium', poss:[48.4, 51.6], stats:[["Shot Attempts", 8, 10], ["Shots on Goal", 2, 3], ["Pass Accuracy", 415, 447, 84, 82], ["Corner Kicks", 4, 3], ["Fouls", 7, 13], ["Saves", 3, 0]], xtra:[["xG", 0.96, 1.34], ["Yellow Cards", 0, 1], ["Red Cards", 1, 0], ["Offsides", 3, 0]]},
+  M82: {home:'Belgium', away:'Senegal', hf:'', af:'', score:'3-2', date:'Jul 1 - Lumen Field', poss:[52.2, 47.8], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 5, 5], ["Pass Accuracy", 701, 639, 86, 84], ["Corner Kicks", 4, 2], ["Fouls", 22, 12], ["Saves", 3, 3]], xtra:[["xG", 2.35, 2.35], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 2, 2]]},
+  M83: {home:'Portugal', away:'Croatia', hf:'', af:'', score:'2-1', date:'Jul 2 - BMO Field', poss:[60.4, 39.6], stats:[["Shot Attempts", 15, 13], ["Shots on Goal", 3, 6], ["Pass Accuracy", 585, 370, 91, 84], ["Corner Kicks", 9, 5], ["Fouls", 6, 12], ["Saves", 5, 2]], xtra:[["xG", 1.59, 2.33], ["Yellow Cards", 1, 2], ["Red Cards", 0, 0], ["Offsides", 1, 4]]},
+  M84: {home:'Spain', away:'Austria', hf:'', af:'', score:'3-0', date:'Jul 2 - SoFi Stadium', poss:[64.5, 35.5], stats:[["Shot Attempts", 23, 5], ["Shots on Goal", 10, 0], ["Pass Accuracy", 629, 347, 91, 82], ["Corner Kicks", 9, 0], ["Fouls", 8, 15], ["Saves", 0, 6]], xtra:[["xG", 3.95, 0.25], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 2, 5]]},
+  M85: {home:'Switzerland', away:'Algeria', hf:'', af:'', score:'2-0', date:'Jul 3 - BC Place', poss:[44.6, 55.4], stats:[["Shot Attempts", 11, 8], ["Shots on Goal", 5, 2], ["Pass Accuracy", 438, 563, 81, 85], ["Corner Kicks", 4, 2], ["Fouls", 10, 12], ["Saves", 2, 2]], xtra:[["xG", 1.95, 0.96], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 2]]},
+  M86: {home:'Argentina', away:'Cape Verde', hf:'', af:'', score:'3-2', date:'Jul 3 - Hard Rock Stadium', poss:[63.5, 36.5], stats:[["Shot Attempts", 22, 16], ["Shots on Goal", 10, 5], ["Pass Accuracy", 850, 476, 92, 86], ["Corner Kicks", 8, 8], ["Fouls", 13, 12], ["Saves", 3, 8]], xtra:[["xG", 3.9, 2.2], ["Yellow Cards", 1, 1], ["Red Cards", 0, 0], ["Offsides", 3, 2]]},
+  M87: {home:'Colombia', away:'Ghana', hf:'', af:'', score:'1-0', date:'Jul 4 - GEHA Field at Arrowhead Stadium', poss:[60.6, 39.4], stats:[["Shot Attempts", 20, 8], ["Shots on Goal", 8, 0], ["Pass Accuracy", 586, 376, 91, 83], ["Corner Kicks", 3, 2], ["Fouls", 14, 10], ["Saves", 0, 7]], xtra:[["xG", 3.24, 0.4], ["Yellow Cards", 2, 3], ["Red Cards", 0, 0], ["Offsides", 2, 0]]},
+  M88: {home:'Australia', away:'Egypt', hf:'', af:'', score:'1-1', date:'Jul 3 - AT&T Stadium', poss:[41.7, 58.3], stats:[["Shot Attempts", 16, 14], ["Shots on Goal", 1, 3], ["Pass Accuracy", 505, 722, 80, 85], ["Corner Kicks", 4, 7], ["Fouls", 12, 14], ["Saves", 3, 1]], xtra:[["xG", 1.08, 1.54], ["Yellow Cards", 0, 2], ["Red Cards", 0, 0], ["Offsides", 0, 3]]},
+  M89: {home:'Paraguay', away:'France', hf:'', af:'', score:'0-1', date:'Jul 4 - Lincoln Financial Field', poss:[24, 76], stats:[["Shot Attempts", 5, 15], ["Shots on Goal", 1, 5], ["Pass Accuracy", 183, 569, 54, 90], ["Corner Kicks", 2, 12], ["Fouls", 13, 11], ["Saves", 4, 1]], xtra:[["xG", 0.53, 2.15], ["Yellow Cards", 0, 3], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
+  M90: {home:'Canada', away:'Morocco', hf:'', af:'', score:'0-3', date:'Jul 4 - NRG Stadium', poss:[44.6, 55.4], stats:[["Shot Attempts", 10, 5], ["Shots on Goal", 3, 4], ["Pass Accuracy", 359, 473, 76, 82], ["Corner Kicks", 11, 1], ["Fouls", 24, 14], ["Saves", 1, 3]], xtra:[["xG", 1.34, 1.37], ["Yellow Cards", 4, 4], ["Red Cards", 0, 0], ["Offsides", 2, 3]]},
+  M91: {home:'Brazil', away:'Norway', hf:'', af:'', score:'1-2', date:'Jul 5 - MetLife Stadium', poss:[33.5, 66.5], stats:[["Shot Attempts", 14, 9], ["Shots on Goal", 4, 5], ["Pass Accuracy", 331, 681, 84, 91], ["Corner Kicks", 5, 5], ["Fouls", 7, 6], ["Saves", 3, 4]], xtra:[["xG", 1.82, 1.85], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 1]]},
+  M92: {home:'Mexico', away:'England', hf:'', af:'', score:'2-3', date:'Jul 6 - Estadio Banorte', poss:[66.8, 33.2], stats:[["Shot Attempts", 20, 6], ["Shots on Goal", 5, 5], ["Pass Accuracy", 453, 244, 92, 80], ["Corner Kicks", 12, 2], ["Fouls", 14, 7], ["Saves", 2, 3]], xtra:[["xG", 2.4, 1.7], ["Yellow Cards", 2, 4], ["Red Cards", 0, 1], ["Offsides", 1, 0]]},
+  M93: {home:'Portugal', away:'Spain', hf:'', af:'', score:'0-1', date:'Jul 6 - AT&T Stadium', poss:[44.5, 55.5], stats:[["Shot Attempts", 10, 15], ["Shots on Goal", 2, 6], ["Pass Accuracy", 427, 530, 84, 88], ["Corner Kicks", 3, 7], ["Fouls", 9, 13], ["Saves", 5, 2]], xtra:[["xG", 1.06, 2.43], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 2, 1]]},
+  M94: {home:'USA', away:'Belgium', hf:'', af:'', score:'1-4', date:'Jul 7 - Lumen Field', poss:[56.2, 43.8], stats:[["Shot Attempts", 7, 15], ["Shots on Goal", 2, 7], ["Pass Accuracy", 527, 414, 87, 81], ["Corner Kicks", 3, 5], ["Fouls", 11, 9], ["Saves", 3, 1]], xtra:[["xG", 0.91, 2.71], ["Yellow Cards", 2, 0], ["Red Cards", 0, 0], ["Offsides", 0, 1]]},
+  M95: {home:'Argentina', away:'Egypt', hf:'', af:'', score:'3-2', date:'Jul 7 - Mercedes-Benz Stadium', poss:[63.6, 36.4], stats:[["Shot Attempts", 19, 5], ["Shots on Goal", 7, 2], ["Pass Accuracy", 602, 349, 90, 82], ["Corner Kicks", 6, 1], ["Fouls", 13, 11], ["Saves", 0, 4]], xtra:[["xG", 2.91, 0.81], ["Yellow Cards", 0, 4], ["Red Cards", 0, 0], ["Offsides", 3, 0]]},
+  M96: {home:'Switzerland', away:'Colombia', hf:'', af:'', score:'0-0', date:'Jul 7 - BC Place', poss:[53.2, 46.8], stats:[["Shot Attempts", 7, 15], ["Shots on Goal", 2, 3], ["Pass Accuracy", 631, 547, 87, 83], ["Corner Kicks", 3, 7], ["Fouls", 22, 21], ["Saves", 3, 2]], xtra:[["xG", 0.91, 1.59], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 5, 4]]},
+  M97: {home:'France', away:'Morocco', hf:'', af:'', score:'2-0', date:'Jul 9 - Gillette Stadium', poss:[48.1, 51.9], stats:[["Shot Attempts", 22, 5], ["Shots on Goal", 8, 1], ["Corner Kicks", 0, 0], ["Fouls", 10, 13], ["Saves", 1, 6]], xtra:[["xG", 3.34, 0.53], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
+  M98: {home:'Spain', away:'Belgium', hf:'', af:'', score:'2-1', date:'Jul 10 - SoFi Stadium', poss:[67.8, 32.2], stats:[["Shot Attempts", 17, 5], ["Shots on Goal", 8, 2], ["Corner Kicks", 0, 0], ["Fouls", 13, 18], ["Saves", 1, 6]], xtra:[["xG", 3.09, 0.81], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 1]]}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3834,17 +3956,26 @@ function showMatchStats(id) {
     var tot = Number(s[1]) + Number(s[2]);
     var ph = tot > 0 ? Math.round((Number(s[1]) / tot) * 100) : 50;
     var pa = 100 - ph;
+    // Optional 5-element row: [name, homeTotal, awayTotal, homeAcc%, awayAcc%]
+    // e.g. ["Pass Accuracy", 243, 598, 78, 90] renders as  243 (78%)  ...  (90%) 598
+    // Rows with only 3 elements render exactly as before. The comparison bar always
+    // uses the raw totals (s[1] vs s[2]) — accuracy is shown, not used for the bar,
+    // because the two percentages are not complementary.
+    var hasPct  = s.length >= 5 && s[3] != null && s[4] != null;
+    var hVal    = hasPct ? (s[1] + ' (' + s[3] + '%)') : s[1];
+    var aVal    = hasPct ? ('(' + s[4] + '%) ' + s[2]) : s[2];
+    var cellW   = hasPct ? 72 : 36;   // widen the value cells to fit the % suffix
     rows +=
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">' +
-        '<div style="font-size:13px;font-weight:800;color:' + homeCol + ';width:36px;text-align:right">' + s[1] + '</div>' +
-        '<div style="flex:1">' +
+        '<div style="font-size:13px;font-weight:800;color:' + homeCol + ';width:' + cellW + 'px;text-align:right;white-space:nowrap">' + hVal + '</div>' +
+        '<div style="flex:1;min-width:0">' +
           '<div style="font-size:9px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">' + s[0] + '</div>' +
           '<div style="display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--border)">' +
             '<div style="width:' + ph + '%;background:' + homeCol + ';border-radius:3px 0 0 3px;transition:width .3s"></div>' +
             '<div style="width:' + pa + '%;background:' + awayCol + ';border-radius:0 3px 3px 0;transition:width .3s"></div>' +
           '</div>' +
         '</div>' +
-        '<div style="font-size:13px;font-weight:800;color:' + awayCol + ';width:36px;text-align:left">' + s[2] + '</div>' +
+        '<div style="font-size:13px;font-weight:800;color:' + awayCol + ';width:' + cellW + 'px;text-align:left;white-space:nowrap">' + aVal + '</div>' +
       '</div>';
   }
 
@@ -3908,25 +4039,25 @@ function showMatchStats(id) {
 }
 
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1912.34, fifaPtsDelta:20.06, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:18.05},
-  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1925.16, fifaPtsDelta:11.44, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:18.7},
-  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1925.86, fifaPtsDelta:9.62, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:33.05},
-  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1871.39, fifaPtsDelta:20.42, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.833, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:14.35},
+  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1934.79, fifaPtsDelta:22.45, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:21.15},
+  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1925.16, fifaPtsDelta:11.44, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:17.85},
+  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:23.11, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:38.05},
+  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1871.39, fifaPtsDelta:20.42, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.833, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:14.45},
   'Brazil':      {flag:'br', group:'C', elo:2009, fifaPts:1804.92, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.844, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:0.0},
   'Portugal':    {flag:'pt', group:'K', elo:1990, fifaPts:1787.85, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.78, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:0.0},
-  'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1739.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.789, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:3.35},
+  'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1739.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.789, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:0.0},
   'Netherlands': {flag:'nl', group:'F', elo:1980, fifaPts:1775.53, fifaPtsDelta:0.04, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.82, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:0.0},
   'Croatia':     {flag:'hr', group:'L', elo:1892, fifaPts:1723.05, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.64, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.0},
   'Norway':      {flag:'no', group:'I', elo:1918, fifaPts:1651.29, fifaPtsDelta:33.61, fifaRankDelta:2, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.7, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:5.85},
   'Germany':     {flag:'de', group:'E', elo:1916, fifaPts:1726.21, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:0.667, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:0.0},
-  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:14.59, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.833, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.95},
+  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:14.59, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.833, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:1.65},
   'Ecuador':     {flag:'ec', group:'E', elo:1875, fifaPts:1592.6, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.511, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.0},
   'Uruguay':     {flag:'uy', group:'H', elo:1635, fifaPts:1634.7, fifaPtsDelta:-15.26, fifaRankDelta:0, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.456, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.0},
   'Turkey':      {flag:'tr', group:'D', elo:1758, fifaPts:1582.55, fifaPtsDelta:32.42, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.48, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
   'Japan':       {flag:'jp', group:'F', elo:1882, fifaPts:1673.68, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:1,qualL:2,qualGF:30,qualGA:9, form:0.75, squadDepth:74, exp:8,  keyPlayer:'D. Kamada',    marketPct:0.0},
   'Senegal':     {flag:'sn', group:'I', elo:1869, fifaPts:1653.43, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:4,qualL:2,qualGF:13,qualGA:8, form:0.475, squadDepth:74, exp:4,  keyPlayer:'S. Mane',      marketPct:0.0},
-  'Belgium':     {flag:'be', group:'G', elo:1852, fifaPts:1778.36, fifaPtsDelta:21.84, fifaRankDelta:1, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.72, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:2.25},
-  'Morocco':     {flag:'ma', group:'C', elo:1840, fifaPts:1803.99, fifaPtsDelta:15.13, fifaRankDelta:0, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.825, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:2.75},
+  'Belgium':     {flag:'be', group:'G', elo:1852, fifaPts:1778.36, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:4, form:0.72, squadDepth:84, exp:8,  keyPlayer:'K. De Bruyne', marketPct:0.0},
+  'Morocco':     {flag:'ma', group:'C', elo:1840, fifaPts:1803.99, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:3,qualL:0,qualGF:16,qualGA:3, form:0.825, squadDepth:72, exp:6,  keyPlayer:'H. Ziyech',    marketPct:0.0},
   'USA':         {flag:'us', group:'D', elo:1820, fifaPts:1690.33, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:3, form:0.667, squadDepth:73, exp:5,  keyPlayer:'C. Pulisic',   marketPct:0.0},
   'Mexico':      {flag:'mx', group:'A', elo:1912, fifaPts:1754.3, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:0,qualGF:16,qualGA:5, form:1.0, squadDepth:71, exp:10, keyPlayer:'R. Jimenez',   marketPct:0.0},
   'Sweden':      {flag:'se', group:'F', elo:1730, fifaPts:1525.59, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:15,qualGA:7, form:0.5, squadDepth:76, exp:7,  keyPlayer:'A. Isak',      marketPct:0.45},
@@ -3947,7 +4078,7 @@ var TEAM_DATA = {
   'Paraguay':     {flag:'py', group:'D', elo:1650, fifaPts:1542.47, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:3,qualL:11,qualGF:15,qualGA:32,form:0.533, squadDepth:55, exp:7,  keyPlayer:'M. Almiron',   marketPct:0.15},
   'Curacao':      {flag:'cw', group:'E', elo:1490, fifaPts:1285.65, fifaPtsDelta:-13.76, fifaRankDelta:0, qualW:2,qualD:1,qualL:5,qualGF:7, qualGA:16,form:0.3, squadDepth:38, exp:1,  keyPlayer:'J. Antonisse', marketPct:0.05},
   'Tunisia':      {flag:'tn', group:'F', elo:1590, fifaPts:1426.59, fifaPtsDelta:-11.1, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:13,qualGA:8, form:0.225, squadDepth:56, exp:6,  keyPlayer:'W. Khazri',    marketPct:0.05},
-  'Egypt':        {flag:'eg', group:'G', elo:1742, fifaPts:1597.04, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.65, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.25},
+  'Egypt':        {flag:'eg', group:'G', elo:1742, fifaPts:1597.04, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:3,qualL:1,qualGF:17,qualGA:7, form:0.65, squadDepth:61, exp:4,  keyPlayer:'M. Salah',     marketPct:0.0},
   'New Zealand':  {flag:'nz', group:'G', elo:1460, fifaPts:1269.8, fifaPtsDelta:-7.54, fifaRankDelta:0, qualW:3,qualD:1,qualL:2,qualGF:12,qualGA:8, form:0.333, squadDepth:44, exp:4,  keyPlayer:'C. Wood',      marketPct:0.05},
   'Cape Verde':   {flag:'cv', group:'H', elo:1640, fifaPts:1402.97, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:4,qualD:2,qualL:2,qualGF:12,qualGA:8, form:0.525, squadDepth:46, exp:2,  keyPlayer:'G. Tavares',   marketPct:0.05},
   'Iraq':         {flag:'iq', group:'I', elo:1560, fifaPts:1404.17, fifaPtsDelta:-15.07, fifaRankDelta:-3, qualW:3,qualD:2,qualL:3,qualGF:10,qualGA:10,form:0.25, squadDepth:48, exp:4,  keyPlayer:'A. Hussein',   marketPct:0.05},
@@ -5825,7 +5956,46 @@ var KNOCKOUT_RESULTS = {
   M94: {home:'USA', away:'Belgium', score:'1-4', winner:'Belgium'},
   M95: {home:'Argentina', away:'Egypt', score:'3-2', winner:'Argentina'},
   M96: {home:'Switzerland', away:'Colombia', score:'0-0', pens:'4-3', winner:'Switzerland'},
+  M97: {home:'France', away:'Morocco', score:'2-0', winner:'France'},
+  M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain'},
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

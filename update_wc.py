@@ -518,6 +518,40 @@ def update_snapshot():
                f"{len(pens)} penalties · {len(own)} OGs"
                + (f" · {len(fks)} free kicks" if fks else ""))
 
+    # ── Corner kicks: tournament total + per-phase breakdown ──────────────────
+    # Group stage is m1-m72 (lowercase ids); knockouts are M73+ (uppercase).
+    def _corner_total(mid):
+        for r in stats_data.get(mid, {}).get('stats', []):
+            if r and r[0] == 'Corner Kicks' and len(r) >= 3:
+                return int(r[1]) + int(r[2])
+        return 0
+
+    def _mnum(mid):
+        digits = ''.join(ch for ch in mid if ch.isdigit())
+        return int(digits) if digits else 0
+
+    PHASES = [           # label,  lo,  hi   (inclusive match numbers)
+        ('group stage', 1, 72), ('R32', 73, 88), ('R16', 89, 96), ('QF', 97, 100),
+        ('SF', 101, 102), ('3rd', 103, 103), ('final', 104, 104),
+    ]
+    corner_by_phase = {lbl: 0 for lbl, _, _ in PHASES}
+    for mid in stats_data:
+        n = _mnum(mid)
+        c = _corner_total(mid)
+        if not c:
+            continue
+        for lbl, lo, hi in PHASES:
+            if lo <= n <= hi:
+                corner_by_phase[lbl] += c
+                break
+    total_corners = sum(corner_by_phase.values())
+    # Only list phases that actually have corners recorded, so the card stays
+    # clean early on and fills out as rounds are played.
+    corner_sub = ' · '.join(f"{corner_by_phase[lbl]} {lbl}"
+                            for lbl, _, _ in PHASES if corner_by_phase[lbl])
+    if not corner_sub:
+        corner_sub = 'no corner data recorded yet'
+
     updates = {
         'stat-total-goals': (total,    'Total Goals',         f'{avg} per match · {played} matches played'),
         'stat-biggest-win': (bg,       bg_lbl,                'Most goals in a single match'),
@@ -526,6 +560,7 @@ def update_snapshot():
         'stat-top-team':    (top_n,    top_lbl,               top_sub),
         'stat-matches':     (f'{played} of 104','Matches Played', bkdn),
         'stat-discipline':  (total_r,  'Red Cards',           f'Yellow cards: {total_y}'),
+        'stat-corners':     (total_corners, 'Corner Kicks',   corner_sub),
     }
 
     html = read_html()
@@ -541,7 +576,7 @@ def update_snapshot():
     html  = re.sub(r'TOURNAMENT SNAPSHOT &mdash; [^<]+<',
                    f'TOURNAMENT SNAPSHOT &mdash; {today}<', html, count=1)
     write_html(html)
-    print(f'  →  Snapshot: {total} goals · {played} matches · top={top_n}')
+    print(f'  →  Snapshot: {total} goals · {played} matches · {total_corners} corners · top={top_n}')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
