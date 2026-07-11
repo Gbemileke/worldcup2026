@@ -3379,5 +3379,65 @@
     "phase": "Round of 16",
     "score": "3-2",
     "desc": ""
+  },
+  {
+    "id": 328,
+    "matchId": "M97",
+    "home": "France",
+    "away": "Morocco",
+    "scorer": "K. Mbapp\u00e9",
+    "minute": 60,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 329,
+    "matchId": "M97",
+    "home": "France",
+    "away": "Morocco",
+    "scorer": "O. Demb\u00e9l\u00e9",
+    "minute": 66,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "2-0",
+    "desc": ""
+  },
+  {
+    "id": 330,
+    "matchId": "M98",
+    "home": "Spain",
+    "away": "Belgium",
+    "scorer": "F. Ruiz",
+    "minute": 30,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 331,
+    "matchId": "M98",
+    "home": "Spain",
+    "away": "Belgium",
+    "scorer": "C. De Ketelaere",
+    "minute": 41,
+    "type": "header",
+    "phase": "Quarter-Finals",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 332,
+    "matchId": "M98",
+    "home": "Spain",
+    "away": "Belgium",
+    "scorer": "M. Merino",
+    "minute": 88,
+    "type": "open-play",
+    "phase": "Quarter-Finals",
+    "score": "2-1",
+    "desc": ""
   }
 ]

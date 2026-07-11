@@ -1,13 +1,5 @@
 [
   {
-    "date": "Jul 9",
-    "home": "France",
-    "away": "Morocco",
-    "time": "4:00 PM ET",
-    "group": "",
-    "round": "QF"
-  },
-  {
     "date": "Jul 11",
     "home": "Norway",
     "away": "England",
@@ -16,11 +8,19 @@
     "round": "QF"
   },
   {
-    "date": "Jul 10",
-    "home": "Spain",
-    "away": "Belgium",
-    "time": "3:00 PM ET",
+    "date": "Jul 11",
+    "home": "Argentina",
+    "away": "Switzerland",
+    "time": "9:00 PM ET",
     "group": "",
     "round": "QF"
+  },
+  {
+    "date": "Jul 14",
+    "home": "France",
+    "away": "Spain",
+    "time": "3:00 PM ET",
+    "group": "",
+    "round": "SF"
   }
 ]
