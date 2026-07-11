@@ -244,8 +244,17 @@ def update_stats():
             stat2['home']  = canon['home']
             stat2['away']  = canon['away']
             stat2['poss']  = [poss[1],poss[0]] if len(poss)==2 else poss
-            stat2['stats'] = [[s[0],s[2],s[1]] for s in stat2.get('stats',[]) if len(s)==3]
-            stat2['xtra']  = [[s[0],s[2],s[1]] for s in stat2.get('xtra',[])  if len(s)==3]
+            # Swap home/away values. MUST handle the 5-element Pass Accuracy row
+            # [name, hTot, aTot, hAcc%, aAcc%] -> [name, aTot, hTot, aAcc%, hAcc%].
+            # The old code filtered on `len(s)==3`, which silently DELETED the
+            # Pass Accuracy row from any swapped match. Never drop a row we don't
+            # recognise — pass it through untouched instead.
+            def _swap_row(s):
+                if len(s) >= 5: return [s[0], s[2], s[1], s[4], s[3]]
+                if len(s) == 3: return [s[0], s[2], s[1]]
+                return list(s)
+            stat2['stats'] = [_swap_row(s) for s in stat2.get('stats',[])]
+            stat2['xtra']  = [_swap_row(s) for s in stat2.get('xtra',[])]
             sc = stat2.get('score','').split('-')
             if len(sc)==2: stat2['score'] = f"{sc[1]}-{sc[0]}"
 
@@ -1020,21 +1029,34 @@ SECTIONS = {
 SECTION_ORDER = ['scrape', 'auto-knockout', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
 
 if __name__ == '__main__':
-    section = None
-    if len(sys.argv) >= 3 and sys.argv[1] == '--section':
-        section = sys.argv[2]
+    # Collect EVERY --section flag. The old code read only sys.argv[2], so
+    #   python update_wc.py --section stats --section snapshot
+    # silently ran 'stats' and ignored 'snapshot' — a trap that left the snapshot
+    # cards stale with no warning. Now all requested sections run, in the canonical
+    # SECTION_ORDER so dependencies (e.g. stats before snapshot) are respected.
+    requested = [sys.argv[i+1] for i, a in enumerate(sys.argv)
+                 if a == '--section' and i + 1 < len(sys.argv)]
 
-    if section:
-        if section not in SECTIONS:
-            print(f'Unknown section: {section}')
+    if requested:
+        unknown = [s for s in requested if s not in SECTIONS]
+        if unknown:
+            print(f'Unknown section(s): {", ".join(unknown)}')
             print(f'Options: {list(SECTIONS.keys())}')
             sys.exit(1)
-        print(f'\n[ {section} ]')
-        _ok = SECTIONS[section]()
-        # Propagate a failing validation (or any section returning False) to the
-        # exit code, so a mismatch actually blocks the pipeline/push instead of
-        # only printing. Sections that return None are treated as success.
-        if _ok is False:
+
+        ordered = [s for s in SECTION_ORDER if s in requested]
+        ordered += [s for s in requested if s not in SECTION_ORDER]  # any stragglers
+
+        _ok_all = True
+        for section in ordered:
+            print(f'\n[ {section} ]')
+            _ok = SECTIONS[section]()
+            # Propagate a failing validation (or any section returning False) to the
+            # exit code, so a mismatch actually blocks the pipeline/push instead of
+            # only printing. Sections that return None are treated as success.
+            if _ok is False:
+                _ok_all = False
+        if not _ok_all:
             sys.exit(1)
     else:
         print(f'=== WC 2026 Full Update — {datetime.date.today()} ===\n')
