@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-12 05:16 UTC -->
+<!-- build: 2026-07-12 07:39 UTC -->
 
 <html lang="en">
 <head>
@@ -2857,6 +2857,7 @@ var GOALS = [
 
 
 
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -2864,7 +2865,8 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jul 14', home:'France', away:'Spain', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'SF'}
+  {date:'Jul 14', home:'France', away:'Spain', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'SF'},
+  {date:'Jul 15', home:'England', away:'Argentina', time:'2:00 PM CT', venue:'', group:'', matchId:'', round:'SF'}
 ];
 // ── R32_SCHEDULE: frozen list of all 16 R32 fixtures (never modified by update scripts)
 // Used by match analytics section so played matches always show as result cards.
@@ -2993,6 +2995,8 @@ var MATCH_STATS = {
   M99: {home:'Norway', away:'England', hf:'', af:'', score:'1-2', date:'Jul 11 - Hard Rock Stadium', poss:[47.6, 52.4], stats:[["Shot Attempts", 13, 14], ["Shots on Goal", 4, 8], ["Pass Accuracy", 576, 628, 85, 91], ["Corner Kicks", 7, 4], ["Fouls", 10, 8], ["Saves", 6, 3]], xtra:[["xG", 1.77, 2.94], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 5]]},
   M100: {home:'Argentina', away:'Switzerland', hf:'', af:'', score:'3-1', date:'Jul 12 - GEHA Field at Arrowhead Stadium', poss:[59.1, 40.9], stats:[["Shot Attempts", 22, 11], ["Shots on Goal", 7, 5], ["Pass Accuracy", 692, 474, 89, 84], ["Corner Kicks", 8, 2], ["Fouls", 14, 18], ["Saves", 4, 4]], xtra:[["xG", 3.06, 1.95], ["Yellow Cards", 3, 1], ["Red Cards", 0, 1], ["Offsides", 4, 3]]}
 };
+
+
 
 
 
@@ -5979,6 +5983,7 @@ var KNOCKOUT_RESULTS = {
   M99: {home:'Norway', away:'England', score:'1-2', winner:'England'},
   M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina'},
 };
+
 
 
 
