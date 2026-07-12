@@ -434,20 +434,40 @@ def update_form():
     }
 
     wc_results = {}
-    for m in matches_data:
-        sc = m.get('score','?-?')
-        if '?' in sc or '-' not in sc:
-            continue
+
+    def _record(home, away, sc):
+        """Add one played match to both teams' form results."""
+        if not sc or '?' in sc or '-' not in sc:
+            return
         try:
             h, a = map(int, sc.split('-'))
         except ValueError:
-            continue
-        home, away = m['home'], m['away']
+            return
         wc_results.setdefault(home, [])
         wc_results.setdefault(away, [])
         if h > a:   wc_results[home].append(1.0); wc_results[away].append(0.0)
         elif h < a: wc_results[home].append(0.0); wc_results[away].append(1.0)
         else:       wc_results[home].append(0.5); wc_results[away].append(0.5)
+
+    # 1. Group stage (matches.json = m1-m72)
+    for m in matches_data:
+        _record(m['home'], m['away'], m.get('score', '?-?'))
+
+    # 2. KNOCKOUTS (M73+) — previously MISSING, which is why form was frozen at the
+    #    group-stage value all tournament. Form is the HEAVIEST weight in the
+    #    predictor (PRED_W.form = 0.35), so omitting the knockouts skewed every
+    #    prediction: Norway were rated on a group stage they stumbled through
+    #    (0.70) while their wins over Ivory Coast and Brazil counted for nothing
+    #    (true form 0.80). Morocco were the reverse — overstated by 0.158.
+    #
+    #    A knockout match decided on penalties is a DRAW in regulation, so it
+    #    scores 0.5/0.5 on form. Advancing on spot-kicks is not a win on the
+    #    balance of play, and treating it as one would flatter shootout survivors.
+    knockout_data = load('knockout_results.json') or {}
+    for mid, r in knockout_data.items():
+        if not isinstance(r, dict) or not r.get('winner'):
+            continue
+        _record(r.get('home', ''), r.get('away', ''), r.get('score', ''))
 
     updated = 0
     for team, results in wc_results.items():
