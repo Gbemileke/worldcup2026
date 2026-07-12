@@ -158,5 +158,17 @@
     "away": "Belgium",
     "score": "2-1",
     "winner": "Spain"
+  },
+  "M99": {
+    "home": "Norway",
+    "away": "England",
+    "score": "1-2",
+    "winner": "England"
+  },
+  "M100": {
+    "home": "Argentina",
+    "away": "Switzerland",
+    "score": "3-1",
+    "winner": "Argentina"
   }
 }
