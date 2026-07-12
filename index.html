@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-12 03:31 UTC -->
+<!-- build: 2026-07-12 04:04 UTC -->
 
 <html lang="en">
 <head>
@@ -1696,12 +1696,12 @@
         <div class="analytics-section">
           <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 12, 2026</div>
           <div class="analytics-grid">
-            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">99 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">218 open play · 36 headers · 14 penalties · 13 OGs · 7 free kicks</div></div>
-            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">288</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.91 per match · 99 matches played</div></div>
+            <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">100 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">221 open play · 37 headers · 14 penalties · 13 OGs · 7 free kicks</div></div>
+            <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">292</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 100 matches played</div></div>
             <div class="stat-card sc-blue"  id="stat-penalties"><div class="stat-num">14</div><div class="stat-label">Penalties Scored</div><div class="stat-sub">in 13 matches</div></div>
             <div class="stat-card sc-red"   id="stat-own-goals"><div class="stat-num">13</div><div class="stat-label">Own Goals</div><div class="stat-sub">in 13 matches</div></div>
-            <div class="stat-card sc-blue" id="stat-corners"><div class="stat-num">961</div><div class="stat-label">Corner Kicks</div><div class="stat-sub">686 group stage · 163 R32 · 85 R16 · 27 QF</div></div>
-            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">16</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 270</div></div>
+            <div class="stat-card sc-blue" id="stat-corners"><div class="stat-num">971</div><div class="stat-label">Corner Kicks</div><div class="stat-sub">686 group stage · 163 R32 · 85 R16 · 37 QF</div></div>
+            <div class="stat-card sc-red"  id="stat-discipline"><div class="stat-num">17</div><div class="stat-label">Red Cards</div><div class="stat-sub">Yellow cards: 274</div></div>
             <div class="stat-card sc-green" id="stat-biggest-win"><div class="stat-num">8</div><div class="stat-label">Germany vs Curacao</div><div class="stat-sub">Most goals in a single match</div></div>
             <div class="stat-card sc-gold"  id="stat-top-team"><div class="stat-num">8</div><div class="stat-label">Top Scorer</div><div class="stat-sub">Mbappé, Messi</div></div>
             <div class="stat-card sc-blue" id="stat-alltime"><div class="stat-num">16</div><div class="stat-label">All-Time WC Record Scorer</div><div class="stat-sub">Miroslav Klose, GER (2002–2014) — Mbappé on 14</div></div>
@@ -2488,8 +2488,14 @@ var GOALS = [
   {id:332, matchId:'M98', home:'Spain', away:'Belgium', hf:'', af:'', scorer:'M. Merino', flag:'', minute:88, type:'open-play', phase:'Quarter-Finals', score:'2-1', desc:''},
   {id:333, matchId:'M99', home:'Norway', away:'England', hf:'', af:'', scorer:'A. Schjelderup', flag:'', minute:36, type:'open-play', phase:'Quarter-Finals', score:'1-0', desc:''},
   {id:334, matchId:'M99', home:'Norway', away:'England', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:46, type:'open-play', phase:'Quarter-Finals', score:'1-1', desc:''},
-  {id:335, matchId:'M99', home:'Norway', away:'England', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:93, type:'open-play', phase:'Quarter-Finals', score:'1-2', desc:''}
+  {id:335, matchId:'M99', home:'Norway', away:'England', hf:'', af:'', scorer:'J. Bellingham', flag:'', minute:93, type:'open-play', phase:'Quarter-Finals', score:'1-2', desc:''},
+  {id:336, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'A. Allister', flag:'', minute:10, type:'header', phase:'Quarter-Finals', score:'1-0', desc:''},
+  {id:337, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'D. Ndoye', flag:'', minute:67, type:'open-play', phase:'Quarter-Finals', score:'1-1', desc:''},
+  {id:338, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'J. Álvarez', flag:'', minute:112, type:'open-play', phase:'Quarter-Finals', score:'2-1', desc:''},
+  {id:339, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'L. Martínez', flag:'', minute:121, type:'open-play', phase:'Quarter-Finals', score:'3-1', desc:''}
 ];
+
+
 
 
 
@@ -2869,7 +2875,6 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jul 11', home:'Argentina', away:'Switzerland', time:'9:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
   {date:'Jul 14', home:'France', away:'Spain', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'SF'}
 ];
 // ── R32_SCHEDULE: frozen list of all 16 R32 fixtures (never modified by update scripts)
@@ -2996,8 +3001,11 @@ var MATCH_STATS = {
   M96: {home:'Switzerland', away:'Colombia', hf:'', af:'', score:'0-0', date:'Jul 7 - BC Place', poss:[53.2, 46.8], stats:[["Shot Attempts", 7, 15], ["Shots on Goal", 2, 3], ["Pass Accuracy", 631, 547, 87, 83], ["Corner Kicks", 3, 7], ["Fouls", 22, 21], ["Saves", 3, 2]], xtra:[["xG", 0.91, 1.59], ["Yellow Cards", 3, 2], ["Red Cards", 0, 0], ["Offsides", 5, 4]]},
   M97: {home:'France', away:'Morocco', hf:'', af:'', score:'2-0', date:'Jul 9 - Gillette Stadium', poss:[48.1, 51.9], stats:[["Shot Attempts", 22, 5], ["Shots on Goal", 8, 1], ["Pass Accuracy", 486, 526, 89, 86], ["Corner Kicks", 5, 5], ["Fouls", 10, 13], ["Saves", 1, 6]], xtra:[["xG", 3.34, 0.53], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
   M98: {home:'Spain', away:'Belgium', hf:'', af:'', score:'2-1', date:'Jul 10 - SoFi Stadium', poss:[67.8, 32.2], stats:[["Shot Attempts", 17, 5], ["Shots on Goal", 8, 2], ["Pass Accuracy", 664, 312, 90, 78], ["Corner Kicks", 5, 1], ["Fouls", 13, 18], ["Saves", 1, 6]], xtra:[["xG", 3.09, 0.81], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
-  M99: {home:'Norway', away:'England', hf:'', af:'', score:'1-2', date:'Jul 11 - Hard Rock Stadium', poss:[47.6, 52.4], stats:[["Shot Attempts", 13, 14], ["Shots on Goal", 4, 8], ["Pass Accuracy", 576, 628, 85, 91], ["Corner Kicks", 7, 4], ["Fouls", 10, 8], ["Saves", 6, 3]], xtra:[["xG", 1.77, 2.94], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 5]]}
+  M99: {home:'Norway', away:'England', hf:'', af:'', score:'1-2', date:'Jul 11 - Hard Rock Stadium', poss:[47.6, 52.4], stats:[["Shot Attempts", 13, 14], ["Shots on Goal", 4, 8], ["Pass Accuracy", 576, 628, 85, 91], ["Corner Kicks", 7, 4], ["Fouls", 10, 8], ["Saves", 6, 3]], xtra:[["xG", 1.77, 2.94], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 5]]},
+  M100: {home:'Argentina', away:'Switzerland', hf:'', af:'', score:'3-1', date:'Jul 12 - GEHA Field at Arrowhead Stadium', poss:[59.1, 40.9], stats:[["Shot Attempts", 22, 11], ["Shots on Goal", 7, 5], ["Pass Accuracy", 692, 474, 89, 84], ["Corner Kicks", 8, 2], ["Fouls", 14, 18], ["Saves", 4, 4]], xtra:[["xG", 3.06, 1.95], ["Yellow Cards", 3, 1], ["Red Cards", 0, 1], ["Offsides", 4, 3]]}
 };
+
+
 
 
 
@@ -4078,9 +4086,9 @@ function showMatchStats(id) {
 }
 
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1934.79, fifaPtsDelta:22.45, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:21.15},
-  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1925.16, fifaPtsDelta:11.44, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:17.85},
-  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:23.11, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:38.05},
+  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1934.79, fifaPtsDelta:22.45, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.86, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:21.15},
+  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1943.48, fifaPtsDelta:18.32, fifaRankDelta:1, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:1.0, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:17.85},
+  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:23.11, fifaRankDelta:2, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:38.05},
   'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1889.42, fifaPtsDelta:18.03, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.833, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:14.45},
   'Brazil':      {flag:'br', group:'C', elo:2009, fifaPts:1804.92, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.844, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:0.0},
   'Portugal':    {flag:'pt', group:'K', elo:1990, fifaPts:1787.85, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.78, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:0.0},
@@ -4089,7 +4097,7 @@ var TEAM_DATA = {
   'Croatia':     {flag:'hr', group:'L', elo:1892, fifaPts:1723.05, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.64, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.0},
   'Norway':      {flag:'no', group:'I', elo:1918, fifaPts:1651.29, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.7, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:5.85},
   'Germany':     {flag:'de', group:'E', elo:1916, fifaPts:1726.21, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:0.667, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:0.0},
-  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:14.59, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.833, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:1.65},
+  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.833, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:1.65},
   'Ecuador':     {flag:'ec', group:'E', elo:1875, fifaPts:1592.6, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.511, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.0},
   'Uruguay':     {flag:'uy', group:'H', elo:1635, fifaPts:1634.7, fifaPtsDelta:-15.26, fifaRankDelta:0, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.456, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.0},
   'Turkey':      {flag:'tr', group:'D', elo:1758, fifaPts:1582.55, fifaPtsDelta:32.42, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.48, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
@@ -5998,7 +6006,9 @@ var KNOCKOUT_RESULTS = {
   M97: {home:'France', away:'Morocco', score:'2-0', winner:'France'},
   M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain'},
   M99: {home:'Norway', away:'England', score:'1-2', winner:'England'},
+  M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina'},
 };
+
 
 
 
