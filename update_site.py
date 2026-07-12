@@ -523,22 +523,50 @@ def update_form():
     # Update form values — floor 0.10 so no team ever shows 0%
     # Base form computed from qualifying record (stable baseline, not the current form value)
     # Then blended 40% base + 60% WC results
+    #
+    # NOTE: this is a DUPLICATE of update_wc.py's update_form(). Both carried the
+    # same bug: data/team_data.json has no qualW/qualD/qualL, so `base_form` fell
+    # back to the team's OWN PREVIOUS FORM and the formula collapsed into a
+    # self-referential moving average (form = 0.4*old_form + 0.6*wc_avg). Form then
+    # dragged on its own history and drifted further on every run — silently.
+    # Qual records live in index.html's TEAM_DATA, so read them from there.
+    _html_qual = {}
+    try:
+        import re as _re
+        _h = open(HTML_PATH, encoding='utf-8').read() if 'HTML_PATH' in globals() else open('index.html', encoding='utf-8').read()
+        for _m in _re.finditer(r"'([^']+)':\s*\{[^}]*?qualW:(\d+)\s*,\s*qualD:(\d+)\s*,\s*qualL:(\d+)", _h):
+            _html_qual[_m.group(1)] = (int(_m.group(2)), int(_m.group(3)), int(_m.group(4)))
+    except Exception:
+        pass
+
     updated = 0
+    missing_qual = []
     for team, results in wc_results.items():
         full_name = NAME_ALIASES.get(team, team)
         target = full_name if full_name in teams_data else (team if team in teams_data else None)
         if target:
             td = teams_data[target]
-            # Compute qualifying form from stored qual record
-            qw = td.get('qualW', 0); qd = td.get('qualD', 0); ql = td.get('qualL', 0)
+            qw = td.get('qualW'); qd = td.get('qualD'); ql = td.get('qualL')
+            if qw is None and target in _html_qual:
+                qw, qd, ql = _html_qual[target]
+            qw, qd, ql = (qw or 0), (qd or 0), (ql or 0)
             qtotal = qw + qd + ql
+            avg = sum(results) / len(results)
+
             if qtotal > 0:
                 base_form = (qw + 0.5 * qd) / qtotal
+                form = base_form * 0.4 + avg * 0.6
             else:
-                base_form = td.get('form', 0.7)  # fallback to stored form
-            avg = sum(results) / len(results)
-            td['form'] = round(max(0.10, base_form * 0.4 + avg * 0.6), 3)
+                # NEVER fall back to the previous form — that is the bug.
+                missing_qual.append(target)
+                form = avg
+
+            td['form'] = round(max(0.10, form), 3)
             updated += 1
+
+    if missing_qual:
+        print(f"     ⚠ no qualification record for {len(missing_qual)} team(s) — "
+              f"using pure tournament form: {', '.join(sorted(missing_qual)[:8])}")
 
     import os, json as _json
     path = os.path.join(DATA_DIR, 'team_data.json')

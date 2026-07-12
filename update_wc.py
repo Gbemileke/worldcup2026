@@ -469,19 +469,83 @@ def update_form():
             continue
         _record(r.get('home', ''), r.get('away', ''), r.get('score', ''))
 
+    # Qualification records live in index.html's TEAM_DATA (qualW/qualD/qualL) but
+    # are ABSENT from data/team_data.json. Parse them from the HTML so the 40%
+    # qualification component of `form` is real.
+    #
+    # THE BUG THIS FIXES: with qual missing, `qtot` was 0 and `base` silently fell
+    # back to `td.get('form')` — the team's OWN PREVIOUS FORM. The formula collapsed
+    # into a self-referential moving average:
+    #       new_form = 0.4*old_form + 0.6*wc_avg
+    # so form dragged on its own history, drifted a little further on every run, and
+    # never fully reflected the tournament. England read 0.883 when the true value
+    # (qual 6-0-0 -> base 1.0, WC 0.917) is 0.950. It failed silently — no warning,
+    # no error, just a plausible wrong number. Same shape as the corners and xG bugs.
+    _html_qual = {}
+    try:
+        _h = read_html()
+        for _m in re.finditer(r"'([^']+)':\s*\{[^}]*?qualW:(\d+)\s*,\s*qualD:(\d+)\s*,\s*qualL:(\d+)", _h):
+            _html_qual[_m.group(1)] = (int(_m.group(2)), int(_m.group(3)), int(_m.group(4)))
+    except Exception:
+        pass
+
     updated = 0
+    missing_qual = []
+    qual_mismatch = []
     for team, results in wc_results.items():
         full = NAME_ALIASES.get(team, team)
         target = full if full in teams_data else (team if team in teams_data else None)
         if not target or not results:
             continue
         td = teams_data[target]
-        qw = td.get('qualW',0); qd = td.get('qualD',0); ql = td.get('qualL',0)
+
+        # SINGLE SOURCE OF TRUTH: index.html's TEAM_DATA.
+        #
+        # The two stores disagreed. data/team_data.json had Spain 8-2-0 while
+        # index.html had 6-0-0; Norway 7-1-2 vs 5-1-0. The old code preferred the
+        # JSON, so the site DISPLAYED one qualification record (from TEAM_DATA) while
+        # the model COMPUTED form from a different one. England had no qual in the
+        # JSON at all — which is the only reason it accidentally landed correct.
+        #
+        # index.html wins because it is complete (all 150 teams), it is what the UI
+        # renders, and it carries qualGF/qualGA too. Any disagreement is reported.
+        hq = _html_qual.get(target)
+        jq = (td.get('qualW'), td.get('qualD'), td.get('qualL'))
+
+        if hq:
+            qw, qd, ql = hq
+            if jq[0] is not None and tuple(jq) != hq:
+                qual_mismatch.append(f"{target} json{tuple(jq)} != html{hq}")
+        elif jq[0] is not None:
+            qw, qd, ql = (jq[0] or 0), (jq[1] or 0), (jq[2] or 0)
+        else:
+            qw = qd = ql = 0
         qtot = qw + qd + ql
-        base = (qw + 0.5*qd) / qtot if qtot else td.get('form', 0.5)
-        avg  = sum(results) / len(results)
-        td['form'] = round(max(0.10, base*0.4 + avg*0.6), 3)
+
+        avg = sum(results) / len(results)
+
+        if qtot:
+            base = (qw + 0.5 * qd) / qtot
+            form = base * 0.4 + avg * 0.6          # intended: 40% qualifying, 60% WC
+        else:
+            # NEVER fall back to the previous form — that is the self-referential bug.
+            # With no qualification record, tournament form IS the signal. Say so.
+            missing_qual.append(target)
+            form = avg
+
+        td['form'] = round(max(0.10, form), 3)
+        # keep the JSON in step with the authoritative record
+        td['qualW'], td['qualD'], td['qualL'] = qw, qd, ql
         updated += 1
+
+    if missing_qual:
+        print(f"     ⚠ no qualification record for {len(missing_qual)} team(s) — "
+              f"using pure tournament form (NOT blended): {', '.join(sorted(missing_qual)[:8])}"
+              + (' …' if len(missing_qual) > 8 else ''))
+    if qual_mismatch:
+        print(f"     ⚠ {len(qual_mismatch)} qual mismatch(es) — index.html wins, team_data.json corrected:")
+        for _m in sorted(qual_mismatch)[:8]:
+            print(f"         {_m}")
 
     save('team_data.json', teams_data)
 
