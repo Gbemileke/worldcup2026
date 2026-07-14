@@ -3523,5 +3523,29 @@
     "phase": "Quarter-Finals",
     "score": "3-1",
     "desc": ""
+  },
+  {
+    "id": 340,
+    "matchId": "M101",
+    "home": "France",
+    "away": "Spain",
+    "scorer": "M. Oyarzabal",
+    "minute": 22,
+    "type": "penalty",
+    "phase": "Semi-Finals",
+    "score": "0-1",
+    "desc": ""
+  },
+  {
+    "id": 341,
+    "matchId": "M101",
+    "home": "France",
+    "away": "Spain",
+    "scorer": "P. Porro",
+    "minute": 58,
+    "type": "open-play",
+    "phase": "Semi-Finals",
+    "score": "0-2",
+    "desc": ""
   }
 ]
