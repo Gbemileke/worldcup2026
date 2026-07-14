@@ -6583,5 +6583,71 @@
         3
       ]
     ]
+  },
+  "M101": {
+    "home": "France",
+    "away": "Spain",
+    "score": "0-2",
+    "date": "Jul 14 - AT&T Stadium",
+    "poss": [
+      49.2,
+      50.8
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        10,
+        10
+      ],
+      [
+        "Shots on Goal",
+        3,
+        2
+      ],
+      [
+        "Pass Accuracy",
+        473,
+        500,
+        84,
+        86
+      ],
+      [
+        "Corner Kicks",
+        7,
+        1
+      ],
+      [
+        "Fouls",
+        11,
+        12
+      ],
+      [
+        "Saves",
+        0,
+        3
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        1.34,
+        1.06
+      ],
+      [
+        "Yellow Cards",
+        2,
+        1
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        4,
+        5
+      ]
+    ]
   }
 }
