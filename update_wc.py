@@ -341,15 +341,29 @@ def update_knockout():
 
 def _sync_upcoming_from_knockout(knockout_data):
     """
-    Update UPCOMING_FIXTURES in index.html so that R16/QF/SF entries
-    show real team names once the R32/R16/QF is done.
+    Update UPCOMING_FIXTURES in index.html so R16/QF/SF/3rd-place/Final entries
+    show real team names once the feeding round is done.
+
+    Resolves BOTH kinds of feeder ref:
+        'W101'  -> WINNER of M101     (advances to the Final)
+        'RU101' -> RUNNER-UP of M101  (drops to the Third-place match)
+
+    RU was previously unhandled, so the third-place fixture (BSIM_THIRD is
+    {fH:'RU101', fA:'RU102'}) never picked up the beaten semi-finalists — winners
+    advanced and losers went nowhere. knockout_results.json stores only `winner`,
+    but the loser is derivable from the home/away pair. Shootouts are fine: the
+    recorded `winner` is the shootout winner, so the other side is the runner-up.
     """
-    # Map Wxx → winner name
     resolved = {}
     for mid, r in knockout_data.items():
-        if r.get('winner'):
-            num = mid[1:]   # 'M73' → '73'
-            resolved[f'W{num}'] = r['winner']
+        if not isinstance(r, dict) or not r.get('winner'):
+            continue
+        num    = mid[1:]                      # 'M101' -> '101'
+        winner = r['winner']
+        home, away = r.get('home'), r.get('away')
+        resolved[f'W{num}'] = winner
+        if home and away:
+            resolved[f'RU{num}'] = away if home == winner else home
 
     html = read_html()
     uf_start = html.find('var UPCOMING_FIXTURES')
@@ -366,19 +380,20 @@ def _sync_upcoming_from_knockout(knockout_data):
             return resolved[ref]
         return ref
 
-    # Replace Wxx references inside home/away fields
     def _sub(m):
         field = m.group(1)   # 'home' or 'away'
-        val   = m.group(2)
-        new_val = _resolve_ref(val)
-        return f"{field}:'{new_val}'"
+        val   = m.group(2)   # 'W101' or 'RU101'
+        return f"{field}:'{_resolve_ref(val)}'"
 
-    new_uf_block = re.sub(r"(home|away):'(W\d+)'", _sub, uf_block)
+    # Match BOTH W## and RU## (RU first in the alternation so it isn't
+    # shadowed — 'W' would otherwise never see 'RU101').
+    new_uf_block = re.sub(r"(home|away):'((?:RU|W)\d+)'", _sub, uf_block)
 
     if changed:
         html = html[:uf_start] + new_uf_block + html[uf_end:]
         write_html(html)
-        print(f'  →  Upcoming fixtures: team names resolved from knockout results')
+        print('  →  Upcoming fixtures: team names resolved from knockout results '
+              '(winners + runners-up)')
 
 
 # ─────────────────────────────────────────────────────────────────────────────

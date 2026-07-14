@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-11 13:40 UTC -->
+<!-- build: 2026-07-14 21:00 UTC -->
 
 <html lang="en">
 <head>
@@ -1694,7 +1694,7 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 12, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 14, 2026</div>
           <div class="analytics-grid">
             <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">100 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">221 open play · 37 headers · 14 penalties · 13 OGs · 7 free kicks</div></div>
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">292</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.92 per match · 100 matches played</div></div>
@@ -2492,8 +2492,44 @@ var GOALS = [
   {id:336, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'A. Allister', flag:'', minute:10, type:'header', phase:'Quarter-Finals', score:'1-0', desc:''},
   {id:337, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'D. Ndoye', flag:'', minute:67, type:'open-play', phase:'Quarter-Finals', score:'1-1', desc:''},
   {id:338, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'J. Álvarez', flag:'', minute:112, type:'open-play', phase:'Quarter-Finals', score:'2-1', desc:''},
-  {id:339, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'L. Martínez', flag:'', minute:121, type:'open-play', phase:'Quarter-Finals', score:'3-1', desc:''}
+  {id:339, matchId:'M100', home:'Argentina', away:'Switzerland', hf:'', af:'', scorer:'L. Martínez', flag:'', minute:121, type:'open-play', phase:'Quarter-Finals', score:'3-1', desc:''},
+  {id:340, matchId:'M101', home:'France', away:'Spain', hf:'', af:'', scorer:'M. Oyarzabal', flag:'', minute:22, type:'penalty', phase:'Semi-Finals', score:'0-1', desc:''},
+  {id:341, matchId:'M101', home:'France', away:'Spain', hf:'', af:'', scorer:'P. Porro', flag:'', minute:58, type:'open-play', phase:'Semi-Finals', score:'0-2', desc:''}
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2863,9 +2899,7 @@ var pendingVideoId = null;
 
 // ── Upcoming fixtures (ticker) ───────────────────────
 var UPCOMING_FIXTURES = [
-  {date:'Jul 11', home:'Norway', away:'England', time:'5:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
-  {date:'Jul 11', home:'Argentina', away:'Switzerland', time:'9:00 PM ET', venue:'', group:'', matchId:'', round:'QF'},
-  {date:'Jul 14', home:'France', away:'Spain', time:'3:00 PM ET', venue:'', group:'', matchId:'', round:'SF'}
+  {date:'Jul 15', home:'England', away:'Argentina', time:'2:00 PM CT', venue:'', group:'', matchId:'', round:'SF'}
 ];
 // ── R32_SCHEDULE: frozen list of all 16 R32 fixtures (never modified by update scripts)
 // Used by match analytics section so played matches always show as result cards.
@@ -2992,8 +3026,77 @@ var MATCH_STATS = {
   M97: {home:'France', away:'Morocco', hf:'', af:'', score:'2-0', date:'Jul 9 - Gillette Stadium', poss:[48.1, 51.9], stats:[["Shot Attempts", 22, 5], ["Shots on Goal", 8, 1], ["Pass Accuracy", 486, 526, 89, 86], ["Corner Kicks", 5, 5], ["Fouls", 10, 13], ["Saves", 1, 6]], xtra:[["xG", 3.34, 0.53], ["Yellow Cards", 0, 1], ["Red Cards", 0, 0], ["Offsides", 0, 0]]},
   M98: {home:'Spain', away:'Belgium', hf:'', af:'', score:'2-1', date:'Jul 10 - SoFi Stadium', poss:[67.8, 32.2], stats:[["Shot Attempts", 17, 5], ["Shots on Goal", 8, 2], ["Pass Accuracy", 664, 312, 90, 78], ["Corner Kicks", 5, 1], ["Fouls", 13, 18], ["Saves", 1, 6]], xtra:[["xG", 3.09, 0.81], ["Yellow Cards", 2, 2], ["Red Cards", 0, 0], ["Offsides", 3, 1]]},
   M99: {home:'Norway', away:'England', hf:'', af:'', score:'1-2', date:'Jul 11 - Hard Rock Stadium', poss:[47.6, 52.4], stats:[["Shot Attempts", 13, 14], ["Shots on Goal", 4, 8], ["Pass Accuracy", 576, 628, 85, 91], ["Corner Kicks", 7, 4], ["Fouls", 10, 8], ["Saves", 6, 3]], xtra:[["xG", 1.77, 2.94], ["Yellow Cards", 1, 0], ["Red Cards", 0, 0], ["Offsides", 1, 5]]},
-  M100: {home:'Argentina', away:'Switzerland', hf:'', af:'', score:'3-1', date:'Jul 12 - GEHA Field at Arrowhead Stadium', poss:[59.1, 40.9], stats:[["Shot Attempts", 22, 11], ["Shots on Goal", 7, 5], ["Pass Accuracy", 692, 474, 89, 84], ["Corner Kicks", 8, 2], ["Fouls", 14, 18], ["Saves", 4, 4]], xtra:[["xG", 3.06, 1.95], ["Yellow Cards", 3, 1], ["Red Cards", 0, 1], ["Offsides", 4, 3]]}
+  M100: {home:'Argentina', away:'Switzerland', hf:'', af:'', score:'3-1', date:'Jul 12 - GEHA Field at Arrowhead Stadium', poss:[59.1, 40.9], stats:[["Shot Attempts", 22, 11], ["Shots on Goal", 7, 5], ["Pass Accuracy", 692, 474, 89, 84], ["Corner Kicks", 8, 2], ["Fouls", 14, 18], ["Saves", 4, 4]], xtra:[["xG", 3.06, 1.95], ["Yellow Cards", 3, 1], ["Red Cards", 0, 1], ["Offsides", 4, 3]]},
+  M101: {home:'France', away:'Spain', hf:'', af:'', score:'0-2', date:'Jul 14 - AT&T Stadium', poss:[49.2, 50.8], stats:[["Shot Attempts", 10, 10], ["Shots on Goal", 3, 2], ["Pass Accuracy", 473, 500, 84, 86], ["Corner Kicks", 7, 1], ["Fouls", 11, 12], ["Saves", 0, 3]], xtra:[["xG", 1.34, 1.06], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 4, 5]]}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4056,18 +4159,18 @@ function showMatchStats(id) {
 }
 
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1934.79, fifaPtsDelta:22.45, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.95, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:21.15},
-  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1925.16, fifaPtsDelta:11.44, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:0.889, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:17.85},
-  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:23.11, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:1.0, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:38.05},
-  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1871.39, fifaPtsDelta:20.42, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.95, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:14.45},
+  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1965.61, fifaPtsDelta:30.82, fifaRankDelta:2, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.957, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:21.25},
+  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1943.48, fifaPtsDelta:18.32, fifaRankDelta:0, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:0.889, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:17.35},
+  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:0.914, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:38.95},
+  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1889.42, fifaPtsDelta:18.03, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.95, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:21.55},
   'Brazil':      {flag:'br', group:'C', elo:2009, fifaPts:1804.92, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.664, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:0.0},
   'Portugal':    {flag:'pt', group:'K', elo:1990, fifaPts:1787.85, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.76, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:0.0},
   'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1739.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.713, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:0.0},
   'Netherlands': {flag:'nl', group:'F', elo:1980, fifaPts:1775.53, fifaPtsDelta:0.04, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:30,qualGA:4, form:0.85, squadDepth:87, exp:10, keyPlayer:'V. van Dijk',  marketPct:0.0},
   'Croatia':     {flag:'hr', group:'L', elo:1892, fifaPts:1723.05, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:2,qualL:1,qualGF:18,qualGA:7, form:0.6, squadDepth:82, exp:8,  keyPlayer:'L. Modric',    marketPct:0.0},
-  'Norway':      {flag:'no', group:'I', elo:1918, fifaPts:1651.29, fifaPtsDelta:33.61, fifaRankDelta:2, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.767, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:5.85},
+  'Norway':      {flag:'no', group:'I', elo:1918, fifaPts:1651.29, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:28,qualGA:5, form:0.767, squadDepth:78, exp:1,  keyPlayer:'E. Haaland',   marketPct:0.0},
   'Germany':     {flag:'de', group:'E', elo:1916, fifaPts:1726.21, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:26,qualGA:3, form:0.742, squadDepth:87, exp:10, keyPlayer:'J. Musiala',   marketPct:0.0},
-  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:14.59, fifaRankDelta:1, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.767, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:1.65},
+  'Switzerland': {flag:'ch', group:'B', elo:1914, fifaPts:1710.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:5,qualD:1,qualL:0,qualGF:18,qualGA:5, form:0.767, squadDepth:78, exp:6,  keyPlayer:'G. Xhaka',     marketPct:0.0},
   'Ecuador':     {flag:'ec', group:'E', elo:1875, fifaPts:1592.6, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:8,qualD:8,qualL:2,qualGF:14,qualGA:5, form:0.492, squadDepth:72, exp:4,  keyPlayer:'M. Caicedo',   marketPct:0.0},
   'Uruguay':     {flag:'uy', group:'H', elo:1635, fifaPts:1634.7, fifaPtsDelta:-15.26, fifaRankDelta:0, qualW:7,qualD:4,qualL:7,qualGF:21,qualGA:24,form:0.4, squadDepth:76, exp:8,  keyPlayer:'D. Nunez',     marketPct:0.0},
   'Turkey':      {flag:'tr', group:'D', elo:1758, fifaPts:1582.55, fifaPtsDelta:32.42, fifaRankDelta:5, qualW:5,qualD:1,qualL:0,qualGF:20,qualGA:4, form:0.567, squadDepth:77, exp:5,  keyPlayer:'H. Calhanoglu',marketPct:0.67},
@@ -6121,6 +6224,41 @@ var KNOCKOUT_RESULTS = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Resolve 'W74' → actual winner team name, or fallback label if not yet played
 // Format a knockout score with shootout in parens beside each side, e.g. "(2) 1-1 (3)".
 // Looks up pens from KNOCKOUT_RESULTS by match id; returns the plain score if no pens.
@@ -6139,7 +6277,26 @@ function fmtScoreWithPens(mid, score, pensOverride) {
 
 function resolveKnockoutTeam(ref) {
   if (!ref) return '';
-  // e.g. 'W74' → winner of match 74
+
+  // 'RU101' → RUNNER-UP (loser) of M101. The third-place match is defined as
+  // BSIM_THIRD = {fH:'RU101', fA:'RU102'} — the two beaten semi-finalists. Without
+  // this branch the ref fell through and rendered as the literal string 'RU101',
+  // so the loser never dropped into the third-place match.
+  //
+  // KNOCKOUT_RESULTS stores only `winner`, but the loser is derivable from the
+  // pair. Penalty shootouts work too: `winner` is the shootout winner, so the
+  // other side is correctly the runner-up.
+  var mRu = ref.match(/^RU(\d+)$/);
+  if (mRu) {
+    var rKey = 'M' + mRu[1];
+    var r = KNOCKOUT_RESULTS[rKey];
+    if (r && r.winner && r.home && r.away) {
+      return (r.home === r.winner) ? r.away : r.home;
+    }
+    return ref;   // semi not played yet — leave the placeholder
+  }
+
+  // 'W74' → winner of match 74
   var mNum = ref.match(/^W(\d+)$/);
   if (mNum) {
     var key = 'M' + mNum[1];
