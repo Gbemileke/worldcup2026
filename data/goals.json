@@ -3547,5 +3547,41 @@
     "phase": "Semi-Finals",
     "score": "0-2",
     "desc": ""
+  },
+  {
+    "id": 342,
+    "matchId": "M102",
+    "home": "England",
+    "away": "Argentina",
+    "scorer": "A. Gordon",
+    "minute": 55,
+    "type": "open-play",
+    "phase": "Semi-Finals",
+    "score": "1-0",
+    "desc": ""
+  },
+  {
+    "id": 343,
+    "matchId": "M102",
+    "home": "England",
+    "away": "Argentina",
+    "scorer": "E. Fern\u00e1ndez",
+    "minute": 85,
+    "type": "open-play",
+    "phase": "Semi-Finals",
+    "score": "1-1",
+    "desc": ""
+  },
+  {
+    "id": 344,
+    "matchId": "M102",
+    "home": "England",
+    "away": "Argentina",
+    "scorer": "L. Mart\u00ednez",
+    "minute": 91,
+    "type": "header",
+    "phase": "Semi-Finals",
+    "score": "1-2",
+    "desc": ""
   }
 ]
