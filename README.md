@@ -27,25 +27,27 @@ A single-page app (~390KB, zero dependencies, zero frameworks) with six tabs:
 | Metric | Value |
 |---|---|
 | Group stage matches | 72 / 72 complete (locked) |
-| Match stats | 80 / 80 complete (72 group + M73–M80 knockout) |
-| Goals recorded | 234 (all balanced against scores) |
-| Knockout results | M73–M80 recorded (R32 in progress). Auto-populated from ESPN · manual fallback via `add_result.py` |
-| Penalty shootouts | M74 (Paraguay 4-3) · M75 (Morocco 3-2) — stored as `pens` field, shown as `(2) 1-1 (3)` everywhere |
+| Match stats | 98 / 104 (72 group + 26 knockout) |
+| Goals recorded | 285 (all balanced against scores) |
+| Knockout results | R32 16/16 · R16 8/8 · QF 4/4 · **SF 1/2** (M101 played) |
+| Penalty shootouts | 4 — M74 (Paraguay 4-3) · M75 (Morocco 3-2) · M88 (Egypt 4-2) · M96 (Switzerland 4-3). Stored as `pens`, shown as `(2) 1-1 (3)` everywhere |
+| Frozen forecasts | 29 knockout matches carry a verified pre-match `forecast` block |
 | Elo ratings | Post-group-stage (Jun 28 2026) — Spain/Argentina 2144, France 2123 |
-| FIFA points | Jun 11 2026 baseline + WC delta — Argentina 1907.40 |
+| FIFA points | Jun 11 2026 baseline + WC delta |
 
-### Round of 32 results so far
+### Knockout progress
 
-| Match | Result | Notes |
+| Round | Matches | Status |
 |---|---|---|
-| M73 | S. Africa 0-1 Canada | Eustáquio 92' |
-| M74 | Germany 1-1 Paraguay | **Paraguay win 4-3 on pens** |
-| M75 | Netherlands 1-1 Morocco | **Morocco win 3-2 on pens** |
-| M76 | Brazil 2-1 Japan | Sano (JPN), Casemiro + Martinelli (BRA) |
-| M77 | France 3-0 Sweden | Mbappé 2, incl. one from the spot |
-| M78 | Ivory Coast 1-2 Norway | Norway advance |
-| M79 | Mexico 2-0 Ecuador | Mexico advance |
-| M80 | England 2-1 DR Congo | Cipenga 7' (DRC), Kane 75'+86' (ENG) |
+| Round of 32 | M73–M88 | ✅ complete (locked 🔒) |
+| Round of 16 | M89–M96 | ✅ complete (locked 🔒) |
+| Quarter-finals | M97–M100 | ✅ complete |
+| Semi-finals | M101–M102 | M101 France 0-2 Spain played · M102 pending |
+| Third place / Final | M103 / M104 | M103 = France vs [M102 loser] · M104 = Spain vs [M102 winner] |
+
+**Gone before the quarter-finals:** Brazil (beaten 2-1 by Norway), Germany, the Netherlands, Portugal, and **both host nations** — Canada (0-3 Morocco) and the USA (1-4 Belgium).
+
+Rounds auto-**lock** once complete: the scraper never re-touches a finished match (score, goals, stats or kickoff time), and the Analytics tab shows a 🔒 on the round header.
 
 ---
 
@@ -57,21 +59,23 @@ worldcup2026/
 ├── update_wc.py               ← ONE-STOP update script (use this)
 ├── update_site.py             ← Lower-level HTML patcher (called by update_wc.py)
 ├── update_match_stats.py      ← ESPN scraper for scores / goals / stats (+ penalty shootouts)
-├── update_rankings.py         ← Daily: Elo + Polymarket odds (+ FIFA) updater
+├── update_rankings.py         ← Daily: Elo + Polymarket odds (+ FIFA) updater. `compute_fifa_points(per_match_pre=…)` captures pre-match FIFA for frozen forecasts
 ├── update_fifa.py             ← FIFA ranking only, results-driven (run per match)
 ├── add_result.py              ← Manual fallback: one command to record + deploy a result
 ├── validate_scorer_country.py ← Roster-backed scorer↔country validator (uses WC2026_Players.csv)
 ├── fix_rescrape_match.py       ← One-time helper: clear a match's goals for a clean re-scrape
+├── backfill_stats.py          ← One-time corrective: repair corners + add Pass Accuracy to existing matches
+├── backfill_forecasts.py      ← Freeze pre-match forecasts into KNOCKOUT_RESULTS (imports update_rankings.py; also invoked by update_wc.py --section forecast)
 ├── archive/
 │   └── worldcup-goals.old.html ← Retired earlier single-file version (kept for reference)
 └── data/
-    ├── goals.json             ← 234 goals — scorer, minute, type, sequence
-    ├── match_stats.json       ← Possession / shots / xG / cards (ESPN/Opta) — 80 entries
+    ├── goals.json             ← 285 goals — scorer, minute, type, sequence
+    ├── match_stats.json       ← Possession / shots / corners / Pass Accuracy / cards — 98 entries
     ├── knockout_results.json  ← R32→Final results (+ optional pens field) — ground truth
     ├── matches.json           ← 72 group stage matches + ESPN IDs (ground truth for rankings)
     ├── team_data.json         ← Elo, FIFA pts, form, qual record, squad depth (150 teams)
     ├── groups.json            ← 12 groups + Polymarket odds
-    ├── upcoming_fixtures.json ← R32 schedule (ticker only — R32_SCHEDULE drives analytics)
+    ├── upcoming_fixtures.json ← Authoritative kickoff times (ET) — synced into KICKOFF_TIMES
     └── WC2026_Players.csv     ← Official 48-squad roster (1248 players) — authoritative for the validator
 ```
 
@@ -112,10 +116,82 @@ python update_wc.py --section goals        # goals.json → GOALS in index.html
 python update_wc.py --section stats        # match_stats.json → MATCH_STATS
 python update_wc.py --section knockout     # knockout_results.json → KNOCKOUT_RESULTS
 python update_wc.py --section upcoming     # upcoming_fixtures.json → ticker
+python update_wc.py --section forecast     # freeze pre-match forecasts (runs BEFORE form)
 python update_wc.py --section form         # recompute team form from WC results
 python update_wc.py --section snapshot     # update analytics header cards
 python update_wc.py --section stamp        # refresh build timestamp
+
+# Multiple sections work (and auto-sort into dependency order):
+python update_wc.py --section stats --section snapshot
 ```
+
+⚠️ **This used to silently fail.** The old parser read only `sys.argv[2]`, so `--section stats --section snapshot` ran **stats only** and quietly dropped `snapshot` — leaving the analytics cards stale with no warning. Fixed: every `--section` flag now runs, ordered so dependencies hold (`stats` always before `snapshot`).
+
+---
+
+## backfill_stats.py — one-time corrective
+
+Fixing the scraper only helps **future** matches. Existing ones are never revisited: group-stage stats are re-fetched only when the match is new or the score changed, and completed knockout matches are locked. So bad data stays frozen.
+
+```bash
+python backfill_stats.py --dry-run     # report only
+python backfill_stats.py               # repair data/match_stats.json
+python update_wc.py --section stats --section snapshot
+```
+
+It re-fetches each affected match from ESPN and **surgically** writes only the `Corner Kicks` and `Pass Accuracy` rows — shots, fouls, saves, xG, cards and possession are left untouched. Corners are overwritten only where they're currently a false `0-0` **and** ESPN reports a real value.
+
+**Order matters:** run the backfill *before* `--section snapshot`, or you bake the broken numbers into the Corner Kicks card.
+
+---
+
+## Frozen forecasts — verifiable pre-match predictions
+
+**The problem it solves.** The simulator computes every forecast live from `TEAM_DATA.form` and `fifaPts`. When a match finishes and `--section form` / rankings recompute those, the "forecast" for the completed match was silently recomputed with **post-match** numbers — a prediction that shifts after the result is known, and can't be verified.
+
+**The fix.** Each match's forecast is frozen at kickoff and stored inside its `KNOCKOUT_RESULTS` entry:
+
+```js
+M99: {home:'Norway', away:'England', score:'1-2', winner:'England',
+      forecast:{modelHome:20, modelDraw:26, modelAway:54,
+                marketHome:0, marketAway:100,
+                formHome:0.847, formAway:0.94,
+                fifaHome:1651.29, fifaAway:1871.39}}
+```
+
+Completed matches display this frozen forecast (bars don't move on Re-Simulate); upcoming matches compute live.
+
+### Three files work together
+
+| File | Role |
+|---|---|
+| `update_rankings.py` | Extended with a `per_match_pre` parameter that captures each match's **pre-match** FIFA points from the existing engine — correct by construction, no reconstruction. |
+| `backfill_forecasts.py` | Generates frozen forecasts for all played knockouts. Form is replayed (`0.4×qual + 0.6×WC-so-far`); FIFA comes from the instrumented engine. Two gates below. |
+| `index.html` | `frozenForecast()` / `findResultWinner()` read the stored forecast; `simMatch()` uses it for completed matches. Names are normalised (`S. Africa` ↔ `South Africa`). |
+
+### Two safety gates (the backfill refuses to write if either fails)
+
+1. **FIFA reconciliation** — each team's frozen pre-match FIFA must equal `fifaPts − fifaPtsDelta` (its live points minus what it gained in its last match). Verifiable by hand: England pre-M99 = 1889.42 − 18.03 = **1871.39**.
+2. **Coverage** — every knockout must have a *real* captured pre-match FIFA. A match missing from the engine's data is flagged, not silently defaulted to the current (post-match) value.
+
+### Going-forward auto-freeze
+
+`update_wc.py` has a `forecast` section placed **before `form`** in `SECTION_ORDER`. It calls `backfill_forecasts.py` (idempotent — only writes matches lacking a forecast), so a normal pipeline run freezes each new match at its true pre-match numbers automatically:
+
+```bash
+python update_wc.py          # full run: forecast freezes new matches BEFORE form recomputes
+```
+
+**Ordering is the whole point:** the freeze must run before form/rankings, or it captures post-match inputs. The section auto-sorts, so even `--section form --section forecast` runs `forecast` first.
+
+### First-time backfill
+
+```bash
+python backfill_forecasts.py --dry-run     # both gates must be ✅, M99 shows 1871.39, M73 present
+python backfill_forecasts.py               # writes forecast:{…} into all 29 knockout entries
+```
+
+⚠️ **`backfill_forecasts.py` imports `update_rankings.py`** and is invoked by `update_wc.py` — all three live in the repo root together. Missing one breaks the chain.
 
 ---
 
@@ -226,6 +302,69 @@ A single helper, `fmtScoreWithPens(matchId, score)`, looks up the shootout from 
 
 - `winner` advances via `resolveKnockoutTeam('W74')` — unaffected by penalties
 - The Simulator overrides simulated rounds with **actual** completed results (`applyActual`), so eliminated teams drop out of R16+ and the real winner advances
+
+---
+
+---
+
+## ⚠️ ESPN field names — read this before touching the scraper
+
+`get_stat()` matches ESPN's `name`, `abbreviation` **and** `label`. Those three often disagree, and the label usually contains **spaces**. Guessing a field name is how stats end up silently wrong.
+
+Real examples from the live feed:
+
+| What ESPN sends | `name` | `label` |
+|---|---|---|
+| Corners | `wonCorners` | `Corner Kicks` |
+| Passes | `totalPasses` | `Passes` |
+| Accurate passes | `accuratePasses` | `Accurate Passes` |
+
+**The bug this caused (fixed):** the scraper searched for `cornerKicks` / `corners`. ESPN's name is `wonCorners` and its label is `Corner Kicks` (with a space) — so *nothing* matched, `or 0` fired, and **46 of 98 matches silently stored 0-0 corners** while every other stat in those same matches parsed fine.
+
+**The fix:** `_norm_stat_key()` strips non-alphanumerics and lowercases both sides, so `Corner Kicks` → `cornerkicks` → matches `cornerKicks`. This kills the whole *class* of bug, not just corners.
+
+**The rule:** never let a missing stat fall through to a plausible-looking default. Every lookup that can fail now **prints a warning**. Silent zeros are worse than crashes — they look like data.
+
+---
+
+## Pass Accuracy
+
+A 5-element stats row (all other rows are 3):
+
+```js
+["Pass Accuracy", homeTotal, awayTotal, homeAcc%, awayAcc%]
+["Pass Accuracy", 243, 598, 78, 90]          // renders: 243 (78%) … (90%) 598
+```
+
+The renderer auto-detects the extra fields and widens the value cells. 3-element rows are unaffected.
+
+**Accuracy is DERIVED, not taken from ESPN.** ESPN sends `passPct` as a fraction rounded to **one decimal** — for a match with 505/575 accurate passes (**87.8%**) it reports `0.9`. Using it would render 90% (or 0.9%). So we compute `accuratePasses / totalPasses` ourselves and only fall back to `passPct` with a printed warning.
+
+⚠️ **Anything that transforms stats rows must handle 5-element rows.** `update_wc.py`'s home/away swap used to filter on `len(s)==3`, which **silently deleted** the Pass Accuracy row from any swapped match. Fixed — the swap now flips totals *and* percentages.
+
+---
+
+## Corner Kicks card (Analytics)
+
+`id="stat-corners"`, sits between **Own Goals** and **Red Cards**. Populated by `update_wc.py --section snapshot`:
+
+- **Number** — tournament corner total
+- **Sub-text** — per-phase breakdown: `group stage · R32 · R16 · QF · SF · 3rd · final` (a phase only appears once it has corners recorded)
+
+---
+
+## Known issue — Expected Goals (xG) is NOT real
+
+**The xG shown in the app is largely fabricated.** ESPN's `boxscore.teams[].statistics` contains **no team xG field**, so the scraper falls back to `sot × 0.33 + (shots − sot) × 0.05` — an uncalibrated formula. An audit found **68% of stored xG values (133 of 196) exactly equal that formula**, and it is **systematically inflated** (France–Senegal: formula gives 2.79, real xG is 1.79).
+
+**What the investigation established:**
+
+- A goalkeeper's `expectedGoalsConceded` **is** the opposing team's true xG — proven, not inferred (Simón played all 90; his `0.344` matches Belgium's displayed `0.34` exactly).
+- It **breaks on keeper substitutions**: `leaders` only reports the *top* saves leader. Belgium subbed keepers, so Courtois's `1.196` was one shift — the backup's ~0.76 appears **nowhere** in the payload, and Spain's real xG was 1.96.
+- Substitutions **are** detectable via `rosters[].subbedIn` / `subbedOut`.
+- **Per-shot xG does not exist in the API** — checked `summary` and both CDN endpoints.
+
+**Planned fix:** use the opposing keeper's xGC where they played the full match (real, measured); fall back to a **clearly labelled estimate** where they didn't. Until then, treat displayed xG as unreliable.
 
 ---
 
@@ -351,7 +490,7 @@ Post-group-stage Elo (Jun 28 2026): Spain/Argentina 2144 · France 2123 · Engla
 console.table({
   matches:   MATCHES.length,                       // 72
   goals:     GOALS.length,                         // 234
-  stats:     Object.keys(MATCH_STATS).length,      // 80 (group + M73–M80)
+  stats:     Object.keys(MATCH_STATS).length,      // 98 (72 group + 26 knockout)
   knockout:  Object.keys(KNOCKOUT_RESULTS).length, // grows with results
   r32sched:  R32_SCHEDULE.length,                  // 16 (frozen)
   upcoming:  UPCOMING_FIXTURES.length,             // ≤16 (filtered)
@@ -388,6 +527,28 @@ git push origin main
 # If push rejected (Action committed first)
 git pull origin main --no-rebase && git push origin main
 ```
+
+### Deploying the forecast-freeze feature (add all three together)
+
+`index.html`, `backfill_forecasts.py`, and `update_rankings.py` are interdependent — add them in one commit:
+
+```bash
+git pull origin main --no-rebase          # bot may have pushed
+
+python backfill_forecasts.py --dry-run    # both gates ✅, M99 = 1871.39, M73 present
+python backfill_forecasts.py              # writes 29 forecast blocks
+
+# verify
+grep -c 'forecast:{modelHome' index.html  # 29
+grep -c 'function frozenForecast' index.html  # 1
+grep -c '<<<<<<<' index.html              # 0
+
+git add index.html backfill_forecasts.py update_rankings.py update_wc.py
+git commit -m "frozen pre-match forecasts + going-forward auto-freeze"
+git pull origin main --no-rebase && git push origin main
+```
+
+Include `update_wc.py` too if you're adding the auto-freeze `forecast` section. After this, every future match freezes automatically on the next pipeline run.
 
 ---
 

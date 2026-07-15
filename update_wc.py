@@ -691,6 +691,49 @@ def update_snapshot():
 # BUILD STAMP
 # ─────────────────────────────────────────────────────────────────────────────
 
+def update_forecast():
+    """Freeze the pre-match forecast for any newly-completed knockout match.
+
+    ORDERING IS CRITICAL. A frozen forecast must capture each team's form and FIFA
+    points AS THEY STOOD AT KICKOFF. Both are recomputed by `form` and `rankings`
+    once a result lands, so this MUST run BEFORE those sections (see SECTION_ORDER:
+    forecast sits before form). Run it after, and you'd freeze post-match inputs —
+    a "prediction" that already knows the outcome.
+
+    Implementation: delegate to backfill_forecasts.py rather than duplicate its
+    model/replay/gating logic. That script is idempotent — it writes a forecast
+    only for matches that don't already have one, and its FIFA-reconciliation and
+    coverage gates REFUSE to write anything unreliable. So running it every pipeline
+    pass is safe: already-frozen matches are untouched, new ones get frozen, and a
+    data problem blocks the write loudly instead of poisoning the record.
+    """
+    import subprocess
+    if not os.path.exists('backfill_forecasts.py'):
+        print('  →  Forecast: backfill_forecasts.py not found — skipping')
+        return
+    try:
+        r = subprocess.run([sys.executable, 'backfill_forecasts.py'],
+                           capture_output=True, text=True, timeout=180)
+    except Exception as e:
+        print(f'  →  Forecast: could not run backfill ({e})')
+        return False
+
+    out = (r.stdout or '') + (r.stderr or '')
+    # Surface the gate lines and the write count so the pipeline log shows what happened.
+    for line in out.splitlines():
+        s = line.strip()
+        if any(k in s for k in ('reconciliation', 'pre-match FIFA', 'wrote forecast',
+                                'SKIPPED', 'Refusing', 'have NO pre-match')):
+            print(f'  →  {s}')
+
+    if r.returncode != 0:
+        # backfill returns non-zero when a gate fails and it refused to write.
+        print('  →  Forecast: gate failed — NO forecasts written (see above). '
+              'Pipeline continues; fix data and re-run.')
+        return False
+    return True
+
+
 def update_stamp():
     html = read_html()
     ts   = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
@@ -1118,6 +1161,7 @@ SECTIONS = {
     'knockout': update_knockout,
     'upcoming': update_upcoming,
     'form':     update_form,
+    'forecast': update_forecast,
     'snapshot': update_snapshot,
     'scrape':   run_scraper,
     'stamp':    update_stamp,
@@ -1125,7 +1169,7 @@ SECTIONS = {
     'auto-knockout': auto_scrape_knockout,
 }
 
-SECTION_ORDER = ['scrape', 'auto-knockout', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'form', 'snapshot', 'stamp']
+SECTION_ORDER = ['scrape', 'auto-knockout', 'validate', 'goals', 'stats', 'knockout', 'upcoming', 'forecast', 'form', 'snapshot', 'stamp']
 
 if __name__ == '__main__':
     # Collect EVERY --section flag. The old code read only sys.argv[2], so
