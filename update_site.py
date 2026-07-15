@@ -622,6 +622,13 @@ def update_knockout_results():
     if js_start < 0:
         print("  ❌ KNOCKOUT_RESULTS not found in index.html"); return
 
+    # Preserve frozen forecasts — same as update_wc.update_knockout. The data file
+    # has no forecast field, so a naive rebuild strips forecast:{…} from index.html.
+    existing_forecasts = {}
+    _kb = c[js_start:js_end if js_end > 0 else None]
+    for _m in re.finditer(r"(M\d+):\s*\{[^}]*?(forecast:\{[^}]*\})", _kb):
+        existing_forecasts[_m.group(1)] = _m.group(2)
+
     # Rebuild the block from data
     lines = ['var KNOCKOUT_RESULTS = {',
              '  // R32 results — populated as each match finishes']
@@ -634,7 +641,8 @@ def update_knockout_results():
             a  = esc_js(r.get('away',''))
             sc = esc_js(r.get('score',''))
             w  = esc_js(r.get('winner',''))
-            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}', winner:'{w}'}},")
+            fc_part = f", {existing_forecasts[mid]}" if mid in existing_forecasts else ''
+            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}', winner:'{w}'{fc_part}}},")
     lines.append('};')
     new_block = '\n'.join(lines)
 

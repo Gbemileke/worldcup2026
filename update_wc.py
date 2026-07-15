@@ -303,6 +303,22 @@ def update_knockout():
     if data is None:
         data = {}
 
+    # PRESERVE FROZEN FORECASTS. data/knockout_results.json stores only the result
+    # (home/away/score/winner), NOT the pre-match forecast — that lives only in the
+    # index.html KNOCKOUT_RESULTS block. Rebuilding from the JSON therefore STRIPS
+    # every forecast:{…}. Historically that wiped all 29 on each --section knockout
+    # run (the forecast section re-added them, but only if it ran and its gate
+    # passed — fragile). So before rewriting, scrape the existing forecast blocks
+    # out of the current index.html and carry them forward verbatim.
+    existing_html = read_html()
+    existing_forecasts = {}
+    _kr_start = existing_html.find('var KNOCKOUT_RESULTS')
+    if _kr_start >= 0:
+        _kr_end = existing_html.find('\n};', _kr_start)
+        _kr_block = existing_html[_kr_start:_kr_end if _kr_end > 0 else None]
+        for _m in re.finditer(r"(M\d+):\s*\{[^}]*?(forecast:\{[^}]*\})", _kr_block):
+            existing_forecasts[_m.group(1)] = _m.group(2)
+
     lines = [
         'var KNOCKOUT_RESULTS = {',
         '  // Populated by update_wc.py as matches finish.',
@@ -318,11 +334,13 @@ def update_knockout():
             w  = esc(r.get('winner',''))
             pens = esc(r.get('pens',''))
             pens_part = f", pens:'{pens}'" if pens else ''
-            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}'{pens_part}, winner:'{w}'}},")
+            # carry the frozen forecast forward if one already existed for this match
+            fc_part = f", {existing_forecasts[mid]}" if mid in existing_forecasts else ''
+            lines.append(f"  {mid}: {{home:'{h}', away:'{a}', score:'{sc}'{pens_part}, winner:'{w}'{fc_part}}},")
     lines.append('};')
 
     new_block = '\n'.join(lines)
-    html = read_html()
+    html = existing_html
 
     # Find and replace KNOCKOUT_RESULTS block
     start = html.find('var KNOCKOUT_RESULTS')
@@ -333,7 +351,9 @@ def update_knockout():
     html = html[:start] + new_block + '\n' + html[end:]
     write_html(html)
     n = len([k for k in data if k in KNOCKOUT_IDS])
-    print(f'  →  KNOCKOUT_RESULTS: {n} results recorded')
+    kept = len(existing_forecasts)
+    print(f'  →  KNOCKOUT_RESULTS: {n} results recorded'
+          + (f' · {kept} frozen forecasts preserved' if kept else ''))
 
     # Also update UPCOMING_FIXTURES to reflect resolved teams
     _sync_upcoming_from_knockout(data)
