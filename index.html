@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-14 23:53 UTC -->
+<!-- build: 2026-07-15 01:18 UTC -->
 
 <html lang="en">
 <head>
@@ -1694,7 +1694,7 @@
     <div id="tab-analytics" style="display:block">
       <div class="tab-panel">
         <div class="analytics-section">
-          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 14, 2026</div>
+          <div class="section-title">TOURNAMENT SNAPSHOT &mdash; JULY 15, 2026</div>
           <div class="analytics-grid">
             <div class="stat-card sc-green" id="stat-matches"><div class="stat-num">101 of 104</div><div class="stat-label">Matches Played</div><div class="stat-sub">222 open play · 37 headers · 15 penalties · 13 OGs · 7 free kicks</div></div>
             <div class="stat-card sc-gold"  id="stat-total-goals"><div class="stat-num">294</div><div class="stat-label">Total Goals</div><div class="stat-sub">2.91 per match · 101 matches played</div></div>
@@ -2895,6 +2895,7 @@ var GOALS = [
 
 
 
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -3032,6 +3033,8 @@ var MATCH_STATS = {
   M100: {home:'Argentina', away:'Switzerland', hf:'', af:'', score:'3-1', date:'Jul 12 - GEHA Field at Arrowhead Stadium', poss:[59.1, 40.9], stats:[["Shot Attempts", 22, 11], ["Shots on Goal", 7, 5], ["Pass Accuracy", 692, 474, 89, 84], ["Corner Kicks", 8, 2], ["Fouls", 14, 18], ["Saves", 4, 4]], xtra:[["xG", 3.06, 1.95], ["Yellow Cards", 3, 1], ["Red Cards", 0, 1], ["Offsides", 4, 3]]},
   M101: {home:'France', away:'Spain', hf:'', af:'', score:'0-2', date:'Jul 14 - AT&T Stadium', poss:[49.2, 50.8], stats:[["Shot Attempts", 10, 10], ["Shots on Goal", 3, 2], ["Pass Accuracy", 473, 500, 84, 86], ["Corner Kicks", 7, 1], ["Fouls", 11, 12], ["Saves", 0, 3]], xtra:[["xG", 1.34, 1.06], ["Yellow Cards", 2, 1], ["Red Cards", 0, 0], ["Offsides", 4, 5]]}
 };
+
+
 
 
 
@@ -6136,36 +6139,37 @@ var KNOCKOUT_RESULTS = {
   // Populated by update_wc.py as matches finish.
   // Add results to data/knockout_results.json then run:
   //   python update_wc.py --section knockout
-  M73: {home:'S. Africa', away:'Canada', score:'0-1', winner:'Canada', forecast:{modelHome:21,modelDraw:22,modelAway:57,marketHome:100,marketAway:0,formHome:0.5,formAway:0.633,fifaHome:1451.25,fifaAway:1571.34}},
-  M74: {home:'Germany', away:'Paraguay', score:'1-1', pens:'3-4', winner:'Paraguay', forecast:{modelHome:72,modelDraw:20,modelAway:8,marketHome:0,marketAway:100,formHome:0.767,formAway:0.422,fifaHome:1726.21,fifaAway:1520.59}},
-  M75: {home:'Netherlands', away:'Morocco', score:'1-1', pens:'2-3', winner:'Morocco', forecast:{modelHome:52,modelDraw:25,modelAway:23,marketHome:50,marketAway:50,formHome:0.9,formAway:0.825,fifaHome:1775.49,fifaAway:1776.4}},
-  M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil', forecast:{modelHome:44,modelDraw:25,modelAway:31,marketHome:50,marketAway:50,formHome:0.744,formAway:0.7,fifaHome:1785.19,fifaAway:1673.68}},
-  M77: {home:'France', away:'Sweden', score:'3-0', winner:'France', forecast:{modelHome:77,modelDraw:16,modelAway:7,marketHome:99,marketAway:1,formHome:1.0,formAway:0.55,fifaHome:1906.84,fifaAway:1525.59}},
-  M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway', forecast:{modelHome:24,modelDraw:23,modelAway:53,marketHome:50,marketAway:50,formHome:0.65,formAway:0.767,fifaHome:1565.47,fifaAway:1594.05}},
-  M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico', forecast:{modelHome:59,modelDraw:29,modelAway:12,marketHome:50,marketAway:50,formHome:0.933,formAway:0.567,fifaHome:1704.1,fifaAway:1592.6}},
-  M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England', forecast:{modelHome:78,modelDraw:17,modelAway:5,marketHome:99,marketAway:1,formHome:0.9,formAway:0.525,fifaHome:1840.46,fifaAway:1495.49}},
-  M81: {home:'USA', away:'Bosnia', score:'2-0', winner:'USA', forecast:{modelHome:58,modelDraw:25,modelAway:17,marketHome:0,marketAway:100,formHome:0.733,formAway:0.55,fifaHome:1677.17,fifaAway:1408.94}},
-  M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium', forecast:{modelHome:56,modelDraw:29,modelAway:15,marketHome:50,marketAway:50,formHome:0.733,formAway:0.44,fifaHome:1735.42,fifaAway:1653.43}},
-  M83: {home:'Portugal', away:'Croatia', score:'2-1', winner:'Portugal', forecast:{modelHome:50,modelDraw:26,modelAway:24,marketHome:50,marketAway:50,formHome:0.8,formAway:0.7,fifaHome:1764.85,fifaAway:1723.05}},
-  M84: {home:'Spain', away:'Austria', score:'3-0', winner:'Spain', forecast:{modelHome:70,modelDraw:18,modelAway:12,marketHome:100,marketAway:0,formHome:0.9,formAway:0.633,fifaHome:1879.58,fifaAway:1598.81}},
-  M85: {home:'Switzerland', away:'Algeria', score:'2-0', winner:'Switzerland', forecast:{modelHome:61,modelDraw:25,modelAway:14,marketHome:50,marketAway:50,formHome:0.867,formAway:0.55,fifaHome:1675.99,fifaAway:1576.8}},
-  M86: {home:'Argentina', away:'Cape Verde', score:'3-2', winner:'Argentina', forecast:{modelHome:82,modelDraw:12,modelAway:6,marketHome:100,marketAway:0,formHome:0.889,formAway:0.55,fifaHome:1907.42,fifaAway:1402.97}},
-  M87: {home:'Colombia', away:'Ghana', score:'1-0', winner:'Colombia', forecast:{modelHome:62,modelDraw:19,modelAway:19,marketHome:50,marketAway:50,formHome:0.733,formAway:0.55,fifaHome:1729.29,fifaAway:1387.0}},
-  M88: {home:'Australia', away:'Egypt', score:'1-1', pens:'2-4', winner:'Egypt', forecast:{modelHome:30,modelDraw:29,modelAway:41,marketHome:50,marketAway:50,formHome:0.55,formAway:0.675,fifaHome:1581.34,fifaAway:1584.7}},
-  M89: {home:'Paraguay', away:'France', score:'0-1', winner:'France', forecast:{modelHome:3,modelDraw:13,modelAway:84,marketHome:0,marketAway:100,formHome:0.422,formAway:1.0,fifaHome:1542.47,fifaAway:1916.24}},
-  M90: {home:'Canada', away:'Morocco', score:'0-3', winner:'Morocco', forecast:{modelHome:26,modelDraw:29,modelAway:45,marketHome:50,marketAway:50,formHome:0.708,formAway:0.775,fifaHome:1551.07,fifaAway:1788.86}},
-  M91: {home:'Brazil', away:'Norway', score:'1-2', winner:'Norway', forecast:{modelHome:41,modelDraw:27,modelAway:32,marketHome:50,marketAway:50,formHome:0.769,formAway:0.817,fifaHome:1804.92,fifaAway:1617.68}},
-  M92: {home:'Mexico', away:'England', score:'2-3', winner:'England', forecast:{modelHome:28,modelDraw:26,modelAway:46,marketHome:0,marketAway:100,formHome:0.933,formAway:0.925,fifaHome:1723.83,fifaAway:1850.97}},
-  M93: {home:'Portugal', away:'Spain', score:'0-1', winner:'Spain', forecast:{modelHome:31,modelDraw:24,modelAway:45,marketHome:0,marketAway:100,formHome:0.85,formAway:0.925,fifaHome:1787.85,fifaAway:1892.28}},
-  M94: {home:'USA', away:'Belgium', score:'1-4', winner:'Belgium', forecast:{modelHome:30,modelDraw:29,modelAway:41,marketHome:50,marketAway:50,formHome:0.783,formAway:0.783,fifaHome:1690.33,fifaAway:1756.52}},
-  M95: {home:'Argentina', away:'Egypt', score:'3-2', winner:'Argentina', forecast:{modelHome:72,modelDraw:16,modelAway:12,marketHome:100,marketAway:0,formHome:0.889,formAway:0.65,fifaHome:1913.72,fifaAway:1597.04}},
-  M96: {home:'Switzerland', away:'Colombia', score:'0-0', pens:'4-3', winner:'Switzerland', forecast:{modelHome:45,modelDraw:27,modelAway:28,marketHome:50,marketAway:50,formHome:0.892,formAway:0.758,fifaHome:1696.29,fifaAway:1739.88}},
-  M97: {home:'France', away:'Morocco', score:'2-0', winner:'France', forecast:{modelHome:65,modelDraw:20,modelAway:15,marketHome:100,marketAway:0,formHome:1.0,formAway:0.805,fifaHome:1925.86,fifaAway:1803.18}},
-  M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain', forecast:{modelHome:57,modelDraw:20,modelAway:23,marketHome:100,marketAway:0,formHome:0.94,formAway:0.813,fifaHome:1912.34,fifaAway:1778.36}},
-  M99: {home:'Norway', away:'England', score:'1-2', winner:'England', forecast:{modelHome:20,modelDraw:26,modelAway:54,marketHome:0,marketAway:100,formHome:0.847,formAway:0.94,fifaHome:1651.29,fifaAway:1869.99}},
-  M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina', forecast:{modelHome:50,modelDraw:22,modelAway:28,marketHome:100,marketAway:0,formHome:0.889,formAway:0.847,fifaHome:1925.16,fifaAway:1710.88}},
-  M101: {home:'France', away:'Spain', score:'0-2', winner:'Spain', forecast:{modelHome:39,modelDraw:29,modelAway:32,marketHome:65,marketAway:35,formHome:1.0,formAway:0.95,fifaHome:1948.93,fifaAway:1934.79}},
+  M73: {home:'S. Africa', away:'Canada', score:'0-1', winner:'Canada'},
+  M74: {home:'Germany', away:'Paraguay', score:'1-1', pens:'3-4', winner:'Paraguay'},
+  M75: {home:'Netherlands', away:'Morocco', score:'1-1', pens:'2-3', winner:'Morocco'},
+  M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil'},
+  M77: {home:'France', away:'Sweden', score:'3-0', winner:'France'},
+  M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway'},
+  M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico'},
+  M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England'},
+  M81: {home:'USA', away:'Bosnia', score:'2-0', winner:'USA'},
+  M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium'},
+  M83: {home:'Portugal', away:'Croatia', score:'2-1', winner:'Portugal'},
+  M84: {home:'Spain', away:'Austria', score:'3-0', winner:'Spain'},
+  M85: {home:'Switzerland', away:'Algeria', score:'2-0', winner:'Switzerland'},
+  M86: {home:'Argentina', away:'Cape Verde', score:'3-2', winner:'Argentina'},
+  M87: {home:'Colombia', away:'Ghana', score:'1-0', winner:'Colombia'},
+  M88: {home:'Australia', away:'Egypt', score:'1-1', pens:'2-4', winner:'Egypt'},
+  M89: {home:'Paraguay', away:'France', score:'0-1', winner:'France'},
+  M90: {home:'Canada', away:'Morocco', score:'0-3', winner:'Morocco'},
+  M91: {home:'Brazil', away:'Norway', score:'1-2', winner:'Norway'},
+  M92: {home:'Mexico', away:'England', score:'2-3', winner:'England'},
+  M93: {home:'Portugal', away:'Spain', score:'0-1', winner:'Spain'},
+  M94: {home:'USA', away:'Belgium', score:'1-4', winner:'Belgium'},
+  M95: {home:'Argentina', away:'Egypt', score:'3-2', winner:'Argentina'},
+  M96: {home:'Switzerland', away:'Colombia', score:'0-0', pens:'4-3', winner:'Switzerland'},
+  M97: {home:'France', away:'Morocco', score:'2-0', winner:'France'},
+  M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain'},
+  M99: {home:'Norway', away:'England', score:'1-2', winner:'England'},
+  M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina'},
+  M101: {home:'France', away:'Spain', score:'0-2', winner:'Spain'},
 };
+
 
 
 
