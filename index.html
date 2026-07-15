@@ -1797,9 +1797,9 @@
                   <div class="weight-name">&#127757; World Football Elo Rating</div>
                   <div class="weight-source">eloratings.net &middot; June 11 2026</div>
                 </div>
-                <div class="weight-pct" id="val-elo">30%</div>
+                <div class="weight-pct" id="val-elo">20%</div>
               </div>
-              <input type="range" class="weight-slider" id="w-elo" min="0" max="80" value="30" step="1" oninput="onWeightChange()">
+              <input type="range" class="weight-slider" id="w-elo" min="0" max="80" value="20" step="1" oninput="onWeightChange()">
             </div>
 
             <div class="weight-row">
@@ -1808,9 +1808,9 @@
                   <div class="weight-name">&#128200; Recent Form (last 5 matches)</div>
                   <div class="weight-source">W=1.0 &middot; D=0.5 &middot; L=0 &middot; Official matches only</div>
                 </div>
-                <div class="weight-pct" id="val-form">20%</div>
+                <div class="weight-pct" id="val-form">25%</div>
               </div>
-              <input type="range" class="weight-slider" id="w-form" min="0" max="60" value="20" step="1" oninput="onWeightChange()">
+              <input type="range" class="weight-slider" id="w-form" min="0" max="60" value="25" step="1" oninput="onWeightChange()">
             </div>
 
             <div class="weight-row">
@@ -1819,9 +1819,9 @@
                   <div class="weight-name">&#9917; Qualification GD / Game</div>
                   <div class="weight-source">Official qualification records by confederation</div>
                 </div>
-                <div class="weight-pct" id="val-qual">10%</div>
+                <div class="weight-pct" id="val-qual">15%</div>
               </div>
-              <input type="range" class="weight-slider" id="w-qual" min="0" max="50" value="10" step="1" oninput="onWeightChange()">
+              <input type="range" class="weight-slider" id="w-qual" min="0" max="50" value="15" step="1" oninput="onWeightChange()">
             </div>
           </div>
 
@@ -2026,9 +2026,9 @@
 
 // ── Model weights ────────────────────────────────────
 var W = {
-  elo:   0.30,
-  form:  0.20,
-  qual:  0.10,
+  elo:   0.20,
+  form:  0.25,
+  qual:  0.15,
   squad: 0.20,
   fifa:  0.15,
   exp:   0.05
@@ -4315,6 +4315,15 @@ var TEAM_DATA = {
 };
 
 function getT(name) {
+  // Resolve alias first: KNOCKOUT_RESULTS and match data use abbreviated names
+  // ('S. Africa') while TEAM_DATA is keyed by the full name ('South Africa').
+  // Without this, getT('S. Africa') missed, returned the fallback with a bad flag
+  // ('🚩' → a broken flagcdn URL), and the flag blinked in/out on every re-render.
+  if (name && TEAM_DATA[name]) return TEAM_DATA[name];
+  if (name && typeof FIFA_NAME_ALIASES !== 'undefined' && FIFA_NAME_ALIASES[name] &&
+      TEAM_DATA[FIFA_NAME_ALIASES[name]]) {
+    return TEAM_DATA[FIFA_NAME_ALIASES[name]];
+  }
   return TEAM_DATA[name] || {
     flag:'\u{1F6A9}', elo:1650, fifaPts:1400, qualW:3,qualD:2,qualL:3,
     qualGF:8,qualGA:10, form:0.5, squadDepth:55, exp:2,
@@ -4368,7 +4377,73 @@ function marketProb(nameA, nameB) {
   return sumPct > 0 ? A.marketPct / sumPct : 0.5;
 }
 
+function frozenForecast(home, away) {
+  if (typeof KNOCKOUT_RESULTS === 'undefined') return null;
+  // Normalise names so 'S. Africa' (stored) matches 'South Africa' (passed by the
+  // bracket, resolved from group standings). Without this, M73's forecast is never
+  // found and the match falls through to a live recompute — its bar keeps moving.
+  function norm(s) {
+    return String(s || '')
+      .replace(/^S\.\s*/i, 'south ').replace(/^N\.\s*/i, 'north ')
+      .replace(/^C\.\s*/i, 'central ').replace(/^W\.\s*/i, 'west ')
+      .replace(/^E\.\s*/i, 'east ')
+      .replace(/[^a-z]/gi, '').toLowerCase();
+  }
+  var nh = norm(home), na = norm(away);
+  for (var k in KNOCKOUT_RESULTS) {
+    var r = KNOCKOUT_RESULTS[k];
+    if (!r || !r.forecast) continue;
+    var rh = norm(r.home), ra = norm(r.away);
+    if (rh === nh && ra === na) return r.forecast;
+    if (rh === na && ra === nh) {
+      var f = r.forecast;
+      return { modelHome:f.modelAway, modelDraw:f.modelDraw, modelAway:f.modelHome,
+               marketHome:f.marketAway, marketAway:f.marketHome,
+               formHome:f.formAway, formAway:f.formHome,
+               fifaHome:f.fifaAway, fifaAway:f.fifaHome, _flipped:true };
+    }
+  }
+  return null;
+}
+
+function findResultWinner(home, away) {
+  if (typeof KNOCKOUT_RESULTS === 'undefined') return null;
+  function norm(s) {
+    return String(s || '')
+      .replace(/^S\.\s*/i, 'south ').replace(/^N\.\s*/i, 'north ')
+      .replace(/^C\.\s*/i, 'central ').replace(/^W\.\s*/i, 'west ')
+      .replace(/^E\.\s*/i, 'east ')
+      .replace(/[^a-z]/gi, '').toLowerCase();
+  }
+  var nh = norm(home), na = norm(away);
+  for (var k in KNOCKOUT_RESULTS) {
+    var r = KNOCKOUT_RESULTS[k];
+    if (!r || !r.winner) continue;
+    var rh = norm(r.home), ra = norm(r.away);
+    if ((rh === nh && ra === na) || (rh === na && ra === nh)) return r.winner;
+  }
+  return null;
+}
+
 function simMatch(home, away) {
+  // Completed knockout match with a frozen pre-match forecast: use it verbatim.
+  // No recompute, no noise, no post-match drift — the bars stay put on replay.
+  var fz = frozenForecast(home, away);
+  if (fz) {
+    var mH = fz.modelHome, mA = fz.modelAway;
+    var hp = (mH + mA) > 0 ? mH / (mH + mA) : 0.5;   // bracket is 2-way (no draw col)
+    var mkH = fz.marketHome, mkA = fz.marketAway;
+    return {
+      home: home, away: away,
+      homeProb: hp, awayProb: 1 - hp,
+      homeModelP: hp, awayModelP: 1 - hp,
+      homeMarketP: (mkH + mkA) > 0 ? mkH / (mkH + mkA) : 0.5,
+      awayMarketP: (mkH + mkA) > 0 ? mkA / (mkH + mkA) : 0.5,
+      model3: { home: fz.modelHome, draw: fz.modelDraw, away: fz.modelAway },
+      winner: findResultWinner(home, away) || (hp >= 0.5 ? home : away),
+      frozen: true
+    };
+  }
   var mp = modelProb(home, away);
   var noise = (Math.random() - 0.5) * 0.06;  // ±3% noise
   var finalP = Math.min(0.90, Math.max(0.10, mp + noise));
@@ -6055,35 +6130,35 @@ var KNOCKOUT_RESULTS = {
   // Populated by update_wc.py as matches finish.
   // Add results to data/knockout_results.json then run:
   //   python update_wc.py --section knockout
-  M73: {home:'S. Africa', away:'Canada', score:'0-1', winner:'Canada'},
-  M74: {home:'Germany', away:'Paraguay', score:'1-1', pens:'3-4', winner:'Paraguay'},
-  M75: {home:'Netherlands', away:'Morocco', score:'1-1', pens:'2-3', winner:'Morocco'},
-  M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil'},
-  M77: {home:'France', away:'Sweden', score:'3-0', winner:'France'},
-  M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway'},
-  M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico'},
-  M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England'},
-  M81: {home:'USA', away:'Bosnia', score:'2-0', winner:'USA'},
-  M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium'},
-  M83: {home:'Portugal', away:'Croatia', score:'2-1', winner:'Portugal'},
-  M84: {home:'Spain', away:'Austria', score:'3-0', winner:'Spain'},
-  M85: {home:'Switzerland', away:'Algeria', score:'2-0', winner:'Switzerland'},
-  M86: {home:'Argentina', away:'Cape Verde', score:'3-2', winner:'Argentina'},
-  M87: {home:'Colombia', away:'Ghana', score:'1-0', winner:'Colombia'},
-  M88: {home:'Australia', away:'Egypt', score:'1-1', pens:'2-4', winner:'Egypt'},
-  M89: {home:'Paraguay', away:'France', score:'0-1', winner:'France'},
-  M90: {home:'Canada', away:'Morocco', score:'0-3', winner:'Morocco'},
-  M91: {home:'Brazil', away:'Norway', score:'1-2', winner:'Norway'},
-  M92: {home:'Mexico', away:'England', score:'2-3', winner:'England'},
-  M93: {home:'Portugal', away:'Spain', score:'0-1', winner:'Spain'},
-  M94: {home:'USA', away:'Belgium', score:'1-4', winner:'Belgium'},
-  M95: {home:'Argentina', away:'Egypt', score:'3-2', winner:'Argentina'},
-  M96: {home:'Switzerland', away:'Colombia', score:'0-0', pens:'4-3', winner:'Switzerland'},
-  M97: {home:'France', away:'Morocco', score:'2-0', winner:'France'},
-  M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain'},
-  M99: {home:'Norway', away:'England', score:'1-2', winner:'England'},
-  M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina'},
-  M101: {home:'France', away:'Spain', score:'0-2', winner:'Spain'},
+  M73: {home:'S. Africa', away:'Canada', score:'0-1', winner:'Canada', forecast:{modelHome:21,modelDraw:22,modelAway:57,marketHome:100,marketAway:0,formHome:0.5,formAway:0.633,fifaHome:1451.25,fifaAway:1571.34}},
+  M74: {home:'Germany', away:'Paraguay', score:'1-1', pens:'3-4', winner:'Paraguay', forecast:{modelHome:72,modelDraw:20,modelAway:8,marketHome:0,marketAway:100,formHome:0.767,formAway:0.422,fifaHome:1726.21,fifaAway:1520.59}},
+  M75: {home:'Netherlands', away:'Morocco', score:'1-1', pens:'2-3', winner:'Morocco', forecast:{modelHome:52,modelDraw:25,modelAway:23,marketHome:50,marketAway:50,formHome:0.9,formAway:0.825,fifaHome:1775.49,fifaAway:1776.4}},
+  M76: {home:'Brazil', away:'Japan', score:'2-1', winner:'Brazil', forecast:{modelHome:44,modelDraw:25,modelAway:31,marketHome:50,marketAway:50,formHome:0.744,formAway:0.7,fifaHome:1785.19,fifaAway:1673.68}},
+  M77: {home:'France', away:'Sweden', score:'3-0', winner:'France', forecast:{modelHome:77,modelDraw:16,modelAway:7,marketHome:99,marketAway:1,formHome:1.0,formAway:0.55,fifaHome:1906.84,fifaAway:1525.59}},
+  M78: {home:'Ivory Coast', away:'Norway', score:'1-2', winner:'Norway', forecast:{modelHome:24,modelDraw:23,modelAway:53,marketHome:50,marketAway:50,formHome:0.65,formAway:0.767,fifaHome:1565.47,fifaAway:1594.05}},
+  M79: {home:'Mexico', away:'Ecuador', score:'2-0', winner:'Mexico', forecast:{modelHome:59,modelDraw:29,modelAway:12,marketHome:50,marketAway:50,formHome:0.933,formAway:0.567,fifaHome:1704.1,fifaAway:1592.6}},
+  M80: {home:'England', away:'DR Congo', score:'2-1', winner:'England', forecast:{modelHome:78,modelDraw:17,modelAway:5,marketHome:99,marketAway:1,formHome:0.9,formAway:0.525,fifaHome:1840.46,fifaAway:1495.49}},
+  M81: {home:'USA', away:'Bosnia', score:'2-0', winner:'USA', forecast:{modelHome:58,modelDraw:25,modelAway:17,marketHome:0,marketAway:100,formHome:0.733,formAway:0.55,fifaHome:1677.17,fifaAway:1408.94}},
+  M82: {home:'Belgium', away:'Senegal', score:'3-2', winner:'Belgium', forecast:{modelHome:56,modelDraw:29,modelAway:15,marketHome:50,marketAway:50,formHome:0.733,formAway:0.44,fifaHome:1735.42,fifaAway:1653.43}},
+  M83: {home:'Portugal', away:'Croatia', score:'2-1', winner:'Portugal', forecast:{modelHome:50,modelDraw:26,modelAway:24,marketHome:50,marketAway:50,formHome:0.8,formAway:0.7,fifaHome:1764.85,fifaAway:1723.05}},
+  M84: {home:'Spain', away:'Austria', score:'3-0', winner:'Spain', forecast:{modelHome:70,modelDraw:18,modelAway:12,marketHome:100,marketAway:0,formHome:0.9,formAway:0.633,fifaHome:1879.58,fifaAway:1598.81}},
+  M85: {home:'Switzerland', away:'Algeria', score:'2-0', winner:'Switzerland', forecast:{modelHome:61,modelDraw:25,modelAway:14,marketHome:50,marketAway:50,formHome:0.867,formAway:0.55,fifaHome:1675.99,fifaAway:1576.8}},
+  M86: {home:'Argentina', away:'Cape Verde', score:'3-2', winner:'Argentina', forecast:{modelHome:82,modelDraw:12,modelAway:6,marketHome:100,marketAway:0,formHome:0.889,formAway:0.55,fifaHome:1907.42,fifaAway:1402.97}},
+  M87: {home:'Colombia', away:'Ghana', score:'1-0', winner:'Colombia', forecast:{modelHome:62,modelDraw:19,modelAway:19,marketHome:50,marketAway:50,formHome:0.733,formAway:0.55,fifaHome:1729.29,fifaAway:1387.0}},
+  M88: {home:'Australia', away:'Egypt', score:'1-1', pens:'2-4', winner:'Egypt', forecast:{modelHome:30,modelDraw:29,modelAway:41,marketHome:50,marketAway:50,formHome:0.55,formAway:0.675,fifaHome:1581.34,fifaAway:1584.7}},
+  M89: {home:'Paraguay', away:'France', score:'0-1', winner:'France', forecast:{modelHome:3,modelDraw:13,modelAway:84,marketHome:0,marketAway:100,formHome:0.422,formAway:1.0,fifaHome:1542.47,fifaAway:1916.24}},
+  M90: {home:'Canada', away:'Morocco', score:'0-3', winner:'Morocco', forecast:{modelHome:26,modelDraw:29,modelAway:45,marketHome:50,marketAway:50,formHome:0.708,formAway:0.775,fifaHome:1551.07,fifaAway:1788.86}},
+  M91: {home:'Brazil', away:'Norway', score:'1-2', winner:'Norway', forecast:{modelHome:41,modelDraw:27,modelAway:32,marketHome:50,marketAway:50,formHome:0.769,formAway:0.817,fifaHome:1804.92,fifaAway:1617.68}},
+  M92: {home:'Mexico', away:'England', score:'2-3', winner:'England', forecast:{modelHome:28,modelDraw:26,modelAway:46,marketHome:0,marketAway:100,formHome:0.933,formAway:0.925,fifaHome:1723.83,fifaAway:1850.97}},
+  M93: {home:'Portugal', away:'Spain', score:'0-1', winner:'Spain', forecast:{modelHome:31,modelDraw:24,modelAway:45,marketHome:0,marketAway:100,formHome:0.85,formAway:0.925,fifaHome:1787.85,fifaAway:1892.28}},
+  M94: {home:'USA', away:'Belgium', score:'1-4', winner:'Belgium', forecast:{modelHome:30,modelDraw:29,modelAway:41,marketHome:50,marketAway:50,formHome:0.783,formAway:0.783,fifaHome:1690.33,fifaAway:1756.52}},
+  M95: {home:'Argentina', away:'Egypt', score:'3-2', winner:'Argentina', forecast:{modelHome:72,modelDraw:16,modelAway:12,marketHome:100,marketAway:0,formHome:0.889,formAway:0.65,fifaHome:1913.72,fifaAway:1597.04}},
+  M96: {home:'Switzerland', away:'Colombia', score:'0-0', pens:'4-3', winner:'Switzerland', forecast:{modelHome:45,modelDraw:27,modelAway:28,marketHome:50,marketAway:50,formHome:0.892,formAway:0.758,fifaHome:1696.29,fifaAway:1739.88}},
+  M97: {home:'France', away:'Morocco', score:'2-0', winner:'France', forecast:{modelHome:65,modelDraw:20,modelAway:15,marketHome:100,marketAway:0,formHome:1.0,formAway:0.805,fifaHome:1925.86,fifaAway:1803.18}},
+  M98: {home:'Spain', away:'Belgium', score:'2-1', winner:'Spain', forecast:{modelHome:57,modelDraw:20,modelAway:23,marketHome:100,marketAway:0,formHome:0.94,formAway:0.813,fifaHome:1912.34,fifaAway:1778.36}},
+  M99: {home:'Norway', away:'England', score:'1-2', winner:'England', forecast:{modelHome:20,modelDraw:26,modelAway:54,marketHome:0,marketAway:100,formHome:0.847,formAway:0.94,fifaHome:1651.29,fifaAway:1869.99}},
+  M100: {home:'Argentina', away:'Switzerland', score:'3-1', winner:'Argentina', forecast:{modelHome:50,modelDraw:22,modelAway:28,marketHome:100,marketAway:0,formHome:0.889,formAway:0.847,fifaHome:1925.16,fifaAway:1710.88}},
+  M101: {home:'France', away:'Spain', score:'0-2', winner:'Spain', forecast:{modelHome:39,modelDraw:29,modelAway:32,marketHome:65,marketAway:35,formHome:1.0,formAway:0.95,fifaHome:1948.93,fifaAway:1934.79}},
 };
 
 
@@ -6759,7 +6834,7 @@ var GROUPS = {
 
 
 var PRESETS = {
-  'default':     {elo:30, form:20, qual:10, squad:20, fifa:15, exp:5},
+  'default':     {elo:20, form:25, qual:15, squad:20, fifa:15, exp:5},
   'elo-pure':    {elo:70, form:20, qual:10, squad:0,  fifa:0,  exp:0},
   'form-heavy':  {elo:30, form:40, qual:20, squad:5,  fifa:0,  exp:5},
   'squad-heavy': {elo:30, form:20, qual:5,  squad:35, fifa:5,  exp:5},

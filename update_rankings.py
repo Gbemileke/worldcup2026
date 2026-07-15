@@ -341,7 +341,7 @@ def _match_importance(mid, knockout):
     return 60 if num >= 97 else 50   # QF stage onwards
 
 
-def compute_fifa_points(wc_results):
+def compute_fifa_points(wc_results, per_match_pre=None):
     """
     Apply every verified WC result to the June 11 baseline using the FIFA Elo formula.
     Formula: P_new = P_before + I × (W − We)
@@ -352,6 +352,13 @@ def compute_fifa_points(wc_results):
         pts      — final points for all teams
         pre_pts  — pts snapshot before each team's last match (for delta display)
         pre_rank — rank before each team's last match
+
+    If `per_match_pre` (a dict) is supplied, it is filled with each match's
+    PRE-MATCH points for both teams, keyed by the match id:
+        per_match_pre['M99'] = {'home': 1853.36, 'away': 1651.29}
+    This is used to freeze a forecast at the exact FIFA points each side carried
+    INTO that match. It is computed from the same live `pts` the engine already
+    maintains, so it is correct by construction — no separate replay.
     """
     I = 50
     pts = dict(FIFA_BASELINE_JUN11)
@@ -372,6 +379,12 @@ def compute_fifa_points(wc_results):
             continue  # unknown team — validator already warned
         if pa is None:
             continue
+
+        # Capture pre-match points for BOTH teams for this match id (for forecasts).
+        if per_match_pre is not None:
+            mid = str(r.get("id", ""))
+            if mid:
+                per_match_pre[mid] = {"home": round(ph, 2), "away": round(pa, 2)}
 
         # Snapshot pre-match pts for each team's last match
         if last_idx.get(h) == i:
