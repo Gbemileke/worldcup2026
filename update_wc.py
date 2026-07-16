@@ -425,6 +425,29 @@ def update_upcoming():
     if not data:
         return
 
+    # Drop fixtures whose match is already PLAYED. The curated feed sometimes keeps
+    # a fixture after the match finishes (and often with an empty matchId), which
+    # then renders as a stale "upcoming" row AND duplicates the bracket-resolved
+    # fixture in the predictor — e.g. England v Argentina (M102) lingering after it
+    # was played. Match on matchId when present, else on the unordered team pair.
+    ko = load('knockout_results.json') or {}
+    played_ids = {mid for mid, r in ko.items()
+                  if isinstance(r, dict) and r.get('winner')}
+    played_pairs = {frozenset((r.get('home',''), r.get('away','')))
+                    for r in ko.values()
+                    if isinstance(r, dict) and r.get('winner')}
+
+    def is_played(f):
+        mid = f.get('matchId', '')
+        if mid and mid in played_ids:
+            return True
+        pair = frozenset((f.get('home', ''), f.get('away', '')))
+        return pair in played_pairs
+
+    before = len(data)
+    data = [f for f in data if not is_played(f)]
+    dropped = before - len(data)
+
     # Only show R32 fixtures (known teams). R16+ shown dynamically via getKnownFixtures().
     r32 = [f for f in data if f.get('round','').upper() in ('R32','GROUP STAGE','') 
            or f.get('group','')]
@@ -448,7 +471,8 @@ def update_upcoming():
     html, ok = replace_js_block(html, 'var UPCOMING_FIXTURES = [', '];', new_block)
     if ok:
         write_html(html)
-        print(f'  →  {len(show)} upcoming fixtures written')
+        print(f'  →  {len(show)} upcoming fixtures written'
+              + (f' ({dropped} played fixture(s) dropped)' if dropped else ''))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
