@@ -448,11 +448,43 @@ def update_upcoming():
     data = [f for f in data if not is_played(f)]
     dropped = before - len(data)
 
-    # Only show R32 fixtures (known teams). R16+ shown dynamically via getKnownFixtures().
-    r32 = [f for f in data if f.get('round','').upper() in ('R32','GROUP STAGE','') 
-           or f.get('group','')]
-    # Fall back to all if no R32 found
-    show = r32 if r32 else data
+    # Only genuine R32 / group-stage fixtures belong in UPCOMING_FIXTURES. Every
+    # knockout fixture (R16 → Final) is generated dynamically by getKnownFixtures()
+    # from the bracket walk, so listing one here too produces a DUPLICATE in the
+    # predictor/ticker. We must NOT trust the `round` label to decide this — the
+    # curated feed has shipped knockout matches mislabelled 'Group Stage' (e.g. the
+    # third-place match France v England), which then slipped through and duplicated
+    # the bracket-resolved fixture. So exclude anything that is really a knockout:
+    #   - an explicit knockout round label, OR
+    #   - a matchId in the knockout range (M73+), OR
+    #   - both teams already resolved to real names AND the match sits in the
+    #     bracket (no group letter) — i.e. it's a bracket fixture, not a group game.
+    KO_ROUND_LABELS = {'R32', 'R16', 'QF', 'SF', 'SEMI-FINAL', 'QUARTER-FINAL',
+                       'ROUND OF 16', 'ROUND OF 32', '3RD PLACE', 'THIRD PLACE',
+                       'FINAL'}
+
+    def is_knockout(f):
+        rnd = f.get('round', '').upper()
+        if rnd in KO_ROUND_LABELS:
+            return True
+        mid = f.get('matchId', '')
+        if mid and mid.upper().startswith('M'):
+            try:
+                if int(mid[1:]) >= 73:
+                    return True
+            except ValueError:
+                pass
+        # The round label is NOT trustworthy — the feed shipped the third-place
+        # match tagged 'Group Stage'. The reliable signal is the GROUP LETTER: every
+        # genuine group-stage fixture carries one (group:'A'..'L'). A fixture with no
+        # group letter is a bracket fixture, which getKnownFixtures() already
+        # generates — so exclude it here to avoid the duplicate, regardless of label.
+        if not f.get('group', '').strip():
+            return True
+        return False
+
+    group_fixtures = [f for f in data if not is_knockout(f)]
+    show = group_fixtures
 
     entries = []
     for f in show:
