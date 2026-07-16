@@ -1,10 +1,18 @@
 [
   {
-    "date": "Jul 15",
-    "home": "England",
+    "date": "Jul 18",
+    "home": "France",
+    "away": "England",
+    "time": "4:00 PM CT",
+    "group": "",
+    "round": "Group Stage"
+  },
+  {
+    "date": "Jul 19",
+    "home": "Spain",
     "away": "Argentina",
     "time": "2:00 PM CT",
     "group": "",
-    "round": "SF"
+    "round": "Final"
   }
 ]
