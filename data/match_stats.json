@@ -6715,5 +6715,71 @@
         3
       ]
     ]
+  },
+  "M103": {
+    "home": "France",
+    "away": "England",
+    "score": "4-6",
+    "date": "Jul 18 - Hard Rock Stadium",
+    "poss": [
+      45.9,
+      54.1
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        19,
+        19
+      ],
+      [
+        "Shots on Goal",
+        9,
+        11
+      ],
+      [
+        "Pass Accuracy",
+        444,
+        517,
+        91,
+        91
+      ],
+      [
+        "Corner Kicks",
+        3,
+        4
+      ],
+      [
+        "Fouls",
+        14,
+        8
+      ],
+      [
+        "Saves",
+        4,
+        5
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        3.47,
+        4.03
+      ],
+      [
+        "Yellow Cards",
+        0,
+        0
+      ],
+      [
+        "Red Cards",
+        0,
+        0
+      ],
+      [
+        "Offsides",
+        3,
+        3
+      ]
+    ]
   }
 }
