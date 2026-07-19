@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-07-14 23:53 UTC -->
+<!-- build: 2026-07-19 01:29 UTC -->
 
 <html lang="en">
 <head>
@@ -2917,6 +2917,7 @@ var GOALS = [
 
 
 
+
 var currentFilter = 'all';
 var selectedGoalId = null;
 var activeMatchVideo = null;
@@ -3056,6 +3057,8 @@ var MATCH_STATS = {
   M102: {home:'England', away:'Argentina', hf:'', af:'', score:'1-2', date:'Jul 15 - Mercedes-Benz Stadium', poss:[35.7, 64.3], stats:[["Shot Attempts", 5, 15], ["Shots on Goal", 2, 5], ["Pass Accuracy", 325, 590, 84, 91], ["Corner Kicks", 2, 6], ["Fouls", 11, 15], ["Saves", 3, 1]], xtra:[["xG", 0.81, 2.15], ["Yellow Cards", 1, 3], ["Red Cards", 0, 0], ["Offsides", 1, 3]]},
   M103: {home:'France', away:'England', hf:'', af:'', score:'4-6', date:'Jul 18 - Hard Rock Stadium', poss:[45.9, 54.1], stats:[["Shot Attempts", 19, 19], ["Shots on Goal", 9, 11], ["Pass Accuracy", 444, 517, 91, 91], ["Corner Kicks", 3, 4], ["Fouls", 14, 8], ["Saves", 4, 5]], xtra:[["xG", 3.47, 4.03], ["Yellow Cards", 0, 0], ["Red Cards", 0, 0], ["Offsides", 3, 3]]}
 };
+
+
 
 
 
@@ -4198,10 +4201,10 @@ function showMatchStats(id) {
 }
 
 var TEAM_DATA = {
-  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1965.61, fifaPtsDelta:30.82, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.957, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:57.95},
-  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1970.38, fifaPtsDelta:26.9, fifaRankDelta:2, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:0.889, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:42.15},
-  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:0.914, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:0.0},
-  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1889.42, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.95, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:0.05},
+  'Spain':       {flag:'es', group:'H', elo:2144, fifaPts:1965.61, fifaPtsDelta:30.82, fifaRankDelta:1, qualW:6,qualD:0,qualL:0,qualGF:18,qualGA:3, form:0.957, squadDepth:92, exp:10, keyPlayer:'L. Yamal',    marketPct:59.15},
+  'Argentina':   {flag:'ar', group:'J', elo:2144, fifaPts:1970.38, fifaPtsDelta:26.9, fifaRankDelta:2, qualW:12,qualD:2,qualL:4,qualGF:31,qualGA:10,form:0.889, squadDepth:90, exp:10, keyPlayer:'L. Messi',    marketPct:40.45},
+  'France':      {flag:'fr', group:'I', elo:2123, fifaPts:1948.97, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:22,qualGA:4, form:0.85, squadDepth:93, exp:10, keyPlayer:'K. Mbappe',   marketPct:0.0},
+  'England':     {flag:'gb-eng', group:'L', elo:2038, fifaPts:1922.83, fifaPtsDelta:33.41, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:21,qualGA:4, form:0.887, squadDepth:90, exp:10, keyPlayer:'H. Kane',      marketPct:0.0},
   'Brazil':      {flag:'br', group:'C', elo:2009, fifaPts:1804.92, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:9,qualD:4,qualL:5,qualGF:29,qualGA:20,form:0.664, squadDepth:91, exp:10, keyPlayer:'Vinicius Jr.', marketPct:0.0},
   'Portugal':    {flag:'pt', group:'K', elo:1990, fifaPts:1787.85, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:6,qualD:0,qualL:0,qualGF:24,qualGA:3, form:0.76, squadDepth:88, exp:10, keyPlayer:'B. Fernandes',marketPct:0.0},
   'Colombia':    {flag:'co', group:'K', elo:2004, fifaPts:1739.88, fifaPtsDelta:0.0, fifaRankDelta:0, qualW:7,qualD:7,qualL:4,qualGF:28,qualGA:18,form:0.713, squadDepth:83, exp:5,  keyPlayer:'L. Diaz',      marketPct:0.0},
@@ -6207,6 +6210,7 @@ var KNOCKOUT_RESULTS = {
   M102: {home:'England', away:'Argentina', score:'1-2', winner:'Argentina', forecast:{modelHome:42,modelDraw:26,modelAway:32,marketHome:0,marketAway:100,formHome:0.95,formAway:0.889,fifaHome:1889.42,fifaAway:1943.48}},
   M103: {home:'France', away:'England', score:'4-6', winner:'England', forecast:{modelHome:42,modelDraw:27,modelAway:31,marketHome:0,marketAway:100,formHome:0.914,formAway:0.871,fifaHome:1948.97,fifaAway:1889.42}},
 };
+
 
 
 
