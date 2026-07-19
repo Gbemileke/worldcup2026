@@ -1931,6 +1931,7 @@
           <button class="stage-tab" onclick="showStage('r16',this)">R16</button>
           <button class="stage-tab" onclick="showStage('qf',this)">QF</button>
           <button class="stage-tab" onclick="showStage('sf',this)">SF</button>
+          <button class="stage-tab" onclick="showStage('third',this)">Third</button>
           <button class="stage-tab" onclick="showStage('final',this)">Final</button>
         </div>
 
@@ -1958,6 +1959,11 @@
         <!-- SEMI FINALS -->
         <div class="bracket-stage" id="stage-sf">
           <div class="bracket-grid bracket-grid-2" id="sfGrid"></div>
+        </div>
+
+        <!-- THIRD PLACE (M103 — the two beaten semi-finalists, played before the Final) -->
+        <div class="bracket-stage" id="stage-third">
+          <div class="bracket-grid" id="thirdGrid" style="max-width:520px;margin:0 auto"></div>
         </div>
 
         <!-- FINAL -->
@@ -4578,6 +4584,13 @@ function runSimulation() {
   SIM.runnerUp=SIM.final?(SIM.final.winner===fh?fa:fh):null;
   SIM.sf1Loser=SIM.sf[0]?(SIM.sf[0].winner===SIM.sf[0].home?SIM.sf[0].away:SIM.sf[0].home):'';
   SIM.sf2Loser=SIM.sf[1]?(SIM.sf[1].winner===SIM.sf[1].home?SIM.sf[1].away:SIM.sf[1].home):'';
+  // THIRD-PLACE MATCH (M103) — contested by the two beaten semi-finalists. The
+  // losers were identified above but no match was ever played between them, so the
+  // simulator jumped straight from the semis to the final. simMatch() gives M103
+  // the same treatment as every other tie: frozen forecast + real winner once it
+  // has been played, a fresh draw from the probability distribution while upcoming.
+  SIM.third=(SIM.sf1Loser&&SIM.sf2Loser)?simMatch(SIM.sf1Loser,SIM.sf2Loser):null;
+  SIM.thirdPlace=SIM.third?SIM.third.winner:null;
   // Refresh all bracket displays after every simulation run
   if (typeof renderBracket === 'function') renderBracket();
   if (typeof buildTop4     === 'function') buildTop4();
@@ -4660,13 +4673,15 @@ function renderBracket() {
   var r16Labels = (BSIM_R16||[]).map(function(m){return 'R16 ' + m.id;});
   var qfLabels  = (BSIM_QF||[]).map(function(m){return 'QF '  + m.id;});
   var sfLabels  = (BSIM_SF||[]).map(function(m){return 'SF '  + m.id;});
+  var thirdLabels = [(typeof BSIM_THIRD!=='undefined'&&BSIM_THIRD?'3rd Place '+BSIM_THIRD.id:'3rd Place M103')];
   var stages = {
     'r32Grid': {data: SIM.r32 || [], labels: r32Labels},
     'r16Grid': {data: SIM.r16 || [], labels: r16Labels},
     'qfGrid':  {data: SIM.qf  || [], labels: qfLabels},
     'sfGrid':  {data: SIM.sf  || [], labels: sfLabels},
+    'thirdGrid': {data: SIM.third ? [SIM.third] : [], labels: thirdLabels},
   };
-  var stageKeys = ['r32Grid', 'r16Grid', 'qfGrid', 'sfGrid'];
+  var stageKeys = ['r32Grid', 'r16Grid', 'qfGrid', 'sfGrid', 'thirdGrid'];
   for (var si = 0; si < stageKeys.length; si++) {
     var gridId = stageKeys[si];
     var el = document.getElementById(gridId);
@@ -6177,6 +6192,7 @@ var KNOCKOUT_RESULTS = {
   M101: {home:'France', away:'Spain', score:'0-2', winner:'Spain', forecast:{modelHome:39,modelDraw:29,modelAway:32,marketHome:0,marketAway:100,formHome:1.0,formAway:0.95,fifaHome:1948.97,fifaAway:1934.79}},
   M102: {home:'England', away:'Argentina', score:'1-2', winner:'Argentina', forecast:{modelHome:42,modelDraw:26,modelAway:32,marketHome:0,marketAway:100,formHome:0.95,formAway:0.889,fifaHome:1889.42,fifaAway:1943.48}},
 };
+
 
 
 
