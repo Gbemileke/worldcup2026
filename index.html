@@ -4716,6 +4716,21 @@ function renderBracket() {
     var chMdl = SIM.final.winner === SIM.final.home ? SIM.final.homeModelP : SIM.final.awayModelP;
     var chMkt = SIM.final.winner === SIM.final.home ? SIM.final.homeMarketP : SIM.final.awayMarketP;
 
+    // Podium 3rd/4th come from the third-place MATCH RESULT, not from SF-loser
+    // position. sf1Loser/sf2Loser only say who *contests* M103 — the old code
+    // labelled sf1Loser "3rd" and sf2Loser "4th" arbitrarily, so once England beat
+    // France in the real M103 the Final stage showed the podium inverted and no
+    // amount of re-simulating could correct it. SIM.third goes through applyActual,
+    // so its winner is the real bronze medallist once M103 is played (and a live
+    // simulation before that). Only 1st/2nd remain open until the Final is played.
+    var thirdW = SIM.third ? SIM.third.winner
+                           : (SIM.sf1Loser || '');
+    var thirdL = SIM.third ? ((SIM.third.winner === SIM.third.home) ? SIM.third.away : SIM.third.home)
+                           : (SIM.sf2Loser || '');
+    var thirdLocked = !!(SIM.third && SIM.third.actual);
+    var lbl3 = '&#129353; 3rd Place' + (thirdLocked ? ' &#10003;' : '');
+    var lbl4 = '4th Place' + (thirdLocked ? ' &#10003;' : '');
+
     elfin.innerHTML =
       '<div class="champion-box">' +
         '<div class="champion-label">&#127942; PREDICTED WORLD CUP CHAMPION</div>' +
@@ -4743,8 +4758,8 @@ function renderBracket() {
       '<div class="finalist-row">' +
         '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(ch.flag,'24px') + '</div><div class="finalist-name">' + SIM.champion + '</div><div class="finalist-lbl">&#127942; Champion</div></div>' +
         '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(ru.flag,'24px') + '</div><div class="finalist-name">' + SIM.runnerUp + '</div><div class="finalist-lbl">Runner-up</div></div>' +
-        '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(getT(SIM.sf1Loser).flag,'24px') + '</div><div class="finalist-name">' + SIM.sf1Loser + '</div><div class="finalist-lbl">3rd Place</div></div>' +
-        '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(getT(SIM.sf2Loser).flag,'24px') + '</div><div class="finalist-name">' + SIM.sf2Loser + '</div><div class="finalist-lbl">4th Place</div></div>' +
+        '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(getT(thirdW).flag,'24px') + '</div><div class="finalist-name">' + thirdW + '</div><div class="finalist-lbl">' + lbl3 + '</div></div>' +
+        '<div class="finalist-box"><div class="finalist-flag">' + renderFlag(getT(thirdL).flag,'24px') + '</div><div class="finalist-name">' + thirdL + '</div><div class="finalist-lbl">' + lbl4 + '</div></div>' +
       '</div>' +
       '<div style="margin-top:20px">' + renderMatchupCard(SIM.final, '&#127942; World Cup Final &mdash; July 19, MetLife Stadium') + '</div>';
   }
