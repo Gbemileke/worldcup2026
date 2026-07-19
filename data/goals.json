@@ -3703,5 +3703,17 @@
     "phase": "Third Place",
     "score": "4-6",
     "desc": ""
+  },
+  {
+    "id": 355,
+    "matchId": "M104",
+    "home": "Spain",
+    "away": "Argentina",
+    "scorer": "F. Torres",
+    "minute": 106,
+    "type": "open-play",
+    "phase": "Final",
+    "score": "1-0",
+    "desc": ""
   }
 ]

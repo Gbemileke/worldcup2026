@@ -6781,5 +6781,71 @@
         3
       ]
     ]
+  },
+  "M104": {
+    "home": "Spain",
+    "away": "Argentina",
+    "score": "1-0",
+    "date": "Jul 19 - MetLife Stadium",
+    "poss": [
+      65.1,
+      34.9
+    ],
+    "stats": [
+      [
+        "Shot Attempts",
+        20,
+        2
+      ],
+      [
+        "Shots on Goal",
+        12,
+        0
+      ],
+      [
+        "Pass Accuracy",
+        852,
+        464,
+        89,
+        77
+      ],
+      [
+        "Corner Kicks",
+        9,
+        4
+      ],
+      [
+        "Fouls",
+        21,
+        25
+      ],
+      [
+        "Saves",
+        0,
+        11
+      ]
+    ],
+    "xtra": [
+      [
+        "xG",
+        4.36,
+        0.1
+      ],
+      [
+        "Yellow Cards",
+        0,
+        4
+      ],
+      [
+        "Red Cards",
+        0,
+        1
+      ],
+      [
+        "Offsides",
+        4,
+        1
+      ]
+    ]
   }
 }
